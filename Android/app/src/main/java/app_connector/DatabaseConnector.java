@@ -1,6 +1,7 @@
-package appConnector;
+package app_connector;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,10 +43,12 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
         callback = new CallbackInterface() {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
+                // Do nothing by default
             }
 
             @Override
             public void onStartConnection() {
+                // Do nothing by default
             }
         };
     }
@@ -61,10 +64,12 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
         callback = new CallbackInterface() {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
+                // Do nothing by default
             }
 
             @Override
             public void onStartConnection() {
+                // Do nothing by default
             }
         };
     }
@@ -111,7 +116,7 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
         try {
             callback.onEndConnection(new JSONArray(s));
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("EXCEPTION", e.toString());
         }
     }
 

@@ -1,4 +1,4 @@
-package appConnector;
+package app_connector;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
