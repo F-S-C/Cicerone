@@ -10,20 +10,14 @@ include('configuration.php');
 
 $query = "SELECT password FROM registered_user ";
 $condition = Array();
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $db);
-
-// Check connection
-if ($conn->connect_error) 
-	{
-		die("Connection failed: " . $conn->connect_error);
-	}
+$pw = $_POST['password'];
+$user = $_POST['username'];
 
 // Checks if the variables passed via POST exist and adds them to the query
-if(isset($_POST['username']) && isset($_POST['password']))
+if(isset($user) && isset($pw))
 	{
-		$query .= "WHERE username = '" .strtolower($_POST['username']). "'";
+		
+		$query .= "WHERE username = '" .strtolower($user). "'";
 		
 		// Send the query to MySQL and print result in JSON
 		$sth = mysqli_query($conn, $query);
@@ -34,10 +28,14 @@ if(isset($_POST['username']) && isset($_POST['password']))
 		}
 		else 
 		{
-		  if(password_verify($_POST["password"], $row["password"]))
-			printf("{\"result\":\"true\"}");
-		  else
-			printf("{\"result\":\"false\",\"error\":\"Wrong username or password.\"}");
+			if(password_verify($pw, $row["password"]))
+			{
+				printf("{\"result\":\"true\"}");
+			}
+			else
+			{
+				printf("{\"result\":\"false\",\"error\":\"Wrong username or password.\"}");
+			}
 		}
 	}
 else

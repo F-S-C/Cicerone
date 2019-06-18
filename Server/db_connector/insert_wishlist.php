@@ -9,15 +9,6 @@ include('configuration.php');
 
 $query = "INSERT INTO wishlist (username, itinerary_in_wishlist) VALUES (";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $db);
-
-// Check connection
-if ($conn->connect_error) 
-	{
-		die("Connection failed: " . $conn->connect_error);
-	}
-
 // Checks if the variables passed via POST exist and adds them to the query
 if(isset($_POST['username']) && isset($_POST['itinerary_in_wishlist']))
 	{

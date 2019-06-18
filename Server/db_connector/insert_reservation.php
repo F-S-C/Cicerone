@@ -9,15 +9,6 @@ include('configuration.php');
 
 $query = "INSERT INTO reservation (username, booked_itinerary, number_of_children, number_of_adults, total, requested_date, forwarding_date, confirmation_date) VALUES (";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $db);
-
-// Check connection
-if ($conn->connect_error) 
-	{
-		die("Connection failed: " . $conn->connect_error);
-	}
-
 // Checks if the variables passed via POST exist and adds them to the query
 if(isset($_POST['username']) && isset($_POST['booked_itinerary']) && isset($_POST['number_of_children']) && isset($_POST['number_of_adults']) && isset($_POST['total']) && isset($_POST['requested_date']) && isset($_POST['forwarding_date']) && isset($_POST['confirmation_date']))
 	{

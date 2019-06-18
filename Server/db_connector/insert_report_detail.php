@@ -9,15 +9,6 @@ include('configuration.php');
 
 $query = "INSERT INTO report_detail (report_code, report_body, object, state) VALUES (";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $db);
-
-// Check connection
-if ($conn->connect_error) 
-	{
-		die("Connection failed: " . $conn->connect_error);
-	}
-
 // Checks if the variables passed via POST exist and adds them to the query
 if(isset($_POST['report_code']) && isset($_POST['report_body']) && isset($_POST['object']) && isset($_POST['state'
 ]))

@@ -10,15 +10,6 @@ include('configuration.php');
 $query = "SELECT * FROM report";
 $condition = Array();
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $db);
-
-// Check connection
-if ($conn->connect_error) 
-{
-    die("Connection failed: " . $conn->connect_error);
-}
-
 // Checks if the variables passed via POST exist and adds them to the query
 if(isset($_POST['username']))
 {
@@ -33,31 +24,8 @@ if(isset($_POST['report_code']))
 	array_push($condition, "report_code = '" . $_POST['report_code'] . "'");
 }
 
-if(count($condition) > 0)
-	{
-		$query = $query . " WHERE ";
-		while( count($condition) > 0){
-			$query .= $condition[0] ?? '';
-			array_shift($condition);
-			if(count($condition) > 0)
-				$query .= " AND ";
-		}
-	}
+addConditionsToQuery($condition, $query);
 
 // Send the query to MySQL and print received records in JSON
-$sth = mysqli_query($conn, $query);
-$rows = array();
-if ( $sth === false ) 
-	{
-	  printf("{\"result\":\"false\",\"error\":\"%s\"}", mysqli_error($conn));
-	}
-else 
-	{
-		while($r = mysqli_fetch_assoc($sth)) 
-		{
-			$rows[] = $r;
-		}
-		print json_encode($rows);
-	}
-mysqli_close($conn);
+requestData($conn, $query);
 ?>

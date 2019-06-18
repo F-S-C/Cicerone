@@ -10,15 +10,6 @@ include('configuration.php');
 $query = "INSERT INTO itinerary (title, description, beginning_date, ending_date, end_reservation_date,
 maximum_partecipants_number, minimum_partecipants_number, location, ripetition_day, duration, username, image_url, price) VALUES (";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $db);
-
-// Check connection
-if ($conn->connect_error) 
-	{
-		die("Connection failed: " . $conn->connect_error);
-	}
-
 // Checks if the variables passed via POST exist and adds them to the query
 if(isset($_POST['title']) && isset($_POST['description']) && isset($_POST['beginning_date']) && isset($_POST['ending_date']) && isset($_POST['end_reservation_date']) && isset($_POST['maximum_partecipants_number']) && isset($_POST['minimum_partecipants_number']) && isset($_POST['location']) && isset($_POST['ripetition_day']) && isset($_POST['duration']) && isset($_POST['username']) && isset($_POST['image_url']) && isset($_POST['price']))
 	{

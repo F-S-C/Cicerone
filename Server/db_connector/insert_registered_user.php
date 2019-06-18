@@ -9,15 +9,6 @@ include('configuration.php');
 
 $query = "INSERT INTO registered_user (username, tax_code, name, surname, password, email, user_type, cellphone, birth_date, sex) VALUES (";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $db);
-
-// Check connection
-if ($conn->connect_error) 
-	{
-		die("Connection failed: " . $conn->connect_error);
-	}
-
 // Checks if the variables passed via POST exist and adds them to the query
 if(isset($_POST['username']) && isset($_POST['tax_code']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['password']) && isset($_POST['email']) && isset($_POST['user_type']) && isset($_POST['cellphone']) && isset($_POST['birth_date']) && isset($_POST['sex']))
 	{
