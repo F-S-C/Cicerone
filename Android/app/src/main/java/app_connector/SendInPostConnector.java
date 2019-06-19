@@ -23,7 +23,7 @@ import java.util.Iterator;
  * This connector sends data using POST to a server-side script that will be used in order to
  * connect to a database.
  */
-public abstract class SendInPostConnector extends DatabaseConnector {
+public class SendInPostConnector extends DatabaseConnector {
 
     private JSONObject objectToSend; // The object that will be sent
 
