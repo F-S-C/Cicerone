@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login">Login</string>
+    <string name="login_error">Errore: username o password errati.</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="logging">Accedendo...</string>
+    <string name="forgot_password">Hai dimenticato la password?</string>
+    <string name="dont_have_account">Non hai un account?</string>
+    <string name="or">o</string>
+    <string name="signup">Registrati</string>
+    <string name="skip_login">Salta il login</string>
+    <string name="empty_password_error">Inserisci la tua password</string>
+    <string name="empty_username_error">Inserisci il tuo username</string>
+    <string name="wrong_credentials">Credenziali errate!</string>
+</resources>

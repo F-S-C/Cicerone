@@ -114,7 +114,10 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         try {
-            callback.onEndConnection(new JSONArray(s));
+            if (s.startsWith("[") && s.endsWith("]"))
+                callback.onEndConnection(new JSONArray(s));
+            else
+                callback.onEndConnection(new JSONArray("[" + s + "]"));
         } catch (JSONException e) {
             Log.e("EXCEPTION", e.toString());
         }
