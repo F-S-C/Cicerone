@@ -36,16 +36,16 @@ function requestData($conn, $query) {
 	mysqli_close($conn);	
  }
 
-function addConditionsToQuery($condition, $query){
+function addConditionsToQuery($condition, &$query){
 	if(count($condition) > 0)
 	{
 		$query = $query . " WHERE ";
 		while( count($condition) > 0){
-			$query .= $condition[0] ?? '';
+			$query = $query . $condition[0] ?? '';
 			array_shift($condition);
 			if(count($condition) > 0)
 			{
-				$query .= " AND ";
+				$query = $query . " AND ";
 			}
 		}
 	}
