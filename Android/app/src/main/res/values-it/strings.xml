@@ -13,4 +13,16 @@
     <string name="empty_password_error">Inserisci la tua password</string>
     <string name="empty_username_error">Inserisci il tuo username</string>
     <string name="wrong_credentials">Credenziali errate!</string>
+    <string name="itinerary_description">Descrizione</string>
+    <string name="itinerary_title">Titolo itinerario</string>
+    <string name="new_itinerary">Crea un itinerario</string>
+    <string name="beginning_date">Data di inizio</string>
+    <string name="ending_date">Data di fine</string>
+    <string name="maximum_partecipants">Partecipanti massimi</string>
+    <string name="minimum_partecipants">Partecipanti minimi</string>
+    <string name="location">Luogo</string>
+    <string name="repetitions">Ripetizioni al giorno</string>
+    <string name="duration">Durata</string>
+    <string name="full_price">Prezzo intero</string>
+    <string name="image_url">Immagine</string>
 </resources>

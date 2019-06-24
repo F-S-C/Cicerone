@@ -1,6 +1,7 @@
 package com.fsc.cicerone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -103,7 +104,8 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
                 preferences.edit().putString("session", user.toString()).apply();
 
-                // TODO: Change activity
+                startActivity(new Intent(LoginActivity.this, ItineraryCreation.class));
+
             }
         });
 
