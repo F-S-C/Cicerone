@@ -7,7 +7,7 @@ public final class ConnectorConstants {
     private ConnectorConstants() {
     }
 
-    private static final String SERVER_URL = "http://cicerone.tk/db_connector";
+    private static final String SERVER_URL = "https://fscgroup.ddns.net/db_connector";
 
     /**
      * URL of the server-side connector for the login

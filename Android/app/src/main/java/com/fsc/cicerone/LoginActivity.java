@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         try {
             JSONObject currentLoggedUser = new JSONObject(preferences.getString("session", ""));
             if (!currentLoggedUser.getString("username").equals("") && !currentLoggedUser.getString("password").equals("")) {
-                attemptLogin(currentLoggedUser);
+                attemptLogin(currentLoggedUser, true);
             }
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
@@ -67,11 +67,23 @@ public class LoginActivity extends AppCompatActivity {
             Log.e(ERROR_TAG, e.toString());
         }
 
-        attemptLogin(user);
+        attemptLogin(user, false);
 
     }
 
-    private void attemptLogin(JSONObject user) {
+    public void forgotPassword(View view) {
+        Toast.makeText(this, "Sorry, Work In Progress", Toast.LENGTH_SHORT).show();
+    }
+
+    public void skipLogin(View view) {
+        Toast.makeText(this, "Sorry, Work In Progress", Toast.LENGTH_SHORT).show();
+    }
+
+    public void goToSignUpPage(View view) {
+        Toast.makeText(this, "Sorry, Work In Progress", Toast.LENGTH_SHORT).show();
+    }
+
+    private void attemptLogin(JSONObject user, Boolean isAutomatic) {
         RelativeLayout progressBar = findViewById(R.id.loginProgressBarContainer);
 
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.LOGIN_CONNECTOR, new DatabaseConnector.CallbackInterface() {
@@ -94,10 +106,10 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     Log.e(ERROR_TAG, e.toString());
                 }
-                if (!done) {
-                    Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_SHORT).show();
-                    usernameEditText.setError(getString(R.string.wrong_credentials));
-                    passwordEditText.setError(getString(R.string.wrong_credentials));
+                if (!done && !isAutomatic) {
+                        Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_SHORT).show();
+                        usernameEditText.setError(getString(R.string.wrong_credentials));
+                        passwordEditText.setError(getString(R.string.wrong_credentials));
                     return;
                 }
 
