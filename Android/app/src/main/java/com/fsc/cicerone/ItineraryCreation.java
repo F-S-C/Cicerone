@@ -90,6 +90,8 @@ public class ItineraryCreation extends AppCompatActivity {
                 } else {
                     Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
                 }
+
+                selectEndingDate.clearFocus();
             }
         });
 
