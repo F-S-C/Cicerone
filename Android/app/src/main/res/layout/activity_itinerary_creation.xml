@@ -15,10 +15,10 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/createItinerary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/new_itinerary"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -41,7 +41,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:importantForAutofill="no"
                 android:inputType="textShortMessage" />
 
         </LinearLayout>
@@ -55,6 +54,7 @@
                 android:id="@+id/insertDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:labelFor="@id/inputDescription"
                 android:text="@string/itinerary_description" />
 
             <EditText
@@ -79,6 +79,10 @@
                     android:id="@+id/insertBeginningDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:labelFor="@id/inputBeginningDate"
+                    android:focusable="false"
+                    android:imeOptions="actionNext"
+
                     android:text="@string/beginning_date" />
 
                 <EditText
@@ -86,7 +90,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="date"
+                    android:clickable="true"
+                    android:inputType="none"
                     android:textAlignment="center" />
 
             </LinearLayout>
@@ -103,16 +108,21 @@
 
                 <TextView
                     android:id="@+id/insertEndingDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/ending_date" />
+                    android:text="@string/ending_date"
+                    android:textAlignment="center"
+                    android:labelFor="@id/inputEndingDate" />
 
                 <EditText
                     android:id="@+id/inputEndingDate"
-                    android:layout_width="131dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="date" />
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -131,6 +141,7 @@
                     android:id="@+id/insertMinimumPartecipants"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:labelFor="@id/inputMinimumPartecipants"
                     android:text="@string/minimum_partecipants" />
 
                 <EditText
@@ -154,9 +165,11 @@
 
                 <TextView
                     android:id="@+id/insertMaximumPartecipants"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/maximum_partecipants" />
+                    android:text="@string/maximum_partecipants"
+                    android:labelFor="@id/inputMaximumPartecipants"
+                    android:textAlignment="center" />
 
                 <EditText
                     android:id="@+id/inputMaximumPartecipants"
@@ -182,6 +195,7 @@
                     android:id="@+id/insertRepetitions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:labelFor="@id/inputRepetitions"
                     android:text="@string/repetitions" />
 
                 <EditText
@@ -204,9 +218,11 @@
 
                 <TextView
                     android:id="@+id/insertDuration"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/duration" />
+                    android:text="@string/duration"
+                    android:labelFor="@id/inputDuration"
+                    android:textAlignment="center" />
 
                 <EditText
                     android:id="@+id/inputDuration"
@@ -227,6 +243,7 @@
                 android:id="@+id/insertLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:labelFor="@id/inputLocation"
                 android:text="@string/location" />
 
             <EditText
@@ -251,6 +268,7 @@
                     android:id="@+id/insertFullPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:labelFor="@id/inputFullPrice"
                     android:text="@string/full_price" />
 
                 <EditText
@@ -258,7 +276,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
             </LinearLayout>
 
             <Space
@@ -275,17 +293,27 @@
                     android:id="@+id/insertReducedPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/reduced_price" />
+                    android:text="@string/reduced_price"
+                    android:labelFor="@id/inputReducedPrice"
+                    android:textAlignment="center" />
 
                 <EditText
                     android:id="@+id/inputReducedPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
             </LinearLayout>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/submit"
+            android:visibility="visible" />
 
     </LinearLayout>
 </ScrollView>

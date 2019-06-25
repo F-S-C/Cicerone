@@ -25,4 +25,6 @@
     <string name="duration">Durata</string>
     <string name="full_price">Prezzo intero</string>
     <string name="image_url">Immagine</string>
+    <string name="reduced_price">Prezzo ridotto</string>
+    <string name="submit">Invia</string>
 </resources>
