@@ -6,9 +6,9 @@
     <string name="username">Username</string>
     <string name="logging">Accedendo...</string>
     <string name="forgot_password">Hai dimenticato la password?</string>
-    <string name="dont_have_account">Non hai un account?</string>
+    <string name="don_t_have_account">Non hai un account?</string>
     <string name="or">o</string>
-    <string name="signup">Registrati</string>
+    <string name="sign_up">Registrati</string>
     <string name="skip_login">Salta il login</string>
     <string name="empty_password_error">Inserisci la tua password</string>
     <string name="empty_username_error">Inserisci il tuo username</string>
@@ -18,8 +18,8 @@
     <string name="new_itinerary">Crea un itinerario</string>
     <string name="beginning_date">Data di inizio</string>
     <string name="ending_date">Data di fine</string>
-    <string name="maximum_partecipants">Partecipanti massimi</string>
-    <string name="minimum_partecipants">Partecipanti minimi</string>
+    <string name="maximum_participants">Partecipanti massimi</string>
+    <string name="minimum_participants">Partecipanti minimi</string>
     <string name="location">Luogo</string>
     <string name="repetitions">Ripetizioni al giorno</string>
     <string name="duration">Durata</string>
@@ -27,4 +27,6 @@
     <string name="image_url">Immagine</string>
     <string name="reduced_price">Prezzo ridotto</string>
     <string name="submit">Invia</string>
+    <string name="error_insert_beginning_date">Inserisci prima la data iniziale!</string>
+    <string name="calendar">Calendario</string>
 </resources>

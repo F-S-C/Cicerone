@@ -136,7 +136,7 @@
             android:id="@+id/textDoNotHaveAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dont_have_account"
+            android:text="@string/don_t_have_account"
             android:textColor="@color/colorTransparentWhite" />
 
         <LinearLayout
@@ -150,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="goToSignUpPage"
-                android:text="@string/signup"
+                android:text="@string/sign_up"
                 android:textAllCaps="true"
                 android:textColor="@color/colorTransparentWhite" />
 
