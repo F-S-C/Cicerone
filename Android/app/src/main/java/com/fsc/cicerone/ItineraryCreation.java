@@ -19,10 +19,14 @@ import java.util.TimeZone;
 
 
 public class ItineraryCreation<AddDetails> extends AppCompatActivity {
-    EditText beginningDate = findViewById(R.id.inputBeginningDate);
+    EditText beginningDate;
     DatePickerDialog datePicker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_itinerary_creation);
+
+        beginningDate = findViewById(R.id.inputBeginningDate);
         beginningDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
