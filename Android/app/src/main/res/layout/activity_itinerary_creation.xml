@@ -71,17 +71,17 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="150dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/insertBeginningDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:labelFor="@id/inputBeginningDate"
                     android:focusable="false"
                     android:imeOptions="actionNext"
+                    android:labelFor="@id/inputBeginningDate"
 
                     android:text="@string/beginning_date" />
 
@@ -89,20 +89,37 @@
                     android:id="@+id/inputBeginningDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:ems="10"
-                    android:clickable="true"
                     android:inputType="none"
                     android:textAlignment="center" />
 
             </LinearLayout>
 
-            <Space
-                android:layout_width="50dp"
+            <LinearLayout
+                android:layout_width="130dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    app:srcCompat="@drawable/ic_action_name" />
+
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="35sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_action_name" />
+            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -110,16 +127,16 @@
                     android:id="@+id/insertEndingDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:labelFor="@id/inputEndingDate"
                     android:text="@string/ending_date"
-                    android:textAlignment="center"
-                    android:labelFor="@id/inputEndingDate" />
+                    android:textAlignment="center" />
 
                 <EditText
                     android:id="@+id/inputEndingDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
                     android:clickable="true"
+                    android:ems="10"
                     android:focusable="false"
                     android:inputType="none" />
 
