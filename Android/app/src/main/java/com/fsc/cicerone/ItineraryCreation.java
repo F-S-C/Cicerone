@@ -2,6 +2,8 @@ package com.fsc.cicerone;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts.Data;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +17,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static android.app.DatePickerDialog.*;
 
 
 public class ItineraryCreation<AddDetails> extends AppCompatActivity {
@@ -37,7 +42,9 @@ public class ItineraryCreation<AddDetails> extends AppCompatActivity {
          beginningDate.setInputType(InputType.TYPE_NULL);
          selectBeginningDate = findViewById(R.id.imageButton);
          selectEndingDate = findViewById(R.id.imageButton2);
-        DatePickerDialog.OnDateSetListener bDate = new DatePickerDialog.OnDateSetListener() {
+         selectEndingDate.setClickable(false);
+         selectEndingDate.setActivated(false);
+        OnDateSetListener bDate = new OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -46,7 +53,7 @@ public class ItineraryCreation<AddDetails> extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updatebeginningDate();
+                updateBeginningDate();
             }
 
         };
@@ -56,12 +63,14 @@ public class ItineraryCreation<AddDetails> extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(ItineraryCreation.this, bDate, myCalendar
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, bDate, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                        datePickerDialog.show();
             }
         });
-        DatePickerDialog.OnDateSetListener eDate = new DatePickerDialog.OnDateSetListener() {
+        OnDateSetListener eDate = new OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -79,23 +88,31 @@ public class ItineraryCreation<AddDetails> extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(ItineraryCreation.this, eDate, myCalendar
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, eDate, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                Date minDate = null;
+                try {
+                    minDate = new SimpleDateFormat("dd-MM-yy").parse(beginningDate.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
+                datePickerDialog.show();
             }
         });
         }
 
-    private void updatebeginningDate() {
-        String myFormat = "dd-MM-yy"; //In which you need put here
+    private void updateBeginningDate() {
+        String myFormat = "dd-MM-yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
         beginningDate.setText(sdf.format(myCalendar.getTime()));
+        selectEndingDate.setClickable(true);
+        selectEndingDate.setActivated(true);
     }
     private void updateEndingDate() {
-        String myFormat = "dd-MM-yy"; //In which you need put here
+        String myFormat = "dd-MM-yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
         endingDate.setText(sdf.format(myCalendar.getTime()));
     }
 
