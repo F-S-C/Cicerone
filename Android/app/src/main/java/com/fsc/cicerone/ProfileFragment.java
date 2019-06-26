@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -39,6 +40,7 @@ import app_connector.SendInPostConnector;
 public class ProfileFragment extends Fragment {
 
     private EditText name, surname, email, cellphone, birthdate;
+    private Button switch_button;
 
     /**
      * Empty constructor
@@ -58,6 +60,7 @@ public class ProfileFragment extends Fragment {
         email = view.findViewById(R.id.email);
         cellphone = view.findViewById(R.id.cellphone);
         birthdate = view.findViewById(R.id.birthdate);
+        switch_button = view.findViewById(R.id.switch_to_cicerone);
         addItemsSex(sexList);
         try {
             final JSONObject parameters = new JSONObject(preferences.getString("session", "")); //Connection params
@@ -108,6 +111,10 @@ public class ProfileFragment extends Fragment {
                 surname.setText(userData.getString("surname"));
                 email.setText(userData.getString("email"));
                 cellphone.setText(userData.getString("cellphone"));
+                if(userData.getInt("user_type") == 1)
+                    switch_button.setVisibility(view.GONE);
+                else
+                    switch_button.setVisibility(view.VISIBLE);
                 try {
                     DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                     DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");

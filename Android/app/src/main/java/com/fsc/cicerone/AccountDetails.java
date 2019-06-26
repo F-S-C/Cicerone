@@ -3,12 +3,15 @@ package com.fsc.cicerone;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -19,6 +22,8 @@ import org.json.JSONObject;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
+
+import static android.view.View.GONE;
 
 /**
  * Class that specifying the account detail page
@@ -92,6 +97,7 @@ public class AccountDetails extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
+
         });
 
     }
@@ -108,6 +114,8 @@ public class AccountDetails extends AppCompatActivity {
                 String nameSurname = result.getString("name") + " " + result.getString("surname");
                 TextView nameSurnameTextView = findViewById(R.id.name_surname);
                 nameSurnameTextView.setText(nameSurname);
+                if(result.getInt("user_type") == 0)
+                    tabLayout.removeTabAt(1);
             }
         });
         connector.setObjectToSend(parameters);
