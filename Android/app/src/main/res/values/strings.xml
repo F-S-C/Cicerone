@@ -29,4 +29,12 @@
     <string name="submit">Submit</string>
     <string name="calendar">Calendar</string>
     <string name="error_insert_beginning_date">Insert beginning date first!</string>
+    <string name="wrong_number">Insert a correct number!</string>
+    <string name="error_insert_min_part">Insert mininum partecipants first!</string>
+    <string name="separator">:</string>
+    <string name="set_as_one">Set this as 1 or change the duration!</string>
+    <string name="reservation_date">End reservation date</string>
+    <string name="error_insert_ending_date">Insert ending date first!</string>
+    <string name="itinerary_added">Itinerary added.</string>
+    <string name="error_adding_itinerary">Error in adding itinerary</string>
 </resources>

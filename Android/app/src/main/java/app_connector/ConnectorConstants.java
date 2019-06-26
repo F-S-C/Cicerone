@@ -13,4 +13,10 @@ public final class ConnectorConstants {
      * URL of the server-side connector for the login
      */
     public static final String LOGIN_CONNECTOR = SERVER_URL + "/user_login.php";
+    /**
+     * URL of the server-side connector for the login
+     */
+    public static final String INSERT_ITINERARY = SERVER_URL + "/insert_itinerary.php";
 }
+
+
