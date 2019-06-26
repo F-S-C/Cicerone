@@ -37,7 +37,7 @@ public class AccountDetails extends AppCompatActivity {
         setContentView(R.layout.activity_account_details);
 
         frameLayout = findViewById(R.id.frame);
-        fragment = new ReportFragment();
+        fragment = new ProfileFragment();
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment);
@@ -64,7 +64,7 @@ public class AccountDetails extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        fragment = new ReportFragment();
+                        fragment = new ProfileFragment();
                         break;
                     case 1:
                         fragment = new ItineraryFragment();
@@ -73,7 +73,7 @@ public class AccountDetails extends AppCompatActivity {
                         fragment = new ReviewFragment();
                         break;
                     case 3:
-                        fragment = new ProfileFragment();
+                        fragment = new ReportFragment();
                         break;
                 }
                 FragmentManager fm = getSupportFragmentManager();
