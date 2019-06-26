@@ -56,16 +56,16 @@
                     tools:layout_editor_absoluteY="116dp">
 
                     <android.support.design.widget.TabItem
-                        android:id="@+id/tab_report"
+                        android:id="@+id/tab_account"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:icon="@drawable/account" />
 
                     <android.support.design.widget.TabItem
-                        android:id="@+id/tab_itinerary"
+                        android:id="@+id/tab_report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:icon="@drawable/itinerary" />
+                        android:icon="@drawable/reports" />
 
                     <android.support.design.widget.TabItem
                         android:id="@+id/tab_reviews"
@@ -74,10 +74,10 @@
                         android:icon="@drawable/reviews" />
 
                     <android.support.design.widget.TabItem
-                        android:id="@+id/tab_account"
+                        android:id="@+id/tab_itinerary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:icon="@drawable/reports" />
+                        android:icon="@drawable/itinerary" />
 
                 </android.support.design.widget.TabLayout>
             </LinearLayout>

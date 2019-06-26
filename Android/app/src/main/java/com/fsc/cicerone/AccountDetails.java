@@ -72,13 +72,13 @@ public class AccountDetails extends AppCompatActivity {
                         fragment = new ProfileFragment();
                         break;
                     case 1:
-                        fragment = new ItineraryFragment();
+                        fragment = new ReportFragment();
                         break;
                     case 2:
                         fragment = new ReviewFragment();
                         break;
                     case 3:
-                        fragment = new ReportFragment();
+                        fragment = new ItineraryFragment();
                         break;
                 }
                 FragmentManager fm = getSupportFragmentManager();
@@ -115,7 +115,7 @@ public class AccountDetails extends AppCompatActivity {
                 TextView nameSurnameTextView = findViewById(R.id.name_surname);
                 nameSurnameTextView.setText(nameSurname);
                 if(result.getInt("user_type") == 0)
-                    tabLayout.removeTabAt(1);
+                    tabLayout.removeTabAt(3);
             }
         });
         connector.setObjectToSend(parameters);
