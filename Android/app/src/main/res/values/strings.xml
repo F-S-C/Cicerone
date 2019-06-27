@@ -36,5 +36,5 @@
     <string name="reservation_date">End reservation date</string>
     <string name="error_insert_ending_date">Insert ending date first!</string>
     <string name="itinerary_added">Itinerary added.</string>
-    <string name="error_adding_itinerary">Error in adding itinerary</string>
+    <string name="error_fields_empty">Please fill every field first.</string>
 </resources>

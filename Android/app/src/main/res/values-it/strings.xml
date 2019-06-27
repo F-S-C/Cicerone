@@ -36,5 +36,5 @@
     <string name="reservation_date">Data fine prenotazioni</string>
     <string name="error_insert_ending_date">Inserisci prima la data finale!</string>
     <string name="itinerary_added">Itinerario aggiunto</string>
-    <string name="error_adding_itinerary">Errore nell\'aggiunta dell\'itinerario</string>
+    <string name="error_fields_empty">Riempi ogni campo vuoto prima di inviare.</string>
 </resources>
