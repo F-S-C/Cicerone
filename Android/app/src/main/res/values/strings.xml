@@ -13,29 +13,14 @@
     <string name="empty_username_error">Enter your username</string>
     <string name="empty_password_error">Enter your password</string>
     <string name="wrong_credentials">Wrong credentials!</string>
-    <string name="account" translatable="false">Account</string>
-    <string name="itinerary">Itinerary</string>
-    <string name="reviews">Reviews</string>
-    <string name="avatar" translatable="false">Avatar</string>
-    <string name="example_name">Name Surname</string>
-    <string name="loading">Loading...</string>
-    <string name="sex">Sex:</string>
-    <string name="logout" translatable="false">Logout</string>
-    <string name="save">Save</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="other">Other</string>
-    <string name="switch_to_cicerone">Switch to Cicerone</string>
-    <string name="status">Status</string>
+    <string name="profile">Profile</string>
+    <string name="image_profile">Profile Image</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
-    <string name="example_email" translatable="false">email@email.com</string>
-    <string name="example_cellphone" translatable="false">0123456789</string>
-    <string name="example_date" translatable="false">dd/mm/yyyy</string>
-    <string name="profile_image">Profie image</string>
-    <string name="example_number" translatable="false">Nr.#</string>
-    <string name="beginning_date">Beginning Date</string>
-    <string name="ending_date">Ending Date</string>
-    <string name="location">Location</string>
-    <string name="print_integer_number">Nr. %d</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="email" translatable="false">E-Mail</string>
+    <string name="review">Review</string>
+    <string name="user_type">User Type</string>
+    <string name="user_type_cicerone" translatable="false">Cicerone</string>
+    <string name="user_type_globetrotter" translatable="false">Globetrotter</string>
 </resources>
