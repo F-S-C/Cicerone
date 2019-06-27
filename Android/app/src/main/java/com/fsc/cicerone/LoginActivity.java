@@ -1,5 +1,6 @@
 package com.fsc.cicerone;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -112,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                         passwordEditText.setError(getString(R.string.wrong_credentials));
                     return;
                 }else{
-                    startActivity(new Intent(LoginActivity.this, Profile.class));
+                    startActivity(new Intent(LoginActivity.this, AccountDetails.class));
                 }
 
                 SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
