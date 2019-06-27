@@ -36,8 +36,8 @@ public class ItineraryCreation extends AppCompatActivity {
     EditText selectBeginningDate;
     EditText selectEndingDate;
     EditText selectReservationDate;
-    EditText minPartecipants;
-    EditText maxPartecipants;
+    EditText minParticipants;
+    EditText maxParticipants;
     EditText repetitions;
     EditText durationHours;
     EditText durationMinutes;
@@ -59,8 +59,8 @@ public class ItineraryCreation extends AppCompatActivity {
         selectBeginningDate = findViewById(R.id.inputBeginningDate);
         selectEndingDate = findViewById(R.id.inputEndingDate);
         selectReservationDate = findViewById(R.id.inputReservationDate);
-        minPartecipants = findViewById(R.id.inputMinimumParticipants);
-        maxPartecipants = findViewById(R.id.inputMaximumPartecipants);
+        minParticipants = findViewById(R.id.inputMinimumParticipants);
+        maxParticipants = findViewById(R.id.inputMaximumPartecipants);
         durationHours = findViewById(R.id.inputDurationHours);
         durationMinutes = findViewById(R.id.inputDurationMinutes);
         repetitions = findViewById(R.id.inputRepetitions);
@@ -69,9 +69,7 @@ public class ItineraryCreation extends AppCompatActivity {
         submit = findViewById(R.id.submit);
 
 
-
         OnDateSetListener bDate = (view, year, monthOfYear, dayOfMonth) -> {
-            // TODO Auto-generated method stub
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -79,7 +77,6 @@ public class ItineraryCreation extends AppCompatActivity {
         };
 
         selectBeginningDate.setOnClickListener(v -> {
-            // TODO Auto-generated method stub
             DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, bDate, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH));
@@ -89,7 +86,6 @@ public class ItineraryCreation extends AppCompatActivity {
             selectEndingDate.setText(null);
         });
         OnDateSetListener eDate = (view, year, monthOfYear, dayOfMonth) -> {
-            // TODO Auto-generated method stub
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -97,7 +93,6 @@ public class ItineraryCreation extends AppCompatActivity {
         };
 
         selectEndingDate.setOnClickListener(v -> {
-            // TODO Auto-generated method stub
             DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, eDate, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH));
@@ -126,7 +121,7 @@ public class ItineraryCreation extends AppCompatActivity {
         };
         selectReservationDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, rDate, myCalendar
-            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH));
             Date minDate = null;
             Date maxDate = null;
@@ -141,10 +136,10 @@ public class ItineraryCreation extends AppCompatActivity {
                 datePickerDialog.getDatePicker().setMaxDate(maxDate.getTime());
                 datePickerDialog.show();
             } else {
-                if(minDate == null) {
+                if (minDate == null) {
                     Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
                 }
-                if(maxDate == null) {
+                if (maxDate == null) {
                     Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_ending_date), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -168,7 +163,7 @@ public class ItineraryCreation extends AppCompatActivity {
             }
         });
 
-        maxPartecipants.addTextChangedListener(new TextWatcher() {
+        maxParticipants.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -177,16 +172,14 @@ public class ItineraryCreation extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int min;
-                String maxInserted = maxPartecipants.getText().toString();
-                String minInserted = minPartecipants.getText().toString();
-                if(!maxInserted.equals(""))
-                {
-                    if(!minInserted.equals(""))
-                    {
+                String maxInserted = maxParticipants.getText().toString();
+                String minInserted = minParticipants.getText().toString();
+                if (!maxInserted.equals("")) {
+                    if (!minInserted.equals("")) {
                         int max = Integer.parseInt(maxInserted);
                         min = Integer.parseInt(minInserted);
-                        if( min > max) {
-                            maxPartecipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                        if (min > max) {
+                            maxParticipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
                         }
                     }
                 }
@@ -199,7 +192,7 @@ public class ItineraryCreation extends AppCompatActivity {
             }
         });
 
-        minPartecipants.addTextChangedListener(new TextWatcher() {
+        minParticipants.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -208,16 +201,14 @@ public class ItineraryCreation extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int min;
-                String maxInserted = maxPartecipants.getText().toString();
-                String minInserted = minPartecipants.getText().toString();
-                if(!maxInserted.equals(""))
-                {
-                    if(!minInserted.equals(""))
-                    {
+                String maxInserted = maxParticipants.getText().toString();
+                String minInserted = minParticipants.getText().toString();
+                if (!maxInserted.equals("")) {
+                    if (!minInserted.equals("")) {
                         int max = Integer.parseInt(maxInserted);
                         min = Integer.parseInt(minInserted);
-                        if( min > max) {
-                            minPartecipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                        if (min > max) {
+                            minParticipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
                         }
                     }
                 }
@@ -229,7 +220,6 @@ public class ItineraryCreation extends AppCompatActivity {
 
             }
         });
-
 
 
         durationMinutes.addTextChangedListener(new TextWatcher() {
@@ -241,9 +231,8 @@ public class ItineraryCreation extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String minutes = durationMinutes.getText().toString();
-                if(!minutes.equals(""))
-                {
-                    if(Integer.parseInt(minutes)>60) {
+                if (!minutes.equals("")) {
+                    if (Integer.parseInt(minutes) > 60) {
                         durationMinutes.setError(ItineraryCreation.this.getString(R.string.wrong_number));
                     }
                 }
@@ -265,18 +254,14 @@ public class ItineraryCreation extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String durationh = durationHours.getText().toString();
-                if(!durationh.equals(""))
-                {
-                    if(Integer.parseInt(durationh) > 23)
-                    {
+                if (!durationh.equals("")) {
+                    if (Integer.parseInt(durationh) > 23) {
                         repetitions.setText("1");
                         repetitions.setClickable(false);
                         repetitions.setFocusableInTouchMode(false);
                         repetitions.setFocusable(false);
-                    }
-                    else
-                    {
-                        if(repetitions.getText().toString().equals("1")) {
+                    } else {
+                        if (repetitions.getText().toString().equals("1")) {
                             repetitions.setText("");
                         }
 
@@ -304,10 +289,9 @@ public class ItineraryCreation extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String repInserted = repetitions.getText().toString();
-                if(!repInserted.equals(""))
-                {
+                if (!repInserted.equals("")) {
                     int rep = Integer.parseInt(repInserted);
-                    if(rep < 1 ) {
+                    if (rep < 1) {
                         repetitions.setError(ItineraryCreation.this.getString(R.string.wrong_number));
                     }
 
@@ -323,15 +307,12 @@ public class ItineraryCreation extends AppCompatActivity {
 
 
         reducedPrice.setOnClickListener(v -> {
-            if(fullPrice.getText().toString().equals(""))
-            {
+            if (fullPrice.getText().toString().equals("")) {
                 reducedPrice.setClickable(false);
                 reducedPrice.setActivated(false);
                 reducedPrice.setFocusableInTouchMode(false);
                 reducedPrice.setFocusable(false);
-            }
-            else
-            {
+            } else {
                 reducedPrice.setClickable(true);
                 reducedPrice.setActivated(true);
                 reducedPrice.setFocusableInTouchMode(true);
@@ -339,106 +320,100 @@ public class ItineraryCreation extends AppCompatActivity {
             }
         });
 
-            fullPrice.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        fullPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                }
+            }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String fPrice = fullPrice.getText().toString();
-                    String rPrice = reducedPrice.getText().toString();
-                    if(!fPrice.equals("")) {
-                        reducedPrice.setFocusable(true);
-                        reducedPrice.setClickable(true);
-                        reducedPrice.setFocusableInTouchMode(true);
-                        if (!rPrice.equals("")) {
-                            if (Float.parseFloat(rPrice) > Float.parseFloat(fPrice)) {
-                                fullPrice.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-                            } else {
-                                reducedPrice.setError(null);
-                                fullPrice.setError(null);
-                            }
-                        }
-                    }
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-
-            reducedPrice.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String fPrice = fullPrice.getText().toString();
-                    String rPrice = reducedPrice.getText().toString();
-                    if(!rPrice.equals(""))
-                    {
-                        if(Float.parseFloat(rPrice) > Float.parseFloat(fPrice))
-                        {
-                            reducedPrice.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-
-                        }
-                        else
-                        {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String fPrice = fullPrice.getText().toString();
+                String rPrice = reducedPrice.getText().toString();
+                if (!fPrice.equals("")) {
+                    reducedPrice.setFocusable(true);
+                    reducedPrice.setClickable(true);
+                    reducedPrice.setFocusableInTouchMode(true);
+                    if (!rPrice.equals("")) {
+                        if (Float.parseFloat(rPrice) > Float.parseFloat(fPrice)) {
+                            fullPrice.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                        } else {
                             reducedPrice.setError(null);
                             fullPrice.setError(null);
-
                         }
                     }
-
                 }
 
-                @Override
-                public void afterTextChanged(Editable s) {
+            }
 
-                }
-            });
+            @Override
+            public void afterTextChanged(Editable s) {
 
-            submit.setOnClickListener(v -> {
-                JSONObject params = new JSONObject();
-                boolean canSend = allFilled();
-                if(canSend)
-                {
-                    try {
-                        params.put("title", title.getText().toString());
-                        params.put("description", description.getText().toString());
-                        params.put("beginning_date", selectBeginningDate.getText().toString());
-                        params.put("ending_date" , selectEndingDate.getText().toString());
-                        params.put("end_reservations_date", selectReservationDate.getText().toString());
-                        params.put("maximum_partecipants_number", maxPartecipants.getText().toString());
-                        params.put("minimum_partecipants_number", minPartecipants.getText().toString());
-                        params.put("repetitions_per_day", repetitions.getText().toString());
-                        params.put("location", location.getText().toString());
-                        params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
-                        params.put("full_price", fullPrice.getText().toString());
-                        params.put("reduced_price", reducedPrice.getText().toString());
-                        SharedPreferences random = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-                        JSONObject obj = new JSONObject(random.getString("session",""));
-                        obj.remove("password");
-                        params.put("username", obj.getString("username"));
+            }
+        });
 
-                        Submit(params);
+        reducedPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String fPrice = fullPrice.getText().toString();
+                String rPrice = reducedPrice.getText().toString();
+                if (!rPrice.equals("")) {
+                    if (Float.parseFloat(rPrice) > Float.parseFloat(fPrice)) {
+                        reducedPrice.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+
+                    } else {
+                        reducedPrice.setError(null);
+                        fullPrice.setError(null);
+
                     }
                 }
-                else {
-                    Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
-                }
 
-            });
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        submit.setOnClickListener(v -> {
+            JSONObject params = new JSONObject();
+            boolean canSend = allFilled();
+            if (canSend) {
+                try {
+                    params.put("title", title.getText().toString());
+                    params.put("description", description.getText().toString());
+                    params.put("beginning_date", selectBeginningDate.getText().toString());
+                    params.put("ending_date", selectEndingDate.getText().toString());
+                    params.put("end_reservations_date", selectReservationDate.getText().toString());
+                    params.put("maximum_partecipants_number", maxParticipants.getText().toString());
+                    params.put("minimum_partecipants_number", minParticipants.getText().toString());
+                    params.put("repetitions_per_day", repetitions.getText().toString());
+                    params.put("location", location.getText().toString());
+                    params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
+                    params.put("full_price", fullPrice.getText().toString());
+                    params.put("reduced_price", reducedPrice.getText().toString());
+                    SharedPreferences random = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+                    JSONObject obj = new JSONObject(random.getString("session", ""));
+                    obj.remove("password");
+                    params.put("username", obj.getString("username"));
+
+                    Submit(params);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
     }
 
@@ -455,34 +430,33 @@ public class ItineraryCreation extends AppCompatActivity {
                 JSONObject object = jsonArray.getJSONObject(0);
                 // TODO Change page
                 Log.e("p", object.toString());
-                if(object.getBoolean("result"))
-                {
+                if (object.getBoolean("result")) {
                     Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
 
                 }
 
             }
         });
-            connector.setObjectToSend(params);
-            connector.execute();
+        connector.setObjectToSend(params);
+        connector.execute();
     }
 
-        private boolean allFilled()
-        {
-            return !title.getText().toString().equals("")
-                    && !description.getText().toString().equals("")
-                    && !selectBeginningDate.getText().toString().equals("")
-                    && !selectEndingDate.getText().toString().equals("")
-                    && !selectReservationDate.getText().toString().equals("")
-                    && !minPartecipants.getText().toString().equals("")
-                    && !maxPartecipants.getText().toString().equals("")
-                    && !repetitions.getText().toString().equals("")
-                    && !durationHours.getText().toString().equals("")
-                    && !durationMinutes.getText().toString().equals("")
-                    && !location.getText().toString().equals("")
-                    && !fullPrice.getText().toString().equals("")
-                    && !reducedPrice.getText().toString().equals("");
-        }
+    private boolean allFilled() {
+        return !title.getText().toString().equals("")
+                && !description.getText().toString().equals("")
+                && !selectBeginningDate.getText().toString().equals("")
+                && !selectEndingDate.getText().toString().equals("")
+                && !selectReservationDate.getText().toString().equals("")
+                && !minParticipants.getText().toString().equals("")
+                && !maxParticipants.getText().toString().equals("")
+                && !repetitions.getText().toString().equals("")
+                && !durationHours.getText().toString().equals("")
+                && !durationMinutes.getText().toString().equals("")
+                && !location.getText().toString().equals("")
+                && !fullPrice.getText().toString().equals("")
+                && !reducedPrice.getText().toString().equals("");
+    }
+
     private void updateBeginningDate() {
         String myFormat = "dd-MM-yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
