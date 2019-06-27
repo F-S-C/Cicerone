@@ -37,4 +37,11 @@
     <string name="error_insert_ending_date">Inserisci prima la data finale!</string>
     <string name="itinerary_added">Itinerario aggiunto</string>
     <string name="error_fields_empty">Riempi ogni campo vuoto prima di inviare.</string>
+    <string name="profile">Profilo</string>
+    <string name="image_profile">Immagine Profilo</string>
+    <string name="birth_date">Data di nascita</string>
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
+    <string name="review">Recensione</string>
+    <string name="user_type">Tipologia utente</string>
 </resources>

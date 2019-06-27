@@ -37,4 +37,14 @@
     <string name="error_insert_ending_date">Insert ending date first!</string>
     <string name="itinerary_added">Itinerary added.</string>
     <string name="error_fields_empty">Please fill every field first.</string>
+    <string name="profile">Profile</string>
+    <string name="image_profile">Profile Image</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="email" translatable="false">E-Mail</string>
+    <string name="review">Review</string>
+    <string name="user_type">User Type</string>
+    <string name="user_type_cicerone" translatable="false">Cicerone</string>
+    <string name="user_type_globetrotter" translatable="false">Globetrotter</string>
 </resources>
