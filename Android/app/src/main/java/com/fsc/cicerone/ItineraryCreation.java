@@ -166,21 +166,18 @@ public class ItineraryCreation extends AppCompatActivity {
         maxParticipants.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // Do nothing
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int min;
                 String maxInserted = maxParticipants.getText().toString();
                 String minInserted = minParticipants.getText().toString();
-                if (!maxInserted.equals("")) {
-                    if (!minInserted.equals("")) {
-                        int max = Integer.parseInt(maxInserted);
-                        min = Integer.parseInt(minInserted);
-                        if (min > max) {
-                            maxParticipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-                        }
+                if (!maxInserted.equals("") && !minInserted.equals("")) {
+                    int max = Integer.parseInt(maxInserted);
+                    int min = Integer.parseInt(minInserted);
+                    if (min > max) {
+                        maxParticipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
                     }
                 }
             }
@@ -188,28 +185,25 @@ public class ItineraryCreation extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // Do nothing
             }
         });
 
         minParticipants.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // Do nothing
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int min;
                 String maxInserted = maxParticipants.getText().toString();
                 String minInserted = minParticipants.getText().toString();
-                if (!maxInserted.equals("")) {
-                    if (!minInserted.equals("")) {
-                        int max = Integer.parseInt(maxInserted);
-                        min = Integer.parseInt(minInserted);
-                        if (min > max) {
-                            minParticipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-                        }
+                if (!maxInserted.equals("") && !minInserted.equals("")) {
+                    int max = Integer.parseInt(maxInserted);
+                    int min = Integer.parseInt(minInserted);
+                    if (min > max) {
+                        minParticipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
                     }
                 }
 
@@ -217,7 +211,7 @@ public class ItineraryCreation extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // Do nothing
             }
         });
 
@@ -225,37 +219,34 @@ public class ItineraryCreation extends AppCompatActivity {
         durationMinutes.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // Do nothing
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String minutes = durationMinutes.getText().toString();
-                if (!minutes.equals("")) {
-                    if (Integer.parseInt(minutes) > 60) {
-                        durationMinutes.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-                    }
+                if (!minutes.equals("") && Integer.parseInt(minutes) > 60) {
+                    durationMinutes.setError(ItineraryCreation.this.getString(R.string.wrong_number));
                 }
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // Do nothing
             }
         });
 
         durationHours.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // Do nothing
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String durationh = durationHours.getText().toString();
-                if (!durationh.equals("")) {
-                    if (Integer.parseInt(durationh) > 23) {
+                String duration = durationHours.getText().toString();
+                if (!duration.equals("")) {
+                    if (Integer.parseInt(duration) > 23) {
                         repetitions.setText("1");
                         repetitions.setClickable(false);
                         repetitions.setFocusableInTouchMode(false);
@@ -276,32 +267,28 @@ public class ItineraryCreation extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // Do nothing
             }
         });
 
         repetitions.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // Do nothing
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String repInserted = repetitions.getText().toString();
-                if (!repInserted.equals("")) {
-                    int rep = Integer.parseInt(repInserted);
-                    if (rep < 1) {
-                        repetitions.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-                    }
-
+                if (!repInserted.equals("") && Integer.parseInt(repInserted) < 1) {
+                    repetitions.setError(ItineraryCreation.this.getString(R.string.wrong_number));
                 }
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // Do nothing
             }
         });
 
@@ -323,7 +310,7 @@ public class ItineraryCreation extends AppCompatActivity {
         fullPrice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // Do nothing
             }
 
             @Override
@@ -348,14 +335,14 @@ public class ItineraryCreation extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // Do nothing
             }
         });
 
         reducedPrice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // Do nothing
             }
 
             @Override
@@ -365,7 +352,6 @@ public class ItineraryCreation extends AppCompatActivity {
                 if (!rPrice.equals("")) {
                     if (Float.parseFloat(rPrice) > Float.parseFloat(fPrice)) {
                         reducedPrice.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-
                     } else {
                         reducedPrice.setError(null);
                         fullPrice.setError(null);
@@ -377,7 +363,7 @@ public class ItineraryCreation extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // Do nothing
             }
         });
 
@@ -422,7 +408,7 @@ public class ItineraryCreation extends AppCompatActivity {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
-
+                // Do nothing
             }
 
             @Override
