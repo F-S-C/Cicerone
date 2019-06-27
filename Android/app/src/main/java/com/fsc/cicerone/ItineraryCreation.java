@@ -1,5 +1,6 @@
 package com.fsc.cicerone;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,9 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -48,6 +47,7 @@ public class ItineraryCreation extends AppCompatActivity {
     Button submit;
     final Calendar myCalendar = Calendar.getInstance();
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,23 +141,31 @@ public class ItineraryCreation extends AppCompatActivity {
                 datePickerDialog.getDatePicker().setMaxDate(maxDate.getTime());
                 datePickerDialog.show();
             } else {
-                if(minDate == null)
+                if(minDate == null) {
                     Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
-                if(maxDate == null)
+                }
+                if(maxDate == null) {
                     Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_ending_date), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         selectBeginningDate.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) selectBeginningDate.callOnClick();
+            if (hasFocus) {
+                selectBeginningDate.callOnClick();
+            }
         });
 
         selectEndingDate.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) selectBeginningDate.callOnClick();
+            if (hasFocus) {
+                selectBeginningDate.callOnClick();
+            }
         });
 
         selectReservationDate.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) selectReservationDate.callOnClick();
+            if (hasFocus) {
+                selectReservationDate.callOnClick();
+            }
         });
 
         maxPartecipants.addTextChangedListener(new TextWatcher() {
@@ -177,8 +185,9 @@ public class ItineraryCreation extends AppCompatActivity {
                     {
                         int max = Integer.parseInt(maxInserted);
                         min = Integer.parseInt(minInserted);
-                        if( min > max)
+                        if( min > max) {
                             maxPartecipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                        }
                     }
                 }
             }
@@ -207,8 +216,9 @@ public class ItineraryCreation extends AppCompatActivity {
                     {
                         int max = Integer.parseInt(maxInserted);
                         min = Integer.parseInt(minInserted);
-                        if( min > max)
+                        if( min > max) {
                             minPartecipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                        }
                     }
                 }
 
@@ -233,8 +243,9 @@ public class ItineraryCreation extends AppCompatActivity {
                 String minutes = durationMinutes.getText().toString();
                 if(!minutes.equals(""))
                 {
-                    if(Integer.parseInt(minutes)>60)
+                    if(Integer.parseInt(minutes)>60) {
                         durationMinutes.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                    }
                 }
 
             }
@@ -265,8 +276,9 @@ public class ItineraryCreation extends AppCompatActivity {
                     }
                     else
                     {
-                        if(repetitions.getText().toString().equals("1"))
+                        if(repetitions.getText().toString().equals("1")) {
                             repetitions.setText("");
+                        }
 
                         repetitions.setClickable(true);
                         repetitions.setFocusableInTouchMode(true);
@@ -292,7 +304,6 @@ public class ItineraryCreation extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String repInserted = repetitions.getText().toString();
-                String hours = durationHours.getText().toString();
                 if(!repInserted.equals(""))
                 {
                     int rep = Integer.parseInt(repInserted);
@@ -342,14 +353,14 @@ public class ItineraryCreation extends AppCompatActivity {
                         reducedPrice.setFocusable(true);
                         reducedPrice.setClickable(true);
                         reducedPrice.setFocusableInTouchMode(true);
-                        if (!rPrice.equals(""))
-                            if (Float.parseFloat(rPrice) > Float.parseFloat(fPrice))
+                        if (!rPrice.equals("")) {
+                            if (Float.parseFloat(rPrice) > Float.parseFloat(fPrice)) {
                                 fullPrice.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-
-                            else {
+                            } else {
                                 reducedPrice.setError(null);
                                 fullPrice.setError(null);
                             }
+                        }
                     }
 
                 }
@@ -423,8 +434,9 @@ public class ItineraryCreation extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                else
+                else {
                     Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+                }
 
             });
 
@@ -432,7 +444,6 @@ public class ItineraryCreation extends AppCompatActivity {
 
 
     private void Submit(JSONObject params) {
-        boolean canSend = allFilled();
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -458,22 +469,19 @@ public class ItineraryCreation extends AppCompatActivity {
 
         private boolean allFilled()
         {
-            if(!title.getText().toString().equals("")
-                && !description.getText().toString().equals("")
-                && !selectBeginningDate.getText().toString().equals("")
-                && !selectEndingDate.getText().toString().equals("")
-                && !selectReservationDate.getText().toString().equals("")
-                && !minPartecipants.getText().toString().equals("")
-                && !maxPartecipants.getText().toString().equals("")
-                && !repetitions.getText().toString().equals("")
-                && !durationHours.getText().toString().equals("")
-                && !durationMinutes.getText().toString().equals("")
-                && !location.getText().toString().equals("")
-                && !fullPrice.getText().toString().equals("")
-                && !reducedPrice.getText().toString().equals("")
-               )
-            return true;
-            else return false;
+            return !title.getText().toString().equals("")
+                    && !description.getText().toString().equals("")
+                    && !selectBeginningDate.getText().toString().equals("")
+                    && !selectEndingDate.getText().toString().equals("")
+                    && !selectReservationDate.getText().toString().equals("")
+                    && !minPartecipants.getText().toString().equals("")
+                    && !maxPartecipants.getText().toString().equals("")
+                    && !repetitions.getText().toString().equals("")
+                    && !durationHours.getText().toString().equals("")
+                    && !durationMinutes.getText().toString().equals("")
+                    && !location.getText().toString().equals("")
+                    && !fullPrice.getText().toString().equals("")
+                    && !reducedPrice.getText().toString().equals("");
         }
     private void updateBeginningDate() {
         String myFormat = "dd-MM-yy";
