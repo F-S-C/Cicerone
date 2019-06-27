@@ -114,12 +114,13 @@ public class LoginActivity extends AppCompatActivity {
                     passwordEditText.setError(getString(R.string.wrong_credentials));
                     return;
                 }
-
+                
                 SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
                 preferences.edit().putString("session", user.toString()).apply();
-
+                
                 // TODO: Change activity
-                startActivity(new Intent(LoginActivity.this, AccountDetails.class));
+                // startActivity(new Intent(LoginActivity.this, AccountDetails.class));
+                startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
             }
         });
 

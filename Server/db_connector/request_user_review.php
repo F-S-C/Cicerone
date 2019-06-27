@@ -15,7 +15,7 @@ if(isset($_POST['username']))
 {
 	array_push($condition, "username = '" . strtolower($_POST['username']) . "'");
 }
-if(isset($_POST['reviewed_user']))
+if(isset($_POST['reviewed_itinerary']))
 {
 	array_push($condition, "reviewed_user = '" . strtolower($_POST['reviewed_user']) . "'");
 }

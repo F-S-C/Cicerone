@@ -41,7 +41,7 @@ else
 
 addConditionsToQuery($condition, $query);
 
-$query .= " ORDER BY full_price";
+$query .= " ORDER BY price";
 
 // Send the query to MySQL and print received records in JSON
 requestData($conn, $query);
