@@ -47,6 +47,8 @@ public class ItineraryCreation extends AppCompatActivity {
     Button submit;
     final Calendar myCalendar = Calendar.getInstance();
 
+    private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
+
     @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +102,7 @@ public class ItineraryCreation extends AppCompatActivity {
             try {
                 minDate = new SimpleDateFormat("dd-MM-yy").parse(selectBeginningDate.getText().toString());
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e(ERROR_TAG, e.toString());
             }
             if (minDate != null) {
                 datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
@@ -129,7 +131,7 @@ public class ItineraryCreation extends AppCompatActivity {
                 minDate = new SimpleDateFormat("dd-MM-yy").parse(selectBeginningDate.getText().toString());
                 maxDate = new SimpleDateFormat("dd-MM-yy").parse(selectEndingDate.getText().toString());
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e(ERROR_TAG, e.toString());
             }
             if (minDate != null && maxDate != null) {
                 datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
@@ -389,7 +391,7 @@ public class ItineraryCreation extends AppCompatActivity {
                     obj.remove("password");
                     params.put("username", obj.getString("username"));
 
-                    Submit(params);
+                    submit(params);
 
 
                 } catch (JSONException e) {
@@ -404,7 +406,7 @@ public class ItineraryCreation extends AppCompatActivity {
     }
 
 
-    private void Submit(JSONObject params) {
+    private void submit(JSONObject params) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
