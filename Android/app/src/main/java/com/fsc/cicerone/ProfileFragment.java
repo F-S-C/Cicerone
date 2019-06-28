@@ -1,5 +1,6 @@
 package com.fsc.cicerone;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -54,15 +57,15 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_profile_fragment, container, false);
-        logoutDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar);
-        logoutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
+        logoutDialog = new Dialog(Objects.requireNonNull(getContext()), android.R.style.Theme_Black_NoTitleBar);
+        Objects.requireNonNull(logoutDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
         logoutDialog.setContentView(R.layout.activity_logout);
         logoutDialog.setCancelable(true);
 
-        SharedPreferences preferences = this.getActivity().getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+        SharedPreferences preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         Spinner sexList = view.findViewById(R.id.sexList);
         name = view.findViewById(R.id.name);
         surname = view.findViewById(R.id.surname);
@@ -90,7 +93,7 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     logoutDialog.hide();
-                    preferences.edit().clear().commit();
+                    preferences.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
@@ -115,7 +118,7 @@ public class ProfileFragment extends Fragment {
         list.add(getResources().getString(R.string.male));
         list.add(getResources().getString(R.string.female));
         list.add(getResources().getString(R.string.other));
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
@@ -143,13 +146,14 @@ public class ProfileFragment extends Fragment {
                 surname.setText(userData.getString("surname"));
                 email.setText(userData.getString("email"));
                 cellphone.setText(userData.getString("cellphone"));
-                if(userData.getInt("user_type") == 1)
-                    switchButton.setVisibility(view.GONE);
-                else
-                    switchButton.setVisibility(view.VISIBLE);
+                if(userData.getInt("user_type") == 1) {
+                    switchButton.setVisibility(View.GONE);
+                } else {
+                    switchButton.setVisibility(View.VISIBLE);
+                }
                 try {
-                    DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    @SuppressLint("SimpleDateFormat") DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    @SuppressLint("SimpleDateFormat") DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
                     Date date = inputFormat.parse(userData.getString("birth_date"));
                     //TODO Change date with calendar
                     birthDate.setText(outputFormat.format(date));
