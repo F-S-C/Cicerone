@@ -50,4 +50,17 @@ function addConditionsToQuery($condition, &$query){
 		}
 	}
 }
+
+function addValuesToQuery($values, &$update){
+	if(count($values) > 0)
+	{
+		while( count($values) > 0){
+			$update .= $values[0] ?? '';
+			array_shift($values);
+			if(count($values) > 0)
+			{
+				$update .= " , ";
+			}
+	}
+}
 ?>
