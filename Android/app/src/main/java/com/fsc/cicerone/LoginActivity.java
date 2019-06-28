@@ -119,8 +119,8 @@ public class LoginActivity extends AppCompatActivity {
                 preferences.edit().putString("session", user.toString()).apply();
 
                 // TODO: Change activity
-//                startActivity(new Intent(LoginActivity.this, AccountDetails.class));
-                startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                startActivity(new Intent(LoginActivity.this, AccountDetails.class));
+                //startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
             }
         });
 

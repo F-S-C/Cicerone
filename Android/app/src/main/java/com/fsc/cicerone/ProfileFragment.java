@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +42,7 @@ import app_connector.SendInPostConnector;
  */
 public class ProfileFragment extends Fragment {
 
+    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
     private EditText name;
     private EditText surname;
     private EditText email;
@@ -48,6 +50,7 @@ public class ProfileFragment extends Fragment {
     private EditText birthDate;
     private Button switchButton;
     private Dialog logoutDialog;
+    private Dialog switchToCiceroneDialog;
 
     /**
      * Empty constructor
@@ -65,6 +68,11 @@ public class ProfileFragment extends Fragment {
         logoutDialog.setContentView(R.layout.activity_logout);
         logoutDialog.setCancelable(true);
 
+        switchToCiceroneDialog = new Dialog(Objects.requireNonNull(getContext()), android.R.style.Theme_Black_NoTitleBar);
+        Objects.requireNonNull(switchToCiceroneDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
+        switchToCiceroneDialog.setContentView(R.layout.switch_to_cicerone);
+        switchToCiceroneDialog.setCancelable(true);
+
         SharedPreferences preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         Spinner sexList = view.findViewById(R.id.sexList);
         name = view.findViewById(R.id.name);
@@ -80,6 +88,25 @@ public class ProfileFragment extends Fragment {
             final JSONObject parameters = new JSONObject(preferences.getString("session", "")); //Connection params
             parameters.remove("password");
             requestUserData(view, parameters, sexList);
+            final JSONObject updateParams = new JSONObject();
+            updateParams.put("username", parameters.getString("username"));
+            updateParams.put("user_type","1");
+
+            switchButton.setOnClickListener(view1 -> {
+                Button noButton = switchToCiceroneDialog.findViewById(R.id.switch_cicerone_no_button);
+                noButton.setOnClickListener(v -> switchToCiceroneDialog.hide());
+
+                Button yesButton = (Button) switchToCiceroneDialog.findViewById(R.id.switch_cicerone_yes_button);
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switchToCiceroneDialog.hide();
+                        switchToCicerone(updateParams);
+                    }
+                });
+
+                switchToCiceroneDialog.show();
+            });
         } catch (JSONException e) {
             Log.e("EXCEPTION", e.toString());
         }
@@ -93,6 +120,7 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     logoutDialog.hide();
+                    logoutDialog.dismiss();
                     preferences.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -102,7 +130,6 @@ public class ProfileFragment extends Fragment {
 
             logoutDialog.show();
         });
-
 
         return view;
     }
@@ -166,4 +193,31 @@ public class ProfileFragment extends Fragment {
         connector.execute();
     }
 
+    private void switchToCicerone(JSONObject parameters) {
+
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+             //Do nothing
+            }
+
+            @Override
+            public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                JSONObject userData = jsonArray.getJSONObject(0);
+
+                if (userData.getBoolean("result")) {
+                    switchToCiceroneDialog.dismiss();
+                    Toast.makeText(getActivity(), getString(R.string.operation_completed) , Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                } else{
+                    Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+        connector.setObjectToSend(parameters);
+        connector.execute();
+    }
 }

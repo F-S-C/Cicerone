@@ -33,4 +33,9 @@ public final class ConnectorConstants {
      * URL of the server-side connector for the user_review table
      */
     public static final String USER_REVIEW = SERVER_URL + "/request_user_review.php";
+
+    /**
+     * URL of the server-side connector for the update of registered_user table
+     */
+    public static final String UPDATE_REGISTERED_USER = SERVER_URL + "/update_registered_user.php";
 }
