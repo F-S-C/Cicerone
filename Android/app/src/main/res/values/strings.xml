@@ -6,8 +6,8 @@
     <string name="login_error">Error: wrong username or password.</string>
     <string name="logging">Logging in...</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="dont_have_account">Don\'t have an account?</string>
-    <string name="signup">Signup</string>
+    <string name="don_t_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
     <string name="skip_login">Skip login</string>
     <string name="or">or</string>
     <string name="empty_username_error">Enter your username</string>
@@ -32,10 +32,18 @@
     <string name="example_email" translatable="false">email@email.com</string>
     <string name="example_cellphone" translatable="false">0123456789</string>
     <string name="example_date" translatable="false">dd/mm/yyyy</string>
-    <string name="profile_image">Profie image</string>
+    <string name="profile_image">Profile image</string>
     <string name="example_number" translatable="false">Nr.#</string>
     <string name="beginning_date">Beginning Date</string>
     <string name="ending_date">Ending Date</string>
     <string name="location">Location</string>
     <string name="print_integer_number">Nr. %d</string>
+    <string name="profile">Profile</string>
+    <string name="image_profile">Profile Image</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="email" translatable="false">E-Mail</string>
+    <string name="review">Review</string>
+    <string name="user_type">User Type</string>
+    <string name="user_type_cicerone" translatable="false">Cicerone</string>
+    <string name="user_type_globetrotter" translatable="false">Globetrotter</string>
 </resources>

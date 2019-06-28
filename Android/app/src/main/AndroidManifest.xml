@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReviewFragment"></activity>
+        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ReviewFragment" />
         <activity android:name=".ItineraryList" />
         <activity android:name=".LoginActivity" />
         <activity

@@ -6,9 +6,9 @@
     <string name="username">Username</string>
     <string name="logging">Accedendo...</string>
     <string name="forgot_password">Hai dimenticato la password?</string>
-    <string name="dont_have_account">Non hai un account?</string>
+    <string name="don_t_have_account">Non hai un account?</string>
     <string name="or">o</string>
-    <string name="signup">Registrati</string>
+    <string name="sign_up">Registrati</string>
     <string name="skip_login">Salta il login</string>
     <string name="empty_password_error">Inserisci la tua password</string>
     <string name="empty_username_error">Inserisci il tuo username</string>
@@ -31,4 +31,9 @@
     <string name="ending_date">Data di Fine</string>
     <string name="location">Luogo</string>
     <string name="print_integer_number">Num. %d</string>
+    <string name="profile">Profilo</string>
+    <string name="image_profile">Immagine del Profilo</string>
+    <string name="birth_date">Data di nascita</string>
+    <string name="review">Recensione</string>
+    <string name="user_type">Tipo utente</string>
 </resources>
