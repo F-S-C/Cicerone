@@ -39,7 +39,7 @@ import app_connector.SendInPostConnector;
 public class ProfileFragment extends Fragment {
 
     private EditText name, surname, email, cellphone, birthdate;
-    private Button switch_button, logout_button;
+    private Button switchButton, logoutButton;
     private Dialog logoutDialog;
 
     /**
@@ -65,8 +65,8 @@ public class ProfileFragment extends Fragment {
         email = view.findViewById(R.id.email);
         cellphone = view.findViewById(R.id.cellphone);
         birthdate = view.findViewById(R.id.birthdate);
-        switch_button = view.findViewById(R.id.switch_to_cicerone);
-        logout_button = view.findViewById(R.id.logout);
+        switchButton = view.findViewById(R.id.switch_to_cicerone);
+        logoutButton = view.findViewById(R.id.logout);
 
         addItemsSex(sexList);
         try {
@@ -77,7 +77,7 @@ public class ProfileFragment extends Fragment {
             Log.e("EXCEPTION", e.toString());
         }
 
-        logout_button.setOnClickListener(new View.OnClickListener() {
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button noButton = (Button) logoutDialog.findViewById(R.id.no_logout_button);
@@ -148,9 +148,9 @@ public class ProfileFragment extends Fragment {
                 email.setText(userData.getString("email"));
                 cellphone.setText(userData.getString("cellphone"));
                 if(userData.getInt("user_type") == 1)
-                    switch_button.setVisibility(view.GONE);
+                    switchButton.setVisibility(view.GONE);
                 else
-                    switch_button.setVisibility(view.VISIBLE);
+                    switchButton.setVisibility(view.VISIBLE);
                 try {
                     DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                     DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
