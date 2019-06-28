@@ -3,15 +3,12 @@ package com.fsc.cicerone;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -23,12 +20,12 @@ import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
-import static android.view.View.GONE;
-
 /**
  * Class that specifying the account detail page
  */
 public class AccountDetails extends AppCompatActivity {
+
+    private static final String ERROR_TAG = "ERROR IN " + AccountDetails.class.getName();
 
     TabLayout tabLayout;
     FrameLayout frameLayout;
@@ -60,7 +57,7 @@ public class AccountDetails extends AppCompatActivity {
             usernameText.setText(username);
             setNameSurname(parameters); //Require data from server and set Name Surname
         } catch (JSONException e) {
-            Log.e("Error:", e.toString());
+            Log.e(ERROR_TAG, e.toString());
         }
 
         /* TabLayout */
@@ -80,6 +77,8 @@ public class AccountDetails extends AppCompatActivity {
                     case 3:
                         fragment = new ItineraryFragment();
                         break;
+                    default:
+                        break;
                 }
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -90,12 +89,12 @@ public class AccountDetails extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                // Do nothing
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                // Do nothing
             }
 
         });
@@ -106,6 +105,7 @@ public class AccountDetails extends AppCompatActivity {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
+                // Do nothing
             }
 
             @Override

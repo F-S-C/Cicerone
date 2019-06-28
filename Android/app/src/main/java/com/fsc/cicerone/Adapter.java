@@ -19,17 +19,23 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * The Adapter of the Recycler View for the styles present in the app.
  */
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
+    private static final String ERROR_TAG = "ERROR IN " + Adapter.class.getName();
+
     private final Context context;
     private JSONArray mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private Drawable reportCanceledImage, reportClosedImage, reportInProgressImage, reportOpenImage;
+    private Drawable reportCanceledImage;
+    private Drawable reportClosedImage;
+    private Drawable reportInProgressImage;
+    private Drawable reportOpenImage;
     private ViewType type;
 
     private enum ViewType {
@@ -99,8 +105,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             case REPORT_LIST:
                 try {
                     String object = mData.getJSONObject(position).getString("object");
-                    String code = "Nr." + mData.getJSONObject(position).getString("report_code");
-                    switch (ReportStatus.getValue(mData.getJSONObject(position).getInt("state"))) {
+                    String code = "Nr." + mData.getJSONObject(position).getString("reportCode");
+                    switch (Objects.requireNonNull(ReportStatus.getValue(mData.getJSONObject(position).getInt("state")))) {
                         case OPEN:
                             holder.status.setImageDrawable(reportOpenImage);
                             break;
@@ -117,16 +123,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                             break;
                     }
                     holder.object.setText(object);
-                    holder.report_code.setText(code);
+                    holder.reportCode.setText(code);
                 } catch (JSONException e) {
-                    Log.e("EXCEPTION", e.getMessage());
+                    Log.e(ERROR_TAG, e.getMessage());
                 }
                 break; //END REPORT_LIST type
 
             case ITINERARY_LIST:
                 try {
                     String title = mData.getJSONObject(position).getString("title");
-                    Integer itinerary_number = mData.getJSONObject(position).getInt("itinerary_code");
+                    Integer itineraryNumber = mData.getJSONObject(position).getInt("itinerary_code");
                     String location = mData.getJSONObject(position).getString("location");
                     try {
                         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -136,28 +142,28 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         date = inputFormat.parse(mData.getJSONObject(position).getString("ending_date"));
                         holder.ending.setText(outputFormat.format(date));
                     } catch (ParseException e) {
-                        Log.e("EXCEPTION", e.toString());
+                        Log.e(ERROR_TAG, e.toString());
                     }
-                    holder.itinerary_title.setText(title);
-                    holder.itinerary_number.setText(String.format(context.getString(R.string.print_integer_number), itinerary_number));
+                    holder.itineraryTitle.setText(title);
+                    holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
                     holder.location.setText(location);
 
                 } catch (JSONException e) {
-                    Log.e("EXCEPTION", e.getMessage());
+                    Log.e(ERROR_TAG, e.getMessage());
                 }
                 break; //END ITINERARY_LIST type
 
             case REVIEWS_LIST:
                 try {
                     String description = mData.getJSONObject(position).getString("description");
-                    String reviewer_username = mData.getJSONObject(position).getString("username");
+                    String reviewerUsername = mData.getJSONObject(position).getString("username");
                     int feedback = mData.getJSONObject(position).getInt("feedback");
                     holder.ratingBar.setRating(feedback);
-                    holder.reviewer_username.setText(reviewer_username);
-                    holder.review_description.setText(description);
+                    holder.reviewerUsername.setText(reviewerUsername);
+                    holder.reviewDescription.setText(description);
                     //TODO Reviewer profile image
                 } catch (JSONException e) {
-                    Log.e("EXCEPTION", e.toString());
+                    Log.e(ERROR_TAG, e.toString());
                 }
                 break; //END REVIEWS_LIST type
         } //END SWITCH
@@ -178,12 +184,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //Defining variables of REPORT_LIST view
-        TextView object, report_code;
+        TextView object;
+        TextView reportCode;
         ImageView status;
         //Defining variables of ITINERARY_LIST view
-        TextView itinerary_title, itinerary_number, location, beginning, ending;
+        TextView itineraryTitle;
+        TextView itineraryNumber;
+        TextView location;
+        TextView beginning;
+        TextView ending;
         //Defining variables of REVIEWS_LIST view
-        TextView reviewer_username, review_description;
+        TextView reviewerUsername;
+        TextView reviewDescription;
         RatingBar ratingBar;
 
         ViewHolder(View itemView) {
@@ -192,22 +204,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             switch (type) {
                 case REPORT_LIST:
                     object = itemView.findViewById(R.id.object);
-                    report_code = itemView.findViewById(R.id.report_code);
+                    reportCode = itemView.findViewById(R.id.report_code);
                     status = itemView.findViewById(R.id.report_status);
                     break;
 
                 case ITINERARY_LIST:
-                    itinerary_title = itemView.findViewById(R.id.itinerary_title);
-                    itinerary_number = itemView.findViewById(R.id.itinerary_number);
+                    itineraryTitle = itemView.findViewById(R.id.itinerary_title);
+                    itineraryNumber = itemView.findViewById(R.id.itinerary_number);
                     location = itemView.findViewById(R.id.location);
                     beginning = itemView.findViewById(R.id.beginning);
                     ending = itemView.findViewById(R.id.ending);
                     break;
 
                 case REVIEWS_LIST:
-                    reviewer_username = itemView.findViewById(R.id.reviewer_username);
+                    reviewerUsername = itemView.findViewById(R.id.reviewer_username);
                     ratingBar = itemView.findViewById(R.id.ratingBar);
-                    review_description = itemView.findViewById(R.id.review_description);
+                    reviewDescription = itemView.findViewById(R.id.review_description);
                     break;
                 default:
                     break;
