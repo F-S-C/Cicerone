@@ -12,8 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ItineraryCreation"></activity>
-        <activity android:name=".ProfileActivity"
-            android:label="@string/profile"></activity>
+        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ReviewFragment" />
+        <activity android:name=".ItineraryList" />
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -23,7 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"/>
+        <activity
+            android:name=".AccountDetails"
+            android:label="@string/account"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

@@ -21,7 +21,6 @@ if(isset($_POST['email']))
 }
 
 addConditionsToQuery($condition, $query);
-
 // Send the query to MySQL and print received records in JSON
 requestData($conn, $query);
 ?>
