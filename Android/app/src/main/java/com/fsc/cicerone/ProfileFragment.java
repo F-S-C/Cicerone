@@ -1,19 +1,18 @@
 package com.fsc.cicerone;
 
-import android.app.Dialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -26,8 +25,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -39,8 +40,7 @@ import app_connector.SendInPostConnector;
 public class ProfileFragment extends Fragment {
 
     private EditText name, surname, email, cellphone, birthdate;
-    private Button switch_button, logout_button;
-    private Dialog logoutDialog;
+    private Button switch_button;
 
     /**
      * Empty constructor
@@ -53,11 +53,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_profile_fragment, container, false);
-        logoutDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar);
-        logoutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
-        logoutDialog.setContentView(R.layout.activity_logout);
-        logoutDialog.setCancelable(true);
-
         SharedPreferences preferences = this.getActivity().getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         Spinner sexList = view.findViewById(R.id.sexList);
         name = view.findViewById(R.id.name);
@@ -66,8 +61,6 @@ public class ProfileFragment extends Fragment {
         cellphone = view.findViewById(R.id.cellphone);
         birthdate = view.findViewById(R.id.birthdate);
         switch_button = view.findViewById(R.id.switch_to_cicerone);
-        logout_button = view.findViewById(R.id.logout);
-
         addItemsSex(sexList);
         try {
             final JSONObject parameters = new JSONObject(preferences.getString("session", "")); //Connection params
@@ -76,35 +69,6 @@ public class ProfileFragment extends Fragment {
         } catch (JSONException e) {
             Log.e("EXCEPTION", e.toString());
         }
-
-        logout_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Button noButton = (Button) logoutDialog.findViewById(R.id.no_logout_button);
-                noButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        logoutDialog.hide();
-                    }
-                });
-
-                Button yesButton = (Button) logoutDialog.findViewById(R.id.yes_logout_button);
-                yesButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        logoutDialog.hide();
-                        preferences.edit().clear().commit();
-                        Intent i = new Intent(getActivity(), LoginActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                    }
-                });
-
-                logoutDialog.show();
-            }
-        });
-
-
         return view;
     }
 
