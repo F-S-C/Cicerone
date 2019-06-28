@@ -13,11 +13,22 @@
     <string name="empty_password_error">Inserisci la tua password</string>
     <string name="empty_username_error">Inserisci il tuo username</string>
     <string name="wrong_credentials">Credenziali errate!</string>
-    <string name="profile">Profilo</string>
-    <string name="image_profile">Immagine Profilo</string>
-    <string name="birth_date">Data di nascita</string>
+    <string name="example_name">Nome Cognome</string>
+    <string name="itinerary">Itinerario</string>
+    <string name="reviews">Recensioni</string>
+    <string name="loading">Caricamento...</string>
+    <string name="sex">Sesso:</string>
+    <string name="save">Salva</string>
+    <string name="male">Maschio</string>
+    <string name="other">Altro</string>
+    <string name="female">Femmina</string>
+    <string name="switch_to_cicerone">Passa a Cicerone</string>
+    <string name="status">Stato</string>
     <string name="name">Nome</string>
     <string name="surname">Cognome</string>
-    <string name="review">Recensione</string>
-    <string name="user_type">Tipologia utente</string>
+    <string name="profile_image">Immagine del profilo</string>
+    <string name="beginning_date">Data di Inizio</string>
+    <string name="ending_date">Data di Fine</string>
+    <string name="location">Luogo</string>
+    <string name="print_integer_number">Num. %d</string>
 </resources>
