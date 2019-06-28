@@ -46,4 +46,7 @@
     <string name="user_type">User Type</string>
     <string name="user_type_cicerone" translatable="false">Cicerone</string>
     <string name="user_type_globetrotter" translatable="false">Globetrotter</string>
+    <string name="exit_confirm_answer">Are you sure you want to quit?</string>
+    <string name="yes">Yes</string>
+    <string name="no" translatable="false">No</string>
 </resources>
