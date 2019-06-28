@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -70,82 +71,6 @@ public class ItineraryCreation extends AppCompatActivity {
         fullPrice = findViewById(R.id.inputFullPrice);
         submit = findViewById(R.id.submit);
 
-
-        OnDateSetListener bDate = (view, year, monthOfYear, dayOfMonth) -> {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateBeginningDate();
-        };
-
-        selectBeginningDate.setOnClickListener(v -> {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, bDate, myCalendar
-                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH));
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-            datePickerDialog.show();
-            selectBeginningDate.clearFocus();
-            selectEndingDate.setText(null);
-        });
-        OnDateSetListener eDate = (view, year, monthOfYear, dayOfMonth) -> {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateEndingDate();
-        };
-
-        selectEndingDate.setOnClickListener(v -> {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, eDate, myCalendar
-                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH));
-            Date minDate = null;
-            try {
-                minDate = new SimpleDateFormat("dd-MM-yy").parse(selectBeginningDate.getText().toString());
-            } catch (ParseException e) {
-                Log.e(ERROR_TAG, e.toString());
-            }
-            if (minDate != null) {
-                datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
-                datePickerDialog.show();
-            } else {
-                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
-            }
-
-            selectEndingDate.clearFocus();
-        });
-
-
-        OnDateSetListener rDate = (view, year, monthOfYear, dayOfMonth) -> {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateReservationDate();
-        };
-        selectReservationDate.setOnClickListener(v -> {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, rDate, myCalendar
-                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH));
-            Date minDate = null;
-            Date maxDate = null;
-            try {
-                minDate = new SimpleDateFormat("dd-MM-yy").parse(selectBeginningDate.getText().toString());
-                maxDate = new SimpleDateFormat("dd-MM-yy").parse(selectEndingDate.getText().toString());
-            } catch (ParseException e) {
-                Log.e(ERROR_TAG, e.toString());
-            }
-            if (minDate != null && maxDate != null) {
-                datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
-                datePickerDialog.getDatePicker().setMaxDate(maxDate.getTime());
-                datePickerDialog.show();
-            } else {
-                if (minDate == null) {
-                    Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
-                }
-                if (maxDate == null) {
-                    Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_ending_date), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         selectBeginningDate.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
@@ -369,43 +294,119 @@ public class ItineraryCreation extends AppCompatActivity {
             }
         });
 
-        submit.setOnClickListener(v -> {
-            JSONObject params = new JSONObject();
-            boolean canSend = allFilled();
-            if (canSend) {
-                try {
-                    params.put("title", title.getText().toString());
-                    params.put("description", description.getText().toString());
-                    params.put("beginning_date", selectBeginningDate.getText().toString());
-                    params.put("ending_date", selectEndingDate.getText().toString());
-                    params.put("end_reservations_date", selectReservationDate.getText().toString());
-                    params.put("maximum_partecipants_number", maxParticipants.getText().toString());
-                    params.put("minimum_partecipants_number", minParticipants.getText().toString());
-                    params.put("repetitions_per_day", repetitions.getText().toString());
-                    params.put("location", location.getText().toString());
-                    params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
-                    params.put("full_price", fullPrice.getText().toString());
-                    params.put("reduced_price", reducedPrice.getText().toString());
-                    SharedPreferences random = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-                    JSONObject obj = new JSONObject(random.getString("session", ""));
-                    obj.remove("password");
-                    params.put("username", obj.getString("username"));
-
-                    submit(params);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
-            }
-
-        });
-
     }
 
+    public void sendData (View view)
+    {
+        JSONObject params = new JSONObject();
+        boolean canSend = allFilled();
+        if (canSend) {
+            try {
+                params.put("title", title.getText().toString());
+                params.put("description", description.getText().toString());
+                params.put("beginning_date", selectBeginningDate.getText().toString());
+                params.put("ending_date", selectEndingDate.getText().toString());
+                params.put("end_reservations_date", selectReservationDate.getText().toString());
+                params.put("maximum_partecipants_number", maxParticipants.getText().toString());
+                params.put("minimum_partecipants_number", minParticipants.getText().toString());
+                params.put("repetitions_per_day", repetitions.getText().toString());
+                params.put("location", location.getText().toString());
+                params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
+                params.put("full_price", fullPrice.getText().toString());
+                params.put("reduced_price", reducedPrice.getText().toString());
+                SharedPreferences random = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+                JSONObject obj = new JSONObject(random.getString("session", ""));
+                obj.remove("password");
+                params.put("username", obj.getString("username"));
 
+                submit(params);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void setBeginningDate(View view)
+    {
+        OnDateSetListener bDate = (view2, year, monthOfYear, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateBeginningDate();
+        };
+        DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, bDate, myCalendar
+                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.show();
+        selectBeginningDate.clearFocus();
+        selectEndingDate.setText(null);
+    }
+
+    public void setEndingDate(View view)
+    {
+        OnDateSetListener eDate = (view2, year, monthOfYear, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateEndingDate();
+        };
+        DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, eDate, myCalendar
+                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH));
+        Date minDate = null;
+        try {
+            minDate = new SimpleDateFormat("dd-MM-yy").parse(selectBeginningDate.getText().toString());
+        } catch (ParseException e) {
+            Log.e(ERROR_TAG, e.toString());
+        }
+        if (minDate != null) {
+            datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
+            datePickerDialog.show();
+        } else {
+            Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
+        }
+
+        selectEndingDate.clearFocus();
+    }
+
+    public void setReservationDate(View view)
+    {
+        OnDateSetListener rDate = (view2, year, monthOfYear, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateReservationDate();
+        };
+        DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, rDate, myCalendar
+                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH));
+        Date minDate = null;
+        Date maxDate = null;
+        try {
+            minDate = new SimpleDateFormat("dd-MM-yy").parse(selectBeginningDate.getText().toString());
+            maxDate = new SimpleDateFormat("dd-MM-yy").parse(selectEndingDate.getText().toString());
+        } catch (ParseException e) {
+            Log.e(ERROR_TAG, e.toString());
+        }
+        if (minDate != null && maxDate != null) {
+            datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
+            datePickerDialog.getDatePicker().setMaxDate(maxDate.getTime());
+            datePickerDialog.show();
+        } else {
+            if (minDate == null) {
+                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
+            }
+            if (maxDate == null) {
+                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_ending_date), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
     private void submit(JSONObject params) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
