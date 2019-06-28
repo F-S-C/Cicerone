@@ -38,8 +38,12 @@ import app_connector.SendInPostConnector;
  */
 public class ProfileFragment extends Fragment {
 
-    private EditText name, surname, email, cellphone, birthdate;
-    private Button switchButton, logoutButton;
+    private EditText name;
+    private EditText surname;
+    private EditText email;
+    private EditText cellphone;
+    private EditText birthDate;
+    private Button switchButton;
     private Dialog logoutDialog;
 
     /**
@@ -64,9 +68,9 @@ public class ProfileFragment extends Fragment {
         surname = view.findViewById(R.id.surname);
         email = view.findViewById(R.id.email);
         cellphone = view.findViewById(R.id.cellphone);
-        birthdate = view.findViewById(R.id.birthdate);
+        birthDate = view.findViewById(R.id.birthdate);
         switchButton = view.findViewById(R.id.switch_to_cicerone);
-        logoutButton = view.findViewById(R.id.logout);
+        Button logoutButton = view.findViewById(R.id.logout);
 
         addItemsSex(sexList);
         try {
@@ -77,31 +81,23 @@ public class ProfileFragment extends Fragment {
             Log.e("EXCEPTION", e.toString());
         }
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Button noButton = (Button) logoutDialog.findViewById(R.id.no_logout_button);
-                noButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        logoutDialog.hide();
-                    }
-                });
+        logoutButton.setOnClickListener(view1 -> {
+            Button noButton = logoutDialog.findViewById(R.id.no_logout_button);
+            noButton.setOnClickListener(v -> logoutDialog.hide());
 
-                Button yesButton = (Button) logoutDialog.findViewById(R.id.yes_logout_button);
-                yesButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        logoutDialog.hide();
-                        preferences.edit().clear().commit();
-                        Intent i = new Intent(getActivity(), LoginActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                    }
-                });
+            Button yesButton = (Button) logoutDialog.findViewById(R.id.yes_logout_button);
+            yesButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logoutDialog.hide();
+                    preferences.edit().clear().commit();
+                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            });
 
-                logoutDialog.show();
-            }
+            logoutDialog.show();
         });
 
 
@@ -156,7 +152,7 @@ public class ProfileFragment extends Fragment {
                     DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
                     Date date = inputFormat.parse(userData.getString("birth_date"));
                     //TODO Change date with calendar
-                    birthdate.setText(outputFormat.format(date));
+                    birthDate.setText(outputFormat.format(date));
                 } catch (ParseException e) {
                     Log.e("EXCEPTION", e.toString());
                 }
