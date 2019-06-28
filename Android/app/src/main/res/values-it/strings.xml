@@ -4,7 +4,7 @@
     <string name="login_error">Errore: username o password errati.</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
-    <string name="logging">Accedendo...</string>
+    <string name="logging">Accedendo…</string>
     <string name="forgot_password">Hai dimenticato la password?</string>
     <string name="don_t_have_account">Non hai un account?</string>
     <string name="or">o</string>
@@ -43,7 +43,7 @@
     <string name="example_name">Nome Cognome</string>
     <string name="itinerary">Itinerario</string>
     <string name="reviews">Recensioni</string>
-    <string name="loading">Caricamento...</string>
+    <string name="loading">Caricamento…</string>
     <string name="sex">Sesso:</string>
     <string name="save">Salva</string>
     <string name="male">Maschio</string>
@@ -54,13 +54,7 @@
     <string name="name">Nome</string>
     <string name="surname">Cognome</string>
     <string name="profile_image">Immagine del profilo</string>
-    <string name="beginning_date">Data di Inizio</string>
-    <string name="ending_date">Data di Fine</string>
-    <string name="location">Luogo</string>
     <string name="print_integer_number">Num. %d</string>
-    <string name="profile">Profilo</string>
-    <string name="image_profile">Immagine del Profilo</string>
-    <string name="birth_date">Data di nascita</string>
     <string name="review">Recensione</string>
     <string name="user_type">Tipo utente</string>
     <string name="exit_confirm_answer">Sei sicuro di voler uscire?</string>

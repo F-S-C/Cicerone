@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -90,6 +91,18 @@ public class ItineraryCreation extends AppCompatActivity {
             }
         });
 
+        final Consumer<EditText> checkMinMaxParticipants = currentEditText -> {
+            String maxInserted = maxParticipants.getText().toString();
+            String minInserted = minParticipants.getText().toString();
+            if (!maxInserted.equals("") && !minInserted.equals("")) {
+                int max = Integer.parseInt(maxInserted);
+                int min = Integer.parseInt(minInserted);
+                if (min > max) {
+                    currentEditText.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                }
+            }
+        };
+
         maxParticipants.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -98,15 +111,7 @@ public class ItineraryCreation extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String maxInserted = maxParticipants.getText().toString();
-                String minInserted = minParticipants.getText().toString();
-                if (!maxInserted.equals("") && !minInserted.equals("")) {
-                    int max = Integer.parseInt(maxInserted);
-                    int min = Integer.parseInt(minInserted);
-                    if (min > max) {
-                        maxParticipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-                    }
-                }
+                checkMinMaxParticipants.accept(maxParticipants);
             }
 
 
@@ -124,16 +129,7 @@ public class ItineraryCreation extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String maxInserted = maxParticipants.getText().toString();
-                String minInserted = minParticipants.getText().toString();
-                if (!maxInserted.equals("") && !minInserted.equals("")) {
-                    int max = Integer.parseInt(maxInserted);
-                    int min = Integer.parseInt(minInserted);
-                    if (min > max) {
-                        minParticipants.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-                    }
-                }
-
+                checkMinMaxParticipants.accept(minParticipants);
             }
 
             @Override
@@ -296,8 +292,7 @@ public class ItineraryCreation extends AppCompatActivity {
 
     }
 
-    public void sendData (View view)
-    {
+    public void sendData(View view) {
         JSONObject params = new JSONObject();
         boolean canSend = allFilled();
         if (canSend) {
@@ -307,8 +302,8 @@ public class ItineraryCreation extends AppCompatActivity {
                 params.put("beginning_date", selectBeginningDate.getText().toString());
                 params.put("ending_date", selectEndingDate.getText().toString());
                 params.put("end_reservations_date", selectReservationDate.getText().toString());
-                params.put("maximum_partecipants_number", maxParticipants.getText().toString());
-                params.put("minimum_partecipants_number", minParticipants.getText().toString());
+                params.put("maximum_participants_number", maxParticipants.getText().toString());
+                params.put("minimum_participants_number", minParticipants.getText().toString());
                 params.put("repetitions_per_day", repetitions.getText().toString());
                 params.put("location", location.getText().toString());
                 params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
@@ -330,8 +325,7 @@ public class ItineraryCreation extends AppCompatActivity {
         }
     }
 
-    public void setBeginningDate(View view)
-    {
+    public void setBeginningDate(View view) {
         OnDateSetListener bDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
@@ -347,8 +341,7 @@ public class ItineraryCreation extends AppCompatActivity {
         selectEndingDate.setText(null);
     }
 
-    public void setEndingDate(View view)
-    {
+    public void setEndingDate(View view) {
         OnDateSetListener eDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
@@ -374,8 +367,7 @@ public class ItineraryCreation extends AppCompatActivity {
         selectEndingDate.clearFocus();
     }
 
-    public void setReservationDate(View view)
-    {
+    public void setReservationDate(View view) {
         OnDateSetListener rDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
@@ -407,6 +399,7 @@ public class ItineraryCreation extends AppCompatActivity {
         }
 
     }
+
     private void submit(JSONObject params) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
