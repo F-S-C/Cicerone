@@ -32,7 +32,7 @@
     <string name="example_email" translatable="false">email@email.com</string>
     <string name="example_cellphone" translatable="false">0123456789</string>
     <string name="example_date" translatable="false">dd/mm/yyyy</string>
-    <string name="profile_image">Profile image</string>
+    <string name="profile_image">Profie image</string>
     <string name="example_number" translatable="false">Nr.#</string>
     <string name="beginning_date">Beginning Date</string>
     <string name="ending_date">Ending Date</string>

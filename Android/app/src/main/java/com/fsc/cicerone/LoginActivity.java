@@ -1,5 +1,6 @@
 package com.fsc.cicerone;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,8 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
-
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -32,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
         SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
@@ -101,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 JSONObject result = jsonArray.getJSONObject(0);
-                boolean done = false;
+                Boolean done = false;
                 try {
                     Log.e("CIAO", String.valueOf(result.getString("result")));
                     done = result.getBoolean("result");
@@ -109,18 +108,19 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e(ERROR_TAG, e.toString());
                 }
                 if (!done && !isAutomatic) {
-                    Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_SHORT).show();
-                    usernameEditText.setError(getString(R.string.wrong_credentials));
-                    passwordEditText.setError(getString(R.string.wrong_credentials));
+                        Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_SHORT).show();
+                        usernameEditText.setError(getString(R.string.wrong_credentials));
+                        passwordEditText.setError(getString(R.string.wrong_credentials));
                     return;
+                }else{
+                    startActivity(new Intent(LoginActivity.this, AccountDetails.class));
                 }
 
                 SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
                 preferences.edit().putString("session", user.toString()).apply();
 
                 // TODO: Change activity
-//                startActivity(new Intent(LoginActivity.this, AccountDetails.class));
-                startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                startActivity(new Intent(LoginActivity.this, AccountDetails.class));
             }
         });
 
