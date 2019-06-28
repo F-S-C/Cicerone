@@ -59,4 +59,6 @@
     <string name="user_type">Tipo utente</string>
     <string name="exit_confirm_answer">Sei sicuro di voler uscire?</string>
     <string name="yes">Si</string>
+    <string name="hours">hh</string>
+    <string name="minutes">min</string>
 </resources>

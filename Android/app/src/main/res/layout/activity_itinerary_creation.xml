@@ -42,7 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textShortMessage" />
+                android:inputType="textShortMessage"
+                android:importantForAutofill="no" />
 
         </LinearLayout>
 
@@ -62,6 +63,7 @@
                 android:id="@+id/inputDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:importantForAutofill="no"
                 android:ems="10"
                 android:inputType="textLongMessage" />
         </LinearLayout>
@@ -147,6 +149,7 @@
                 android:id="@+id/inputReservationDate"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                android:importantForAutofill="no"
                 android:ems="10"
                 android:focusable="false"
                 android:inputType="date"
@@ -182,7 +185,7 @@
             </LinearLayout>
 
             <Space
-                android:layout_width="50dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
@@ -264,7 +267,8 @@
                         android:layout_width="58dp"
                         android:layout_height="match_parent"
                         android:ems="10"
-                        android:hint="hh"
+                        android:hint="@string/hours"
+                        android:importantForAutofill="no"
                         android:inputType="number" />
 
                     <TextView
@@ -273,6 +277,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
+
                         android:text="@string/separator"
                         android:textAlignment="center" />
 
@@ -280,8 +285,9 @@
                         android:id="@+id/inputDurationMinutes"
                         android:layout_width="62dp"
                         android:layout_height="match_parent"
+                        android:importantForAutofill="no"
                         android:ems="10"
-                        android:hint="mm"
+                        android:hint="@string/minutes"
                         android:maxLength="2"
                         android:inputType="number" />
                 </LinearLayout>
@@ -338,7 +344,7 @@
             </LinearLayout>
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
@@ -376,6 +382,7 @@
             android:background="@drawable/primary_button_style"
             android:clickable="true"
             android:enabled="true"
+            android:focusable="true"
             android:onClick="sendData"
             android:text="@string/submit"
             android:textColor="@color/colorWhite"

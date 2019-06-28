@@ -29,8 +29,6 @@ import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
-import static android.app.DatePickerDialog.OnDateSetListener;
-
 
 public class ItineraryCreation extends AppCompatActivity {
     EditText title;
@@ -326,7 +324,7 @@ public class ItineraryCreation extends AppCompatActivity {
     }
 
     public void setBeginningDate(View view) {
-        OnDateSetListener bDate = (view2, year, monthOfYear, dayOfMonth) -> {
+        DatePickerDialog.OnDateSetListener bDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -342,7 +340,7 @@ public class ItineraryCreation extends AppCompatActivity {
     }
 
     public void setEndingDate(View view) {
-        OnDateSetListener eDate = (view2, year, monthOfYear, dayOfMonth) -> {
+        DatePickerDialog.OnDateSetListener eDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -367,8 +365,9 @@ public class ItineraryCreation extends AppCompatActivity {
         selectEndingDate.clearFocus();
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void setReservationDate(View view) {
-        OnDateSetListener rDate = (view2, year, monthOfYear, dayOfMonth) -> {
+        DatePickerDialog.OnDateSetListener rDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);

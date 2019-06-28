@@ -70,4 +70,6 @@
     <string name="exit_confirm_answer">Are you sure you want to quit?</string>
     <string name="yes">Yes</string>
     <string name="no" translatable="false">No</string>
+    <string name="hours">hh</string>
+    <string name="minutes">min</string>
 </resources>
