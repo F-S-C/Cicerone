@@ -4,7 +4,7 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="login_error">Error: wrong username or password.</string>
-    <string name="logging">Logging in...</string>
+    <string name="logging">Logging in…</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="don_t_have_account">Don\'t have an account?</string>
     <string name="sign_up">Sign up</string>
@@ -13,19 +13,45 @@
     <string name="empty_username_error">Enter your username</string>
     <string name="empty_password_error">Enter your password</string>
     <string name="wrong_credentials">Wrong credentials!</string>
+    <string name="itinerary_description">Description</string>
+    <string name="new_itinerary">Create an itinerary</string>
+    <string name="itinerary_title">Title of the itinerary</string>
+    <string name="beginning_date">Beginning date</string>
+    <string name="ending_date">Ending date</string>
+    <string name="maximum_participants">Max participants</string>
+    <string name="minimum_participants">Min participants</string>
+    <string name="location">Location</string>
+    <string name="repetitions">Repetitions per day</string>
+    <string name="duration">Duration</string>
+    <string name="full_price">Full price</string>
+    <string name="reduced_price">Reduced price</string>
+    <string name="image_url">Image</string>
+    <string name="submit">Submit</string>
+    <string name="calendar">Calendar</string>
+    <string name="error_insert_beginning_date">Insert beginning date first!</string>
+    <string name="wrong_number">Insert a correct number!</string>
+    <string name="error_insert_min_part">Insert minimum participants first!</string>
+    <string name="separator">:</string>
+    <string name="set_as_one">Set this as 1 or change the duration!</string>
+    <string name="reservation_date">End reservation date</string>
+    <string name="error_insert_ending_date">Insert ending date first!</string>
+    <string name="itinerary_added">Itinerary added.</string>
+    <string name="error_fields_empty">Please fill every field first.</string>
+    <string name="profile">Profile</string>
+    <string name="image_profile">Profile Image</string>
     <string name="account" translatable="false">Account</string>
     <string name="itinerary">Itinerary</string>
     <string name="reviews">Reviews</string>
     <string name="avatar" translatable="false">Avatar</string>
     <string name="example_name">Name Surname</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="sex">Sex:</string>
     <string name="logout" translatable="false">Logout</string>
     <string name="save">Save</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
-    <string name="switch_to_cicerone">Switch to Cicerone</string>
+    <string name="switch_to_cicerone">Become a Cicerone</string>
     <string name="status">Status</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
@@ -34,12 +60,7 @@
     <string name="example_date" translatable="false">dd/mm/yyyy</string>
     <string name="profile_image">Profile image</string>
     <string name="example_number" translatable="false">Nr.#</string>
-    <string name="beginning_date">Beginning Date</string>
-    <string name="ending_date">Ending Date</string>
-    <string name="location">Location</string>
     <string name="print_integer_number">Nr. %d</string>
-    <string name="profile">Profile</string>
-    <string name="image_profile">Profile Image</string>
     <string name="birth_date">Birth Date</string>
     <string name="email" translatable="false">E-Mail</string>
     <string name="review">Review</string>
@@ -49,6 +70,8 @@
     <string name="exit_confirm_answer">Are you sure you want to quit?</string>
     <string name="yes">Yes</string>
     <string name="no" translatable="false">No</string>
+    <string name="hours">hh</string>
+    <string name="minutes">min</string>
     <string name="answer_switch_to_cicerone">Are you sure you want to switch to Cicerone?</string>
     <string name="error_during_operation">An error occurred during this operation</string>
     <string name="operation_completed">Operation completed successfully!</string>
