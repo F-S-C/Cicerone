@@ -2,5 +2,5 @@ projectKey=fsc:cicerone
 serverUrl=http://localhost:9000
 serverVersion=7.7.0.23042
 dashboardUrl=http://localhost:9000/dashboard?id=fsc%3Acicerone
-ceTaskId=AWufXg_odG6x37R2dshO
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AWufXg_odG6x37R2dshO
+ceTaskId=AWuibbLSYUHZIJH3rtqv
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWuibbLSYUHZIJH3rtqv
