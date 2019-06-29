@@ -48,6 +48,7 @@ public class ItineraryCreation extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
+    private static final String DATE_FORMAT = "dd-MM-yy";
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -351,7 +352,7 @@ public class ItineraryCreation extends AppCompatActivity {
                 myCalendar.get(Calendar.DAY_OF_MONTH));
         Date minDate = null;
         try {
-            minDate = new SimpleDateFormat("dd-MM-yy").parse(selectBeginningDate.getText().toString());
+            minDate = new SimpleDateFormat(DATE_FORMAT, Locale.US).parse(selectBeginningDate.getText().toString());
         } catch (ParseException e) {
             Log.e(ERROR_TAG, e.toString());
         }
@@ -365,7 +366,6 @@ public class ItineraryCreation extends AppCompatActivity {
         selectEndingDate.clearFocus();
     }
 
-    @SuppressLint("SimpleDateFormat")
     public void setReservationDate(View view) {
         DatePickerDialog.OnDateSetListener rDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
@@ -379,8 +379,8 @@ public class ItineraryCreation extends AppCompatActivity {
         Date minDate = null;
         Date maxDate = null;
         try {
-            minDate = new SimpleDateFormat("dd-MM-yy").parse(selectBeginningDate.getText().toString());
-            maxDate = new SimpleDateFormat("dd-MM-yy").parse(selectEndingDate.getText().toString());
+            minDate = new SimpleDateFormat(DATE_FORMAT, Locale.US).parse(selectBeginningDate.getText().toString());
+            maxDate = new SimpleDateFormat(DATE_FORMAT, Locale.US).parse(selectEndingDate.getText().toString());
         } catch (ParseException e) {
             Log.e(ERROR_TAG, e.toString());
         }
@@ -439,22 +439,19 @@ public class ItineraryCreation extends AppCompatActivity {
     }
 
     private void updateBeginningDate() {
-        String myFormat = "dd-MM-yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         selectBeginningDate.setText(sdf.format(myCalendar.getTime()));
         selectEndingDate.setClickable(true);
         selectEndingDate.setActivated(true);
     }
 
     private void updateEndingDate() {
-        String myFormat = "dd-MM-yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         selectEndingDate.setText(sdf.format(myCalendar.getTime()));
     }
 
     private void updateReservationDate() {
-        String myFormat = "dd-MM-yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         selectReservationDate.setText(sdf.format(myCalendar.getTime()));
     }
 
