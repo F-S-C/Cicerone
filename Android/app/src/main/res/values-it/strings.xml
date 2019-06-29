@@ -38,4 +38,7 @@
     <string name="user_type">Tipo utente</string>
     <string name="exit_confirm_answer">Sei sicuro di voler uscire?</string>
     <string name="yes">Si</string>
+    <string name="answer_switch_to_cicerone">Sei sicuro di voler diventare Cicerone?</string>
+    <string name="error_during_operation">Si è verificato un errore durante l\'esecuzione dell\'operazione richiesta</string>
+    <string name="operation_completed">Operazione completata con successo!</string>
 </resources>

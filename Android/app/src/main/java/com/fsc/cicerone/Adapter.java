@@ -105,7 +105,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             case REPORT_LIST:
                 try {
                     String object = mData.getJSONObject(position).getString("object");
-                    String code = "Nr." + mData.getJSONObject(position).getString("reportCode");
+                    String code = "Nr." + mData.getJSONObject(position).getString("report_code");
                     switch (Objects.requireNonNull(ReportStatus.getValue(mData.getJSONObject(position).getInt("state")))) {
                         case OPEN:
                             holder.status.setImageDrawable(reportOpenImage);
@@ -135,8 +135,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     Integer itineraryNumber = mData.getJSONObject(position).getInt("itinerary_code");
                     String location = mData.getJSONObject(position).getString("location");
                     try {
-                        DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        @SuppressWarnings("SimpleDateFormat") DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        @SuppressWarnings("SimpleDateFormat") DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                         Date date = inputFormat.parse(mData.getJSONObject(position).getString("beginning_date"));
                         holder.beginning.setText(outputFormat.format(date));
                         date = inputFormat.parse(mData.getJSONObject(position).getString("ending_date"));
