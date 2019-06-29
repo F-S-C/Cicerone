@@ -72,4 +72,7 @@
     <string name="no" translatable="false">No</string>
     <string name="hours">hh</string>
     <string name="minutes">min</string>
+    <string name="answer_switch_to_cicerone">Are you sure you want to switch to Cicerone?</string>
+    <string name="error_during_operation">An error occurred during this operation</string>
+    <string name="operation_completed">Operation completed successfully!</string>
 </resources>

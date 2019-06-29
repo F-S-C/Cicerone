@@ -61,4 +61,7 @@
     <string name="yes">Si</string>
     <string name="hours">hh</string>
     <string name="minutes">min</string>
+    <string name="answer_switch_to_cicerone">Sei sicuro di voler diventare Cicerone?</string>
+    <string name="error_during_operation">Si è verificato un errore durante l\'esecuzione dell\'operazione richiesta</string>
+    <string name="operation_completed">Operazione completata con successo!</string>
 </resources>
