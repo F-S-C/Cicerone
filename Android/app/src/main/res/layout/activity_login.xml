@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/imageView"
         android:layout_marginBottom="-199dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <LinearLayout
@@ -75,6 +76,8 @@
                 android:ems="10"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
+                android:nextFocusForward="@id/passwordInput"
+                android:singleLine="true"
                 android:textColor="@color/colorWhite" />
         </LinearLayout>
 
@@ -98,8 +101,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_style"
                 android:ems="10"
+                android:imeOptions="actionDone"
                 android:importantForAutofill="no"
                 android:inputType="textPassword"
+                android:singleLine="true"
                 android:textColor="@color/colorWhite" />
         </LinearLayout>
 
@@ -121,6 +126,17 @@
             android:onClick="forgotPassword"
             android:text="@string/forgot_password"
             android:textAllCaps="false"
+            android:textColor="@color/colorTransparentWhite" />
+
+        <CheckBox
+            android:id="@+id/rememberMeCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:buttonTint="@color/colorTransparentWhite"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/remember_me"
             android:textColor="@color/colorTransparentWhite" />
 
     </LinearLayout>

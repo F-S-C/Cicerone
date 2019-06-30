@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -32,6 +35,15 @@ public class LoginActivity extends AppCompatActivity {
 
         usernameEditText = findViewById(R.id.usernameInput);
         passwordEditText = findViewById(R.id.passwordInput);
+
+        passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                Button button = findViewById(R.id.loginButton);
+                button.performClick();
+                return true;
+            }
+            return false;
+        });
     }
 
     public void login(View view) {
@@ -83,13 +95,7 @@ public class LoginActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             JSONObject result = jsonArray.getJSONObject(0);
-            boolean done = false;
-            try {
-                Log.e("CIAO", String.valueOf(result.getString("result")));
-                done = result.getBoolean("result");
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.toString());
-            }
+            boolean done = result.getBoolean("result");
             if (!done) {
                 Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_SHORT).show();
                 usernameEditText.setError(getString(R.string.wrong_credentials));
@@ -97,12 +103,15 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-            preferences.edit().putString("session", user.toString()).apply();
+            CheckBox rememberMeCheckBox = findViewById(R.id.rememberMeCheckBox);
+            if (rememberMeCheckBox.isChecked()) {
+                SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+                preferences.edit().putString("session", user.toString()).apply();
+            }
 
-            // TODO: Change activity
             // startActivity(new Intent(LoginActivity.this, AccountDetails.class));
             startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+            finish();
         });
     }
 }

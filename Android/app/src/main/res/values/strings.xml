@@ -75,4 +75,5 @@
     <string name="answer_switch_to_cicerone">Are you sure you want to switch to Cicerone?</string>
     <string name="error_during_operation">An error occurred during this operation</string>
     <string name="operation_completed">Operation completed successfully!</string>
+    <string name="remember_me">Remember me</string>
 </resources>
