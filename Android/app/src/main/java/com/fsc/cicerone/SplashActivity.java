@@ -20,31 +20,29 @@ public class SplashActivity extends AppCompatActivity {
 
         AccountManager accountManager = new AccountManager();
         SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-        try {
-            JSONObject currentLoggedUser = new JSONObject(preferences.getString("session", ""));
-            if (!currentLoggedUser.getString("username").equals("") && !currentLoggedUser.getString("password").equals("")) {
-                accountManager.attemptLogin(currentLoggedUser, () -> {
-                    // Do nothing
-                }, jsonArray -> {
-                    JSONObject result = jsonArray.getJSONObject(0);
-                    boolean done = false;
-                    try {
-                        Log.e("CIAO", String.valueOf(result.getString("result")));
-                        done = result.getBoolean("result");
-                    } catch (JSONException e) {
-                        Log.e(ERROR_TAG, e.toString());
-                    }
+        String latestLoggedUserCredentials = preferences.getString("session", "");
 
-                    Intent intent = new Intent(SplashActivity.this, (done) ? ProfileActivity.class : LoginActivity.class);
+        if (latestLoggedUserCredentials != null && !latestLoggedUserCredentials.equals("")) {
+            try {
+                JSONObject currentLoggedUser = new JSONObject(latestLoggedUserCredentials);
+                if (!currentLoggedUser.getString("username").equals("") && !currentLoggedUser.getString("password").equals("")) {
+                    accountManager.attemptLogin(currentLoggedUser, () -> {
+                        // Do nothing
+                    }, jsonArray -> {
+                        JSONObject result = jsonArray.getJSONObject(0);
+                        boolean done = result.getBoolean("result");
 
-                    // TODO: Change activity
-                    // startActivity(new Intent(LoginActivity.this, AccountDetails.class));
-                    startActivity(intent);
-                    finish();
-                });
+                        Intent intent = new Intent(SplashActivity.this, (done) ? ProfileActivity.class : LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    });
+                }
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.toString());
             }
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
+        } else {
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            finish();
         }
 
 
