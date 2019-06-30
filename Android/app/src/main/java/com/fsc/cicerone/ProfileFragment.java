@@ -122,7 +122,7 @@ public class ProfileFragment extends Fragment {
                     logoutDialog.hide();
                     logoutDialog.dismiss();
                     preferences.edit().clear().apply();
-                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                    Intent i = new Intent(getActivity(), SplashActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
                 }
@@ -208,7 +208,7 @@ public class ProfileFragment extends Fragment {
                 if (userData.getBoolean("result")) {
                     switchToCiceroneDialog.dismiss();
                     Toast.makeText(getActivity(), getString(R.string.operation_completed) , Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                    Intent i = new Intent(getActivity(), SplashActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
                 } else{
