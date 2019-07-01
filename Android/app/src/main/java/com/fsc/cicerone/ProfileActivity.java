@@ -29,12 +29,11 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         final JSONObject params;
         try {
-            // TODO: per mancanza di item funzionali realizzati, la seguente funzione è stata
-            //       basata sull'utente recentemente loggato. Per tanto sarà necessario modificarlo
-            //       appena verranno realizzati gli item di interesse.
-            SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-            params = new JSONObject(preferences.getString("session", ""));
-            params.remove("password");
+            //Get the bundle
+            Bundle bundle = getIntent().getExtras();
+            //Extract the data…
+            params = new JSONObject();
+            params.put("username",bundle.getString("username"));
             TextView username = findViewById(R.id.username_profile);
             username.setText(params.getString("username"));
             getData(params);

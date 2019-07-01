@@ -1,16 +1,20 @@
 package com.fsc.cicerone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -165,6 +169,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 } catch (JSONException e) {
                     Log.e(ERROR_TAG, e.toString());
                 }
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent().setClass(v.getContext(),ProfileActivity.class);
+                        Bundle bundle = new Bundle();
+                        try {
+                            bundle.putString("username", mData.getJSONObject(position).getString("username"));
+                            i.putExtras(bundle);
+                            v.getContext().startActivity(i);
+                        }catch (JSONException e){
+                            Log.e(ERROR_TAG,e.toString());
+                        }
+                    }
+                });
                 break; //END REVIEWS_LIST type
         } //END SWITCH
     }//END onBindViewHolder

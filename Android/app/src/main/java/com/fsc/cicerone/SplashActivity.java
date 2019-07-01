@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
                         JSONObject result = jsonArray.getJSONObject(0);
                         boolean done = result.getBoolean("result");
 
-                        Intent intent = new Intent(SplashActivity.this, (done) ? ProfileActivity.class : LoginActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, (done) ? AccountDetails.class : LoginActivity.class);
                         startActivity(intent);
                         finish();
                     });
