@@ -23,22 +23,22 @@ import app_connector.SendInPostConnector;
 
 public class ItineraryDetails extends AppCompatActivity {
     private Button requestReservation;
-    TextView itineraryTitle;
-    ImageView image;
-    TextView description;
-    TextView bDate;
-    TextView eDate;
-    TextView rDate;
-    TextView location;
-    RatingBar review;
-    TextView author;
-    TextView minP;
-    TextView maxP;
-    TextView repetitions;
-    TextView duration;
-    TextView fPrice;
-    TextView rPrice;
-    JSONObject result;
+    private TextView itineraryTitle;
+    private ImageView image;
+    private TextView description;
+    private TextView bDate;
+    private TextView eDate;
+    private TextView rDate;
+    private TextView location;
+    private RatingBar review;
+    private TextView author;
+    private TextView minP;
+    private TextView maxP;
+    private TextView repetitions;
+    private  TextView duration;
+    private  TextView fPrice;
+    private  TextView rPrice;
+    private  JSONObject result;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
 
