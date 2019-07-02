@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
                         JSONObject result = jsonArray.getJSONObject(0);
                         boolean done = result.getBoolean("result");
 
-                        Intent intent = new Intent(SplashActivity.this, (done) ? AccountDetails.class : LoginActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, (done) ? ItineraryDetails.class : LoginActivity.class);
                         startActivity(intent);
                         finish();
                     });
@@ -41,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
                 Log.e(ERROR_TAG, e.toString());
             }
         } else {
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            startActivity(new Intent(SplashActivity.this, ItineraryDetails.class));
             finish();
         }
 

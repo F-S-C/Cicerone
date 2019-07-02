@@ -31,7 +31,6 @@
     <string name="calendar">Calendario</string>
     <string name="error_insert_min_part">Inserisci prima il numero minimo di partecipanti!</string>
     <string name="wrong_number">Inserisci un numero corretto!</string>
-    <string name="separator">:</string>
     <string name="set_as_one">Imposta questo valore ad 1 o cambia la duarata!</string>
     <string name="reservation_date">Data fine prenotazioni</string>
     <string name="error_insert_ending_date">Inserisci prima la data finale!</string>
@@ -65,4 +64,6 @@
     <string name="error_during_operation">Si è verificato un errore durante l\'esecuzione dell\'operazione richiesta</string>
     <string name="operation_completed">Operazione completata con successo!</string>
     <string name="remember_me">Ricordami</string>
+    <string name="request_reservation">Richiedi prenotazione</string>
+    <string name="preview">Anteprima dell\'itinerario</string>
 </resources>

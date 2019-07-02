@@ -31,7 +31,7 @@
     <string name="error_insert_beginning_date">Insert beginning date first!</string>
     <string name="wrong_number">Insert a correct number!</string>
     <string name="error_insert_min_part">Insert minimum participants first!</string>
-    <string name="separator">:</string>
+    <string name="separator" translatable="false">:</string>
     <string name="set_as_one">Set this as 1 or change the duration!</string>
     <string name="reservation_date">End reservation date</string>
     <string name="error_insert_ending_date">Insert ending date first!</string>
@@ -76,4 +76,6 @@
     <string name="error_during_operation">An error occurred during this operation</string>
     <string name="operation_completed">Operation completed successfully!</string>
     <string name="remember_me">Remember me</string>
+    <string name="request_reservation">Request reservation</string>
+    <string name="preview">Preview of the itinerary</string>
 </resources>

@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             // startActivity(new Intent(LoginActivity.this, AccountDetails.class));
-            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+            startActivity(new Intent(LoginActivity.this, ItineraryDetails.class));
             finish();
         });
     }
