@@ -1,10 +1,13 @@
 package com.fsc.cicerone;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.FrameLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -23,23 +26,72 @@ import app_connector.SendInPostConnector;
  **/
 public class ProfileActivity extends AppCompatActivity {
 
+    TabLayout tabLayout;
+    FrameLayout frameLayout;
+    Fragment fragment = null;
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        frameLayout = findViewById(R.id.frame);
+        fragment = new ReviewFragment();
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame,fragment);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.commit();
+        tabLayout = findViewById(R.id.tabs);
+
         final JSONObject params;
         try {
             //Get the bundle
             Bundle bundle = getIntent().getExtras();
             //Extract the data…
             params = new JSONObject();
-            params.put("username",bundle.getString("username"));
+            params.put("username", Objects.requireNonNull(bundle).getString("username"));
             TextView username = findViewById(R.id.username_profile);
-            username.setText(params.getString("username"));
+            String nick = "@" + params.getString("username");
+            username.setText(nick);
             getData(params);
         } catch (JSONException e) {
             Log.e("error", e.toString());
         }
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        fragment = new ReviewFragment();
+                        break;
+                    case 1:
+                        //TODO inserire il fragment relativo all'inserimento della recisione da parte dell'utente loggato al momento. (IF-24,IF-23)
+                        break;
+                    default:
+                        break;
+                }
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.frame, fragment);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Do nothing
+            }
+
+        });
 
     }
 

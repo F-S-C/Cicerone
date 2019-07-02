@@ -14,7 +14,6 @@
         <activity android:name=".ItineraryCreation"></activity>
         <activity android:name=".ProfileActivity"></activity>
         <activity android:name=".ReviewFragment" />
-        <activity android:name=".ItineraryList" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".SplashActivity"
