@@ -90,8 +90,8 @@ public class ItineraryDetails extends AppCompatActivity {
                 description.setText(result.getString("description"));
                 Picasso.get().load(result.getString("image_url")).into(image);
                 author.setText(result.getString("username"));
-                minP.setText(result.getString("minimum_partecipants_number"));
-                maxP.setText(result.getString("maximum_partecipants_number"));
+                minP.setText(result.getString("minimum_participants_number"));
+                maxP.setText(result.getString("maximum_participants_number"));
                 String dur = result.getString("duration");
                 duration.setText(dur.substring(0,5));
                 location.setText(result.getString("location"));
