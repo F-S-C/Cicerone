@@ -76,6 +76,12 @@
     <string name="error_during_operation">An error occurred during this operation</string>
     <string name="operation_completed">Operation completed successfully!</string>
     <string name="remember_me">Remember me</string>
+    <string name="download_your_data">Download your data</string>
+    <string name="storage_permission_required">Sorry, we need to storage permission to download the file.</string>
+    <string name="external_storage_permission_required_message">Write external storage permission is required.</string>
+    <string name="please_grant_permission">Please grant permission</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="request_reservation">Request reservation</string>
     <string name="preview">Preview of the itinerary</string>
 </resources>

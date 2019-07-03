@@ -64,6 +64,11 @@
     <string name="error_during_operation">Si è verificato un errore durante l\'esecuzione dell\'operazione richiesta</string>
     <string name="operation_completed">Operazione completata con successo!</string>
     <string name="remember_me">Ricordami</string>
+    <string name="download_your_data">Scarica i tuoi dati</string>
+    <string name="external_storage_permission_required_message">È necessaria l\'autorizzazione per la scrittura sulla memoria esterna.</string>
+    <string name="please_grant_permission">Prego, fornire l\'autorizzazione.</string>
+    <string name="storage_permission_required">Ci dispiace, necessitiamo dell\'autorizzazione di scrittura sulla memoria esterna per scaricare il file.</string>
+    <string name="cancel">Annulla</string>
     <string name="request_reservation">Richiedi prenotazione</string>
     <string name="preview">Anteprima dell\'itinerario</string>
 </resources>

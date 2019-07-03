@@ -52,6 +52,11 @@ public final class ConnectorConstants {
      * URL of the server-side connector for the update of registered_user table
      */
     public static final String UPDATE_REGISTERED_USER = SERVER_URL + "/update_registered_user.php";
+
+    /**
+     * URL of the server-side connector for the download of the user's data
+     */
+    public static final String DOWNLOAD_USER_DATA = SERVER_URL + "/download_user_data.php";
 }
 
 

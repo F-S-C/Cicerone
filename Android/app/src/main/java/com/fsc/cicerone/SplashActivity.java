@@ -18,6 +18,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        final Class activityToOpenIfLogged = AccountDetails.class;
+        final Class activityToOpenIfNotLogged = LoginActivity.class;
+
         AccountManager accountManager = new AccountManager();
         SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         String latestLoggedUserCredentials = preferences.getString("session", "");
@@ -32,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
                         JSONObject result = jsonArray.getJSONObject(0);
                         boolean done = result.getBoolean("result");
 
-                        Intent intent = new Intent(SplashActivity.this, (done) ? ItineraryDetails.class : LoginActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, (done) ? activityToOpenIfLogged : activityToOpenIfNotLogged);
                         startActivity(intent);
                         finish();
                     });
@@ -41,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
                 Log.e(ERROR_TAG, e.toString());
             }
         } else {
-            startActivity(new Intent(SplashActivity.this, ItineraryDetails.class));
+            startActivity(new Intent(SplashActivity.this, activityToOpenIfNotLogged));
             finish();
         }
 

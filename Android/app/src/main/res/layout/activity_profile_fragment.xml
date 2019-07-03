@@ -161,6 +161,20 @@
                 android:textColor="@color/colorWhite"
                 android:visibility="visible" />
 
+            <Button
+                android:id="@+id/downloadUserData"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/primary_button_style"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/download_your_data"
+                android:textColor="@color/colorWhite"
+                android:onClick="requestUserData"
+                android:visibility="visible" />
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
