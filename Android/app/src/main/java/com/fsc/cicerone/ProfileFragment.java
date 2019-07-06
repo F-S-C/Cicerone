@@ -96,13 +96,10 @@ public class ProfileFragment extends Fragment {
                 Button noButton = switchToCiceroneDialog.findViewById(R.id.switch_cicerone_no_button);
                 noButton.setOnClickListener(v -> switchToCiceroneDialog.hide());
 
-                Button yesButton = (Button) switchToCiceroneDialog.findViewById(R.id.switch_cicerone_yes_button);
-                yesButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        switchToCiceroneDialog.hide();
-                        switchToCicerone(updateParams);
-                    }
+                Button yesButton = switchToCiceroneDialog.findViewById(R.id.switch_cicerone_yes_button);
+                yesButton.setOnClickListener(v -> {
+                    switchToCiceroneDialog.hide();
+                    switchToCicerone(updateParams);
                 });
 
                 switchToCiceroneDialog.show();
@@ -115,17 +112,14 @@ public class ProfileFragment extends Fragment {
             Button noButton = logoutDialog.findViewById(R.id.no_logout_button);
             noButton.setOnClickListener(v -> logoutDialog.hide());
 
-            Button yesButton = (Button) logoutDialog.findViewById(R.id.yes_logout_button);
-            yesButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    logoutDialog.hide();
-                    logoutDialog.dismiss();
-                    preferences.edit().clear().apply();
-                    Intent i = new Intent(getActivity(), SplashActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
-                }
+            Button yesButton = logoutDialog.findViewById(R.id.yes_logout_button);
+            yesButton.setOnClickListener(v -> {
+                logoutDialog.hide();
+                logoutDialog.dismiss();
+                preferences.edit().clear().apply();
+                Intent i = new Intent(getActivity(), SplashActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
             });
 
             logoutDialog.show();

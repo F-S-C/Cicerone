@@ -3,6 +3,7 @@ package com.fsc.cicerone;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +39,7 @@ public class ItineraryFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_itinerary_fragment, container, false);
         SharedPreferences preferences = this.getActivity().getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);

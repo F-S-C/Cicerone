@@ -17,6 +17,8 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -99,8 +101,8 @@ public class ItineraryDetails extends AppCompatActivity {
                 fPrice.setText(result.getString("full_price"));
                 rPrice.setText(result.getString("reduced_price"));
                 try {
-                     SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd");
-                     SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy");
+                     SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                     SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                     Date date = in.parse(result.getString("beginning_date"));
                     bDate.setText(out.format(date));
                     date = in.parse(result.getString("ending_date"));

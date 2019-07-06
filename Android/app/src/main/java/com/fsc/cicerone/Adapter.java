@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -76,8 +77,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     // inflates the row layout from xml when needed
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (type) {
             case REPORT_LIST:
                 View reportView = mInflater.inflate(R.layout.report_list, parent, false);
@@ -102,7 +104,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         switch (type) {
             case REPORT_LIST:
                 try {
@@ -167,18 +169,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 } catch (JSONException e) {
                     Log.e(ERROR_TAG, e.toString());
                 }
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent().setClass(v.getContext(),ProfileActivity.class);
-                        Bundle bundle = new Bundle();
-                        try {
-                            bundle.putString("username", mData.getJSONObject(position).getString("username"));
-                            i.putExtras(bundle);
-                            v.getContext().startActivity(i);
-                        }catch (JSONException e){
-                            Log.e(ERROR_TAG,e.toString());
-                        }
+                holder.itemView.setOnClickListener(v -> {
+                    Intent i = new Intent().setClass(v.getContext(),ProfileActivity.class);
+                    Bundle bundle = new Bundle();
+                    try {
+                        bundle.putString("username", mData.getJSONObject(position).getString("username"));
+                        i.putExtras(bundle);
+                        v.getContext().startActivity(i);
+                    }catch (JSONException e){
+                        Log.e(ERROR_TAG,e.toString());
                     }
                 });
                 break; //END REVIEWS_LIST type
