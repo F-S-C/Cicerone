@@ -1,9 +1,6 @@
 package com.fsc.cicerone;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -23,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.function.Consumer;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -50,7 +46,6 @@ public class ItineraryCreation extends AppCompatActivity {
     private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
     private static final String DATE_FORMAT = "dd-MM-yy";
 
-    @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,18 +85,6 @@ public class ItineraryCreation extends AppCompatActivity {
             }
         });
 
-        final Consumer<EditText> checkMinMaxParticipants = currentEditText -> {
-            String maxInserted = maxParticipants.getText().toString();
-            String minInserted = minParticipants.getText().toString();
-            if (!maxInserted.equals("") && !minInserted.equals("")) {
-                int max = Integer.parseInt(maxInserted);
-                int min = Integer.parseInt(minInserted);
-                if (min > max) {
-                    currentEditText.setError(ItineraryCreation.this.getString(R.string.wrong_number));
-                }
-            }
-        };
-
         maxParticipants.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -110,7 +93,7 @@ public class ItineraryCreation extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkMinMaxParticipants.accept(maxParticipants);
+                checkMinMaxParticipants(maxParticipants);
             }
 
 
@@ -128,7 +111,7 @@ public class ItineraryCreation extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkMinMaxParticipants.accept(minParticipants);
+                checkMinMaxParticipants(minParticipants);
             }
 
             @Override
@@ -308,10 +291,7 @@ public class ItineraryCreation extends AppCompatActivity {
                 params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
                 params.put("full_price", fullPrice.getText().toString());
                 params.put("reduced_price", reducedPrice.getText().toString());
-                SharedPreferences random = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-                JSONObject obj = new JSONObject(random.getString("session", ""));
-                obj.remove("password");
-                params.put("username", obj.getString("username"));
+                params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
 
                 submit(params);
 
@@ -453,6 +433,18 @@ public class ItineraryCreation extends AppCompatActivity {
     private void updateReservationDate() {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         selectReservationDate.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    private void checkMinMaxParticipants(EditText currentEditText) {
+        String maxInserted = maxParticipants.getText().toString();
+        String minInserted = minParticipants.getText().toString();
+        if (!maxInserted.equals("") && !minInserted.equals("")) {
+            int max = Integer.parseInt(maxInserted);
+            int min = Integer.parseInt(minInserted);
+            if (min > max) {
+                currentEditText.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+            }
+        }
     }
 
 }

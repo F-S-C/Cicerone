@@ -1,6 +1,5 @@
 package com.fsc.cicerone;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,11 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -85,12 +82,10 @@ public class ProfileFragment extends Fragment {
 
         addItemsSex(sexList);
         try {
-            final JSONObject parameters = new JSONObject(preferences.getString("session", "")); //Connection params
-            parameters.remove("password");
-            requestUserData(view, parameters, sexList);
+            requestUserData(sexList);
             final JSONObject updateParams = new JSONObject();
-            updateParams.put("username", parameters.getString("username"));
-            updateParams.put("user_type","1");
+            updateParams.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            updateParams.put("user_type", AccountManager.getCurrentLoggedUser().getUserType().toInt());
 
             switchButton.setOnClickListener(view1 -> {
                 Button noButton = switchToCiceroneDialog.findViewById(R.id.switch_cicerone_no_button);
@@ -116,7 +111,8 @@ public class ProfileFragment extends Fragment {
             yesButton.setOnClickListener(v -> {
                 logoutDialog.hide();
                 logoutDialog.dismiss();
-                preferences.edit().clear().apply();
+                AccountManager.logout();
+                preferences.edit().remove("session").apply();
                 Intent i = new Intent(getActivity(), SplashActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
@@ -145,46 +141,28 @@ public class ProfileFragment extends Fragment {
         spinner.setAdapter(dataAdapter);
     }
 
-    private void requestUserData(View view, JSONObject parameters, Spinner spinner) {
-        RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                progressBar.setVisibility(View.VISIBLE);
-            }
+    private void requestUserData(Spinner spinner) {
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                progressBar.setVisibility(View.GONE);
-                JSONObject userData = jsonArray.getJSONObject(0);
-                if (userData.getString("sex").equals("male")) {
-                    spinner.setSelection(0);
-                } else if (userData.getString("sex").equals("female")) {
-                    spinner.setSelection(1);
-                } else
-                    spinner.setSelection(2);
-                name.setText(userData.getString("name"));
-                surname.setText(userData.getString("surname"));
-                email.setText(userData.getString("email"));
-                cellphone.setText(userData.getString("cellphone"));
-                if(userData.getInt("user_type") == 1) {
-                    switchButton.setVisibility(View.GONE);
-                } else {
-                    switchButton.setVisibility(View.VISIBLE);
-                }
-                try {
-                    @SuppressLint("SimpleDateFormat") DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    @SuppressLint("SimpleDateFormat") DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    Date date = inputFormat.parse(userData.getString("birth_date"));
-                    //TODO Change date with calendar
-                    birthDate.setText(outputFormat.format(date));
-                } catch (ParseException e) {
-                    Log.e("EXCEPTION", e.toString());
-                }
-            }
-        });
-        connector.setObjectToSend(parameters);
-        connector.execute();
+        if (currentLoggedUser.getSex() == Sex.MALE) {
+            spinner.setSelection(0);
+        } else if (currentLoggedUser.getSex() == Sex.FEMALE) {
+            spinner.setSelection(1);
+        } else {
+            spinner.setSelection(2);
+        }
+        name.setText(currentLoggedUser.getName());
+        surname.setText(currentLoggedUser.getSurname());
+        email.setText(currentLoggedUser.getEmail());
+        cellphone.setText(currentLoggedUser.getCellphone());
+        if (currentLoggedUser.getUserType() == UserType.CICERONE) {
+            switchButton.setVisibility(View.GONE);
+        } else {
+            switchButton.setVisibility(View.VISIBLE);
+        }
+        DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        //TODO Change date with calendar
+        birthDate.setText(outputFormat.format(currentLoggedUser.getBirthDate()));
     }
 
     private void switchToCicerone(JSONObject parameters) {
@@ -192,7 +170,7 @@ public class ProfileFragment extends Fragment {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
-             //Do nothing
+                //Do nothing
             }
 
             @Override
@@ -201,11 +179,11 @@ public class ProfileFragment extends Fragment {
 
                 if (userData.getBoolean("result")) {
                     switchToCiceroneDialog.dismiss();
-                    Toast.makeText(getActivity(), getString(R.string.operation_completed) , Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.operation_completed), Toast.LENGTH_LONG).show();
                     Intent i = new Intent(getActivity(), SplashActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
-                } else{
+                } else {
                     Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
                 }
 
