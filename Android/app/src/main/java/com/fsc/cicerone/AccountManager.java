@@ -92,4 +92,13 @@ public abstract class AccountManager {
     public static void logout() {
         currentLoggedUser = null;
     }
+
+    /**
+     * Check if the user is currently logged.
+     *
+     * @return True if the user is logged, false otherwise.
+     */
+    public static boolean isLogged() {
+        return currentLoggedUser != null;
+    }
 }
