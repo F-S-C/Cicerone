@@ -115,7 +115,7 @@ public class User {
         }
 
         try {
-            birthDate = new SimpleDateFormat("yyyy-mm-gg", Locale.US).parse(user.getString("birth_date"));
+            birthDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(user.getString("birth_date"));
         } catch (JSONException | ParseException e) {
             birthDate = null;
         }
