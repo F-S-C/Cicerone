@@ -73,11 +73,13 @@ public abstract class AccountManager {
                             JSONObject result = jsonArray.getJSONObject(0);
                             result.put("password", user.getString("password"));
                             currentLoggedUser = new User(result);
+                            onEnd.run(result, true);
                         }
                     }, user);
                     connector.execute();
+                } else {
+                    onEnd.run(result, false);
                 }
-                onEnd.run(result, success);
             }
         }, user);
 
