@@ -85,18 +85,14 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptLogin(JSONObject user) {
         RelativeLayout progressBar = findViewById(R.id.loginProgressBarContainer);
 
-        AccountManager accountManager = new AccountManager();
-
-        accountManager.attemptLogin(user, () -> {
+        AccountManager.attemptLogin(user, () -> {
             progressBar.setVisibility(View.VISIBLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        }, jsonArray -> {
+        }, (result, success) -> {
             progressBar.setVisibility(View.GONE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            JSONObject result = jsonArray.getJSONObject(0);
-            boolean done = result.getBoolean("result");
-            if (!done) {
+            if (!success) {
                 Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_SHORT).show();
                 usernameEditText.setError(getString(R.string.wrong_credentials));
                 passwordEditText.setError(getString(R.string.wrong_credentials));

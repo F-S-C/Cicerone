@@ -3,8 +3,6 @@ package com.fsc.cicerone;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -17,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.webkit.WebView;
@@ -27,13 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
-import app_connector.SendInPostConnector;
 
 /**
  * Class that specifying the account detail page
@@ -65,17 +56,11 @@ public class AccountDetails extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabs);
 
         /* Set TextView username */
-        SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         TextView usernameText = findViewById(R.id.username);
-        try {
-            final JSONObject parameters = new JSONObject(preferences.getString("session", ""));
-            parameters.remove("password");
-            String username = "@" + parameters.getString("username");
-            usernameText.setText(username);
-            setNameSurname(parameters); //Require data from server and set Name Surname
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
+        String username = "@" + currentLoggedUser.getUsername();
+        usernameText.setText(username);
+        setNameSurname(currentLoggedUser); //Require data from server and set Name Surname
 
         /* TabLayout */
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -118,25 +103,12 @@ public class AccountDetails extends AppCompatActivity {
 
     }
 
-    private void setNameSurname(JSONObject parameters) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject result = jsonArray.getJSONObject(0);
-                String nameSurname = result.getString("name") + " " + result.getString("surname");
-                TextView nameSurnameTextView = findViewById(R.id.name_surname);
-                nameSurnameTextView.setText(nameSurname);
-                if (UserType.getValue(result.getInt("user_type")) == UserType.GLOBETROTTER)
-                    tabLayout.removeTabAt(3);
-            }
-        });
-        connector.setObjectToSend(parameters);
-        connector.execute();
+    private void setNameSurname(User currentLoggedUser) {
+        String nameSurname = currentLoggedUser.getName() + " " + currentLoggedUser.getSurname();
+        TextView nameSurnameTextView = findViewById(R.id.name_surname);
+        nameSurnameTextView.setText(nameSurname);
+        if (currentLoggedUser.getUserType() == UserType.GLOBETROTTER)
+            tabLayout.removeTabAt(3);
     }
 
     public void requestUserData(View view) {
@@ -182,23 +154,12 @@ public class AccountDetails extends AppCompatActivity {
         final WebView webView = new WebView(AccountDetails.this);
         webView.setWebViewClient(new WebViewClient());
 
-        final String username_key = "username";
-        final String p_key = "password";
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("com.fsc.cicerone", MODE_PRIVATE);
-        String username = "";
-        String password = "";
-        try {
-            JSONObject user = new JSONObject(sharedPreferences.getString("session", ""));
-            username = user.getString(username_key);
-            password = user.getString(p_key);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
         Uri uri = Uri.parse(ConnectorConstants.DOWNLOAD_USER_DATA)
                 .buildUpon()
-                .appendQueryParameter(username_key, username)
-                .appendQueryParameter(p_key, password)
+                .appendQueryParameter("username", currentLoggedUser.getUsername())
+                .appendQueryParameter("password", currentLoggedUser.getPassword())
                 .build();
 
         webView.loadUrl(uri.toString());

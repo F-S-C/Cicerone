@@ -1,21 +1,17 @@
 package com.fsc.cicerone;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import app_connector.ConnectorConstants;
@@ -42,19 +38,17 @@ public class ItineraryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_itinerary_fragment, container, false);
-        SharedPreferences preferences = this.getActivity().getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
 
-        try {
-            final JSONObject parameters = new JSONObject(preferences.getString("session","")); //Connection params
-            parameters.remove("password");
-            // set up the RecyclerView
-            RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(view, parameters, recyclerView);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
+
+
+        final JSONObject parameters = currentLoggedUser.getCredentials();
+        parameters.remove("password");
+        // set up the RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        requireData(view, parameters, recyclerView);
 
         return view;
     }

@@ -44,12 +44,11 @@ public class ReviewFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
-        SharedPreferences preferences = this.getActivity().getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
         try {
-            final JSONObject parameters = new JSONObject(preferences.getString("session","")); //Connection params
+            final JSONObject parameters = currentLoggedUser.getCredentials();
             parameters.remove("password");
-            parameters.put("reviewed_user",parameters.remove("username"));
+            parameters.put("reviewed_user", parameters.remove("username"));
             // set up the RecyclerView
             RecyclerView recyclerView = view.findViewById(R.id.review_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -73,7 +72,7 @@ public class ReviewFragment extends Fragment {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 progressBar.setVisibility(View.GONE);
-                adapter = new Adapter(getActivity(),jsonArray, 2);
+                adapter = new Adapter(getActivity(), jsonArray, 2);
                 recyclerView.setAdapter(adapter);
             }
         });
