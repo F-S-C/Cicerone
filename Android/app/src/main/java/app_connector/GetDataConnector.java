@@ -2,8 +2,9 @@ package app_connector;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Special connector to the database.
@@ -48,12 +49,12 @@ public class GetDataConnector extends DatabaseConnector {
     protected String doInBackground(Void... voids) {
         try {
             URL url = new URL(fileUrl);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
             StringBuilder stringBuilder = new StringBuilder();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String json;
             while ((json = bufferedReader.readLine()) != null) {
-                stringBuilder.append(json + "\n");
+                stringBuilder.append(json).append("\n");
             }
             return stringBuilder.toString().trim();
         } catch (Exception e) {

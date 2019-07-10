@@ -12,11 +12,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Generic connector to the database.
@@ -80,7 +81,7 @@ public class SendInPostConnector extends DatabaseConnector {
     protected String doInBackground(Void... voids) {
         try {
             URL url = new URL(fileUrl);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
 
             // Send data
