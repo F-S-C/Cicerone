@@ -113,13 +113,16 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        try {
-            s = s.trim(); // removing excess blank characters
+        if (s != null) {
+            try {
+                s = s.trim(); // removing excess blank characters
 
-            // adapting the string to be a JSON Array by adding the brackets where needed
-            callback.onEndConnection(new JSONArray((s.startsWith("[") ? "" : "[") + s + (s.endsWith("]") ? "" : "]")));
-        } catch (JSONException e) {
-            Log.e("EXCEPTION", e.toString());
+                // adapting the string to be a JSON Array by adding the brackets where needed
+                callback.onEndConnection(new JSONArray((s.startsWith("[") ? "" : "[") + s + (s.endsWith("]") ? "" : "]")));
+            } catch (JSONException e) {
+                Log.e("EXCEPTION", e.toString());
+            }
+        } else {
         }
     }
 
