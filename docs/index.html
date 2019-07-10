@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: "Helvetica", sans-serif;
+        }
+
+        header {
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table thead tr {
+            border-top: 2px solid black;
+            border-bottom: 1px solid black;
+        }
+
+        table tbody tr:last-child {
+            border-bottom: 2px solid black;
+        }
+
+        td, th {
+            padding: 5px 15px;
+        }
+
+        th {
+            cursor: pointer;
+        }
+
+        a.icon {
+            text-decoration: none;
+        }
+
+        a.icon::before {
+            font-family: "Font Awesome 5 free";
+            font-weight: 400;
+        }
+
+        a.icon:hover {
+            text-decoration: underline;
+        }
+
+        a.icon.dir::before {
+            content: "\f07b";
+            margin-right: 10pt;
+        }
+    </style>
+
+    <title>Cicerone: Code Documentation</title>
+</head>
+
+<body>
+    <header>
+        <h1>Cicerone: Code Documentation</h1>
+        <p id="tagline">&copy; FSC</p>
+    </header>
+    <h2>Code Documentation's Sections</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Folder</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="./Android/" class="icon dir">Android</a></td>
+            </tr>
+            <!-- <tr>
+                <td><a href="./Server/" class="icon dir">Server</a></td>
+            </tr> -->
+        </tbody>
+    </table>
+</body>
+
+</html>
