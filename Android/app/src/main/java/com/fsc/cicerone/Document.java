@@ -1,6 +1,7 @@
 package com.fsc.cicerone;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * A document as represented in Cicerone. Each document is identified by a number.
@@ -97,5 +98,14 @@ public class Document {
         return number.equals(document.number) &&
                 type.equals(document.type) &&
                 expiryDate.equals(document.expiryDate);
+    }
+
+    /**
+     * Generate an hash code for the object.
+     * @return The hash code of the object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, type, expiryDate);
     }
 }

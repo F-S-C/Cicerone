@@ -46,7 +46,6 @@ public class ProfileFragment extends Fragment {
     private EditText cellphone;
     private EditText birthDate;
     private Button switchButton;
-    private Dialog logoutDialog;
     private Dialog switchToCiceroneDialog;
 
     /**
@@ -60,7 +59,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_profile_fragment, container, false);
-        logoutDialog = new Dialog(Objects.requireNonNull(getContext()), android.R.style.Theme_Black_NoTitleBar);
+        Dialog logoutDialog = new Dialog(Objects.requireNonNull(getContext()), android.R.style.Theme_Black_NoTitleBar);
         Objects.requireNonNull(logoutDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
         logoutDialog.setContentView(R.layout.activity_logout);
         logoutDialog.setCancelable(true);

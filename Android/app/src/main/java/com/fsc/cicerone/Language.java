@@ -1,5 +1,7 @@
 package com.fsc.cicerone;
 
+import java.util.Objects;
+
 /**
  * A language as represented in the system Cicerone. A language is composed by a code and a name
  * and it's identified by its code.
@@ -72,6 +74,17 @@ public class Language {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Language language = (Language) o;
-        return code.equals(language.code);
+        return Objects.equals(code, language.code) &&
+                Objects.equals(name, language.name);
+    }
+
+    /**
+     * Generate an hash code for the object.
+     *
+     * @return The hash code of the object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, name);
     }
 }

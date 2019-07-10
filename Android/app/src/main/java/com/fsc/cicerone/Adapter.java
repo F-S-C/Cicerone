@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -138,21 +139,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     String title = mData.getJSONObject(position).getString("title");
                     Integer itineraryNumber = mData.getJSONObject(position).getInt("itinerary_code");
                     String location = mData.getJSONObject(position).getString("location");
-                    try {
-                        @SuppressWarnings("SimpleDateFormat") DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        @SuppressWarnings("SimpleDateFormat") DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        Date date = inputFormat.parse(mData.getJSONObject(position).getString("beginning_date"));
-                        holder.beginning.setText(outputFormat.format(date));
-                        date = inputFormat.parse(mData.getJSONObject(position).getString("ending_date"));
-                        holder.ending.setText(outputFormat.format(date));
-                    } catch (ParseException e) {
-                        Log.e(ERROR_TAG, e.toString());
-                    }
+
+                    DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                    DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    Date date = inputFormat.parse(mData.getJSONObject(position).getString("beginning_date"));
+                    holder.beginning.setText(outputFormat.format(date));
+                    date = inputFormat.parse(mData.getJSONObject(position).getString("ending_date"));
+                    holder.ending.setText(outputFormat.format(date));
+
                     holder.itineraryTitle.setText(title);
                     holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
                     holder.location.setText(location);
 
-                } catch (JSONException e) {
+                } catch (JSONException | ParseException e) {
                     Log.e(ERROR_TAG, e.getMessage());
                 }
                 break; //END ITINERARY_LIST type
@@ -170,14 +169,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     Log.e(ERROR_TAG, e.toString());
                 }
                 holder.itemView.setOnClickListener(v -> {
-                    Intent i = new Intent().setClass(v.getContext(),ProfileActivity.class);
+                    Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
                     Bundle bundle = new Bundle();
                     try {
                         bundle.putString("username", mData.getJSONObject(position).getString("username"));
                         i.putExtras(bundle);
                         v.getContext().startActivity(i);
-                    }catch (JSONException e){
-                        Log.e(ERROR_TAG,e.toString());
+                    } catch (JSONException e) {
+                        Log.e(ERROR_TAG, e.toString());
                     }
                 });
                 break; //END REVIEWS_LIST type
