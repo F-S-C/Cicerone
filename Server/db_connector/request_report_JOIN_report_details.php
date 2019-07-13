@@ -21,7 +21,7 @@ if(isset($_POST['reported_user']))
 }
 if(isset($_POST['report_code']))
 {
-	array_push($condition, "report_code = '" . $_POST['report_code'] . "'");
+	array_push($condition, "report.report_code = '" . $_POST['report_code'] . "'");
 }
 
 addConditionsToQuery($condition, $query);

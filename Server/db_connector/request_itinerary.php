@@ -38,6 +38,10 @@ else
 		array_push($condition, "ending_date >= '" . $ed . "'");
 	}
 }
+if(isset($_POST['itinerary_code']))
+{
+	array_push($condition, "itinerary_code = '" . $_POST['itinerary_code'] . "'");
+}
 
 addConditionsToQuery($condition, $query);
 
