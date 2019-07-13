@@ -49,7 +49,7 @@
     <string name="other">Altro</string>
     <string name="female">Femmina</string>
     <string name="switch_to_cicerone">Passa a Cicerone</string>
-    <string name="status">Stato</string>
+    <string name="status">Stato: %s</string>
     <string name="name">Nome</string>
     <string name="surname">Cognome</string>
     <string name="profile_image">Immagine del profilo</string>
@@ -72,4 +72,13 @@
     <string name="request_reservation">Richiedi prenotazione</string>
     <string name="preview">Anteprima dell\'itinerario</string>
     <string name="discover">Scopri</string>
+    <string name="title">Titolo</string>
+    <string name="reported_user">Utente segnalato:</string>
+    <string name="object">"Oggetto: "</string>
+    <string name="report_details_title">Dettagli Report</string>
+    <string name="open">Aperta</string>
+    <string name="closed">Chiusa</string>
+    <string name="pending">In Attesa</string>
+    <string name="canceled">Cancellata</string>
+    <string name="description">"Descrizione: "</string>
 </resources>

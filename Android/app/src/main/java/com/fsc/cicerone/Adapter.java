@@ -132,6 +132,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 } catch (JSONException e) {
                     Log.e(ERROR_TAG, e.getMessage());
                 }
+                holder.itemView.setOnClickListener(v -> {
+                    Intent i = new Intent().setClass(v.getContext(), ReportDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    try {
+                        bundle.putString("report_code", mData.getJSONObject(position).getString("report_code"));
+                        i.putExtras(bundle);
+                        v.getContext().startActivity(i);
+                    } catch (JSONException e) {
+                        Log.e(ERROR_TAG, e.toString());
+                    }
+                });
                 break; //END REPORT_LIST type
 
             case ITINERARY_LIST:
