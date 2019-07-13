@@ -161,10 +161,21 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     holder.itineraryTitle.setText(title);
                     holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
                     holder.location.setText(location);
-
                 } catch (JSONException | ParseException e) {
                     Log.e(ERROR_TAG, e.getMessage());
                 }
+
+                holder.itemView.setOnClickListener(v -> {
+                    Intent i = new Intent().setClass(v.getContext(), ItineraryManagement.class);
+                    Bundle bundle = new Bundle();
+                    try {
+                        bundle.putString("itinerary_code", mData.getJSONObject(position).getString("itinerary_code"));
+                        i.putExtras(bundle);
+                        v.getContext().startActivity(i);
+                    } catch (JSONException e) {
+                        Log.e(ERROR_TAG, e.toString());
+                    }
+                });
                 break; //END ITINERARY_LIST type
 
             case REVIEWS_LIST:

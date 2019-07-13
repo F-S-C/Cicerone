@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ItineraryManagement"></activity>
         <activity android:name=".ReportDetailsActivity"
             android:label="@string/report_details_title"></activity>
         <activity android:name=".ItineraryDetails" />

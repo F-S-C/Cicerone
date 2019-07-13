@@ -97,4 +97,8 @@
     <string name="pending">Pending</string>
     <string name="canceled">Canceled</string>
     <string name="description">"Description: "</string>
+    <string name="confirm_delete">Are you sure you wanna delete this itinerary?</string>
+    <string name="edit_itinerary">Edit itinerary</string>
+    <string name="delete_itinerary">Delete itinerary</string>
+    <string name ="itinerary_deleted">Itinerary deleted.</string>
 </resources>

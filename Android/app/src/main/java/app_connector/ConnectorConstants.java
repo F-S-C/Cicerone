@@ -57,6 +57,11 @@ public final class ConnectorConstants {
      * URL of the server-side connector for the download of the user's data
      */
     public static final String DOWNLOAD_USER_DATA = SERVER_URL + "/download_user_data.php";
+
+    /**
+     * URL of the server-side connector for the itinerary table
+     */
+    public static final String DELETE_ITINERARY = SERVER_URL + "/delete_itinerary.php";
 }
 
 

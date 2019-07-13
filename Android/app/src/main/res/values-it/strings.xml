@@ -81,4 +81,9 @@
     <string name="pending">In Attesa</string>
     <string name="canceled">Cancellata</string>
     <string name="description">"Descrizione: "</string>
+    <string name="confirm_delete">Sei sicuro di voler rimuovere questo itinerario?</string>
+    <string name="delete_itinerary">Rimuovi itinerario</string>
+    <string name="edit_itinerary">Modifica itinerario</string>
+    <string name ="itinerary_deleted">Itinerario rimosso.</string>
+
 </resources>
