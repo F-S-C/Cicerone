@@ -37,7 +37,6 @@
     <string name="error_insert_ending_date">Insert ending date first!</string>
     <string name="itinerary_added">Itinerary added.</string>
     <string name="error_fields_empty">Please fill every field first.</string>
-    <string name="profile">Profile</string>
     <string name="image_profile">Profile Image</string>
     <string name="account" translatable="false">Account</string>
     <string name="itinerary">Itinerary</string>
@@ -84,4 +83,8 @@
     <string name="cancel">Cancel</string>
     <string name="request_reservation">Request reservation</string>
     <string name="preview">Preview of the itinerary</string>
+    <string name="home" translatable="false">Home</string>
+    <string name="discover">Discover</string>
+    <string name="wishlist" translatable="false">Wishlist</string>
+    <string name="profile">Profile</string>
 </resources>

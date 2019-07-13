@@ -27,7 +27,8 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
          * Function that will be called when the connection has ended.
          *
          * @param jsonArray This array contains the results of the connection.
-         * @throws JSONException
+         * @throws JSONException If there are errors in the conversion of the results to JSON,
+         * an exception is thrown.
          */
         void onEndConnection(JSONArray jsonArray) throws JSONException;
     }
@@ -122,7 +123,6 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
             } catch (JSONException e) {
                 Log.e("EXCEPTION", e.toString());
             }
-        } else {
         }
     }
 
