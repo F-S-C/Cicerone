@@ -1,6 +1,6 @@
 package com.fsc.cicerone;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * UserType is an enumerative type that specifies the type that a user can assume.

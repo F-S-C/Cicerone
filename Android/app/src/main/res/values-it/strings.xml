@@ -71,6 +71,7 @@
     <string name="cancel">Annulla</string>
     <string name="request_reservation">Richiedi prenotazione</string>
     <string name="preview">Anteprima dell\'itinerario</string>
+    <string name="discover">Scopri</string>
     <string name="title">Titolo</string>
     <string name="reported_user">Utente segnalato:</string>
     <string name="object">"Oggetto: "</string>
