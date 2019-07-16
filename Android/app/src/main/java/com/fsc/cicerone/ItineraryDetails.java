@@ -1,7 +1,6 @@
 package com.fsc.cicerone;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,10 +9,15 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -101,8 +105,8 @@ public class ItineraryDetails extends AppCompatActivity {
                 minP.setText(result.getString("minimum_participants_number"));
                 maxP.setText(result.getString("maximum_participants_number"));
                 try {
-                     SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd");
-                     SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy");
+                     SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                     SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                     Date date = in.parse(result.getString("beginning_date"));
                     bDate.setText(out.format(date));
                     date = in.parse(result.getString("ending_date"));

@@ -97,6 +97,15 @@
     <string name="pending">Pending</string>
     <string name="canceled">Canceled</string>
     <string name="description">"Description: "</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="sure_to_exit">Are you sure you want to exit?</string>
     <string name="confirm_delete">Are you sure you wanna delete this itinerary?</string>
     <string name="edit_itinerary">Update itinerary</string>
     <string name="delete_itinerary">Delete itinerary</string>

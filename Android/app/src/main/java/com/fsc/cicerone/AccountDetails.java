@@ -1,85 +1,75 @@
 package com.fsc.cicerone;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.URLUtil;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.tabs.TabLayout;
-
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.webkit.URLUtil;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.Objects;
 
 import app_connector.ConnectorConstants;
 
 /**
  * Class that specifying the account detail page
  */
-public class AccountDetails extends AppCompatActivity {
+public class AccountDetails extends Fragment {
 
     private static final String ERROR_TAG = "ERROR IN " + AccountDetails.class.getName();
 
-    TabLayout tabLayout;
-    FrameLayout frameLayout;
-    Fragment fragment = null;
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+    private TabLayout tabLayout;
+    private Fragment fragment = null;
+
+    private Activity context;
+
+    private View holderView;
 
     private static final int PERMISSION_REQUEST_CODE = 357;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_details);
+    AccountDetails() {
+        // required empty constructor
+    }
 
-        frameLayout = findViewById(R.id.frame);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        holderView = inflater.inflate(R.layout.activity_account_details, container, false);
+
+        context = Objects.requireNonNull(getActivity());
+
         fragment = new ProfileFragment();
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = Objects.requireNonNull(getFragmentManager());
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
-        tabLayout = findViewById(R.id.tabs);
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.app_bar_account);
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.app_bar_home:
-                case R.id.app_bar_discover:
-                case R.id.app_bar_wishlist:
-                    Toast.makeText(AccountDetails.this, "Sorry, Work in Progress", Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    break;
-
-            }
-            return false;
-        });
+        tabLayout = holderView.findViewById(R.id.tabs);
 
         /* Set TextView username */
-        TextView usernameText = findViewById(R.id.username);
+        TextView usernameText = holderView.findViewById(R.id.username);
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
         String username = "@" + currentLoggedUser.getUsername();
         usernameText.setText(username);
@@ -105,7 +95,7 @@ public class AccountDetails extends AppCompatActivity {
                     default:
                         break;
                 }
-                FragmentManager fm = getSupportFragmentManager();
+                FragmentManager fm = Objects.requireNonNull(getFragmentManager());
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.frame, fragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -124,11 +114,12 @@ public class AccountDetails extends AppCompatActivity {
 
         });
 
+        return holderView;
     }
 
     private void setNameSurname(User currentLoggedUser) {
         String nameSurname = currentLoggedUser.getName() + " " + currentLoggedUser.getSurname();
-        TextView nameSurnameTextView = findViewById(R.id.name_surname);
+        TextView nameSurnameTextView = holderView.findViewById(R.id.name_surname);
         nameSurnameTextView.setText(nameSurname);
         if (currentLoggedUser.getUserType() == UserType.GLOBETROTTER)
             tabLayout.removeTabAt(3);
@@ -140,19 +131,19 @@ public class AccountDetails extends AppCompatActivity {
 
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     // show an alert dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(AccountDetails.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage(getString(R.string.external_storage_permission_required_message));
                     builder.setTitle(getString(R.string.please_grant_permission));
-                    builder.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> ActivityCompat.requestPermissions(AccountDetails.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE));
+                    builder.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE));
                     builder.setNeutralButton(getString(R.string.cancel), null);
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 } else {
                     // Request permission
-                    ActivityCompat.requestPermissions(AccountDetails.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+                    ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
                 }
             } else {
                 downloadUserData();
@@ -168,13 +159,13 @@ public class AccountDetails extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 downloadUserData();
             } else {
-                Toast.makeText(this, getString(R.string.storage_permission_required), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, getString(R.string.storage_permission_required), Toast.LENGTH_LONG).show();
             }
         }
     }
 
     private void downloadUserData() {
-        final WebView webView = new WebView(AccountDetails.this);
+        final WebView webView = new WebView(context);
         webView.setWebViewClient(new WebViewClient());
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
@@ -186,7 +177,7 @@ public class AccountDetails extends AppCompatActivity {
                 .build();
 
         webView.loadUrl(uri.toString());
-        RelativeLayout rootLayout = findViewById(R.id.accountDetailsRoot);
+        RelativeLayout rootLayout = holderView.findViewById(R.id.accountDetailsRoot);
         rootLayout.addView(webView);
 
         webView.setDownloadListener((url, userAgent, contentDescription, mimetype, contentLength) -> {
@@ -202,7 +193,7 @@ public class AccountDetails extends AppCompatActivity {
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
 
             // Enqueue the download
-            DownloadManager dManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            DownloadManager dManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             dManager.enqueue(request);
             webView.destroy();
         });

@@ -97,14 +97,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
-        android:clickable="false"
-        app:menu="@menu/bottomappbar_menu" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

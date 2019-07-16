@@ -48,7 +48,6 @@ public class ItineraryManagement extends AppCompatActivity {
     private  TextView fPrice;
     private  TextView rPrice;
     private JSONObject result;
-    private Button deleteItinerary;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryManagement.class.getName();
     private static final String IT_CODE = "itinerary_code";
@@ -72,7 +71,7 @@ public class ItineraryManagement extends AppCompatActivity {
         duration = findViewById(R.id.duration);
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
-        deleteItinerary = findViewById(R.id.deleteItinerary);
+        Button deleteItinerary = findViewById(R.id.deleteItinerary);
 
          final Dialog deleteDialog = new Dialog(ItineraryManagement.this, android.R.style.Theme_Black_NoTitleBar);
         Objects.requireNonNull(deleteDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));

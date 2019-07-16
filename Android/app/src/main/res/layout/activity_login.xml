@@ -108,19 +108,18 @@
                 android:textColor="@color/colorWhite" />
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
-            android:background="@drawable/primary_button_style"
             android:onClick="login"
             android:text="@string/login"
             android:textColor="@color/colorWhite" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/forgotPasswordButton"
-            style="@android:style/Widget.Material.Button.Borderless"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="forgotPassword"
@@ -160,9 +159,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/goToSignUpButton"
-                style="@android:style/Widget.Material.Button.Borderless"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="goToSignUpPage"
@@ -177,9 +176,9 @@
                 android:text="@string/or"
                 android:textColor="@color/colorTransparentWhite" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/skipLoginButton"
-                style="@android:style/Widget.Material.Button.Borderless"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="skipLogin"

@@ -17,7 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        final Class activityToOpenIfLogged = AccountDetails.class;
+        final Class activityToOpenIfLogged = MainActivity.class;
         final Class activityToOpenIfNotLogged = LoginActivity.class;
 
         SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
