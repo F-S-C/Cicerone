@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ItineraryCreationRoot"
+    android:id="@+id/ItineraryUpdateRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="25dp"
-    tools:context=".ItineraryCreation">
+    tools:context=".ItineraryUpdate">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="@string/new_itinerary"
+            android:text="@string/edit_itinerary"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textStyle="bold" />
@@ -384,7 +383,7 @@
             android:enabled="true"
             android:focusable="true"
             android:onClick="sendData"
-            android:text="@string/submit"
+            android:text="@string/edit_itinerary"
             android:textColor="@color/colorWhite"
             android:visibility="visible" />
 

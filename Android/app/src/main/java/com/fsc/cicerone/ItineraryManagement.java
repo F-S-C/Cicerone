@@ -72,6 +72,7 @@ public class ItineraryManagement extends AppCompatActivity {
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
         Button deleteItinerary = findViewById(R.id.deleteItinerary);
+        Button updateItinerary = findViewById(R.id.editItinerary);
 
          final Dialog deleteDialog = new Dialog(ItineraryManagement.this, android.R.style.Theme_Black_NoTitleBar);
         Objects.requireNonNull(deleteDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
@@ -85,7 +86,7 @@ public class ItineraryManagement extends AppCompatActivity {
             //Extract the data…
             code = new JSONObject();
             code.put(IT_CODE, Objects.requireNonNull(bundle).getString(IT_CODE));
-            getDatafromServer(code);
+            getDataFromServer(code);
             getItineraryReviews(code);
             deleteItinerary.setOnClickListener(v -> {
                 Button noButton = deleteDialog.findViewById(R.id.no_logout_button);
@@ -95,13 +96,20 @@ public class ItineraryManagement extends AppCompatActivity {
                 yesButton.setOnClickListener(view -> {
                     deleteDialog.hide();
                     deleteDialog.dismiss();
-                    deleteItineraryfromServer(code);
+                    deleteItineraryFromServer(code);
 
 
                 });
 
                 deleteDialog.show();
             });
+
+            updateItinerary.setOnClickListener(v -> {
+                Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
+                i.putExtras(bundle);
+                v.getContext().startActivity(i);
+            });
+
         } catch (JSONException e) {
             Log.e("error", e.toString());
         }
@@ -109,7 +117,7 @@ public class ItineraryManagement extends AppCompatActivity {
 
     }
 
-    public void getDatafromServer(JSONObject itineraryCode)
+    public void getDataFromServer(JSONObject itineraryCode)
     {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
@@ -179,7 +187,7 @@ public class ItineraryManagement extends AppCompatActivity {
         connector.execute();
     }
 
-    public void deleteItineraryfromServer(JSONObject itCode)
+    public void deleteItineraryFromServer(JSONObject itCode)
     {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
@@ -192,7 +200,7 @@ public class ItineraryManagement extends AppCompatActivity {
                 JSONObject object = jsonArray.getJSONObject(0);
                 if(object.getBoolean("result"))
                 {
-                    Intent i = new Intent(ItineraryManagement.this, AccountDetails.class);
+                    Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();
                     startActivity(i);

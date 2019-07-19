@@ -87,4 +87,6 @@
     <string name="delete_itinerary">Rimuovi itinerario</string>
     <string name="edit_itinerary">Aggiorna itinerario</string>
     <string name ="itinerary_deleted">Itinerario rimosso.</string>
+    <string name="itinerary_updated">Itinerario aggiornato.</string>
+
 </resources>
