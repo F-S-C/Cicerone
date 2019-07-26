@@ -325,7 +325,7 @@
 
                     <Space
                         android:layout_width="70dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1" />
 
                     <TextView
@@ -359,6 +359,7 @@
                     android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
+
                     <TextView
                         android:id="@+id/textView34"
                         android:layout_width="wrap_content"
@@ -378,7 +379,6 @@
                         android:id="@+id/fPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:textStyle="bold" />
 
@@ -403,10 +403,12 @@
                         android:layout_weight="1"
                         android:text="@string/separator" />
 
+
                     <TextView
                         android:id="@+id/rPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:textStyle="bold" />
 
@@ -424,6 +426,19 @@
                 android:focusable="true"
                 android:onClick="reservation"
                 android:text="@string/request_reservation"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/intoWishlist"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/primary_button_style"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="setWishlistButton"
+                android:text="@string/add_to_wishlist"
                 android:textColor="@color/colorWhite" />
 
         </LinearLayout>

@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ItineraryUpdate"></activity>
+        <activity android:name=".Wishlist" />
+        <activity android:name=".ItineraryUpdate" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" />

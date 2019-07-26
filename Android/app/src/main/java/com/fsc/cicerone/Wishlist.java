@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,29 +21,22 @@ import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
-/**
- * Class that contains the elements of the TAB Itinerary on the account details page.
- */
-public class ItineraryFragment extends Fragment {
+public class Wishlist extends Fragment {
 
-    Adapter adapter;
+    WishlistAdapter adapter;
+    TextView numberItineraries;
 
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
+    private static final String ERROR_TAG = "ERROR IN " + AccountDetails.class.getName();
 
-    /**
-     * Empty constructor
-     */
-    public ItineraryFragment() {
-        // Required empty public constructor
-    }
 
+
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_itinerary_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_wishlist, container, false);
+        numberItineraries = view.findViewById(R.id.numberOfItineraries);
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
-
 
         final JSONObject parameters = currentLoggedUser.getCredentials();
         parameters.remove("password");
@@ -56,7 +51,7 @@ public class ItineraryFragment extends Fragment {
 
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_WISHLIST, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 progressBar.setVisibility(View.VISIBLE);
@@ -65,12 +60,12 @@ public class ItineraryFragment extends Fragment {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 progressBar.setVisibility(View.GONE);
-                adapter = new Adapter(getActivity(), jsonArray, 1);
+                adapter = new WishlistAdapter(getActivity(), jsonArray);
+                numberItineraries.setText(String.format("You have %d itineraries in your wishlist.", jsonArray.length()));
                 recyclerView.setAdapter(adapter);
             }
         });
         connector.setObjectToSend(parameters);
         connector.execute();
     }
-
 }

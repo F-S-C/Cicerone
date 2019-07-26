@@ -67,6 +67,11 @@ public final class ConnectorConstants {
      * URL of the server-side connector for the itinerary table
      */
     public static final String UPDATE_ITINERARY = SERVER_URL + "/update_itinerary.php";
+
+    /**
+     * URL of the server-side connector for the wishlist table
+     */
+    public static final String REQUEST_WISHLIST = SERVER_URL + "/request_wishlist_JOIN_itinerary.php";
 }
 
 

@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -29,6 +30,7 @@ import app_connector.SendInPostConnector;
 
 public class ItineraryDetails extends AppCompatActivity {
     private Button requestReservation;
+    private Button intoWishlist;
     private TextView itineraryTitle;
     private ImageView image;
     private TextView description;
@@ -47,12 +49,15 @@ public class ItineraryDetails extends AppCompatActivity {
     private  JSONObject result;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
+    private static final String IT_CODE = "itinerary_code";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_details);
          requestReservation = findViewById(R.id.requestReservation);
+         intoWishlist = findViewById(R.id.intoWishlist);
          itineraryTitle = findViewById(R.id.title);
          image = findViewById(R.id.image);
          description = findViewById(R.id.description);
@@ -69,15 +74,44 @@ public class ItineraryDetails extends AppCompatActivity {
          fPrice = findViewById(R.id.fPrice);
          rPrice = findViewById(R.id.rPrice);
         JSONObject object = new JSONObject();
+        Bundle bundle = getIntent().getExtras();
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
+
         try {
-            object.put("itinerary_code", "2");
+            object.put(IT_CODE,Objects.requireNonNull(bundle).getString(IT_CODE));
             getDatafromServer(object);
             getItineraryReviews(object);
-            object.put("username", "test");
+            object.put("username", currentLoggedUser.getUsername());
             isReservated(object);
+            checkWishlist(object);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setWishlistButton(View view)
+    {
+        Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.loading), Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void checkWishlist(JSONObject object) {
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_WISHLIST, new DatabaseConnector.CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+                // Do nothing
+            }
+
+            @Override
+            public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                result = jsonArray.getJSONObject(0);
+                if ( result.length() > 0)
+                    intoWishlist.setVisibility(View.GONE);
+            }
+        });
+        connector.setObjectToSend(object);
+        connector.execute();
+
     }
 
 

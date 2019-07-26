@@ -111,4 +111,6 @@
     <string name="delete_itinerary">Delete itinerary</string>
     <string name="itinerary_deleted">Itinerary deleted.</string>
     <string name="itinerary_updated">Itinerary updated.</string>
+    <string name="wishlist_number">You have # itineraries in your wishlist.</string>
+    <string name="add_to_wishlist">Add to wishlist</string>
 </resources>

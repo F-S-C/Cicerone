@@ -88,5 +88,7 @@
     <string name="edit_itinerary">Aggiorna itinerario</string>
     <string name ="itinerary_deleted">Itinerario rimosso.</string>
     <string name="itinerary_updated">Itinerario aggiornato.</string>
+    <string name="wishlist_number">Hai # itinerari nella tua lista desideri.</string>
+    <string name="add_to_wishlist">Aggiungi alla lista desideri</string>
 
 </resources>

@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The wishlist fragment (third tab).
      */
-    private final Fragment wishlistFragment = new HomeFragment();
+    private final Fragment wishlistFragment = new Wishlist();
 
     /**
      * The profile fragment (fourth tab).
