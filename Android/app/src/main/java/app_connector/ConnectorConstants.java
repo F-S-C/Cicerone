@@ -71,7 +71,18 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the wishlist table
      */
+    public static final String INSERT_WISHLIST = SERVER_URL + "/insert_wishlist.php";
+
+    /**
+     * URL of the server-side connector for the wishlist table
+     */
+    public static final String DELETE_WISHLIST = SERVER_URL + "/delete_wishlist.php";
+
+    /**
+     * URL of the server-side connector for the wishlist table
+     */
     public static final String REQUEST_WISHLIST = SERVER_URL + "/request_wishlist_JOIN_itinerary.php";
+
 }
 
 

@@ -2,7 +2,6 @@ package com.fsc.cicerone;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -10,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -393,7 +394,6 @@ public class ItineraryCreation extends AppCompatActivity {
                 Log.e("p", object.toString());
                 if (object.getBoolean("result")) {
                     Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-
                 }
 
             }

@@ -437,9 +437,17 @@
                 android:background="@drawable/primary_button_style"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="setWishlistButton"
                 android:text="@string/add_to_wishlist"
                 android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/removeFromWishlist"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/remove_from_wishlist"
+                android:clickable="true"
+                android:focusable="true"/>
 
         </LinearLayout>
     </LinearLayout>

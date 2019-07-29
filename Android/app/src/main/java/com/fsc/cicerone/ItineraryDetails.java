@@ -1,6 +1,9 @@
 package com.fsc.cicerone;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +34,7 @@ import app_connector.SendInPostConnector;
 public class ItineraryDetails extends AppCompatActivity {
     private Button requestReservation;
     private Button intoWishlist;
+    private Button removeFromWishlist;
     private TextView itineraryTitle;
     private ImageView image;
     private TextView description;
@@ -58,6 +62,7 @@ public class ItineraryDetails extends AppCompatActivity {
         setContentView(R.layout.activity_itinerary_details);
          requestReservation = findViewById(R.id.requestReservation);
          intoWishlist = findViewById(R.id.intoWishlist);
+         removeFromWishlist = findViewById(R.id.removeFromWishlist);
          itineraryTitle = findViewById(R.id.title);
          image = findViewById(R.id.image);
          description = findViewById(R.id.description);
@@ -73,27 +78,94 @@ public class ItineraryDetails extends AppCompatActivity {
          duration = findViewById(R.id.duration);
          fPrice = findViewById(R.id.fPrice);
          rPrice = findViewById(R.id.rPrice);
+        final Dialog deleteDialog = new Dialog(ItineraryDetails.this, android.R.style.Theme_Black_NoTitleBar);
+        Objects.requireNonNull(deleteDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
+        deleteDialog.setContentView(R.layout.activity_delete_itinerary);
+        deleteDialog.setCancelable(true);
         JSONObject object = new JSONObject();
+        JSONObject object2 = new JSONObject();
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
         try {
             object.put(IT_CODE,Objects.requireNonNull(bundle).getString(IT_CODE));
+            object.put("itinerary_in_wishlist", Objects.requireNonNull(bundle).getString(IT_CODE));
             getDatafromServer(object);
             getItineraryReviews(object);
-            object.put("username", currentLoggedUser.getUsername());
-            isReservated(object);
+            object2.put("itinerary_code", object.getString("itinerary_code"));
+            object2.put("username", currentLoggedUser.getUsername());
+            object2.put("itinerary_in_wishlist", Objects.requireNonNull(bundle).getString(IT_CODE));
+            isReservated(object2);
             checkWishlist(object);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        removeFromWishlist.setOnClickListener(v -> {
+            Button noButton = deleteDialog.findViewById(R.id.no_logout_button);
+            noButton.setOnClickListener(view -> deleteDialog.hide());
+
+            Button yesButton = deleteDialog.findViewById(R.id.yes_logout_button);
+            yesButton.setOnClickListener(view -> {
+                deleteDialog.hide();
+                deleteDialog.dismiss();
+                deleteFromWishlist(object2);
+
+
+            });
+            deleteDialog.show();
+        });
+
+
+
+        intoWishlist.setOnClickListener(v -> addToWishlist(object2));
     }
 
-    public void setWishlistButton(View view)
+    public void addToWishlist ( JSONObject params)
     {
-        Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.loading), Toast.LENGTH_SHORT).show();
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_WISHLIST, new DatabaseConnector.CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+                // Do nothing
+            }
 
+            @Override
+            public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                JSONObject object = jsonArray.getJSONObject(0);
+                Log.e("p", object.toString());
+                if (params.getBoolean("result")) {
+                    Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        connector.setObjectToSend(params);
+        connector.execute();
     }
+
+    public void deleteFromWishlist (JSONObject params)
+    {
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_WISHLIST, new DatabaseConnector.CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+                // Do nothing
+            }
+
+            @Override
+            public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                JSONObject object = jsonArray.getJSONObject(0);
+                Log.e("p", object.toString());
+                if (object.getBoolean("result")) {
+                    Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show();
+                    startActivity(i);
+                }
+            }
+        });
+        connector.setObjectToSend(params);
+        connector.execute();
+    }
+
 
     public void checkWishlist(JSONObject object) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_WISHLIST, new DatabaseConnector.CallbackInterface() {
@@ -107,6 +179,9 @@ public class ItineraryDetails extends AppCompatActivity {
                 result = jsonArray.getJSONObject(0);
                 if ( result.length() > 0)
                     intoWishlist.setVisibility(View.GONE);
+
+                else
+                    removeFromWishlist.setVisibility(View.VISIBLE);
             }
         });
         connector.setObjectToSend(object);

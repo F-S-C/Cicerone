@@ -113,4 +113,5 @@
     <string name="itinerary_updated">Itinerary updated.</string>
     <string name="wishlist_number">You have # itineraries in your wishlist.</string>
     <string name="add_to_wishlist">Add to wishlist</string>
+    <string name="remove_from_wishlist">Remove from wishlist</string>
 </resources>
