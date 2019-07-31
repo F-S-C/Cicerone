@@ -320,12 +320,13 @@
                         android:id="@+id/minP"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:textStyle="bold" />
 
                     <Space
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1" />
 
                     <TextView
@@ -372,6 +373,8 @@
                         android:id="@+id/textView32"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:text="@string/separator" />
 
@@ -379,12 +382,13 @@
                         android:id="@+id/fPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:textStyle="bold" />
 
                     <Space
-                        android:layout_width="88dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="38dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1" />
 
                     <TextView
@@ -408,7 +412,6 @@
                         android:id="@+id/rPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:textStyle="bold" />
 

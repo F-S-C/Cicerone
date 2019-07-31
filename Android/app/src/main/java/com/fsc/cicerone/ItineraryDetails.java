@@ -286,19 +286,12 @@ public class ItineraryDetails extends AppCompatActivity {
         Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.loading), Toast.LENGTH_SHORT).show();
     }
 
-    public void goToAuthor(View view)
-    {
+    public void goToAuthor(View view) {
         Intent i = new Intent().setClass(view.getContext(),ProfileActivity.class);
         Bundle bundle = new Bundle();
-        try
-        {
-            bundle.putString("username",result.getString("username"));
-            i.putExtras(bundle);
-            view.getContext().startActivity(i);
-        }
-        catch(JSONException e){
-            Log.e(ERROR_TAG,e.toString());
-        }
+        bundle.putString("username",author.getText().toString());
+        i.putExtras(bundle);
+        view.getContext().startActivity(i);
     }
 
 }
