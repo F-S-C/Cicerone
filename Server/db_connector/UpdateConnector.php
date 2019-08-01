@@ -54,7 +54,8 @@ abstract class UpdateConnector extends BooleanConnector
                 $ordered_types .= $this->types[$key];
                 array_push($data, $value);
             }
-            $ordered_types .= self::ID_COLUMN_TYPE;
+            $ordered_types .= $this::ID_COLUMN_TYPE;
+            array_push($data, $this->id);
 
             if (!isset($this->id)) {
                 throw new InvalidArgumentException("Some required fields are missing!");
