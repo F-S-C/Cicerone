@@ -19,6 +19,6 @@ $connector->add_value("password", password_hash($_POST['password'], PASSWORD_DEF
 $connector->add_value("email", $_POST['email'], "s");
 $connector->add_value("user_type", $_POST['user_type'], "i");
 $connector->add_value("cellphone", $_POST['cellphone'], "s");
-$connector->add_value("birthday", $_POST['birthday'], "s");
+$connector->add_value("birth_date", $_POST['birth_date'], "s");
 $connector->add_value("sex", $_POST['sex'], "s");
 print $connector->get_content();

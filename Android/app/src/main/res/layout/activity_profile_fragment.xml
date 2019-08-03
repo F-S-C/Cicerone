@@ -1,180 +1,346 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fsc.cicerone.AccountDetails">
+    tools:context="com.fsc.cicerone.AccountDetails"
+    android:id="@+id/scroll_details"
+    android:background="#ffffff">
 
-    <ScrollView
-        android:id="@+id/scroll_details"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="#ffffff">
+    <LinearLayout
+        android:id="@+id/base_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/base_layout"
+        <RelativeLayout
+            android:id="@+id/progressContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:padding="15dp"
+            android:visibility="gone">
 
-            <RelativeLayout
-                android:id="@+id/progressContainer"
-                android:layout_width="match_parent"
+            <ProgressBar
+                android:id="@+id/loginProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:gravity="center"
-                android:padding="15dp"
-                android:visibility="gone">
+                android:indeterminate="true" />
 
-                <ProgressBar
-                    android:id="@+id/loginProgressBar"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true" />
+            <TextView
+                android:id="@+id/loadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/loginProgressBar"
+                android:text="@string/loading" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/loadingText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@id/loginProgressBar"
-                    android:text="@string/loading" />
-            </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/ins_name" />
 
             <EditText
                 android:id="@+id/name"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/name" />
+                android:text="@string/name"
+                android:hint="@string/name"
+                android:autofillHints="" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/ins_surname" />
 
             <EditText
-                android:id="@+id/surname"
-                android:layout_width="match_parent"
+                android:id="@+id/surname_textbox"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/surname" />
+                android:text="@string/surname"
+                android:hint="@string/surname"
+                android:autofillHints="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/ins_email" />
 
             <EditText
                 android:id="@+id/email"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:ems="10"
                 android:inputType="textEmailAddress"
-                android:text="@string/example_email" />
+                android:text="@string/example_email"
+                android:hint="@string/example_email"
+                android:autofillHints="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/cellphone"/>
 
             <EditText
                 android:id="@+id/cellphone"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:ems="10"
                 android:inputType="phone"
-                android:text="@string/example_cellphone" />
+                android:text="@string/example_cellphone"
+                android:hint="@string/example_cellphone"
+                android:autofillHints="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/ins_birth_date" />
 
             <EditText
                 android:id="@+id/birthdate"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:clickable="false"
                 android:ems="10"
-                android:focusable="false"
                 android:inputType="date"
-                android:text="@string/example_date" />
+                android:focusableInTouchMode="false"
+                android:text="@string/example_date"
+                android:hint="@string/example_date"
+                android:autofillHints="" />
+        </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/sexText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="10dp"
+                android:text="@string/sex" />
 
-                <TextView
-                    android:id="@+id/sexText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:padding="10dp"
-                    android:text="@string/sex" />
+            <Spinner
+                android:id="@+id/sexList"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+        </LinearLayout>
 
-                <Spinner
-                    android:id="@+id/sexList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp" />
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:text="@string/ins_doc_nr" />
+
+            <EditText
+                android:id="@+id/documentNrText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/doc_number"
+                android:hint="@string/doc_number"
+                android:autofillHints="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:text="@string/ins_doc_type" />
+
+            <EditText
+                android:id="@+id/documentType"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/doc_type"
+                android:hint="@string/doc_type"
+                android:autofillHints="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:text="@string/ins_expiry_date" />
 
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/primary_button_style"
-                    android:paddingLeft="35dp"
-                    android:paddingRight="35dp"
-                    android:text="@string/save"
-                    android:textColor="@color/colorWhite" />
+            <EditText
+                android:id="@+id/documentExpiryDateText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:inputType="date"
+                android:text="@string/example_date"
+                android:focusableInTouchMode="false"
+                android:hint="@string/example_date"
+                android:autofillHints="" />
+        </LinearLayout>
 
-                <View
-                    android:id="@+id/spacing_buttons"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/logout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/primary_button_style"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:text="@string/logout"
-                    android:textColor="@color/colorWhite" />
-
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/switch_to_cicerone"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:id="@+id/modifyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_weight="1"
+                android:background="@drawable/primary_button_style"
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                android:text="@string/modify"
+                android:textColor="@color/colorWhite" />
+
+            <View
+                android:id="@+id/spacing_buttons"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:background="@drawable/primary_button_style"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
-                android:text="@string/switch_to_cicerone"
-                android:textColor="@color/colorWhite"
-                android:visibility="visible" />
-
-            <Button
-                android:id="@+id/downloadUserData"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/primary_button_style"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:text="@string/download_your_data"
-                android:textColor="@color/colorWhite"
-                android:onClick="requestUserData"
-                android:visibility="visible" />
+                android:text="@string/logout"
+                android:textColor="@color/colorWhite" />
 
         </LinearLayout>
-    </ScrollView>
-</FrameLayout>
+
+        <Button
+            android:id="@+id/change_passw_btn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/primary_button_style"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="@string/change_password"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/switch_to_cicerone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/primary_button_style"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="@string/switch_to_cicerone"
+            android:textColor="@color/colorWhite"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/downloadUserData"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/primary_button_style"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="@string/download_your_data"
+            android:textColor="@color/colorWhite"
+            android:onClick="requestUserData"
+            android:visibility="visible" />
+
+    </LinearLayout>
+</ScrollView>

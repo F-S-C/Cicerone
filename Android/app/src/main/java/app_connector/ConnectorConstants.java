@@ -83,6 +83,15 @@ public final class ConnectorConstants {
      */
     public static final String REQUEST_WISHLIST = SERVER_URL + "/RequestWishlistJoinItinerary.php";
 
+    /**
+     * URL of the server-side connector for the document table
+     */
+    public static final String REQUEST_DOCUMENT = SERVER_URL + "/RequestDocument.php";
+
+    /**
+     * URL of the server-side connector for the document table
+     */
+    public static final String UPDATE_DOCUMENT = SERVER_URL + "/UpdateDocument.php";
 }
 
 
