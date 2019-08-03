@@ -14,8 +14,8 @@ class RequestUserLanguage extends JsonConnector
 
     public function __construct(string $language = null, string $username = null)
     {
-        $this->language = $language;
-        $this->username = $username;
+        $this->language = isset($language) && $language != "" ? $language : null;
+        $this->username = isset($username) && $username != "" ? strtolower($username) : null;
         parent::__construct();
     }
 

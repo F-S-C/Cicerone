@@ -13,8 +13,8 @@ class RequestRegisteredUser extends JsonConnector
 
     public function __construct(string $username = null, string $email = null)
     {
-        $this->username = strtolower($username);
-        $this->email = $email;
+        $this->username = isset($username) && $username != "" ? strtolower($username) : null;
+        $this->email = isset($email) && $email != ""? $email : null;
         parent::__construct();
     }
 
@@ -36,18 +36,16 @@ class RequestRegisteredUser extends JsonConnector
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
-        if($statement = $this->connection->prepare($query)){
-            if (isset($this->username) || isset($this->email)){
+        if ($statement = $this->connection->prepare($query)) {
+            if (isset($this->username) || isset($this->email)) {
                 $statement->bind_param($types, ...$data);
             }
-            if($statement->execute()){
+            if ($statement->execute()) {
                 $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-            }
-            else {
+            } else {
                 throw new mysqli_sql_exception($statement->error);
             }
-        }
-        else{
+        } else {
             throw new mysqli_sql_exception($this->connection->error);
         }
         return $to_return;

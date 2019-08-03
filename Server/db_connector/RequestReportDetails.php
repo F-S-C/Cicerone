@@ -12,7 +12,7 @@ class RequestReportDetails extends JsonConnector
 
     public function __construct(string $code = null)
     {
-        $this->code = $code;
+        $this->code = isset($code) && $code != "" ? $code : null;
         parent::__construct();
     }
 

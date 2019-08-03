@@ -13,8 +13,8 @@ class RequestUserReview extends JsonConnector
 
     public function __construct(string $author = null, string $reviewed_user = null)
     {
-        $this->author = $author;
-        $this->reviewed_user = $reviewed_user;
+        $this->author = isset($author) && $author != "" ? strtolower($author) : null;;
+        $this->reviewed_user = isset($reviewed_user) && $reviewed_user != "" ? strtolower($reviewed_user) : null;;
         parent::__construct();
     }
 

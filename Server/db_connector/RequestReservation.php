@@ -14,8 +14,8 @@ class RequestReservation extends JsonConnector
 
     public function __construct(string $username = null, string $itinerary = null)
     {
-        $this->username = $username;
-        $this->itinerary = $itinerary;
+        $this->username = isset($username) && $username != "" ? strtolower($username) : null;
+        $this->itinerary = isset($itinerary) && $itinerary != "" ? $itinerary : null;
         parent::__construct();
     }
 

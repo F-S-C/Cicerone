@@ -12,7 +12,7 @@ class RequestDocument extends JsonConnector
 
     public function __construct(string $owner = null)
     {
-        $this->owner = strtolower($owner);
+        $this->owner = isset($owner) && $owner != "" ? strtolower($owner) : null;
         parent::__construct();
     }
 

@@ -13,8 +13,8 @@ class RequestWishlist extends JsonConnector
 
     public function __construct(string $owner = null, string $itinerary = null)
     {
-        $this->owner = strtolower($owner);
-        $this->itinerary = $itinerary;
+        $this->owner = isset($owner) && $owner != "" ? strtolower($owner) : null;
+        $this->itinerary = isset($itinerary) && $itinerary != "" ? $itinerary : null;
         parent::__construct();
     }
 

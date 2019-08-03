@@ -14,8 +14,8 @@ class RequestItineraryLanguage extends JsonConnector
 
     public function __construct(string $language = null, string $itinerary = null)
     {
-        $this->language = $language;
-        $this->itinerary = $itinerary;
+        $this->language = isset($language) && $language != "" ? $language : null;
+        $this->itinerary = isset($itinerary) && $itinerary != "" ? $itinerary : null;
         parent::__construct();
     }
 

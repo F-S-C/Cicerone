@@ -15,9 +15,9 @@ class RequestReportJoinReportDetails extends JsonConnector
 
     public function __construct(string $report_code = null, string $reported_user = null, string $username = null)
     {
-        $this->report_code = $report_code;
-        $this->username = $username;
-        $this->reported_user = $reported_user;
+        $this->report_code = isset($report_code) && $report_code != "" ? $report_code : null;
+        $this->username = isset($username) && $username != "" ? strtolower($username) : null;
+        $this->reported_user = isset($reported_user) && $reported_user != "" ? strtolower($reported_user) : null;
         parent::__construct();
     }
 

@@ -24,11 +24,11 @@ class RequestItinerary extends JsonConnector
      */
     public function __construct(string $owner = null, string $location = null, string $beginning_date = null, string $ending_date = null, string $code = null)
     {
-        $this->owner = $owner;
-        $this->location = $location;
-        $this->beginning_date = $beginning_date;
-        $this->ending_date = $ending_date;
-        $this->code = $code;
+        $this->owner = isset($owner) && $owner != "" ? strtolower($owner) : null;
+        $this->location = isset($location) && $location == "" ? $location : null;
+        $this->beginning_date = isset($beginning_date) && $beginning_date == "" ? $beginning_date : null;
+        $this->ending_date = isset($ending_date) && $ending_date == "" ? $ending_date : null;
+        $this->code = isset($code) && $code == "" ? $code : null;
         parent::__construct();
     }
 
@@ -71,7 +71,7 @@ class RequestItinerary extends JsonConnector
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
         if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->username) || isset($this->reviewed_itinerary)) {
+            if (isset($this->owner) || isset($this->location) || isset($this->beginning_date) || isset($this->ending_date) || isset($this->code)) {
                 $statement->bind_param($types, ...$data);
             }
             if ($statement->execute()) {

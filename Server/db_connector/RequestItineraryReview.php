@@ -14,8 +14,8 @@ class RequestItineraryReview extends JsonConnector
 
     public function __construct(string $username = null, string $reviewed_itinerary = null)
     {
-        $this->username = $username;
-        $this->reviewed_itinerary = $reviewed_itinerary;
+        $this->username = isset($username) && $username != "" ? strtolower($username) : null;
+        $this->reviewed_itinerary = isset($reviewed_itinerary) && $reviewed_itinerary != "" ? $reviewed_itinerary : null;
         parent::__construct();
     }
 
