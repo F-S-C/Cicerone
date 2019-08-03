@@ -83,8 +83,10 @@ public class ItineraryManagement extends AppCompatActivity {
             //Get the bundle
             Bundle bundle = getIntent().getExtras();
             String s = Objects.requireNonNull(bundle).getString("itinerary");
+
             //Extract the data…
             itinerary = new Itinerary(new JSONObject(s));
+
             code.put(IT_CODE, String.valueOf(itinerary.getCode()));
             getDataFromServer(itinerary);
             getItineraryReviews(code);

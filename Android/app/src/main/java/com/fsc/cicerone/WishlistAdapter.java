@@ -2,7 +2,6 @@ package com.fsc.cicerone;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,11 +81,9 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
                 holder.itemView.setOnClickListener(v -> {
                     Intent i = new Intent().setClass(v.getContext(), ItineraryDetails.class);
-                    Bundle bundle = new Bundle();
                     try {
-                        bundle.putString("itinerary_code", mData.getJSONObject(position).getString("itinerary_code"));
-                        Log.e("code",mData.getJSONObject(position).getString("itinerary_code"));
-                        i.putExtras(bundle);
+                        Itinerary itinerary = new Itinerary(mData.getJSONObject(position));
+                        i.putExtra("itinerary",itinerary.toJSONObject().toString());
                         v.getContext().startActivity(i);
                     } catch (JSONException e) {
                         Log.e(ERROR_TAG, e.toString());

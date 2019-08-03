@@ -1,5 +1,7 @@
 package com.fsc.cicerone;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -128,6 +130,7 @@ public class Itinerary {
 
         try {
             minParticipants = itinerary.getInt("minimum_participants_number");
+            Log.e("min", String.valueOf(minParticipants));
         } catch (JSONException e) {
             minParticipants = 0;
         }
@@ -446,8 +449,8 @@ public class Itinerary {
             result.put("end_reservations_date", in.format(this.reservationDate));
             result.put("duration", this.duration);
             result.put("location", this.location);
-            result.put("minimum_participants", String.valueOf(this.minParticipants));
-            result.put("maximum_participants", String.valueOf(this.maxParticipants));
+            result.put("minimum_participants_number", String.valueOf(this.minParticipants));
+            result.put("maximum_participants_number", String.valueOf(this.maxParticipants));
             result.put("repetitions_per_day", String.valueOf(this.repetitions));
             result.put("full_price",this.fullPrice);
             result.put("reduced_price",this.reducedPrice);

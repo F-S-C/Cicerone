@@ -85,17 +85,22 @@ public class ItineraryDetails extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
+        final Itinerary itinerary;
+
 
         try {
-            object.put(IT_CODE,Objects.requireNonNull(bundle).getString(IT_CODE));
-            object.put("itinerary_in_wishlist", Objects.requireNonNull(bundle).getString(IT_CODE));
-            getDatafromServer(object);
+            String s = Objects.requireNonNull(bundle).getString("itinerary");
+            itinerary = new Itinerary(new JSONObject(s));
+
+            object.put("itinerary_in_wishlist", itinerary.getCode());
+            object.put("username", currentLoggedUser.getUsername());
+            checkWishlist(object);
+            getDataFromServer(itinerary);
             getItineraryReviews(object);
             object2.put("itinerary_code", object.getString("itinerary_code"));
             object2.put("username", currentLoggedUser.getUsername());
-            object2.put("itinerary_in_wishlist", Objects.requireNonNull(bundle).getString(IT_CODE));
+            object2.put("itinerary_in_wishlist", itinerary.getCode());
             isReservated(object2);
-            checkWishlist(object);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -176,11 +181,19 @@ public class ItineraryDetails extends AppCompatActivity {
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 result = jsonArray.getJSONObject(0);
+                Log.e("n", String.valueOf(result.length()));
                 if ( result.length() > 0)
+                {
                     intoWishlist.setVisibility(View.GONE);
+                    removeFromWishlist.setVisibility(View.VISIBLE);
+                }
+
 
                 else
-                    removeFromWishlist.setVisibility(View.VISIBLE);
+                {
+                    intoWishlist.setVisibility(View.VISIBLE);
+                    removeFromWishlist.setVisibility(View.GONE);
+                }
             }
         });
         connector.setObjectToSend(object);
@@ -189,38 +202,25 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
 
-    public void getDatafromServer(JSONObject itineraryCode)
+    public void getDataFromServer(Itinerary itinerary)
     {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                Itinerary itinerary = new Itinerary(jsonArray.getJSONObject(0));
-                SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-
-                itineraryTitle.setText(itinerary.getTitle());
-                description.setText(itinerary.getDescription());
-                Picasso.get().load(itinerary.getImageUrl()).into(image);
-                author.setText(itinerary.getUsername());
-                String dur = itinerary.getDuration();
-                duration.setText(dur.substring(0,5));
-                location.setText(itinerary.getLocation());
-                repetitions.setText(String.valueOf(itinerary.getRepetitions()));
-                fPrice.setText(Float.toString(itinerary.getFullPrice()));
-                rPrice.setText(Float.toString(itinerary.getReducedPrice()));
-                minP.setText(String.valueOf(itinerary.getMinParticipants()));
-                maxP.setText(String.valueOf(itinerary.getMaxParticipants()));
-                bDate.setText(out.format(itinerary.getBeginningDate()));
-                eDate.setText(out.format(itinerary.getEndingDate()));
-                rDate.setText(out.format(itinerary.getReservationDate()));
-            }
-        });
-        connector.setObjectToSend(itineraryCode);
-        connector.execute();
+        itineraryTitle.setText(itinerary.getTitle());
+        description.setText(itinerary.getDescription());
+        Picasso.get().load(itinerary.getImageUrl()).into(image);
+        author.setText(itinerary.getUsername());
+        String dur = itinerary.getDuration();
+        duration.setText(dur.substring(0,5));
+        location.setText(itinerary.getLocation());
+        repetitions.setText(String.valueOf(itinerary.getRepetitions()));
+        fPrice.setText(Float.toString(itinerary.getFullPrice()));
+        rPrice.setText(Float.toString(itinerary.getReducedPrice()));
+        minP.setText(String.valueOf(itinerary.getMinParticipants()));
+        maxP.setText(String.valueOf(itinerary.getMaxParticipants()));
+        bDate.setText(out.format(itinerary.getBeginningDate()));
+        eDate.setText(out.format(itinerary.getEndingDate()));
+        rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
     public void getItineraryReviews(JSONObject itineraryCode)
