@@ -21,9 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -86,6 +84,7 @@ public class ItineraryDetails extends AppCompatActivity {
         JSONObject object2 = new JSONObject();
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
+
 
         try {
             object.put(IT_CODE,Objects.requireNonNull(bundle).getString(IT_CODE));
@@ -200,31 +199,24 @@ public class ItineraryDetails extends AppCompatActivity {
 
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                 result = jsonArray.getJSONObject(0);
-                itineraryTitle.setText(result.getString("title"));
-                description.setText(result.getString("description"));
-                Picasso.get().load(result.getString("image_url")).into(image);
-                author.setText(result.getString("username"));
-                String dur = result.getString("duration");
+                Itinerary itinerary = new Itinerary(jsonArray.getJSONObject(0));
+                SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+
+                itineraryTitle.setText(itinerary.getTitle());
+                description.setText(itinerary.getDescription());
+                Picasso.get().load(itinerary.getImageUrl()).into(image);
+                author.setText(itinerary.getUsername());
+                String dur = itinerary.getDuration();
                 duration.setText(dur.substring(0,5));
-                location.setText(result.getString("location"));
-                repetitions.setText(result.getString("repetitions_per_day"));
-                fPrice.setText(result.getString("full_price"));
-                rPrice.setText(result.getString("reduced_price"));
-                minP.setText(result.getString("minimum_participants_number"));
-                maxP.setText(result.getString("maximum_participants_number"));
-                try {
-                     SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                     SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                    Date date = in.parse(result.getString("beginning_date"));
-                    bDate.setText(out.format(date));
-                    date = in.parse(result.getString("ending_date"));
-                    eDate.setText(out.format(date));
-                    date = in.parse(result.getString("end_reservations_date"));
-                    rDate.setText(out.format(date));
-                }catch (ParseException e){
-                    Log.e(ERROR_TAG,e.toString());
-                }
+                location.setText(itinerary.getLocation());
+                repetitions.setText(String.valueOf(itinerary.getRepetitions()));
+                fPrice.setText(Float.toString(itinerary.getFullPrice()));
+                rPrice.setText(Float.toString(itinerary.getReducedPrice()));
+                minP.setText(String.valueOf(itinerary.getMinParticipants()));
+                maxP.setText(String.valueOf(itinerary.getMaxParticipants()));
+                bDate.setText(out.format(itinerary.getBeginningDate()));
+                eDate.setText(out.format(itinerary.getEndingDate()));
+                rDate.setText(out.format(itinerary.getReservationDate()));
             }
         });
         connector.setObjectToSend(itineraryCode);

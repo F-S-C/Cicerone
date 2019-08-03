@@ -85,6 +85,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                     Bundle bundle = new Bundle();
                     try {
                         bundle.putString("itinerary_code", mData.getJSONObject(position).getString("itinerary_code"));
+                        Log.e("code",mData.getJSONObject(position).getString("itinerary_code"));
                         i.putExtras(bundle);
                         v.getContext().startActivity(i);
                     } catch (JSONException e) {
