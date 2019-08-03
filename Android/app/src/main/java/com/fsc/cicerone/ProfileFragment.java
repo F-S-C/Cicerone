@@ -396,8 +396,6 @@ public class ProfileFragment extends Fragment {
             updateDocument.setObjectToSend(documentData);
             updateDocument.execute();
             Toast.makeText(getActivity(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
-            Log.e("USER",userData.toString());
-            Log.e("DOC",documentData.toString());
         } catch (JSONException e) {
             Log.e("EXCEPTION", e.toString());
         }
