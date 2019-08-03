@@ -11,9 +11,9 @@ abstract class DeleteConnector extends BooleanConnector
     protected const ID_COLUMN_TYPE = "s";
     protected $id;
 
-    public function __construct(string $id)
+    public function __construct(string $id = null)
     {
-        if(!isset($id)){
+        if(!isset($id) || $id == ""){
             die(json_encode(self::get_false("Some required fields are missing.")));
         }
         $this->id = $id;

@@ -11,9 +11,9 @@ class DeleteWishlist extends DeleteConnector
     protected const ID_COLUMN_TYPE = "s";
     private $itinerary;
 
-    public function __construct(string $username, int $itinerary)
+    public function __construct(string $username = null, int $itinerary = null)
     {
-        if(!isset($itinerary)){
+        if (!isset($username) || !isset($itinerary) || $itinerary == "" || $username == "") {
             die(json_encode(self::get_false("Some required fields are missing.")));
         }
         parent::__construct(strtolower($username));
@@ -23,17 +23,14 @@ class DeleteWishlist extends DeleteConnector
     public function get_content(): string
     {
         $query = "DELETE FROM " . $this::TABLE_NAME . " WHERE " . $this::ID_COLUMN . " = ? AND itinerary_in_wishlist = ?";
-        if($statement = $this->connection->prepare($query))
-        {
+        if ($statement = $this->connection->prepare($query)) {
             $statement->bind_param($this::ID_COLUMN_TYPE . "i", $this->id, $this->itinerary);
-            if($statement->execute()){
+            if ($statement->execute()) {
                 $to_return = self::get_true();
-            }
-            else{
+            } else {
                 $to_return = self::get_false($statement->error);
             }
-        }
-        else{
+        } else {
             $to_return = self::get_false($this->connection->error);
         }
 
