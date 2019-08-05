@@ -58,7 +58,6 @@ public class ProfileFragment extends Fragment {
     private Dialog switchToCiceroneDialog;
     private Button switchButton;
     private Button modifyButton;
-    private Button changePaswButton;
     private Calendar birthCalendar;
     private Calendar expCalendar = Calendar.getInstance(TimeZone.getDefault());
     private Spinner sexList;
@@ -97,7 +96,7 @@ public class ProfileFragment extends Fragment {
         switchButton = view.findViewById(R.id.switch_to_cicerone);
         modifyButton = view.findViewById(R.id.modifyButton);
         sexList = view.findViewById(R.id.sexList);
-        changePaswButton = view.findViewById(R.id.change_passw_btn);
+        Button changePaswButton = view.findViewById(R.id.change_passw_btn);
         birthCalendar = toCalendar(AccountManager.getCurrentLoggedUser().getBirthDate());
         DatePickerDialog.OnDateSetListener birthDateSelect = new DatePickerDialog.OnDateSetListener() {
 
@@ -233,7 +232,7 @@ public class ProfileFragment extends Fragment {
      *
      * @param spinner The spinner where to insert the list.
      */
-    public void addItemsSex(Spinner spinner) {
+    private void addItemsSex(Spinner spinner) {
 
         List<String> list = new ArrayList<>();
         list.add(getResources().getString(R.string.male));

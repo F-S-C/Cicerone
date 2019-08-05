@@ -130,12 +130,6 @@ public class ChangePassword extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onSupportNavigateUp(){
-        finish();
-        return true;
-    }
-
     private void changePasswordOnServer(){
         User user = AccountManager.getCurrentLoggedUser();
         JSONObject params = new JSONObject();
