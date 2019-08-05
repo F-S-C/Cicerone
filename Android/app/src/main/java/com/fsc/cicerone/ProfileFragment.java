@@ -346,8 +346,21 @@ public class ProfileFragment extends Fragment {
             userData.put("surname",surname.getText());
             userData.put("email",email.getText());
             userData.put("cellphone",cellphone.getText());
-            userData.put("sex", sexList.getSelectedItem().toString().toLowerCase());
+            String sexSelected;
+            switch(sexList.getSelectedItemPosition()){
+                case 0:
+                    sexSelected = "male";
+                    break;
+                case 1:
+                    sexSelected = "female";
+                    break;
+                default:
+                    sexSelected = "other";
+                    break;
+            }
+            userData.put("sex", sexSelected);
             userData.put("birth_date", itDateToServerDate(birthDate.getText().toString()));
+            Log.e(ERROR_TAG,Integer.toString(sexList.getSelectedItemPosition()));
 
             SendInPostConnector updateRegisteredUser = new SendInPostConnector(ConnectorConstants.UPDATE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
                 @Override
@@ -384,9 +397,8 @@ public class ProfileFragment extends Fragment {
                 public void onEndConnection(JSONArray jsonArray) throws JSONException {
                     if(!jsonArray.getJSONObject(0).getBoolean("result"))
                         Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
-                    Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentNumber.getText().toString()));
+                    Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
                     user.setCurrentDocument(newUserDoc);
-                    //Objects.requireNonNull(getActivity()).recreate();
                     Intent i = new Intent(getActivity(), SplashActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
