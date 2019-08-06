@@ -360,7 +360,6 @@ public class ProfileFragment extends Fragment {
             }
             userData.put("sex", sexSelected);
             userData.put("birth_date", itDateToServerDate(birthDate.getText().toString()));
-            Log.e(ERROR_TAG,Integer.toString(sexList.getSelectedItemPosition()));
 
             SendInPostConnector updateRegisteredUser = new SendInPostConnector(ConnectorConstants.UPDATE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
                 @Override
