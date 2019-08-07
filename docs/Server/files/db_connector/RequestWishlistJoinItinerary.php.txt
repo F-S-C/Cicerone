@@ -2,21 +2,32 @@
 
 namespace db_connector;
 
-use InvalidArgumentException;
 use mysqli_sql_exception;
 
 require_once("JsonConnector.php");
 
+/**
+ * Request the itineraries in a wishlist alongside with all their information.
+ * @package db_connector
+ */
 class RequestWishlistJoinItinerary extends JsonConnector
 {
+    /** @var string|null The wishlist's owner's username. */
     private $owner;
 
+    /**
+     * RequestWishlistJoinItinerary constructor.
+     * @param string|null $owner The wishlist's owner's username.
+     */
     public function __construct(string $owner = null)
     {
         $this->owner = isset($owner) && $owner != "" ? strtolower($owner) : null;
         parent::__construct();
     }
 
+    /**
+     * @see JsonConnector::fetch_all_rows()
+     */
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM wishlist, itinerary WHERE wishlist.itinerary_in_wishlist = itinerary.itinerary_code";

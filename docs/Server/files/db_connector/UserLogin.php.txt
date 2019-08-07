@@ -4,11 +4,22 @@ namespace db_connector;
 
 require_once("BooleanConnector.php");
 
+/**
+ * A special connector to log the user in.
+ * @package db_connector
+ */
 class UserLogin extends BooleanConnector
 {
+    /** @var string The given username. */
     private $username;
+    /** @var string The given password. */
     private $password;
 
+    /**
+     * UserLogin constructor.
+     * @param string $username The given username.
+     * @param string $password The given password.
+     */
     public function __construct(string $username, string $password)
     {
         if (!isset($username) || !isset($password)) {
@@ -19,6 +30,13 @@ class UserLogin extends BooleanConnector
         parent::__construct();
     }
 
+    /**
+     * Checks if the given password is the same as the stored password (using hashes)
+     * for the user with the given username. It returns the result of this check.
+     * @return string The result of the login.
+     * @see BooleanConnector::get_true()
+     * @see BooleanConnector::get_false()
+     */
     public function get_content(): string
     {
         $query = "SELECT password FROM registered_user WHERE username = ?";

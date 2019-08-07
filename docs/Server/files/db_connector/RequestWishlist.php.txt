@@ -6,11 +6,22 @@ use mysqli_sql_exception;
 
 require_once("JsonConnector.php");
 
+/**
+ * Request all the itineraries from a wishlist of a user.
+ * @package db_connector
+ */
 class RequestWishlist extends JsonConnector
 {
+    /** @var string|null The wishlist's owner's username */
     private $owner;
+    /** @var string|null The itinerary code to be searched in the wishlist. */
     private $itinerary;
 
+    /**
+     * RequestWishlist constructor.
+     * @param string|null $owner The wishlist's owner's username.
+     * @param string|null $itinerary The itinerary code to be searched in the wishlist.
+     */
     public function __construct(string $owner = null, string $itinerary = null)
     {
         $this->owner = isset($owner) && $owner != "" ? strtolower($owner) : null;
@@ -18,6 +29,9 @@ class RequestWishlist extends JsonConnector
         parent::__construct();
     }
 
+    /**
+     * @see JsonConnector::fetch_all_rows()
+     */
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM wishlist";
