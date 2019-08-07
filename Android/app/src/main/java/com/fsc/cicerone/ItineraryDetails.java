@@ -97,7 +97,7 @@ public class ItineraryDetails extends AppCompatActivity {
             checkWishlist(object);
             getDataFromServer(itinerary);
             getItineraryReviews(object);
-            object2.put("itinerary_code", object.getString("itinerary_code"));
+            object2.put("itinerary_code", object.getString("itinerary_in_wishlist"));
             object2.put("username", currentLoggedUser.getUsername());
             object2.put("itinerary_in_wishlist", itinerary.getCode());
             isReservated(object2);
