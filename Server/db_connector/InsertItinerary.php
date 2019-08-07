@@ -4,6 +4,10 @@ namespace db_connector;
 
 require_once("InsertConnector.php");
 
+/**
+ * Insert an itinerary.
+ * @package db_connector
+ */
 class InsertItinerary extends InsertConnector
 {
     protected const COLUMNS = "title, description, beginning_date, ending_date, end_reservations_date, maximum_participants_number, minimum_participants_number, location, repetitions_per_day, duration, username, full_price, reduced_price";

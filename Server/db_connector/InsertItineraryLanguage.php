@@ -4,6 +4,10 @@ namespace db_connector;
 
 require_once("InsertConnector.php");
 
+/**
+ * Insert a language for an itinerary.
+ * @package db_connector
+ */
 class InsertItineraryLanguage extends InsertConnector
 {
     protected const COLUMNS = "itinerary_code, language_code";

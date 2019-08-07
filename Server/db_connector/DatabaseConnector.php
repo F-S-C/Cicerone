@@ -12,29 +12,19 @@ use mysqli;
  */
 abstract class DatabaseConnector
 {
-    /**
-     * @var string The database's server's IP
-     */
+    /** @var string The database's server's IP */
     protected const DB_SERVER_NAME = "127.0.0.1";
 
-    /**
-     * @var string The database's username.
-     */
+    /** @var string The database's username. */
     protected const DB_USERNAME = "fsc";
 
-    /**
-     * @var string The database's password.
-     */
+    /** @var string The database's password. */
     protected const DB_P = "89n@W[";
 
-    /**
-     * @var string The database's name.
-     */
+    /** @var string The database's name. */
     protected const DB_NAME = "cicerone";
 
-    /**
-     * @var mysqli|null A reference to the database connection.
-     */
+    /** @var mysqli|null A reference to the database connection. */
     protected $connection = null;
 
     /**

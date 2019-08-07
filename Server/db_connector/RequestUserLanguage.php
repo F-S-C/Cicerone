@@ -7,11 +7,22 @@ use mysqli_sql_exception;
 
 require_once("JsonConnector.php");
 
+/**
+ * Request the languages that a user speaks.
+ * @package db_connector
+ */
 class RequestUserLanguage extends JsonConnector
 {
+    /** @var string|null The language code (ISO 639-3). */
     private $language;
+    /** @var string|null The user's username. */
     private $username;
 
+    /**
+     * RequestUserLanguage constructor.
+     * @param string|null $language The language code (ISO 639-3).
+     * @param string|null $username The user's username.
+     */
     public function __construct(string $language = null, string $username = null)
     {
         $this->language = isset($language) && $language != "" ? $language : null;
@@ -19,6 +30,9 @@ class RequestUserLanguage extends JsonConnector
         parent::__construct();
     }
 
+    /**
+     * @see JsonConnector::fetch_all_rows()
+     */
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM user_language";

@@ -6,11 +6,22 @@ use mysqli_sql_exception;
 
 require_once("JsonConnector.php");
 
+/**
+ * Get all the informations about a user.
+ * @package db_connector
+ */
 class RequestRegisteredUser extends JsonConnector
 {
+    /** @var string|null The user's username. */
     private $username;
+    /** @var string|null The user's email. */
     private $email;
 
+    /**
+     * RequestRegisteredUser constructor.
+     * @param string|null $username The user's username.
+     * @param string|null $email The user's email.
+     */
     public function __construct(string $username = null, string $email = null)
     {
         $this->username = isset($username) && $username != "" ? strtolower($username) : null;
@@ -18,6 +29,9 @@ class RequestRegisteredUser extends JsonConnector
         parent::__construct();
     }
 
+    /**
+     * @see JsonConnector::fetch_all_rows()
+     */
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM registered_user";

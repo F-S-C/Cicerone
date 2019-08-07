@@ -7,11 +7,22 @@ use mysqli_sql_exception;
 
 require_once("JsonConnector.php");
 
+/**
+ * Request the languages in which an itinerary is available.
+ * @package db_connector
+ */
 class RequestItineraryLanguage extends JsonConnector
 {
+    /** @var string|null The language that is searched. */
     private $language;
+    /** @var string|null The itinerary in which the language has to be searched. */
     private $itinerary;
 
+    /**
+     * RequestItineraryLanguage constructor.
+     * @param string|null $language The language that is needed.
+     * @param string|null $itinerary The itinerary that is needed.
+     */
     public function __construct(string $language = null, string $itinerary = null)
     {
         $this->language = isset($language) && $language != "" ? $language : null;
@@ -19,6 +30,9 @@ class RequestItineraryLanguage extends JsonConnector
         parent::__construct();
     }
 
+    /**
+     * @see JsonConnector::fetch_all_rows()
+     */
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM itinerary_language";

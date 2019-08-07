@@ -4,6 +4,10 @@ namespace db_connector;
 
 require_once("UpdateConnector.php");
 
+/**
+ * Update an itinerary.
+ * @package db_connector
+ */
 class UpdateItinerary extends UpdateConnector
 {
     protected const TABLE_NAME = "itinerary";

@@ -6,16 +6,28 @@ use mysqli_sql_exception;
 
 require_once("JsonConnector.php");
 
+/**
+ * Request the details for a report.
+ * @package db_connector
+ */
 class RequestReportDetails extends JsonConnector
 {
+    /** @var string|null The report's code. */
     private $code;
 
+    /**
+     * RequestReportDetails constructor.
+     * @param string|null $code The report's code.
+     */
     public function __construct(string $code = null)
     {
         $this->code = isset($code) && $code != "" ? $code : null;
         parent::__construct();
     }
 
+    /**
+     * @see JsonConnector::fetch_all_rows()
+     */
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM report_details";

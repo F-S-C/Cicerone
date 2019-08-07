@@ -3,6 +3,7 @@
 namespace db_connector;
 
 use Exception;
+use mysqli_sql_exception;
 
 require_once("DatabaseConnector.php");
 
@@ -16,13 +17,14 @@ abstract class JsonConnector extends DatabaseConnector
     /**
      * Fetch all needed rows from MySQL database.
      * @return array The array of rows.
-     * @throws Exception if there were errors in fetching the data.
+     * @throws mysqli_sql_exception if there were errors in fetching the data.
      */
     protected abstract function fetch_all_rows(): array;
 
     /**
      * Fetch data from the database and convert it to a string.
      * @return string A string that contains the fetched data.
+     * @see DatabaseConnector::get_content()
      */
     public function get_content(): string
     {

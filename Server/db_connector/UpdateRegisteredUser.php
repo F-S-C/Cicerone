@@ -4,6 +4,10 @@ namespace db_connector;
 
 require_once("UpdateConnector.php");
 
+/**
+ * Update a user.
+ * @package db_connector
+ */
 class UpdateRegisteredUser extends UpdateConnector
 {
     protected const TABLE_NAME = "registered_user";

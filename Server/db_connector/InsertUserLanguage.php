@@ -4,6 +4,10 @@ namespace db_connector;
 
 require_once("InsertConnector.php");
 
+/**
+ * Insert a language for a user.
+ * @package db_connector
+ */
 class InsertUserLanguage extends InsertConnector
 {
     protected const COLUMNS = "username, language_code";

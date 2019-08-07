@@ -6,21 +6,30 @@ use mysqli_sql_exception;
 
 require_once("JsonConnector.php");
 
+/**
+ * Request all the itineraries that match a set of criteria.
+ * @package db_connector
+ */
 class RequestItinerary extends JsonConnector
 {
+    /** @var string|null The owner of the itinerary. */
     private $owner;
+    /** @var string|null The location of the itinerary. */
     private $location;
+    /** @var string|null The beginning date of the itinerary. */
     private $beginning_date;
+    /** @var string|null The ending date of the itinerary. */
     private $ending_date;
+    /** @var string|null The identification code of the itinerary. */
     private $code;
 
     /**
      * RequestItinerary constructor.
-     * @param $owner
-     * @param $location
-     * @param $beginning_date
-     * @param $ending_date
-     * @param $code
+     * @param string|null $owner The owner of the itinerary.
+     * @param string|null $location The location of the itinerary.
+     * @param string|null $beginning_date The beginning date of the itinerary.
+     * @param string|null $ending_date The ending date of the itinerary.
+     * @param string|null $code The identification code of the itinerary.
      */
     public function __construct(string $owner = null, string $location = null, string $beginning_date = null, string $ending_date = null, string $code = null)
     {
@@ -32,7 +41,9 @@ class RequestItinerary extends JsonConnector
         parent::__construct();
     }
 
-
+    /**
+     * @see JsonConnector::fetch_all_rows()
+     */
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM itinerary";
@@ -85,6 +96,10 @@ class RequestItinerary extends JsonConnector
         return $to_return;
     }
 
+    /**
+     * Get the SQL condition to match the given dates.
+     * @return string The SQL condition to be put in the WHERE clause.
+     */
     private function get_date_condition(): string
     {
         $date_condition = "";

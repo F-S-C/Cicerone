@@ -4,6 +4,10 @@ namespace db_connector;
 
 require_once("UpdateConnector.php");
 
+/**
+ * Update a document.
+ * @package db_connector
+ */
 class UpdateDocument extends UpdateConnector
 {
     protected const TABLE_NAME = "document";

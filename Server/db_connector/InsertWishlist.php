@@ -5,6 +5,10 @@ namespace db_connector;
 
 require_once("InsertConnector.php");
 
+/**
+ * Insert an itinerary in a user's wishlist.
+ * @package db_connector
+ */
 class InsertWishlist extends InsertConnector
 {
     protected const COLUMNS = "username, itinerary_in_wishlist";

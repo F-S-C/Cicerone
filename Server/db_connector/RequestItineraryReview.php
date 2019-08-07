@@ -7,11 +7,22 @@ use mysqli_sql_exception;
 
 require_once("JsonConnector.php");
 
+/**
+ * Request all reviews for an itinerary.
+ * @package db_connector
+ */
 class RequestItineraryReview extends JsonConnector
 {
+    /** @var string|null The username of the author of the reviews. */
     private $username;
+    /** @var string|null The reviewed itinerary code. */
     private $reviewed_itinerary;
 
+    /**
+     * RequestItineraryReview constructor.
+     * @param string|null $username The username of the author of the reviews.
+     * @param string|null $reviewed_itinerary The reviewed itinerary code.
+     */
     public function __construct(string $username = null, string $reviewed_itinerary = null)
     {
         $this->username = isset($username) && $username != "" ? strtolower($username) : null;
@@ -19,6 +30,9 @@ class RequestItineraryReview extends JsonConnector
         parent::__construct();
     }
 
+    /**
+     * @see JsonConnector::fetch_all_rows()
+     */
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM itinerary_review";

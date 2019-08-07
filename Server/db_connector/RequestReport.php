@@ -7,12 +7,25 @@ use mysqli_sql_exception;
 
 require_once("JsonConnector.php");
 
+/**
+ * Request the reports to the admin.
+ * @package db_connector
+ */
 class RequestReport extends JsonConnector
 {
+    /** @var string|null The report's code. */
     private $report_code;
+    /** @var string|null The report's author's username. */
     private $username;
+    /** @var string|null The reported user's username. */
     private $reported_user;
 
+    /**
+     * RequestReport constructor.
+     * @param string|null $report_code The report's code.
+     * @param string|null $reported_user The reported user's username.
+     * @param string|null $username The report's author's username.
+     */
     public function __construct(string $report_code = null, string $reported_user = null, string $username = null)
     {
         $this->report_code = isset($report_code) && $report_code != "" ? $report_code : null;
@@ -21,6 +34,9 @@ class RequestReport extends JsonConnector
         parent::__construct();
     }
 
+    /**
+     * @see JsonConnector::fetch_all_rows()
+     */
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM report";

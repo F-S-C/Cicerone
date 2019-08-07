@@ -4,6 +4,10 @@ namespace db_connector;
 
 require_once("InsertConnector.php");
 
+/**
+ * Insert a report for the admin.
+ * @package db_connector
+ */
 class InsertReport extends InsertConnector
 {
     protected const COLUMNS = "username, reported_user";
