@@ -50,7 +50,7 @@ abstract class InsertConnector extends BooleanConnector
         $query = substr($query, 0, -2);
 
         $data = array();
-        array_walk_recursive($array, function ($a) use (&$data) {
+        array_walk_recursive($this->values_to_add, function ($a) use (&$data) {
             $data[] = $a;
         });
 
