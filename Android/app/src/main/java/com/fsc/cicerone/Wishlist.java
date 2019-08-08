@@ -23,11 +23,10 @@ import app_connector.SendInPostConnector;
 
 public class Wishlist extends Fragment {
 
-    WishlistAdapter adapter;
-    TextView numberItineraries;
+    private WishlistAdapter adapter;
+    private TextView numberItineraries;
 
     private static final String ERROR_TAG = "ERROR IN " + AccountDetails.class.getName();
-
 
 
     @Nullable
@@ -61,7 +60,7 @@ public class Wishlist extends Fragment {
             public void onEndConnection(JSONArray jsonArray) {
                 progressBar.setVisibility(View.GONE);
                 adapter = new WishlistAdapter(getActivity(), jsonArray);
-                numberItineraries.setText(String.format("You have %d itineraries in your wishlist.", jsonArray.length()));
+                numberItineraries.setText(String.format(getString(R.string.wishlist_number), jsonArray.length()));
                 recyclerView.setAdapter(adapter);
             }
         });

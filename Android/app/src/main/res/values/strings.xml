@@ -98,8 +98,8 @@
     <string name="canceled">Canceled</string>
     <string name="description">"Description: "</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_home" translatable="false">Home</string>
+    <string name="title_dashboard" translatable="false">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -111,7 +111,7 @@
     <string name="delete_itinerary">Delete itinerary</string>
     <string name="itinerary_deleted">Itinerary deleted.</string>
     <string name="itinerary_updated">Itinerary updated.</string>
-    <string name="wishlist_number">You have # itineraries in your wishlist.</string>
+    <string name="wishlist_number">You have %d itineraries in your wishlist.</string>
     <string name="add_to_wishlist">Add to wishlist</string>
     <string name="remove_from_wishlist">Remove from wishlist</string>
     <string name="cellphone">Cellphone:</string>
@@ -125,7 +125,7 @@
     <string name="ins_name">Name:</string>
     <string name="ins_surname">Surname:</string>
     <string name="doc_type">Document Type</string>
-    <string name="updating">Updating...</string>
+    <string name="updating">Updating…</string>
     <string name="saved">Saved!</string>
     <string name="change_password">Change your password</string>
     <string name="old_password">Current password:</string>
