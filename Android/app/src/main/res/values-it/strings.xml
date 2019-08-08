@@ -101,7 +101,7 @@
     <string name="ins_name">Nome:</string>
     <string name="ins_surname">Cognome:</string>
     <string name="doc_type">Tipo Documento</string>
-    <string name="updating">Aggiornamento...</string>
+    <string name="updating">Aggiornamento…</string>
     <string name="saved">Salvati!</string>
     <string name="change_password">Cambia la tua password</string>
     <string name="cellphone">Telefono:</string>
