@@ -5,8 +5,8 @@
     android:id="@+id/WishlistRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="25dp"
     tools:context=".Wishlist">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,16 +16,16 @@
             android:id="@+id/numberOfItineraries"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="15dp"
-            android:layout_weight="1"
             android:text="@string/wishlist_number"
             android:textAlignment="center"
             android:textSize="18sp" />
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_height="wrap_content">
+
             <RelativeLayout
                 android:id="@+id/progressContainer"
                 android:layout_width="match_parent"
