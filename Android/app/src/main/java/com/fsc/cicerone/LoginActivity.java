@@ -24,8 +24,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
 
-    EditText usernameEditText;
-    EditText passwordEditText;
+    private EditText usernameEditText;
+    private EditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                 preferences.edit().putString("session", user.toString()).apply();
             }
 
-            // startActivity(new Intent(LoginActivity.this, AccountDetails.class));
-            startActivity(new Intent(LoginActivity.this, ItineraryDetails.class));
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         });
     }

@@ -81,9 +81,36 @@
     <string name="pending">In Attesa</string>
     <string name="canceled">Cancellata</string>
     <string name="description">"Descrizione: "</string>
+    <string name="are_you_sure">Sicuro?</string>
+    <string name="sure_to_exit">Sei sicuro di voler uscire dall\'applicazione?</string>
     <string name="confirm_delete">Sei sicuro di voler rimuovere questo itinerario?</string>
     <string name="delete_itinerary">Rimuovi itinerario</string>
     <string name="edit_itinerary">Aggiorna itinerario</string>
     <string name ="itinerary_deleted">Itinerario rimosso.</string>
-
+    <string name="itinerary_updated">Itinerario aggiornato.</string>
+    <string name="wishlist_number">Hai %d itinerari nella tua lista desideri.</string>
+    <string name="add_to_wishlist">Aggiungi alla lista desideri</string>
+    <string name="remove_from_wishlist">Rimuovi dalla lista dei desideri</string>
+    <string name="title_notifications">Notifiche</string>
+    <string name="doc_number">Numero Documento</string>
+    <string name="modify">Modifica</string>
+    <string name="ins_doc_nr">Numero Documento:</string>
+    <string name="ins_doc_type">Tipo Documento:</string>
+    <string name="ins_expiry_date">Data di Scadenza:</string>
+    <string name="ins_birth_date">Data di Nascita:</string>
+    <string name="ins_name">Nome:</string>
+    <string name="ins_surname">Cognome:</string>
+    <string name="doc_type">Tipo Documento</string>
+    <string name="updating">Aggiornamento…</string>
+    <string name="saved">Salvati!</string>
+    <string name="change_password">Cambia la tua password</string>
+    <string name="cellphone">Telefono:</string>
+    <string name="old_password">Password corrente:</string>
+    <string name="change">Cambia</string>
+    <string name="new_password">Nuova password:</string>
+    <string name="re_ins_new_pw">Reinserisci la nuova password:</string>
+    <string name="notequals">La password non corrisponde a quella inserita</string>
+    <string name="oldpw_equals_new_err">La vecchia password non può essere uguale alla nuova</string>
+    <string name="password_changed">Password cambiata!</string>
+    <string name="oldpw_mism_error">La password corrente non corrisponde con quella inserita</string>
 </resources>

@@ -107,7 +107,7 @@ public class SendInPostConnector extends DatabaseConnector {
 
             return resultBuilder.toString();
         } catch (Exception e) {
-            Log.e("EXCEPTION", e.toString());
+            e.printStackTrace();
             return null;
         }
     }

@@ -21,9 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -48,7 +46,6 @@ public class ItineraryManagement extends AppCompatActivity {
     private  TextView fPrice;
     private  TextView rPrice;
     private JSONObject result;
-    private Button deleteItinerary;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryManagement.class.getName();
     private static final String IT_CODE = "itinerary_code";
@@ -72,21 +69,26 @@ public class ItineraryManagement extends AppCompatActivity {
         duration = findViewById(R.id.duration);
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
-        deleteItinerary = findViewById(R.id.deleteItinerary);
+        Button deleteItinerary = findViewById(R.id.deleteItinerary);
+        Button updateItinerary = findViewById(R.id.editItinerary);
 
          final Dialog deleteDialog = new Dialog(ItineraryManagement.this, android.R.style.Theme_Black_NoTitleBar);
         Objects.requireNonNull(deleteDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
         deleteDialog.setContentView(R.layout.activity_delete_itinerary);
         deleteDialog.setCancelable(true);
 
-        final JSONObject code;
+        final Itinerary itinerary;
+        final JSONObject code = new JSONObject();
         try {
             //Get the bundle
             Bundle bundle = getIntent().getExtras();
+            String s = Objects.requireNonNull(bundle).getString("itinerary");
+
             //Extract the data…
-            code = new JSONObject();
-            code.put(IT_CODE, Objects.requireNonNull(bundle).getString(IT_CODE));
-            getDatafromServer(code);
+            itinerary = new Itinerary(new JSONObject(s));
+
+            code.put(IT_CODE, String.valueOf(itinerary.getCode()));
+            getDataFromServer(itinerary);
             getItineraryReviews(code);
             deleteItinerary.setOnClickListener(v -> {
                 Button noButton = deleteDialog.findViewById(R.id.no_logout_button);
@@ -96,13 +98,20 @@ public class ItineraryManagement extends AppCompatActivity {
                 yesButton.setOnClickListener(view -> {
                     deleteDialog.hide();
                     deleteDialog.dismiss();
-                    deleteItineraryfromServer(code);
+                    deleteItineraryFromServer(code);
 
 
                 });
 
                 deleteDialog.show();
             });
+
+            updateItinerary.setOnClickListener(v -> {
+                Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
+                i.putExtras(bundle);
+                v.getContext().startActivity(i);
+            });
+
         } catch (JSONException e) {
             Log.e("error", e.toString());
         }
@@ -110,45 +119,25 @@ public class ItineraryManagement extends AppCompatActivity {
 
     }
 
-    public void getDatafromServer(JSONObject itineraryCode)
+    public void getDataFromServer(Itinerary itinerary)
     {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                result = jsonArray.getJSONObject(0);
-                itineraryTitle.setText(result.getString("title"));
-                description.setText(result.getString("description"));
-                Picasso.get().load(result.getString("image_url")).into(image);
-                author.setText(result.getString("username"));
-                minP.setText(result.getString("minimum_participants_number"));
-                maxP.setText(result.getString("maximum_participants_number"));
-                String dur = result.getString("duration");
-                duration.setText(dur.substring(0,5));
-                location.setText(result.getString("location"));
-                repetitions.setText(result.getString("repetitions_per_day"));
-                fPrice.setText(result.getString("full_price"));
-                rPrice.setText(result.getString("reduced_price"));
-                try {
-                    SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                    SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                    Date date = in.parse(result.getString("beginning_date"));
-                    bDate.setText(out.format(date));
-                    date = in.parse(result.getString("ending_date"));
-                    eDate.setText(out.format(date));
-                    date = in.parse(result.getString("end_reservations_date"));
-                    rDate.setText(out.format(date));
-                }catch (ParseException e){
-                    Log.e(ERROR_TAG,e.toString());
-                }
-            }
-        });
-        connector.setObjectToSend(itineraryCode);
-        connector.execute();
+        itineraryTitle.setText(itinerary.getTitle());
+        description.setText(itinerary.getDescription());
+        Picasso.get().load(itinerary.getImageUrl()).into(image);
+        author.setText(itinerary.getUsername());
+        String dur = itinerary.getDuration();
+        duration.setText(dur.substring(0,5));
+        location.setText(itinerary.getLocation());
+        repetitions.setText(String.valueOf(itinerary.getRepetitions()));
+        fPrice.setText(Float.toString(itinerary.getFullPrice()));
+        rPrice.setText(Float.toString(itinerary.getReducedPrice()));
+        minP.setText(String.valueOf(itinerary.getMinParticipants()));
+        maxP.setText(String.valueOf(itinerary.getMaxParticipants()));
+        bDate.setText(out.format(itinerary.getBeginningDate()));
+        eDate.setText(out.format(itinerary.getEndingDate()));
+        rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
     public void getItineraryReviews(JSONObject itineraryCode)
@@ -180,7 +169,7 @@ public class ItineraryManagement extends AppCompatActivity {
         connector.execute();
     }
 
-    public void deleteItineraryfromServer(JSONObject itCode)
+    public void deleteItineraryFromServer(JSONObject itCode)
     {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
@@ -193,7 +182,7 @@ public class ItineraryManagement extends AppCompatActivity {
                 JSONObject object = jsonArray.getJSONObject(0);
                 if(object.getBoolean("result"))
                 {
-                    Intent i = new Intent(ItineraryManagement.this, AccountDetails.class);
+                    Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();
                     startActivity(i);

@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +12,14 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,7 +30,7 @@ import java.util.Objects;
 /**
  * The Adapter of the Recycler View for the styles present in the app.
  */
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements Serializable {
 
     private static final String ERROR_TAG = "ERROR IN " + Adapter.class.getName();
 
@@ -167,10 +169,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
                 holder.itemView.setOnClickListener(v -> {
                     Intent i = new Intent().setClass(v.getContext(), ItineraryManagement.class);
-                    Bundle bundle = new Bundle();
                     try {
-                        bundle.putString("itinerary_code", mData.getJSONObject(position).getString("itinerary_code"));
-                        i.putExtras(bundle);
+                        Itinerary itinerary = new Itinerary(mData.getJSONObject(position));
+                        i.putExtra("itinerary",itinerary.toJSONObject().toString());
                         v.getContext().startActivity(i);
                     } catch (JSONException e) {
                         Log.e(ERROR_TAG, e.toString());
@@ -194,7 +195,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
                     Bundle bundle = new Bundle();
                     try {
-                        bundle.putString("username", mData.getJSONObject(position).getString("username"));
+                        bundle.putString("itinerary", mData.getJSONObject(position).toString());
                         i.putExtras(bundle);
                         v.getContext().startActivity(i);
                     } catch (JSONException e) {
