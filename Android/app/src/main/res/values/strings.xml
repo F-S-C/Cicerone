@@ -114,6 +114,12 @@
     <string name="wishlist_number">You have %d itineraries in your wishlist.</string>
     <string name="add_to_wishlist">Add to wishlist</string>
     <string name="remove_from_wishlist">Remove from wishlist</string>
+    <string name="insert_feedback">Insert your feedback:</string>
+    <string name="insert_description">Insert your description:</string>
+    <string name="submit_review">Submit review</string>
+    <string name="update_review">Update review</string>
+    <string name="delete_review">Delete review</string>
+    <string name="added_review">Review added.</string>
     <string name="cellphone">Cellphone:</string>
     <string name="doc_number">Document Number</string>
     <string name="ins_doc_nr">Document Number:</string>
@@ -136,4 +142,8 @@
     <string name="oldpw_equals_new_err">The old password cannot be the same as the new one</string>
     <string name="password_changed">Password changed!</string>
     <string name="oldpw_mism_error">The current password does not match the one entered</string>
+    <string name="deleted_review">Review deleted.</string>
+    <string name="updated_review">Review updated.</string>
+    <string name="no_review">There are no reviews to display.</string>
+    <string name="no_insert_review">Sorry! You cannot post a review.</string>
 </resources>

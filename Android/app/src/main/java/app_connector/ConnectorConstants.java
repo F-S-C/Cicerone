@@ -33,10 +33,6 @@ public final class ConnectorConstants {
      */
     public static final String REQUEST_ITINERARY = SERVER_URL + "/RequestItinerary.php";
 
-    /**
-     * URL of the server-side connector for the user_review table
-     */
-    public static final String USER_REVIEW = SERVER_URL + "/RequestUserReview.php";
 
     /**
      * URL of the server-side connector for the itinerary_review table
@@ -84,6 +80,26 @@ public final class ConnectorConstants {
     public static final String REQUEST_WISHLIST = SERVER_URL + "/RequestWishlistJoinItinerary.php";
 
     /**
+     * URL of the server-side connector for the user_review table
+     */
+    public static final String REQUEST_USER_REVIEW = SERVER_URL + "/RequestUserReview.php";
+
+    /**
+     * URL of the server-side connector for the user_review table
+     */
+    public static final String INSERT_USER_REVIEW = SERVER_URL + "/InsertUserReview.php";
+
+    /**
+     * URL of the server-side connector for the user_review table
+     */
+    public static final String UPDATE_USER_REVIEW = SERVER_URL + "/UpdateUserReview.php";
+
+    /**
+     * URL of the server-side connector for the user_review table
+     */
+    public static final String DELETE_USER_REVIEW = SERVER_URL + "/DeleteUserReview.php";
+
+    /**
      * URL of the server-side connector for the document table
      */
     public static final String REQUEST_DOCUMENT = SERVER_URL + "/RequestDocument.php";
@@ -92,6 +108,12 @@ public final class ConnectorConstants {
      * URL of the server-side connector for the document table
      */
     public static final String UPDATE_DOCUMENT = SERVER_URL + "/UpdateDocument.php";
+
+    /**
+     * URL of the server-side connector for the report JOIN report_details query
+     */
+    public static final String REQUEST_FOR_REVIEW = SERVER_URL + "/CheckIfUserCanReviewUser.php";
+
 }
 
 

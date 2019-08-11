@@ -195,7 +195,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                     Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
                     Bundle bundle = new Bundle();
                     try {
-                        bundle.putString("itinerary", mData.getJSONObject(position).toString());
+                        bundle.putString("reviewed_user", mData.getJSONObject(position).getString("username"));
                         i.putExtras(bundle);
                         v.getContext().startActivity(i);
                     } catch (JSONException e) {

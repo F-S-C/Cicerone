@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -25,7 +27,7 @@ import app_connector.SendInPostConnector;
 /**
  * Class that contains the elements of the TAB Review on the account details page.
  */
-public class ReviewFragment extends Fragment {
+public class SelectedUserReviewFragment extends Fragment {
 
     Adapter adapter;
 
@@ -34,7 +36,7 @@ public class ReviewFragment extends Fragment {
     /**
      * Empty Constructor
      */
-    public ReviewFragment() {
+    public SelectedUserReviewFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +45,10 @@ public class ReviewFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
-        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
         Bundle bundle = getArguments();
         try {
             final JSONObject parameters = new JSONObject();
-            parameters.put("reviewed_user", currentLoggedUser.getUsername());
+            parameters.put("reviewed_user", Objects.requireNonNull(bundle).getString("reviewed_user"));
             // set up the RecyclerView
             RecyclerView recyclerView = view.findViewById(R.id.review_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,8 +67,8 @@ public class ReviewFragment extends Fragment {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
-                progressBar.setVisibility(View.VISIBLE);
                 message.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -80,6 +81,7 @@ public class ReviewFragment extends Fragment {
                 else{
                     message.setVisibility(View.VISIBLE);
                 }
+
             }
         });
         connector.setObjectToSend(parameters);

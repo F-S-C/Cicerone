@@ -91,6 +91,12 @@
     <string name="wishlist_number">Hai %d itinerari nella tua lista desideri.</string>
     <string name="add_to_wishlist">Aggiungi alla lista desideri</string>
     <string name="remove_from_wishlist">Rimuovi dalla lista dei desideri</string>
+    <string name="insert_feedback">Inserisci il tuo feedback:</string>
+    <string name="insert_description">Inserisci la tua descrizione:</string>
+    <string name="submit_review">Invia recensione</string>
+    <string name="update_review">Aggiorna recensione</string>
+    <string name="delete_review">Rimuovi recensione</string>
+    <string name="added_review">Recensione aggiunta.</string>
     <string name="title_notifications">Notifiche</string>
     <string name="doc_number">Numero Documento</string>
     <string name="modify">Modifica</string>
@@ -113,4 +119,8 @@
     <string name="oldpw_equals_new_err">La vecchia password non può essere uguale alla nuova</string>
     <string name="password_changed">Password cambiata!</string>
     <string name="oldpw_mism_error">La password corrente non corrisponde con quella inserita</string>
+    <string name="deleted_review">Recensione rimossa.</string>
+    <string name="updated_review">Recensione aggiornata.</string>
+    <string name="no_review">Non ci sono recensioni da visualizzare.</string>
+    <string name="no_insert_review">Spiacenti! Non puoi inserire una recensione.</string>
 </resources>
