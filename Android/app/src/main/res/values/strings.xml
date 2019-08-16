@@ -146,4 +146,7 @@
     <string name="updated_review">Review updated.</string>
     <string name="no_review">There are no reviews to display.</string>
     <string name="no_insert_review">Sorry! You cannot post a review.</string>
+    <string name="clear_wishlist">Clear wishlist</string>
+    <string name="wishlist_deleted">Wishlist cleared.</string>
+    <string name="confirm_delete_wishlist">Are you sure you want to clear your wishlist?</string>
 </resources>

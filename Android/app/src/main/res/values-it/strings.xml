@@ -123,4 +123,6 @@
     <string name="updated_review">Recensione aggiornata.</string>
     <string name="no_review">Non ci sono recensioni da visualizzare.</string>
     <string name="no_insert_review">Spiacenti! Non puoi inserire una recensione.</string>
+    <string name="clear_wishlist">Svuota wishlist</string>
+    <string name="confirm_delete_wishlist">Sei sicuro di voler svuotare la tua wishlist?</string>
 </resources>
