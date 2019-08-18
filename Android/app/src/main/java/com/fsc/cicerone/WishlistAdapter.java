@@ -15,9 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -43,7 +41,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
      */
     WishlistAdapter(Context context, JSONArray jsonArray) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = jsonArray;;
+        this.mData = jsonArray;
         this.context = context;
     }
 
@@ -59,35 +57,30 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Itinerary itineraryList[] = new Itinerary[mData.length()];
 
-                try {
-                    String title = mData.getJSONObject(position).getString("title");
-                    Integer itineraryNumber = mData.getJSONObject(position).getInt("itinerary_code");
-                    String location = mData.getJSONObject(position).getString("location");
+
+        try {
+                    itineraryList[position] = new Itinerary(mData.getJSONObject(position));
+                    String title = itineraryList[position].getTitle();
+                    Integer itineraryNumber = itineraryList[position].getCode();
+                    String location = itineraryList[position].getLocation();
 
                     DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                    DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                    Date date = inputFormat.parse(mData.getJSONObject(position).getString("beginning_date"));
-                    holder.beginning.setText(outputFormat.format(date));
-                    date = inputFormat.parse(mData.getJSONObject(position).getString("ending_date"));
-                    holder.ending.setText(outputFormat.format(date));
-
+                    holder.beginning.setText(outputFormat.format(itineraryList[position].getBeginningDate()));
+                    holder.ending.setText(outputFormat.format(itineraryList[position].getEndingDate()));
                     holder.itineraryTitle.setText(title);
                     holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
                     holder.location.setText(location);
-                } catch (JSONException | ParseException e) {
+                } catch (JSONException e) {
                     Log.e(ERROR_TAG, e.getMessage());
                 }
 
                 holder.itemView.setOnClickListener(v -> {
                     Intent i = new Intent().setClass(v.getContext(), ItineraryDetails.class);
-                    try {
-                        Itinerary itinerary = new Itinerary(mData.getJSONObject(position));
-                        i.putExtra("itinerary",itinerary.toJSONObject().toString());
-                        v.getContext().startActivity(i);
-                    } catch (JSONException e) {
-                        Log.e(ERROR_TAG, e.toString());
-                    }
+                    Log.e("prova",String.valueOf(itineraryList[position].getCode()));
+                    i.putExtra("itinerary",itineraryList[position].toJSONObject().toString());
+                    v.getContext().startActivity(i);
                 });
 
     }//END onBindViewHolder

@@ -1,7 +1,5 @@
 package com.fsc.cicerone;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -130,7 +128,6 @@ public class Itinerary {
 
         try {
             minParticipants = itinerary.getInt("minimum_participants_number");
-            Log.e("min", String.valueOf(minParticipants));
         } catch (JSONException e) {
             minParticipants = 0;
         }

@@ -82,6 +82,7 @@ public class ItineraryDetails extends AppCompatActivity {
         deleteDialog.setCancelable(true);
         JSONObject object = new JSONObject();
         JSONObject object2 = new JSONObject();
+        JSONObject objectReview = new JSONObject();
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
@@ -94,12 +95,13 @@ public class ItineraryDetails extends AppCompatActivity {
 
             object.put("itinerary_in_wishlist", itinerary.getCode());
             object.put("username", currentLoggedUser.getUsername());
+            objectReview.put("reviewed_itinerary",itinerary.getCode());
             checkWishlist(object);
             getDataFromServer(itinerary);
-            getItineraryReviews(object);
+            getItineraryReviews(objectReview);
             object2.put("itinerary_code", object.getString("itinerary_in_wishlist"));
             object2.put("username", currentLoggedUser.getUsername());
-            object2.put("itinerary_in_wishlist", itinerary.getCode());
+            object2.put("booked_itinerary", itinerary.getCode());
             isReservated(object2);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -137,8 +139,9 @@ public class ItineraryDetails extends AppCompatActivity {
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 JSONObject object = jsonArray.getJSONObject(0);
                 Log.e("p", object.toString());
-                if (params.getBoolean("result")) {
+                if (object.getBoolean("result")) {
                     Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                    checkWishlist(params);
                 }
             }
         });
@@ -157,7 +160,6 @@ public class ItineraryDetails extends AppCompatActivity {
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 JSONObject object = jsonArray.getJSONObject(0);
-                Log.e("p", object.toString());
                 if (object.getBoolean("result")) {
                     Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -172,17 +174,16 @@ public class ItineraryDetails extends AppCompatActivity {
 
 
     public void checkWishlist(JSONObject object) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_WISHLIST, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.SEARCH_WISHLIST, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 // Do nothing
             }
 
             @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                result = jsonArray.getJSONObject(0);
-                Log.e("n", String.valueOf(result.length()));
-                if ( result.length() > 0)
+            public void onEndConnection(JSONArray jsonArray) {
+
+                if ( jsonArray.length() > 0)
                 {
                     intoWishlist.setVisibility(View.GONE);
                     removeFromWishlist.setVisibility(View.VISIBLE);

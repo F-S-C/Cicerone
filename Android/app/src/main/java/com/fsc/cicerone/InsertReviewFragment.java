@@ -155,7 +155,7 @@ public class InsertReviewFragment extends Fragment {
 
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                Log.e("lunghezza:",String.valueOf(jsonArray.length()));
+                Log.e("lunghezza",String.valueOf(jsonArray.length()));
                 message.setVisibility(View.GONE);
                 if( jsonArray.length() > 0)
                 {
