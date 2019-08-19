@@ -115,7 +115,7 @@ public class ItineraryDetails extends AppCompatActivity {
             yesButton.setOnClickListener(view -> {
                 deleteDialog.hide();
                 deleteDialog.dismiss();
-                deleteFromWishlist(object2);
+                deleteFromWishlist(object);
 
 
             });
@@ -161,10 +161,11 @@ public class ItineraryDetails extends AppCompatActivity {
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 JSONObject object = jsonArray.getJSONObject(0);
                 if (object.getBoolean("result")) {
-                    Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
+                    //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show();
-                    startActivity(i);
+                    //startActivity(i);
+                    checkWishlist(params);
                 }
             }
         });

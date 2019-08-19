@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
 
     private void requireData(View view, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 progressBar.setVisibility(View.VISIBLE);
