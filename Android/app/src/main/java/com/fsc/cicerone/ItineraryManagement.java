@@ -86,6 +86,7 @@ public class ItineraryManagement extends AppCompatActivity {
             itinerary = new Itinerary(new JSONObject(s));
 
             code.put("reviewed_itinerary", String.valueOf(itinerary.getCode()));
+            code.put("itinerary_code", String.valueOf(itinerary.getCode()));
             getDataFromServer(itinerary);
             getItineraryReviews(code);
             deleteItinerary.setOnClickListener(v -> {

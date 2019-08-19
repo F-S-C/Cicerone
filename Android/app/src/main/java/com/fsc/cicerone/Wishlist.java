@@ -1,7 +1,6 @@
 package com.fsc.cicerone;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -68,7 +67,7 @@ public class Wishlist extends Fragment {
             yesButton.setOnClickListener(view1 -> {
                 deleteDialog.hide();
                 deleteDialog.dismiss();
-                clearWish(view1, parameters);
+                clearWish(view, parameters, recyclerView);
 
 
             });
@@ -102,7 +101,7 @@ public class Wishlist extends Fragment {
         connector.execute();
     }
 
-    private void clearWish (View view, JSONObject parameters)
+    private void clearWish (View view, JSONObject parameters, RecyclerView recyclerView)
     {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.CLEAR_WISHLIST, new DatabaseConnector.CallbackInterface() {
             @Override
@@ -114,10 +113,11 @@ public class Wishlist extends Fragment {
                 JSONObject object = jsonArray.getJSONObject(0);
                 Log.e("p", object.toString());
                 if (object.getBoolean("result")) {
-                    Intent i = new Intent(getActivity(), MainActivity.class);
+                    //Intent i = new Intent(getActivity(), MainActivity.class);
                     //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Toast.makeText(getActivity(), Wishlist.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
-                    startActivity(i);
+                    //startActivity(i);
+                    requireData(view, parameters, recyclerView);
                 }
 
             }
