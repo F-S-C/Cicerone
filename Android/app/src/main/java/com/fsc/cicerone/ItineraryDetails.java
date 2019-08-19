@@ -124,7 +124,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
 
 
-        intoWishlist.setOnClickListener(v -> addToWishlist(object2));
+        intoWishlist.setOnClickListener(v -> addToWishlist(object));
     }
 
     public void addToWishlist ( JSONObject params)
@@ -282,7 +282,7 @@ public class ItineraryDetails extends AppCompatActivity {
     public void goToAuthor(View view) {
         Intent i = new Intent().setClass(view.getContext(),ProfileActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("username",author.getText().toString());
+        bundle.putString("reviewed_user",author.getText().toString());
         i.putExtras(bundle);
         view.getContext().startActivity(i);
     }
