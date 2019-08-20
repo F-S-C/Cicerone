@@ -16,11 +16,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,14 +26,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -123,30 +118,20 @@ public class ProfileFragment extends Fragment {
         sexList = view.findViewById(R.id.sexList);
         Button changePaswButton = view.findViewById(R.id.change_passw_btn);
         birthCalendar = toCalendar(AccountManager.getCurrentLoggedUser().getBirthDate());
-        DatePickerDialog.OnDateSetListener birthDateSelect = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                birthCalendar.set(Calendar.YEAR, year);
-                birthCalendar.set(Calendar.MONTH, monthOfYear);
-                birthCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateBirth();
-            }
+        DatePickerDialog.OnDateSetListener birthDateSelect = (view12, year, monthOfYear, dayOfMonth) -> {
+            // TODO Auto-generated method stub
+            birthCalendar.set(Calendar.YEAR, year);
+            birthCalendar.set(Calendar.MONTH, monthOfYear);
+            birthCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateBirth();
         };
 
-        DatePickerDialog.OnDateSetListener expDateSelect = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                expCalendar.set(Calendar.YEAR, year);
-                expCalendar.set(Calendar.MONTH, monthOfYear);
-                expCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateExpDate();
-            }
+        DatePickerDialog.OnDateSetListener expDateSelect = (view13, year, monthOfYear, dayOfMonth) -> {
+            // TODO Auto-generated method stub
+            expCalendar.set(Calendar.YEAR, year);
+            expCalendar.set(Calendar.MONTH, monthOfYear);
+            expCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateExpDate();
         };
 
         addItemsSex(sexList);
@@ -232,17 +217,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        birthDate.setOnClickListener(view1 -> {
-            new DatePickerDialog(getActivity(), birthDateSelect, birthCalendar
-                    .get(Calendar.YEAR), birthCalendar.get(Calendar.MONTH),
-                    birthCalendar.get(Calendar.DAY_OF_MONTH)).show();
-        });
+        birthDate.setOnClickListener(view1 -> new DatePickerDialog(getActivity(), birthDateSelect, birthCalendar
+                .get(Calendar.YEAR), birthCalendar.get(Calendar.MONTH),
+                birthCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
-        documentExpiryDate.setOnClickListener(view1 -> {
-            new DatePickerDialog(getActivity(), expDateSelect, expCalendar
-                    .get(Calendar.YEAR), expCalendar.get(Calendar.MONTH),
-                    expCalendar.get(Calendar.DAY_OF_MONTH)).show();
-        });
+        documentExpiryDate.setOnClickListener(view1 -> new DatePickerDialog(getActivity(), expDateSelect, expCalendar
+                .get(Calendar.YEAR), expCalendar.get(Calendar.MONTH),
+                expCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
         changePaswButton.setOnClickListener(view1 -> {
             Intent i = new Intent(getActivity(), ChangePassword.class);
@@ -250,10 +231,10 @@ public class ProfileFragment extends Fragment {
         });
 
         Button deleteAccountButton = view.findViewById(R.id.deleteAccountButton);
-        deleteAccountButton.setOnClickListener(v -> deleteAccount(view));
+        deleteAccountButton.setOnClickListener(v -> deleteAccount());
 
         Button downloadUserDataButton = view.findViewById(R.id.downloadUserData);
-        downloadUserDataButton.setOnClickListener(v -> requestUserData(view));
+        downloadUserDataButton.setOnClickListener(v -> requestUserData());
 
         holderView = view;
 
@@ -483,7 +464,7 @@ public class ProfileFragment extends Fragment {
         return cal;
     }
 
-    public void requestUserData(View view) {
+    private void requestUserData() {
         checkPermission();
     }
 
@@ -557,9 +538,9 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void deleteAccount(View view) {
+    private void deleteAccount() {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
-//            AccountManager.deleteCurrentAccount();
+            AccountManager.deleteCurrentAccount();
             preferences.edit().remove("session").apply();
             startActivity(new Intent(context, LoginActivity.class));
             context.finish();
