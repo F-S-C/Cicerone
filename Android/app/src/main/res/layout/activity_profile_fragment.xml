@@ -272,14 +272,10 @@
 
         <Button
             android:id="@+id/modifyButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/primary_button_style"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:text="@string/modify"
-            android:textColor="@color/colorWhite" />
+            android:text="@string/modify" />
 
         <View
             android:id="@+id/spacing_buttons"
@@ -289,67 +285,41 @@
 
         <Button
             android:id="@+id/logout"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/primary_button_style"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:text="@string/logout"
-            android:textColor="@color/colorWhite" />
+            android:text="@string/logout" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/change_passw_btn"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/primary_button_style"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:text="@string/change_password"
-        android:visibility="visible" />
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_password" />
 
     <Button
         android:id="@+id/switch_to_cicerone"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/primary_button_style"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:text="@string/switch_to_cicerone"
-        android:textColor="@color/colorWhite"
-        android:visibility="visible" />
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/switch_to_cicerone" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/downloadUserData"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/primary_button_style"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:text="@string/download_your_data"
-        android:textColor="@color/colorWhite"
-        android:visibility="visible" />
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/download_your_data" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/deleteAccountButton"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/delete_your_account"
         android:textColor="@android:color/holo_red_dark"
-        android:visibility="visible"
         app:icon="@drawable/ic_outline_delete_24px"
         app:iconTint="@android:color/holo_red_dark" />
 
