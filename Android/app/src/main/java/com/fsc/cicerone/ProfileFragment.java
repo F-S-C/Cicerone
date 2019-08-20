@@ -80,6 +80,8 @@ public class ProfileFragment extends Fragment {
     private Calendar expCalendar = Calendar.getInstance(TimeZone.getDefault());
     private Spinner sexList;
 
+    private SharedPreferences preferences;
+
     private Activity context;
     private static final int PERMISSION_REQUEST_CODE = 357;
     private View holderView;
@@ -106,7 +108,7 @@ public class ProfileFragment extends Fragment {
         switchToCiceroneDialog.setContentView(R.layout.switch_to_cicerone);
         switchToCiceroneDialog.setCancelable(true);
 
-        SharedPreferences preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+        preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         name = view.findViewById(R.id.name);
         surname = view.findViewById(R.id.surname_textbox);
         email = view.findViewById(R.id.email);
@@ -556,17 +558,17 @@ public class ProfileFragment extends Fragment {
     }
 
     public void deleteAccount(View view) {
-        DialogInterface.OnClickListener positiveClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
+        DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
+//            AccountManager.deleteCurrentAccount();
+            preferences.edit().remove("session").apply();
+            startActivity(new Intent(context, LoginActivity.class));
+            context.finish();
         };
         new androidx.appcompat.app.AlertDialog.Builder(context)
-                .setTitle("CIAO")
-                .setMessage("CIAONE")
-                .setPositiveButton("YES", null)
-                .setNegativeButton("NO", null)
+                .setTitle(context.getString(R.string.are_you_sure))
+                .setMessage(context.getString(R.string.sure_to_delete_account))
+                .setPositiveButton(context.getString(R.string.yes), positiveClickListener)
+                .setNegativeButton(context.getString(R.string.no), null)
                 .show();
     }
 }

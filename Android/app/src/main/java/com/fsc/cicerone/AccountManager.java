@@ -93,6 +93,28 @@ public abstract class AccountManager {
         currentLoggedUser = null;
     }
 
+    /**
+     * Delete the current logged account from the system.
+     */
+    public static void deleteCurrentAccount() {
+        if(!isLogged())
+            return;
+
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+                //TODO: Complete
+            }
+
+            @Override
+            public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                //TODO: Complete
+            }
+        }, currentLoggedUser.getCredentials());
+        connector.execute();
+
+        logout();
+    }
 
     /**
      * Check if the user is currently logged.
