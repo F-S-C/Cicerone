@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
@@ -38,16 +41,12 @@ import app_connector.ConnectorConstants;
  */
 public class AccountDetails extends Fragment {
 
-    private static final String ERROR_TAG = "ERROR IN " + AccountDetails.class.getName();
-
     private TabLayout tabLayout;
     private Fragment fragment = null;
 
-    private Activity context;
-
     private View holderView;
 
-    private static final int PERMISSION_REQUEST_CODE = 357;
+
 
     AccountDetails() {
         // required empty constructor
@@ -57,8 +56,6 @@ public class AccountDetails extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         holderView = inflater.inflate(R.layout.activity_account_details, container, false);
-
-        context = Objects.requireNonNull(getActivity());
 
         fragment = new ProfileFragment();
         FragmentManager fragmentManager = Objects.requireNonNull(getFragmentManager());
@@ -123,80 +120,5 @@ public class AccountDetails extends Fragment {
         nameSurnameTextView.setText(nameSurname);
         if (currentLoggedUser.getUserType() == UserType.GLOBETROTTER)
             tabLayout.removeTabAt(3);
-    }
-
-    public void requestUserData(View view) {
-        checkPermission();
-    }
-
-    private void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    // show an alert dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage(getString(R.string.external_storage_permission_required_message));
-                    builder.setTitle(getString(R.string.please_grant_permission));
-                    builder.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE));
-                    builder.setNeutralButton(getString(R.string.cancel), null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                } else {
-                    // Request permission
-                    ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-                }
-            } else {
-                downloadUserData();
-            }
-        } else {
-            downloadUserData();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                downloadUserData();
-            } else {
-                Toast.makeText(context, getString(R.string.storage_permission_required), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private void downloadUserData() {
-        final WebView webView = new WebView(context);
-        webView.setWebViewClient(new WebViewClient());
-
-        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
-
-        Uri uri = Uri.parse(ConnectorConstants.DOWNLOAD_USER_DATA)
-                .buildUpon()
-                .appendQueryParameter("username", currentLoggedUser.getUsername())
-                .appendQueryParameter("password", currentLoggedUser.getPassword())
-                .build();
-
-        webView.loadUrl(uri.toString());
-        RelativeLayout rootLayout = holderView.findViewById(R.id.accountDetailsRoot);
-        rootLayout.addView(webView);
-
-        webView.setDownloadListener((url, userAgent, contentDescription, mimetype, contentLength) -> {
-            // The download request
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-            request.allowScanningByMediaScanner();
-
-            // Set the notification visibility
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-            // Set the destination on the device
-            String fileName = URLUtil.guessFileName(url, contentDescription, mimetype);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
-
-            // Enqueue the download
-            DownloadManager dManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-            dManager.enqueue(request);
-            webView.destroy();
-        });
-
     }
 }

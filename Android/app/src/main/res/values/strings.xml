@@ -149,4 +149,5 @@
     <string name="clear_wishlist">Clear wishlist</string>
     <string name="wishlist_deleted">Wishlist cleared.</string>
     <string name="confirm_delete_wishlist">Are you sure you want to clear your wishlist?</string>
+    <string name="delete_your_account">Delete your account</string>
 </resources>

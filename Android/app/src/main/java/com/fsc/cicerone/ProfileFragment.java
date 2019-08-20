@@ -1,26 +1,44 @@
 package com.fsc.cicerone;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +80,10 @@ public class ProfileFragment extends Fragment {
     private Calendar expCalendar = Calendar.getInstance(TimeZone.getDefault());
     private Spinner sexList;
 
+    private Activity context;
+    private static final int PERMISSION_REQUEST_CODE = 357;
+    private View holderView;
+
     /**
      * Empty constructor
      */
@@ -72,6 +94,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        context = Objects.requireNonNull(getActivity());
         View view = inflater.inflate(R.layout.activity_profile_fragment, container, false);
         Dialog logoutDialog = new Dialog(Objects.requireNonNull(getContext()), android.R.style.Theme_Black_NoTitleBar);
         Objects.requireNonNull(logoutDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
@@ -176,19 +199,19 @@ public class ProfileFragment extends Fragment {
         });
 
         modifyButton.setOnClickListener(view1 -> {
-            if(!name.isEnabled()){
-                    name.setEnabled(true);
-                    surname.setEnabled(true);
-                    email.setEnabled(true);
-                    cellphone.setEnabled(true);
-                    birthDate.setEnabled(true);
-                    documentNumber.setEnabled(true);
-                    documentType.setEnabled(true);
-                    documentExpiryDate.setEnabled(true);
-                    sexList.setEnabled(true);
-                    modifyButton.setText(view1.getContext().getString(R.string.save));
-            }else{
-                if(allFilled()) {
+            if (!name.isEnabled()) {
+                name.setEnabled(true);
+                surname.setEnabled(true);
+                email.setEnabled(true);
+                cellphone.setEnabled(true);
+                birthDate.setEnabled(true);
+                documentNumber.setEnabled(true);
+                documentType.setEnabled(true);
+                documentExpiryDate.setEnabled(true);
+                sexList.setEnabled(true);
+                modifyButton.setText(view1.getContext().getString(R.string.save));
+            } else {
+                if (allFilled()) {
                     name.setEnabled(false);
                     surname.setEnabled(false);
                     email.setEnabled(false);
@@ -201,7 +224,7 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(view1.getContext(), view1.getContext().getString(R.string.updating), Toast.LENGTH_LONG).show();
                     modifyButton.setText(view1.getContext().getString(R.string.modify));
                     updateUserData();
-                }else{
+                } else {
                     Toast.makeText(getActivity(), getActivity().getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -223,6 +246,14 @@ public class ProfileFragment extends Fragment {
             Intent i = new Intent(getActivity(), ChangePassword.class);
             getActivity().startActivity(i);
         });
+
+        Button deleteAccountButton = view.findViewById(R.id.deleteAccountButton);
+        deleteAccountButton.setOnClickListener(v -> deleteAccount(view));
+
+        Button downloadUserDataButton = view.findViewById(R.id.downloadUserData);
+        downloadUserDataButton.setOnClickListener(v -> requestUserData(view));
+
+        holderView = view;
 
         return view;
     }
@@ -282,15 +313,15 @@ public class ProfileFragment extends Fragment {
                     try {
                         Date docExpiryDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(data.getString("expiry_date"));
                         documentExpiryDate.setText(outputFormat.format(docExpiryDate));
-                    }catch (ParseException e){
-                        Log.e(ERROR_TAG,e.toString());
+                    } catch (ParseException e) {
+                        Log.e(ERROR_TAG, e.toString());
                     }
                 }
             });
             user_document_conn.setObjectToSend(parameters);
             user_document_conn.execute();
-        }catch (JSONException e) {
-            Log.e(ERROR_TAG,e.toString());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.toString());
         }
     }
 
@@ -338,16 +369,16 @@ public class ProfileFragment extends Fragment {
     private void updateUserData() {
         JSONObject userData = new JSONObject();
         JSONObject documentData = new JSONObject();
-        try{
+        try {
             User user = AccountManager.getCurrentLoggedUser();
             userData.put("username", user.getUsername());
             userData.put("password", user.getPassword());
-            userData.put("name",name.getText());
-            userData.put("surname",surname.getText());
-            userData.put("email",email.getText());
-            userData.put("cellphone",cellphone.getText());
+            userData.put("name", name.getText());
+            userData.put("surname", surname.getText());
+            userData.put("email", email.getText());
+            userData.put("cellphone", cellphone.getText());
             String sexSelected;
-            switch(sexList.getSelectedItemPosition()){
+            switch (sexList.getSelectedItemPosition()) {
                 case 0:
                     sexSelected = "male";
                     break;
@@ -384,8 +415,8 @@ public class ProfileFragment extends Fragment {
 
             documentData.put("username", user.getUsername());
             documentData.put("expiry_date", itDateToServerDate(documentExpiryDate.getText().toString()));
-            documentData.put("document_type",documentType.getText());
-            documentData.put("document_number",documentNumber.getText());
+            documentData.put("document_type", documentType.getText());
+            documentData.put("document_number", documentNumber.getText());
             SendInPostConnector updateDocument = new SendInPostConnector(ConnectorConstants.UPDATE_DOCUMENT, new DatabaseConnector.CallbackInterface() {
                 @Override
                 public void onStartConnection() {
@@ -394,7 +425,7 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    if(!jsonArray.getJSONObject(0).getBoolean("result"))
+                    if (!jsonArray.getJSONObject(0).getBoolean("result"))
                         Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
                     Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
                     user.setCurrentDocument(newUserDoc);
@@ -411,24 +442,24 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private Date strToDate(String text){
+    private Date strToDate(String text) {
         Date date = null;
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy",Locale.US);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         try {
             date = format.parse(text);
         } catch (ParseException e) {
-            Log.e(ERROR_TAG,e.toString());
+            Log.e(ERROR_TAG, e.toString());
         }
         return date;
     }
 
-    private String itDateToServerDate (String dateToConvert){
+    private String itDateToServerDate(String dateToConvert) {
         try {
             DateFormat serverDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             DateFormat itDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
             return serverDate.format(itDate.parse(dateToConvert));
-        }catch(ParseException e){
-            Log.e(ERROR_TAG,e.toString());
+        } catch (ParseException e) {
+            Log.e(ERROR_TAG, e.toString());
             return null;
         }
     }
@@ -444,9 +475,98 @@ public class ProfileFragment extends Fragment {
                 && !documentExpiryDate.getText().toString().equals("");
     }
 
-    private static Calendar toCalendar(Date date){
+    private static Calendar toCalendar(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
+    }
+
+    public void requestUserData(View view) {
+        checkPermission();
+    }
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    // show an alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage(getString(R.string.external_storage_permission_required_message));
+                    builder.setTitle(getString(R.string.please_grant_permission));
+                    builder.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE));
+                    builder.setNeutralButton(getString(R.string.cancel), null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    // Request permission
+                    ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+                }
+            } else {
+                downloadUserData();
+            }
+        } else {
+            downloadUserData();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                downloadUserData();
+            } else {
+                Toast.makeText(context, getString(R.string.storage_permission_required), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void downloadUserData() {
+        final WebView webView = new WebView(context);
+        webView.setWebViewClient(new WebViewClient());
+
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
+
+        Uri uri = Uri.parse(ConnectorConstants.DOWNLOAD_USER_DATA)
+                .buildUpon()
+                .appendQueryParameter("username", currentLoggedUser.getUsername())
+                .appendQueryParameter("password", currentLoggedUser.getPassword())
+                .build();
+
+        webView.loadUrl(uri.toString());
+        LinearLayout rootLayout = holderView.findViewById(R.id.scroll_details);
+        rootLayout.addView(webView);
+
+        webView.setDownloadListener((url, userAgent, contentDescription, mimetype, contentLength) -> {
+            // The download request
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+            request.allowScanningByMediaScanner();
+
+            // Set the notification visibility
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+            // Set the destination on the device
+            String fileName = URLUtil.guessFileName(url, contentDescription, mimetype);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+
+            // Enqueue the download
+            DownloadManager dManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            dManager.enqueue(request);
+            webView.destroy();
+        });
+    }
+
+    public void deleteAccount(View view) {
+        DialogInterface.OnClickListener positiveClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        };
+        new androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle("CIAO")
+                .setMessage("CIAONE")
+                .setPositiveButton("YES", null)
+                .setNegativeButton("NO", null)
+                .show();
     }
 }

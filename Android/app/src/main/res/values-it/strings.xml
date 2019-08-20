@@ -125,4 +125,5 @@
     <string name="no_insert_review">Spiacenti! Non puoi inserire una recensione.</string>
     <string name="clear_wishlist">Svuota wishlist</string>
     <string name="confirm_delete_wishlist">Sei sicuro di voler svuotare la tua wishlist?</string>
+    <string name="delete_your_account">Rimuovi il tuo account</string>
 </resources>

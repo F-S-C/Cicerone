@@ -93,6 +93,7 @@ public abstract class AccountManager {
         currentLoggedUser = null;
     }
 
+
     /**
      * Check if the user is currently logged.
      *
