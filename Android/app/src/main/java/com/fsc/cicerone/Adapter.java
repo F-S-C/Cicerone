@@ -270,20 +270,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         }
     }
 
-    //TODO Getting data on click IF-35
-    /*JSONObject getItem(int id) {
-        try {
-            return mData.getJSONObject(id);
-        }catch(JSONException e) {
-            Log.e("EXCEPTION", e.getMessage());
-        }
-    }*/
-
-    // TODO IF-35
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
     /**
      * Item Click Listener for parent activity will implement this method to respond to click events.
      */

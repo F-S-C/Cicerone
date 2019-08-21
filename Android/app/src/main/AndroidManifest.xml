@@ -12,8 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChangePassword"
-            android:label="@string/change_password"></activity>
+        <activity android:name=".AdminMainActivity"></activity>
+        <activity
+            android:name=".ChangePassword"
+            android:label="@string/change_password" />
         <activity android:name=".Wishlist" />
         <activity android:name=".ItineraryUpdate" />
         <activity

@@ -13,6 +13,11 @@ public enum UserType {
     GLOBETROTTER,
 
     /**
+     * Admin: a "special" user that administer the system.
+     */
+    ADMIN,
+
+    /**
      * Cicerone: a "special" user that can create itineraries.
      * A "Cicerone" is also a "Globetrotter".
      */
@@ -27,12 +32,14 @@ public enum UserType {
      * Otherwise, if the value of the integer is 1 then the function will return CICERONE.
      */
     public static UserType getValue(Integer u) {
-        u = u % 2;
+        u = u % 3;
         switch (u) {
             case 0:
                 return GLOBETROTTER;
             case 1:
                 return CICERONE;
+            case 2:
+                return ADMIN;
             default:
                 return null;
         }
@@ -54,6 +61,9 @@ public enum UserType {
                 break;
             case CICERONE:
                 toReturn = 1;
+                break;
+            case ADMIN:
+                toReturn = 2;
                 break;
             default:
                 throw new IllegalArgumentException();
