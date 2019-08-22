@@ -27,7 +27,7 @@ public class AdminMainActivity extends AppCompatActivity {
     /**
      * The reports list fragment (second tab).
      */
-    private final Fragment reportsFragment = new HomeFragment();
+    private final Fragment reportsFragment = new ReportFragment();
 
     /**
      * The registered users list fragment (third tab).

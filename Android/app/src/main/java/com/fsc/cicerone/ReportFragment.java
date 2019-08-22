@@ -53,6 +53,9 @@ public class ReportFragment extends Fragment {
             final JSONObject parameters = new JSONObject(preferences.getString("session","")); //Connection params
             parameters.remove("password");
             // set up the RecyclerView
+            if(AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
+                parameters.remove("username");
+            }
             RecyclerView recyclerView = view.findViewById(R.id.report_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));

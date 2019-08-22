@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminMainActivity"></activity>
+        <activity android:name=".AdminReportDetailsActivity"></activity>
+        <activity android:name=".AdminMainActivity" />
         <activity
             android:name=".ChangePassword"
             android:label="@string/change_password" />

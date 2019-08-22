@@ -152,4 +152,5 @@
     <string name="active_itineraries">Active itineraries</string>
     <string name="list_users">Registered users</string>
     <string name="reports">Reports</string>
+    <string name="reporter_user">Reporter user:</string>
 </resources>

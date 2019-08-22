@@ -135,7 +135,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                     Log.e(ERROR_TAG, e.getMessage());
                 }
                 holder.itemView.setOnClickListener(v -> {
-                    Intent i = new Intent().setClass(v.getContext(), ReportDetailsActivity.class);
+                    Intent i;
+                    if (AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
+                        i = new Intent ().setClass(v.getContext(), AdminReportDetailsActivity.class); //TODO IF-38
+                    }
+                    else {
+                        i = new Intent().setClass(v.getContext(), ReportDetailsActivity.class);
+                    }
                     Bundle bundle = new Bundle();
                     try {
                         bundle.putString("report_code", mData.getJSONObject(position).getString("report_code"));

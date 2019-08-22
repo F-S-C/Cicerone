@@ -54,5 +54,5 @@ class RequestReportDetails extends JsonConnector
 
 }
 
-$connector = new RequestLanguage($_POST['report_code']);
+$connector = new RequestReportDetails($_POST['report_code']);
 print $connector->get_content();

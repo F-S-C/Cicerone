@@ -129,4 +129,5 @@
     <string name="active_itineraries">Itinerari attivi</string>
     <string name="list_users">Utenti registrati</string>
     <string name="reports">Segnalazioni</string>
+    <string name="reporter_user">Utente segnalatore:</string>
 </resources>
