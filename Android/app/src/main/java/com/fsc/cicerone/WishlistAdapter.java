@@ -77,7 +77,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 }
 
                 holder.itemView.setOnClickListener(v -> {
-                    Intent i = new Intent().setClass(v.getContext(), ItineraryDetails.class);
+                    Intent i;
+                    if(AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
+                        i = new Intent().setClass(v.getContext(), AdminItineraryDetails.class);
+                    }
+                    else{
+                        i = new Intent().setClass(v.getContext(), ItineraryDetails.class);
+                    }
                     i.putExtra("itinerary",itineraryList[position].toJSONObject().toString());
                     v.getContext().startActivity(i);
                 });

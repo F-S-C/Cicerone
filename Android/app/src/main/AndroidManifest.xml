@@ -12,7 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".AdminItineraryDetails"></activity>
+
         <activity android:name=".AdminReportDetailsActivity"></activity>
+
         <activity android:name=".AdminMainActivity" />
         <activity
             android:name=".ChangePassword"

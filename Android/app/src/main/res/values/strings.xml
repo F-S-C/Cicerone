@@ -153,4 +153,5 @@
     <string name="list_users">Registered users</string>
     <string name="reports">Reports</string>
     <string name="reporter_user">Reporter user:</string>
+    <string name="details_itinerary">Itinerary Details</string>
 </resources>
