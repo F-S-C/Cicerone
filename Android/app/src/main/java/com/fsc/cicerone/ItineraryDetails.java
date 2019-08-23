@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -48,7 +49,6 @@ public class ItineraryDetails extends AppCompatActivity {
     private  TextView duration;
     private  TextView fPrice;
     private  TextView rPrice;
-    private  JSONObject result;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
     private static final String IT_CODE = "itinerary_code";
@@ -86,7 +86,7 @@ public class ItineraryDetails extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        final Itinerary itinerary;
+       final Itinerary itinerary;
 
 
         try {
@@ -102,6 +102,18 @@ public class ItineraryDetails extends AppCompatActivity {
             object2.put("itinerary_code", object.getString("itinerary_in_wishlist"));
             object2.put("username", currentLoggedUser.getUsername());
             object2.put("booked_itinerary", itinerary.getCode());
+
+            review.setOnTouchListener((v, event) -> {
+                if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewFragment.class);
+                    i.putExtra("itinerary",itinerary.toJSONObject().toString());
+                    i.putExtra("rating",review.getRating());
+                    i.putExtra("reviewed_itinerary",itinerary.getCode());
+                    startActivity(i);
+                }
+                return true;
+            });
             isReservated(object2);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -125,6 +137,9 @@ public class ItineraryDetails extends AppCompatActivity {
 
 
         intoWishlist.setOnClickListener(v -> addToWishlist(object));
+
+
+
     }
 
     public void addToWishlist ( JSONObject params)

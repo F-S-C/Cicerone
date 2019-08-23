@@ -103,6 +103,11 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the user_review table
      */
+    public static final String REQUEST_ITINERARY_REVIEW = SERVER_URL + "/RequestItineraryReview.php";
+
+    /**
+     * URL of the server-side connector for the user_review table
+     */
     public static final String INSERT_USER_REVIEW = SERVER_URL + "/InsertUserReview.php";
 
     /**

@@ -27,7 +27,7 @@ import app_connector.SendInPostConnector;
 /**
  * Class that contains the elements of the TAB Review on the account details page.
  */
-public class SelectedUserReviewFragment extends Fragment {
+public class SelectedItineraryReviewFragment extends Fragment {
 
     Adapter adapter;
 
@@ -36,7 +36,7 @@ public class SelectedUserReviewFragment extends Fragment {
     /**
      * Empty Constructor
      */
-    public SelectedUserReviewFragment() {
+    public SelectedItineraryReviewFragment() {
         // Required empty public constructor
     }
 
@@ -48,8 +48,8 @@ public class SelectedUserReviewFragment extends Fragment {
         Bundle bundle = getArguments();
         try {
             final JSONObject parameters = new JSONObject();
-            parameters.put("reviewed_user", Objects.requireNonNull(bundle).getString("reviewed_user"));
-            Log.e("ru",Objects.requireNonNull(bundle).getString("reviewed_user"));
+            //Log.e("rev_code",Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
+            parameters.put("reviewed_itinerary", Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
             // set up the RecyclerView
             RecyclerView recyclerView = view.findViewById(R.id.review_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -65,7 +65,7 @@ public class SelectedUserReviewFragment extends Fragment {
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 message.setVisibility(View.GONE);
