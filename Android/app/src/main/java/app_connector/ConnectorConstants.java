@@ -111,6 +111,21 @@ public final class ConnectorConstants {
     public static final String INSERT_USER_REVIEW = SERVER_URL + "/InsertUserReview.php";
 
     /**
+     * URL of the server-side connector for the itinerary_review table
+     */
+    public static final String INSERT_ITINERARY_REVIEW = SERVER_URL + "/InsertItineraryReview.php";
+
+    /**
+     * URL of the server-side connector for the itinerary_review table
+     */
+    public static final String DELETE_ITINERARY_REVIEW = SERVER_URL + "/DeleteItineraryReview.php";
+
+    /**
+     * URL of the server-side connector for the itinerary_review table
+     */
+    public static final String UPDATE_ITINERARY_REVIEW = SERVER_URL + "/UpdateItineraryReview.php";
+
+    /**
      * URL of the server-side connector for the user_review table
      */
     public static final String UPDATE_USER_REVIEW = SERVER_URL + "/UpdateUserReview.php";
