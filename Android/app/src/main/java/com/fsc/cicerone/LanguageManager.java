@@ -1,6 +1,5 @@
 package com.fsc.cicerone;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import org.json.JSONArray;

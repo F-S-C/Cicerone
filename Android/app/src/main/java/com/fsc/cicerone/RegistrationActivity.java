@@ -185,7 +185,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         signup.setOnClickListener(view -> {
             if(checkConnection()) {
-                if (validateSecondPageDatas()) {
+                if (validateSecondPageData()) {
                     signup.setText(R.string.loading);
                     signup.setEnabled(false);
                     AccountManager.insertUser(setNewUser(), (result) -> {
@@ -272,7 +272,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
-    private boolean validateSecondPageDatas(){
+    private boolean validateSecondPageData(){
         docNumber.setError(null);
         docType.setError(null);
         expDate.setError(null);
