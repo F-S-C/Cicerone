@@ -1,6 +1,14 @@
 package com.fsc.cicerone;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -28,6 +36,23 @@ public class Document {
         this.number = number;
         this.type = type;
         this.expiryDate = expiryDate;
+    }
+
+    /**
+     * Create a new document by specifying its values.
+     *
+     * @param number     The document's number.
+     * @param type       The document's type.
+     * @param expiryDate The document's expiration date.
+     */
+    public Document(String number, String type, String expiryDate) {
+        this.number = number;
+        this.type = type;
+        try {
+            this.expiryDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(expiryDate);
+        } catch (ParseException e) {
+            this.expiryDate = null;
+        }
     }
 
     /**
@@ -107,5 +132,21 @@ public class Document {
     @Override
     public int hashCode() {
         return Objects.hash(number, type, expiryDate);
+    }
+
+    /**
+     * Convert the document to a JSON Object
+     * @return A JSON Object containing the data that were stored in the object.
+     */
+    public JSONObject getJSONObject() {
+        JSONObject doc = new JSONObject();
+        try {
+            doc.put("document_number", this.number);
+            doc.put("document_type", this.type);
+            doc.put("expiry_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.expiryDate));
+        }catch (JSONException e){
+            doc = null;
+        }
+        return doc;
     }
 }

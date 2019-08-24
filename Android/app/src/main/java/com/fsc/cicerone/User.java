@@ -1,5 +1,7 @@
 package com.fsc.cicerone;
 
+import android.util.Patterns;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * An <i>entity</i> class that stores the data of a user.
@@ -312,7 +315,7 @@ public class User {
     }
 
     /**
-     * Set the user's current (last added and valid) document<
+     * Set the user's current (last added and valid) document.
      *
      * @param currentDocument The new user's current document.
      */
@@ -391,7 +394,7 @@ public class User {
             result.put("username", this.username);
             result.put("user_type", this.userType.toInt());
             result.put("cellphone", this.cellphone);
-            result.put("birth_date", new SimpleDateFormat("yyyy-mm-dd", Locale.US).format(this.birthDate));
+            result.put("birth_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.birthDate));
         } catch (JSONException e) {
             result = null;
         }
@@ -412,5 +415,23 @@ public class User {
             result = null;
         }
         return result;
+    }
+
+    /**
+     * A function that validates a username. Check that the username is correctly formatted.
+     * @param usernameInput The username to check.
+     * @return True if username is valid. False if isn't.
+     */
+    public static boolean validateUsername(String usernameInput) {
+        return (Pattern.compile("[a-zA-Z._-]{4,20}").matcher(usernameInput).matches());
+    }
+
+    /**
+     * A function that validates a email. Check that the email is correctly formatted.
+     * @param emailInput The username to check.
+     * @return True if email is valid. False if isn't.
+     */
+    public static boolean validateEmail(String emailInput) {
+        return (Patterns.EMAIL_ADDRESS.matcher(emailInput).matches());
     }
 }

@@ -38,8 +38,6 @@ public final class ConnectorConstants {
      */
     public static final String REQUEST_ACTIVE_ITINERARY = SERVER_URL + "/RequestActiveItinerary.php";
 
-
-
     /**
      * URL of the server-side connector for the itinerary_review table
      */
@@ -149,6 +147,26 @@ public final class ConnectorConstants {
      * URL of the server-side connector for the report JOIN report_details query
      */
     public static final String REQUEST_FOR_REVIEW = SERVER_URL + "/CheckIfUserCanReviewUser.php";
+
+    /**
+     * URL of the server-side connector for the languages table
+     */
+    public static final String REQUEST_LANGUAGES = SERVER_URL + "/RequestLanguage.php";
+
+    /**
+     * URL of the server-side connector for the user_language table
+     */
+    public static final String INSERT_USER_LANGUAGE = SERVER_URL + "/InsertUserLanguage.php";
+
+    /**
+     * URL of the server-side connector for the user table
+     */
+    public static final String INSERT_USER = SERVER_URL + "/InsertRegisteredUser.php";
+
+    /**
+     * URL of the server-side connector for the document table
+     */
+    public static final String INSERT_DOCUMENT = SERVER_URL + "/InsertDocument.php";
 
 }
 

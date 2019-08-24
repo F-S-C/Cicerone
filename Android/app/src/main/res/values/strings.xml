@@ -149,9 +149,35 @@
     <string name="clear_wishlist">Clear wishlist</string>
     <string name="wishlist_deleted">Wishlist cleared.</string>
     <string name="confirm_delete_wishlist">Are you sure you want to clear your wishlist?</string>
+    <string name="registration_in_progress">Registration in progress...</string>
+    <string name="hi">Hi!</string>
+    <string name="welcome_text">Just a few steps and you\'ll be ready to go!</string>
+    <string name="ins_username" translatable="false">Username:</string>
+    <string name="empty_email_error">Enter your e-mail</string>
+    <string name="email_not_valid">Please enter a valid e-mail address</string>
+    <string name="username_too_long_error">Username too long!</string>
+    <string name="sex_text">Sex</string>
+    <string name="fiscal_code">Fiscal Code</string>
+    <string name="cellphone_ins">Cellphone</string>
+    <string name="next">Next</string>
+    <string name="almost_there">We are almost there...</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="great">Great!</string>
+    <string name="last_step_text">Last step, we need a identity document and the languages you know</string>
+    <string name="known_languages">Known Languages</string>
+    <string name="email_too_long">E-mail too long!</string>
+    <string name="not_valid_input">The data entered is not valid.</string>
+    <string name="username_already_exists">This username already exists.</string>
+    <string name="email_already_exists">This e-mail already exists.</string>
+    <string name="username_error">Username not valid or too short!</string>
+    <string name="document_not_valid">The document entered is not valid.</string>
     <string name="active_itineraries">Active itineraries</string>
     <string name="list_users">Registered users</string>
     <string name="reports">Reports</string>
     <string name="reporter_user">Reporter user:</string>
     <string name="details_itinerary">Itinerary Details</string>
+    <string name="registration_success">Registration successful.</string>
+    <string name="connection_error">No internet connection.</string>
+    <string name="major_date_required">You must be an adult to register.</string>
+    <string name="date_invalid">The date entered is not valid.</string>
 </resources>
