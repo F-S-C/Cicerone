@@ -113,7 +113,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         next.setOnClickListener(view -> {
             if (checkConnection()){
-                if (validateFirstPageDatas()) {
+                if (validateFirstPageData()) {
                     next.setText(R.string.loading);
                     next.setEnabled(false);
                     AccountManager.checkIfUsernameExists(username.getText().toString().trim().toLowerCase(), (resultUser) -> {
@@ -219,13 +219,13 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    private boolean specialCharaptersNoSpace(String text){return !LETTERS_NUMBERS.matcher(text).matches();}
+    private boolean specialCharactersNoSpace(String text){return !LETTERS_NUMBERS.matcher(text).matches();}
 
-    private boolean specialCharaptersSpace(String text){return !LETTERS_AND_SPACES.matcher(text).matches();}
+    private boolean specialCharactersSpace(String text){return !LETTERS_AND_SPACES.matcher(text).matches();}
 
     private boolean onlyNumbersNoSpace(String text){return CONTROL_PHONE_NUMBER.matcher(text).matches();}
 
-    private boolean validateFirstPageDatas(){
+    private boolean validateFirstPageData(){
         name.setError(null);
         surname.setError(null);
         birthDate.setError(null);
@@ -243,10 +243,10 @@ public class RegistrationActivity extends AppCompatActivity {
         }else if(!User.validateEmail(email.getText().toString().trim())){
             email.setError(getString(R.string.email_not_valid));
             return false;
-        }else if(name.getText().toString().trim().isEmpty() || specialCharaptersSpace(name.getText().toString().trim())){
+        }else if(name.getText().toString().trim().isEmpty() || specialCharactersSpace(name.getText().toString().trim())){
             name.setError(getString(R.string.not_valid_input));
             return false;
-        }else if(surname.getText().toString().trim().isEmpty() || specialCharaptersSpace(surname.getText().toString().trim())){
+        }else if(surname.getText().toString().trim().isEmpty() || specialCharactersSpace(surname.getText().toString().trim())){
             surname.setError(getString(R.string.not_valid_input));
             return false;
         }else if(birthDate.getText().toString().trim().isEmpty()){
@@ -257,7 +257,7 @@ public class RegistrationActivity extends AppCompatActivity {
             birthDate.setError(getString(R.string.major_date_required));
             Toast.makeText(this, getString(R.string.major_date_required),Toast.LENGTH_SHORT).show();
             return false;
-        }else if(fiscalCode.getText().toString().trim().isEmpty() || specialCharaptersNoSpace(fiscalCode.getText().toString().trim())){
+        }else if(fiscalCode.getText().toString().trim().isEmpty() || specialCharactersNoSpace(fiscalCode.getText().toString().trim())){
             fiscalCode.setError(getString(R.string.not_valid_input));
             return false;
         }else if(cellphone.getText().toString().trim().isEmpty() || !onlyNumbersNoSpace(cellphone.getText().toString().trim())){
@@ -278,7 +278,7 @@ public class RegistrationActivity extends AppCompatActivity {
         expDate.setError(null);
         nachoTextView.setError(null);
 
-        if(docNumber.getText().toString().trim().isEmpty() || specialCharaptersNoSpace(docNumber.getText().toString().trim())){
+        if(docNumber.getText().toString().trim().isEmpty() || specialCharactersNoSpace(docNumber.getText().toString().trim())){
             docNumber.setError(getString(R.string.document_not_valid));
             return false;
         }else if(docType.getText().toString().trim().isEmpty()){
