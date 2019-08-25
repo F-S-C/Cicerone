@@ -1,19 +1,18 @@
 package com.fsc.cicerone;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,9 +25,9 @@ import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
- * Class that contains the elements of the TAB Report on the account details page.
+ * Class that contains the elements of the TAB Review on the account details page.
  */
-public class ReportFragment extends Fragment {
+public class SelectedItineraryReviewFragment extends Fragment {
 
     Adapter adapter;
 
@@ -37,7 +36,7 @@ public class ReportFragment extends Fragment {
     /**
      * Empty Constructor
      */
-    public ReportFragment() {
+    public SelectedItineraryReviewFragment() {
         // Required empty public constructor
     }
 
@@ -45,18 +44,14 @@ public class ReportFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_report_fragment, container, false);
-
-        SharedPreferences preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-
+        View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
+        Bundle bundle = getArguments();
         try {
-            final JSONObject parameters = new JSONObject(preferences.getString("session","")); //Connection params
-            parameters.remove("password");
+            final JSONObject parameters = new JSONObject();
+            //Log.e("rev_code",Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
+            parameters.put("reviewed_itinerary", Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
             // set up the RecyclerView
-            if(AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
-                parameters.remove("username");
-            }
-            RecyclerView recyclerView = view.findViewById(R.id.report_list);
+            RecyclerView recyclerView = view.findViewById(R.id.review_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
             requireData(view, parameters, recyclerView);
@@ -69,17 +64,25 @@ public class ReportFragment extends Fragment {
 
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REPORT_FRAGMENT, new DatabaseConnector.CallbackInterface() {
+        TextView message = view.findViewById(R.id.noReview);
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
+                message.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 progressBar.setVisibility(View.GONE);
-                adapter = new Adapter(getActivity(),jsonArray, 0);
-                recyclerView.setAdapter(adapter);
+                if (jsonArray.length() != 0) {
+                    adapter = new Adapter(getActivity(), jsonArray, 2);
+                    recyclerView.setAdapter(adapter);
+                }
+                else{
+                    message.setVisibility(View.VISIBLE);
+                }
+
             }
         });
         connector.setObjectToSend(parameters);

@@ -101,10 +101,30 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the user_review table.
      */
+    public static final String REQUEST_ITINERARY_REVIEW = SERVER_URL + "/RequestItineraryReview.php";
+
+    /**
+     * URL of the server-side connector for the user_review table
+     */
     public static final String INSERT_USER_REVIEW = SERVER_URL + "/InsertUserReview.php";
 
     /**
-     * URL of the server-side connector for the user_review table.
+     * URL of the server-side connector for the itinerary_review table
+     */
+    public static final String INSERT_ITINERARY_REVIEW = SERVER_URL + "/InsertItineraryReview.php";
+
+    /**
+     * URL of the server-side connector for the itinerary_review table
+     */
+    public static final String DELETE_ITINERARY_REVIEW = SERVER_URL + "/DeleteItineraryReview.php";
+
+    /**
+     * URL of the server-side connector for the itinerary_review table
+     */
+    public static final String UPDATE_ITINERARY_REVIEW = SERVER_URL + "/UpdateItineraryReview.php";
+
+    /**
+     * URL of the server-side connector for the user_review table
      */
     public static final String UPDATE_USER_REVIEW = SERVER_URL + "/UpdateUserReview.php";
 
@@ -132,6 +152,26 @@ public final class ConnectorConstants {
      * URL of the server-side connector to delete a registered user.
      */
     public static final String DELETE_REGISTERED_USER = SERVER_URL + "/DeleteRegisteredUser.php";
+
+    /**
+     * URL of the server-side connector for the languages table.
+     */
+    public static final String REQUEST_LANGUAGES = SERVER_URL + "/RequestLanguage.php";
+
+    /**
+     * URL of the server-side connector for the user_language table.
+     */
+    public static final String INSERT_USER_LANGUAGE = SERVER_URL + "/InsertUserLanguage.php";
+
+    /**
+     * URL of the server-side connector for the user table.
+     */
+    public static final String INSERT_USER = SERVER_URL + "/InsertRegisteredUser.php";
+
+    /**
+     * URL of the server-side connector for the document table.
+     */
+    public static final String INSERT_DOCUMENT = SERVER_URL + "/InsertDocument.php";
 
 }
 

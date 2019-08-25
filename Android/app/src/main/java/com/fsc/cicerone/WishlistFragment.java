@@ -30,7 +30,7 @@ import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
-public class Wishlist extends Fragment {
+public class WishlistFragment extends Fragment {
 
     private WishlistAdapter adapter;
     private TextView numberItineraries;
@@ -115,7 +115,7 @@ public class Wishlist extends Fragment {
                 if (object.getBoolean("result")) {
                     //Intent i = new Intent(getActivity(), MainActivity.class);
                     //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Toast.makeText(getActivity(), Wishlist.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
                     //startActivity(i);
                     requireData(view, parameters, recyclerView);
                 }

@@ -10,7 +10,7 @@ require_once("JsonConnector.php");
  * Request all the itineraries that match a set of criteria.
  * @package db_connector
  */
-class RequestItinerary extends JsonConnector
+class RequestActiveItinerary extends JsonConnector
 {
     /** @var string|null The owner of the itinerary. */
     private $owner;
@@ -114,5 +114,5 @@ class RequestItinerary extends JsonConnector
     }
 }
 
-$connector = new RequestItinerary($_POST['username'], $_POST['location'], $_POST['beginning_date'], $_POST['ending_date'], $_POST['itinerary_code']);
+$connector = new RequestActiveItinerary($_POST['username'], $_POST['location'], $_POST['beginning_date'], $_POST['ending_date'], $_POST['itinerary_code']);
 print $connector->get_content();

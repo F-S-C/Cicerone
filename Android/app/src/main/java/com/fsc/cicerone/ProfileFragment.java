@@ -59,7 +59,7 @@ import app_connector.SendInPostConnector;
  */
 public class ProfileFragment extends Fragment {
 
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
+    private static final String ERROR_TAG = "ERROR IN " + ProfileFragment.class.getName();
     private EditText name;
     private EditText surname;
     private EditText email;
@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
         surname = view.findViewById(R.id.surname_textbox);
         email = view.findViewById(R.id.email);
         cellphone = view.findViewById(R.id.cellphone);
-        birthDate = view.findViewById(R.id.birthdate);
+        birthDate = view.findViewById(R.id.registrationBirthDate);
         documentNumber = view.findViewById(R.id.documentNrText);
         documentType = view.findViewById(R.id.documentType);
         documentExpiryDate = view.findViewById(R.id.documentExpiryDateText);
@@ -119,7 +119,6 @@ public class ProfileFragment extends Fragment {
         Button changePaswButton = view.findViewById(R.id.change_passw_btn);
         birthCalendar = toCalendar(AccountManager.getCurrentLoggedUser().getBirthDate());
         DatePickerDialog.OnDateSetListener birthDateSelect = (view12, year, monthOfYear, dayOfMonth) -> {
-            // TODO Auto-generated method stub
             birthCalendar.set(Calendar.YEAR, year);
             birthCalendar.set(Calendar.MONTH, monthOfYear);
             birthCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -127,7 +126,6 @@ public class ProfileFragment extends Fragment {
         };
 
         DatePickerDialog.OnDateSetListener expDateSelect = (view13, year, monthOfYear, dayOfMonth) -> {
-            // TODO Auto-generated method stub
             expCalendar.set(Calendar.YEAR, year);
             expCalendar.set(Calendar.MONTH, monthOfYear);
             expCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);

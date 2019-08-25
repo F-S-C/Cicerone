@@ -15,12 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
-import app_connector.SendInPostConnector;
+import app_connector.GetDataConnector;
 
 
 /**
@@ -28,7 +26,6 @@ import app_connector.SendInPostConnector;
  */
 public class HomeFragment extends Fragment {
     private WishlistAdapter adapter;
-    private JSONObject param;
 
 
     private static final String ERROR_TAG = "ERROR IN " + HomeFragment.class.getName();
@@ -42,15 +39,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-         param  = new JSONObject();
         RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        try {
-            param.put("null","null");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         requireData(view, recyclerView);
 
         return view;
@@ -58,7 +50,7 @@ public class HomeFragment extends Fragment {
 
     private void requireData(View view, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, new DatabaseConnector.CallbackInterface() {
+        GetDataConnector connector = new GetDataConnector(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 progressBar.setVisibility(View.VISIBLE);
@@ -72,7 +64,6 @@ public class HomeFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
             }
         });
-        connector.setObjectToSend(param);
         connector.execute();
     }
 

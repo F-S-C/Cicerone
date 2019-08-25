@@ -151,7 +151,7 @@
             android:text="@string/ins_birth_date" />
 
         <EditText
-            android:id="@+id/birthdate"
+            android:id="@+id/registrationBirthDate"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

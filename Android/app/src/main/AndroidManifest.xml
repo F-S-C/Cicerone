@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChangePassword"
-            android:label="@string/change_password"></activity>
+        <activity android:name=".RegistrationActivity"></activity>
+        <activity android:name=".ItineraryReviewFragment"></activity>
+        <activity android:name=".AdminItineraryDetails"></activity>
+        <activity android:name=".AdminReportDetailsActivity"></activity>
+        <activity android:name=".AdminMainActivity" />
+        <activity
+            android:name=".ChangePassword"
+            android:label="@string/change_password" />
         <activity android:name=".Wishlist" />
         <activity android:name=".ItineraryUpdate" />
         <activity
