@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -48,8 +49,8 @@ public class LanguageManager {
      * Returns the list of stored language names.
      * @return The list of language names.
      */
-    public ArrayList<String> getLanguagesNames() {
-        ArrayList<String> languageList = new ArrayList<>();
+    public List<String> getLanguagesNames() {
+        List<String> languageList = new ArrayList<>();
         for (int i = 0; i < langs.size(); i++) {
             languageList.add(langs.get(i).getName());
         }
@@ -64,8 +65,8 @@ public class LanguageManager {
      * @param names List of language names.
      * @return List of languages.
      */
-    public ArrayList<Language> getLanguagesFromNames(ArrayList<String> names){
-        ArrayList<Language> returnLangs = new ArrayList<>();
+    public List<Language> getLanguagesFromNames(List<String> names){
+        List<Language> returnLangs = new ArrayList<>();
         HashSet<String> hashSet = new HashSet<>(names);
         names.clear();
         names.addAll(hashSet);
@@ -82,7 +83,7 @@ public class LanguageManager {
      * @param username Username.
      * @param languageToSet List of languages.
      */
-    public void setUserLanguages(String username, ArrayList<Language> languageToSet){
+    public void setUserLanguages(String username, List<Language> languageToSet){
         try {
             JSONObject data = new JSONObject();
             data.put("username", username);
