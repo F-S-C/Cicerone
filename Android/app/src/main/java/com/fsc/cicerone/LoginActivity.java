@@ -79,7 +79,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void goToSignUpPage(View view) {
-        Toast.makeText(this, "Sorry, Work In Progress", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
+        finish();
     }
 
     private void attemptLogin(JSONObject user) {
@@ -105,7 +106,11 @@ public class LoginActivity extends AppCompatActivity {
                 preferences.edit().putString("session", user.toString()).apply();
             }
 
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN){
+                startActivity(new Intent(LoginActivity.this, AdminMainActivity.class));
+            }else {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
             finish();
         });
     }

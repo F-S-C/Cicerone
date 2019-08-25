@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_itineraries_active_admin"
+        android:icon="@drawable/itinerary"
+        android:title="@string/active_itineraries"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/navigation_reports_admin"
+        android:icon="@drawable/reports"
+        android:title="@string/reports"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/navigation_users_admin"
+        android:icon="@drawable/account"
+        android:title="@string/list_users"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/navigation_logout_admin"
+        android:icon="@drawable/ic_outline_exit_to_app_24px"
+        android:title="@string/logout"
+        app:showAsAction="always" />
+</menu>

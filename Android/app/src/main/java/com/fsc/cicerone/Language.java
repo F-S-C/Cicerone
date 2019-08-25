@@ -1,5 +1,8 @@
 package com.fsc.cicerone;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Objects;
 
 /**
@@ -25,6 +28,24 @@ public class Language {
     public Language(String code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    /**
+     * Create a new language by using a JSONObject.
+     *
+     * @param language The language's code.
+     */
+    public Language(JSONObject language) {
+        try {
+            this.code = language.getString("language_code");
+        } catch (JSONException e) {
+            this.code = "";
+        }
+        try {
+            this.name = language.getString("language_name");
+        } catch (JSONException e) {
+            this.name = "";
+        }
     }
 
     /**

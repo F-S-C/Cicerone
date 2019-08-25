@@ -1,7 +1,5 @@
 package com.fsc.cicerone;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -130,7 +128,6 @@ public class Itinerary {
 
         try {
             minParticipants = itinerary.getInt("minimum_participants_number");
-            Log.e("min", String.valueOf(minParticipants));
         } catch (JSONException e) {
             minParticipants = 0;
         }
@@ -225,9 +222,9 @@ public class Itinerary {
     /**
      * Set the itinerary's description.
      *
-     * @param password The new itinerary's description.
+     * @param description The new itinerary's description.
      */
-    public void setDescription(String password) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

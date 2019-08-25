@@ -1,16 +1,18 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,9 +45,8 @@ public class ReviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
         try {
-            final JSONObject parameters = currentLoggedUser.getCredentials();
-            parameters.remove("password");
-            parameters.put("reviewed_user", parameters.remove("username"));
+            final JSONObject parameters = new JSONObject();
+            parameters.put("reviewed_user", currentLoggedUser.getUsername());
             // set up the RecyclerView
             RecyclerView recyclerView = view.findViewById(R.id.review_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -60,17 +61,24 @@ public class ReviewFragment extends Fragment {
 
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.USER_REVIEW, new DatabaseConnector.CallbackInterface() {
+        TextView message = view.findViewById(R.id.noReview);
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 progressBar.setVisibility(View.VISIBLE);
+                message.setVisibility(View.GONE);
             }
 
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 progressBar.setVisibility(View.GONE);
-                adapter = new Adapter(getActivity(), jsonArray, 2);
-                recyclerView.setAdapter(adapter);
+                if (jsonArray.length() != 0) {
+                    adapter = new Adapter(getActivity(), jsonArray, 2);
+                    recyclerView.setAdapter(adapter);
+                }
+                else{
+                    message.setVisibility(View.VISIBLE);
+                }
             }
         });
         connector.setObjectToSend(parameters);

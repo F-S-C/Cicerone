@@ -67,5 +67,5 @@ class RequestWishlist extends JsonConnector
     }
 }
 
-$connector = new RequestWishlist($_POST['username']);
+$connector = new RequestWishlist($_POST['username'], $_POST['itinerary_in_wishlist']);
 print $connector->get_content();

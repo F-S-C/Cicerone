@@ -97,7 +97,7 @@
     <string name="pending">Pending</string>
     <string name="canceled">Canceled</string>
     <string name="description">"Description: "</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="title_home" translatable="false">Home</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -114,6 +114,12 @@
     <string name="wishlist_number">You have %d itineraries in your wishlist.</string>
     <string name="add_to_wishlist">Add to wishlist</string>
     <string name="remove_from_wishlist">Remove from wishlist</string>
+    <string name="insert_feedback">Insert your feedback:</string>
+    <string name="insert_description">Insert your description:</string>
+    <string name="submit_review">Submit review</string>
+    <string name="update_review">Update review</string>
+    <string name="delete_review">Delete review</string>
+    <string name="added_review">Review added.</string>
     <string name="cellphone">Cellphone:</string>
     <string name="doc_number">Document Number</string>
     <string name="ins_doc_nr">Document Number:</string>
@@ -136,4 +142,44 @@
     <string name="oldpw_equals_new_err">The old password cannot be the same as the new one</string>
     <string name="password_changed">Password changed!</string>
     <string name="oldpw_mism_error">The current password does not match the one entered</string>
+    <string name="deleted_review">Review deleted.</string>
+    <string name="updated_review">Review updated.</string>
+    <string name="no_review">There are no reviews to display.</string>
+    <string name="no_insert_review">Sorry! You cannot post a review.</string>
+    <string name="clear_wishlist">Clear wishlist</string>
+    <string name="wishlist_deleted">Wishlist cleared.</string>
+    <string name="confirm_delete_wishlist">Are you sure you want to clear your wishlist?</string>
+    <string name="delete_your_account">Delete your account</string>
+    <string name="sure_to_delete_account">"Are you sure you want to permanently delete your account? You'll loose all the data connected to your account and there will be no way to recover them. "</string>
+    <string name="registration_in_progress">Registration in progress...</string>
+    <string name="hi">Hi!</string>
+    <string name="welcome_text">Just a few steps and you\'ll be ready to go!</string>
+    <string name="ins_username" translatable="false">Username:</string>
+    <string name="empty_email_error">Enter your e-mail</string>
+    <string name="email_not_valid">Please enter a valid e-mail address</string>
+    <string name="username_too_long_error">Username too long!</string>
+    <string name="sex_text">Sex</string>
+    <string name="fiscal_code">Fiscal Code</string>
+    <string name="cellphone_ins">Cellphone</string>
+    <string name="next">Next</string>
+    <string name="almost_there">We are almost there...</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="great">Great!</string>
+    <string name="last_step_text">Last step, we need a identity document and the languages you know</string>
+    <string name="known_languages">Known Languages</string>
+    <string name="email_too_long">E-mail too long!</string>
+    <string name="not_valid_input">The data entered is not valid.</string>
+    <string name="username_already_exists">This username already exists.</string>
+    <string name="email_already_exists">This e-mail already exists.</string>
+    <string name="username_error">Username not valid or too short!</string>
+    <string name="document_not_valid">The document entered is not valid.</string>
+    <string name="active_itineraries">Active itineraries</string>
+    <string name="list_users">Registered users</string>
+    <string name="reports">Reports</string>
+    <string name="reporter_user">Reporter user:</string>
+    <string name="details_itinerary">Itinerary Details</string>
+    <string name="registration_success">Registration successful.</string>
+    <string name="connection_error">No internet connection.</string>
+    <string name="major_date_required">You must be an adult to register.</string>
+    <string name="date_invalid">The date entered is not valid.</string>
 </resources>

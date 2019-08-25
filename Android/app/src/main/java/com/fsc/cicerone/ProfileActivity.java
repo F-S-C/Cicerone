@@ -1,15 +1,17 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         frameLayout = findViewById(R.id.frame);
-        fragment = new ReviewFragment();
+        fragment = new SelectedUserReviewFragment();
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame,fragment);
@@ -46,13 +48,17 @@ public class ProfileActivity extends AppCompatActivity {
         fragmentTransaction.commit();
         tabLayout = findViewById(R.id.tabs);
 
+        Bundle bundle = getIntent().getExtras();
+        fragment.setArguments(bundle);
+
+
         final JSONObject params;
         try {
             //Get the bundle
-            Bundle bundle = getIntent().getExtras();
             //Extract the data…
             params = new JSONObject();
-            params.put("username", Objects.requireNonNull(bundle).getString("username"));
+            params.put("username", Objects.requireNonNull(bundle).getString("reviewed_user"));
+            Log.e("bundle",Objects.requireNonNull(bundle).getString("reviewed_user"));
             TextView username = findViewById(R.id.username_profile);
             String nick = "@" + params.getString("username");
             username.setText(nick);
@@ -66,10 +72,12 @@ public class ProfileActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        fragment = new ReviewFragment();
+                        fragment = new SelectedUserReviewFragment();
+                        fragment.setArguments(bundle);
                         break;
                     case 1:
-                        //TODO inserire il fragment relativo all'inserimento della recisione da parte dell'utente loggato al momento. (IF-24,IF-23)
+                        fragment = new InsertReviewFragment();
+                        fragment.setArguments(bundle);
                         break;
                     default:
                         break;
@@ -122,7 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
         connector.setObjectToSend(parameters);
         connector.execute();
 
-        SendInPostConnector connectorReview = new SendInPostConnector(ConnectorConstants.USER_REVIEW, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector connectorReview = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 //

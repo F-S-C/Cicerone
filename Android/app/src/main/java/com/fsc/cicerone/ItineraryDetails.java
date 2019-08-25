@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -48,7 +49,6 @@ public class ItineraryDetails extends AppCompatActivity {
     private  TextView duration;
     private  TextView fPrice;
     private  TextView rPrice;
-    private  JSONObject result;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
     private static final String IT_CODE = "itinerary_code";
@@ -82,10 +82,11 @@ public class ItineraryDetails extends AppCompatActivity {
         deleteDialog.setCancelable(true);
         JSONObject object = new JSONObject();
         JSONObject object2 = new JSONObject();
+        JSONObject objectReview = new JSONObject();
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        final Itinerary itinerary;
+       final Itinerary itinerary;
 
 
         try {
@@ -94,12 +95,25 @@ public class ItineraryDetails extends AppCompatActivity {
 
             object.put("itinerary_in_wishlist", itinerary.getCode());
             object.put("username", currentLoggedUser.getUsername());
+            objectReview.put("reviewed_itinerary",itinerary.getCode());
             checkWishlist(object);
             getDataFromServer(itinerary);
-            getItineraryReviews(object);
-            object2.put("itinerary_code", object.getString("itinerary_in_wishlist"));
+            getItineraryReviews(objectReview);
+            object2.put(IT_CODE, object.getString("itinerary_in_wishlist"));
             object2.put("username", currentLoggedUser.getUsername());
-            object2.put("itinerary_in_wishlist", itinerary.getCode());
+            object2.put("booked_itinerary", itinerary.getCode());
+
+            review.setOnTouchListener((v, event) -> {
+                if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewFragment.class);
+                    i.putExtra("itinerary",itinerary.toJSONObject().toString());
+                    i.putExtra("rating",review.getRating());
+                    i.putExtra("reviewed_itinerary",itinerary.getCode());
+                    startActivity(i);
+                }
+                return true;
+            });
             isReservated(object2);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -113,7 +127,7 @@ public class ItineraryDetails extends AppCompatActivity {
             yesButton.setOnClickListener(view -> {
                 deleteDialog.hide();
                 deleteDialog.dismiss();
-                deleteFromWishlist(object2);
+                deleteFromWishlist(object);
 
 
             });
@@ -122,7 +136,10 @@ public class ItineraryDetails extends AppCompatActivity {
 
 
 
-        intoWishlist.setOnClickListener(v -> addToWishlist(object2));
+        intoWishlist.setOnClickListener(v -> addToWishlist(object));
+
+
+
     }
 
     public void addToWishlist ( JSONObject params)
@@ -137,8 +154,9 @@ public class ItineraryDetails extends AppCompatActivity {
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 JSONObject object = jsonArray.getJSONObject(0);
                 Log.e("p", object.toString());
-                if (params.getBoolean("result")) {
+                if (object.getBoolean("result")) {
                     Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                    checkWishlist(params);
                 }
             }
         });
@@ -157,12 +175,12 @@ public class ItineraryDetails extends AppCompatActivity {
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 JSONObject object = jsonArray.getJSONObject(0);
-                Log.e("p", object.toString());
                 if (object.getBoolean("result")) {
-                    Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
+                    //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show();
-                    startActivity(i);
+                    //startActivity(i);
+                    checkWishlist(params);
                 }
             }
         });
@@ -172,17 +190,16 @@ public class ItineraryDetails extends AppCompatActivity {
 
 
     public void checkWishlist(JSONObject object) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_WISHLIST, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.SEARCH_WISHLIST, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 // Do nothing
             }
 
             @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                result = jsonArray.getJSONObject(0);
-                Log.e("n", String.valueOf(result.length()));
-                if ( result.length() > 0)
+            public void onEndConnection(JSONArray jsonArray) {
+
+                if ( jsonArray.length() > 0)
                 {
                     intoWishlist.setVisibility(View.GONE);
                     removeFromWishlist.setVisibility(View.VISIBLE);
@@ -281,7 +298,7 @@ public class ItineraryDetails extends AppCompatActivity {
     public void goToAuthor(View view) {
         Intent i = new Intent().setClass(view.getContext(),ProfileActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("username",author.getText().toString());
+        bundle.putString("reviewed_user",author.getText().toString());
         i.putExtras(bundle);
         view.getContext().startActivity(i);
     }

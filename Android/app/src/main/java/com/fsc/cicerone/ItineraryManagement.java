@@ -45,10 +45,8 @@ public class ItineraryManagement extends AppCompatActivity {
     private  TextView duration;
     private  TextView fPrice;
     private  TextView rPrice;
-    private JSONObject result;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryManagement.class.getName();
-    private static final String IT_CODE = "itinerary_code";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +85,8 @@ public class ItineraryManagement extends AppCompatActivity {
             //Extract the data…
             itinerary = new Itinerary(new JSONObject(s));
 
-            code.put(IT_CODE, String.valueOf(itinerary.getCode()));
+            code.put("reviewed_itinerary", String.valueOf(itinerary.getCode()));
+            code.put("itinerary_code", String.valueOf(itinerary.getCode()));
             getDataFromServer(itinerary);
             getItineraryReviews(code);
             deleteItinerary.setOnClickListener(v -> {

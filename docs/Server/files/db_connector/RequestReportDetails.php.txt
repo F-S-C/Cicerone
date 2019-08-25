@@ -12,16 +12,16 @@ require_once("JsonConnector.php");
  */
 class RequestReportDetails extends JsonConnector
 {
-    /** @var string|null The report's code. */
+    /** @var int|null The report's code. */
     private $code;
 
     /**
      * RequestReportDetails constructor.
-     * @param string|null $code The report's code.
+     * @param int|null $code The report's code.
      */
-    public function __construct(string $code = null)
+    public function __construct(int $code = null)
     {
-        $this->code = isset($code) && $code != "" ? $code : null;
+        $this->code = isset($code) ? $code : null;
         parent::__construct();
     }
 
@@ -54,5 +54,5 @@ class RequestReportDetails extends JsonConnector
 
 }
 
-$connector = new RequestLanguage($_POST['report_code']);
+$connector = new RequestReportDetails($_POST['report_code']);
 print $connector->get_content();

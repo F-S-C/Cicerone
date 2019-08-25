@@ -5,8 +5,8 @@
     android:id="@+id/WishlistRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Wishlist">
-
+    android:padding="25dp"
+    tools:context=".WishlistFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,10 +53,30 @@
 
             </RelativeLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/itinerary_list"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/itinerary_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <Button
+                    android:id="@+id/clearWishlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/clear_wishlist"
+                    />
+
+            </LinearLayout>
+
+
+
         </FrameLayout>
 
 

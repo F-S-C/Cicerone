@@ -60,6 +60,15 @@ public enum Sex {
             case "other":
                 sex = OTHER;
                 break;
+            case "maschio":
+                sex = MALE;
+                break;
+            case "femmina":
+                sex = FEMALE;
+                break;
+            case "altro":
+                sex = OTHER;
+                break;
             default:
                 sex = null;
                 break;

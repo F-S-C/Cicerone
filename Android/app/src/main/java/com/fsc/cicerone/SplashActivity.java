@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
@@ -19,7 +20,8 @@ public class SplashActivity extends AppCompatActivity {
 
         final Class activityToOpenIfLogged = MainActivity.class;
         final Class activityToOpenIfNotLogged = LoginActivity.class;
-
+        final Class activityToOpenIfLoggedAdmin = AdminMainActivity.class;
+        
         SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         String latestLoggedUserCredentials = preferences.getString("session", "");
 
@@ -30,8 +32,14 @@ public class SplashActivity extends AppCompatActivity {
                     AccountManager.attemptLogin(currentLoggedUser, () -> {
                         // Do nothing
                     }, (result, success) -> {
-                        Intent intent = new Intent(SplashActivity.this, (success) ? activityToOpenIfLogged : activityToOpenIfNotLogged);
-                        startActivity(intent);
+                        if(AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
+                            Intent intent = new Intent(SplashActivity.this, (success) ? activityToOpenIfLoggedAdmin : activityToOpenIfNotLogged);
+                            startActivity(intent);
+                        }
+                        else {
+                            Intent intent = new Intent(SplashActivity.this, (success) ? activityToOpenIfLogged : activityToOpenIfNotLogged);
+                            startActivity(intent);
+                        }
                         finish();
                     });
                 }
