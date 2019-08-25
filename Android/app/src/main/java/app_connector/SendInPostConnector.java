@@ -11,6 +11,8 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -107,7 +109,9 @@ public class SendInPostConnector extends DatabaseConnector {
 
             return resultBuilder.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            Log.e("SEND_IN_POST_ERROR", sw.toString());
             return null;
         }
     }

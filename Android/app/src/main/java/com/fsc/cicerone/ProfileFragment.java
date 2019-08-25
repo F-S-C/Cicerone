@@ -280,7 +280,7 @@ public class ProfileFragment extends Fragment {
         try {
             JSONObject parameters = new JSONObject();
             parameters.put("username", currentLoggedUser.getUsername());
-            SendInPostConnector user_document_conn = new SendInPostConnector(ConnectorConstants.REQUEST_DOCUMENT, new DatabaseConnector.CallbackInterface() {
+            SendInPostConnector userDocumentConnector = new SendInPostConnector(ConnectorConstants.REQUEST_DOCUMENT, new DatabaseConnector.CallbackInterface() {
                 @Override
                 public void onStartConnection() {
                     //Do nothing
@@ -299,8 +299,8 @@ public class ProfileFragment extends Fragment {
                     }
                 }
             });
-            user_document_conn.setObjectToSend(parameters);
-            user_document_conn.execute();
+            userDocumentConnector.setObjectToSend(parameters);
+            userDocumentConnector.execute();
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
         }

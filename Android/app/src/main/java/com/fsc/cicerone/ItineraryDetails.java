@@ -99,7 +99,7 @@ public class ItineraryDetails extends AppCompatActivity {
             checkWishlist(object);
             getDataFromServer(itinerary);
             getItineraryReviews(objectReview);
-            object2.put("itinerary_code", object.getString("itinerary_in_wishlist"));
+            object2.put(IT_CODE, object.getString("itinerary_in_wishlist"));
             object2.put("username", currentLoggedUser.getUsername());
             object2.put("booked_itinerary", itinerary.getCode());
 

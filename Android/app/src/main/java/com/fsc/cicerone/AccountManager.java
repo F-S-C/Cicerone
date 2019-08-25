@@ -1,21 +1,14 @@
 package com.fsc.cicerone;
 
 import android.util.Log;
-import android.util.Patterns;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Pattern;
-
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
-
-import static java.lang.Thread.sleep;
 
 /**
  * A <i>control</i> class that manages the users' accounts.

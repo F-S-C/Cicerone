@@ -1,7 +1,5 @@
 package com.fsc.cicerone;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

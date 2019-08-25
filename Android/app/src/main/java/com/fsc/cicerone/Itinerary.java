@@ -222,9 +222,9 @@ public class Itinerary {
     /**
      * Set the itinerary's description.
      *
-     * @param password The new itinerary's description.
+     * @param description The new itinerary's description.
      */
-    public void setDescription(String password) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
