@@ -57,7 +57,7 @@
     <string name="review">Recensione</string>
     <string name="user_type">Tipo utente</string>
     <string name="exit_confirm_answer">Sei sicuro di voler uscire?</string>
-    <string name="yes">Si</string>
+    <string name="yes">Sì</string>
     <string name="hours">hh</string>
     <string name="minutes">min</string>
     <string name="answer_switch_to_cicerone">Sei sicuro di voler diventare Cicerone?</string>
@@ -125,6 +125,8 @@
     <string name="no_insert_review">Spiacenti! Non puoi inserire una recensione.</string>
     <string name="clear_wishlist">Svuota wishlist</string>
     <string name="confirm_delete_wishlist">Sei sicuro di voler svuotare la tua wishlist?</string>
+    <string name="delete_your_account">Rimuovi il tuo account</string>
+    <string name="sure_to_delete_account">Sei sicuro/a di voler cancellare permanente il tuo account? Perderai tutti i dati che vi sono collegati e non ci sarà alcun modo di recuperarli.</string>
     <string name="registration_in_progress">Registrazione in corso...</string>
     <string name="hi">Ciao!</string>
     <string name="welcome_text">Bastano pochi passaggi e sarai pronto a partire!</string>

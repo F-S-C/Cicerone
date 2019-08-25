@@ -15,6 +15,8 @@ import com.google.android.material.tabs.TabLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class ItineraryReviewFragment extends AppCompatActivity {
 
     TabLayout tabLayout;
@@ -37,7 +39,7 @@ public class ItineraryReviewFragment extends AppCompatActivity {
         fragment = new SelectedItineraryReviewFragment();
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame,fragment);
+        fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
         tabLayout = findViewById(R.id.tabs);
@@ -50,19 +52,16 @@ public class ItineraryReviewFragment extends AppCompatActivity {
         fragment.setArguments(bundle);
 
 
-        try {
-
-            Itinerary itinerary = null;
-            if (bundle != null) {
-                itinerary = new Itinerary(new JSONObject(bundle.getString("itinerary")));
+        if (bundle != null) {
+            try {
+                Itinerary itinerary = new Itinerary(new JSONObject(bundle.getString("itinerary")));
+                bundle.putString("reviewed_itinerary", String.valueOf(itinerary.getCode()));
+                title.setText(itinerary.getTitle());
+                rating.setRating(bundle.getFloat("rating"));
+                author.setText(itinerary.getUsername());
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            bundle.putString("reviewed_itinerary",String.valueOf(itinerary.getCode()));
-            title.setText(itinerary.getTitle());
-            rating.setRating(bundle.getFloat("rating"));
-            author.setText(itinerary.getUsername());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
 

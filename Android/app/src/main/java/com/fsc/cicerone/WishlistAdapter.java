@@ -57,7 +57,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Itinerary itineraryList[] = new Itinerary[mData.length()];
+        Itinerary[] itineraryList = new Itinerary[mData.length()];
 
 
         try {

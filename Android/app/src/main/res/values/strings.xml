@@ -149,6 +149,8 @@
     <string name="clear_wishlist">Clear wishlist</string>
     <string name="wishlist_deleted">Wishlist cleared.</string>
     <string name="confirm_delete_wishlist">Are you sure you want to clear your wishlist?</string>
+    <string name="delete_your_account">Delete your account</string>
+    <string name="sure_to_delete_account">"Are you sure you want to permanently delete your account? You'll loose all the data connected to your account and there will be no way to recover them. "</string>
     <string name="registration_in_progress">Registration in progress...</string>
     <string name="hi">Hi!</string>
     <string name="welcome_text">Just a few steps and you\'ll be ready to go!</string>

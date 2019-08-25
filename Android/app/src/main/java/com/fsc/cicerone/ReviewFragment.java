@@ -44,7 +44,6 @@ public class ReviewFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
-        Bundle bundle = getArguments();
         try {
             final JSONObject parameters = new JSONObject();
             parameters.put("reviewed_user", currentLoggedUser.getUsername());

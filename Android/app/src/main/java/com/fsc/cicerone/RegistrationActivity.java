@@ -116,13 +116,13 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (validateFirstPageData()) {
                     next.setText(R.string.loading);
                     next.setEnabled(false);
-                    AccountManager.checkIfUsernameExists(username.getText().toString().trim().toLowerCase(), (resultUser) -> {
+                    AccountManager.checkIfUsernameExists(username.getText().toString().trim().toLowerCase(), resultUser -> {
                         if (resultUser) {
                             username.setError(getString(R.string.username_already_exists));
                             next.setText(R.string.next);
                             next.setEnabled(true);
                         } else {
-                            AccountManager.checkIfEmailExists(email.getText().toString().trim().toLowerCase(), (resultEmail) -> {
+                            AccountManager.checkIfEmailExists(email.getText().toString().trim().toLowerCase(), resultEmail -> {
                                 if (resultEmail) {
                                     email.setError(getString(R.string.email_already_exists));
                                     next.setText(R.string.next);
@@ -188,10 +188,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (validateSecondPageData()) {
                     signup.setText(R.string.loading);
                     signup.setEnabled(false);
-                    AccountManager.insertUser(setNewUser(), (result) -> {
+                    AccountManager.insertUser(setNewUser(), result -> {
                         if (result) {
                             AccountManager.insertUserDocument(username.getText().toString().trim().toLowerCase(), new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()),
-                                    (ins) -> {
+                                    ins -> {
                                         if (ins) {
                                             ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());
                                             languages.setUserLanguages(username.getText().toString().trim().toLowerCase(), languages.getLanguagesFromNames(lanSelected));

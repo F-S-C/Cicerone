@@ -199,7 +199,7 @@ public class User {
     /**
      * Get the user's sex.
      *
-     * @return The user's sex (see {@see Sex}).
+     * @return The user's sex.
      */
     public Sex getSex() {
         return sex;
@@ -208,7 +208,7 @@ public class User {
     /**
      * Set the user's sex.
      *
-     * @param sex The new user's sex (see {@see Sex}).
+     * @param sex The new user's sex.
      */
     public void setSex(Sex sex) {
         this.sex = sex;
@@ -254,7 +254,7 @@ public class User {
     /**
      * Get the user's type.
      *
-     * @return The user's type (see {@see UserType}).
+     * @return The user's type.
      */
     public UserType getUserType() {
         return userType;
@@ -263,7 +263,7 @@ public class User {
     /**
      * Set the user's type.
      *
-     * @param userType The new user's type (see {@see UserType}).
+     * @param userType The new user's type.
      */
     public void setUserType(UserType userType) {
         this.userType = userType;

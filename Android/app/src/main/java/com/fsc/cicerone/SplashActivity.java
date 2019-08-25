@@ -1,10 +1,10 @@
 package com.fsc.cicerone;
 
-import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;

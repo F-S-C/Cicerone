@@ -1,21 +1,14 @@
 package com.fsc.cicerone;
 
 import android.util.Log;
-import android.util.Patterns;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Pattern;
-
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
-
-import static java.lang.Thread.sleep;
 
 /**
  * A <i>control</i> class that manages the users' accounts.
@@ -115,6 +108,32 @@ public abstract class AccountManager {
      */
     public static void logout() {
         currentLoggedUser = null;
+    }
+
+    /**
+     * Delete the current logged account from the system.
+     */
+    public static void deleteCurrentAccount() {
+        if(!isLogged())
+            return;
+
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+                // Do nothing
+            }
+
+            @Override
+            public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                JSONObject result = jsonArray.getJSONObject(0);
+                if(!result.getBoolean("result")){
+                    Log.e("DELETE_USER_ERROR", result.getString("error"));
+                }
+            }
+        }, currentLoggedUser.getCredentials());
+        connector.execute();
+
+        logout();
     }
 
     /**
