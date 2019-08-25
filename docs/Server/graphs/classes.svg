@@ -32,15 +32,15 @@
 <text text-anchor="middle" x="546.5" y="-1201.2" font-family="Courier,monospace" font-size="11.00">RequestUserReview</text>
 </g>
 <!-- \\db_connector\\JsonConnector -->
-<g id="node22" class="node"><title>\\db_connector\\JsonConnector</title>
-<polygon fill="none" stroke="black" points="348,-844 244,-844 244,-808 348,-808 348,-844"/>
-<text text-anchor="start" x="262" y="-829.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
-<text text-anchor="start" x="252" y="-817.2" font-family="Courier,monospace" font-size="11.00">JsonConnector</text>
+<g id="node23" class="node"><title>\\db_connector\\JsonConnector</title>
+<polygon fill="none" stroke="black" points="348,-817 244,-817 244,-781 348,-781 348,-817"/>
+<text text-anchor="start" x="262" y="-802.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
+<text text-anchor="start" x="252" y="-790.2" font-family="Courier,monospace" font-size="11.00">JsonConnector</text>
 </g>
 <!-- \\db_connector\\RequestUserReview&#45;&gt;\\db_connector\\JsonConnector -->
 <g id="edge1" class="edge"><title>\\db_connector\\RequestUserReview&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M480.925,-1199.91C464.723,-1195.92 448.654,-1188.95 437,-1177 334.017,-1071.39 460.677,-965.276 365,-853 362.549,-850.124 359.749,-847.551 356.715,-845.251"/>
-<polygon fill="none" stroke="black" points="358.516,-842.248 348.214,-839.776 354.726,-848.133 358.516,-842.248"/>
+<path fill="none" stroke="black" d="M480.795,-1200.03C464.593,-1196.05 448.556,-1189.05 437,-1177 326.759,-1062.08 467.295,-948.048 365,-826 362.573,-823.104 359.791,-820.516 356.77,-818.204"/>
+<polygon fill="none" stroke="black" points="358.59,-815.213 348.295,-812.707 354.78,-821.085 358.59,-815.213"/>
 </g>
 <!-- \\db_connector\\InsertItinerary -->
 <g id="node3" class="node"><title>\\db_connector\\InsertItinerary</title>
@@ -48,15 +48,15 @@
 <text text-anchor="middle" x="814" y="-1119.2" font-family="Courier,monospace" font-size="11.00">InsertItinerary</text>
 </g>
 <!-- \\db_connector\\InsertConnector -->
-<g id="node28" class="node"><title>\\db_connector\\InsertConnector</title>
-<polygon fill="none" stroke="black" points="605.5,-412 487.5,-412 487.5,-376 605.5,-376 605.5,-412"/>
-<text text-anchor="start" x="512.5" y="-397.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
-<text text-anchor="start" x="495.5" y="-385.2" font-family="Courier,monospace" font-size="11.00">InsertConnector</text>
+<g id="node29" class="node"><title>\\db_connector\\InsertConnector</title>
+<polygon fill="none" stroke="black" points="605.5,-358 487.5,-358 487.5,-322 605.5,-322 605.5,-358"/>
+<text text-anchor="start" x="512.5" y="-343.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
+<text text-anchor="start" x="495.5" y="-331.2" font-family="Courier,monospace" font-size="11.00">InsertConnector</text>
 </g>
 <!-- \\db_connector\\InsertItinerary&#45;&gt;\\db_connector\\InsertConnector -->
 <g id="edge2" class="edge"><title>\\db_connector\\InsertItinerary&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M754.882,-1113.42C744.588,-1109.38 734.954,-1103.51 728,-1095 537.442,-861.665 853.889,-648.151 656,-421 645.645,-409.114 630.941,-402.052 615.689,-397.949"/>
-<polygon fill="none" stroke="black" points="616.155,-394.466 605.628,-395.66 614.602,-401.292 616.155,-394.466"/>
+<path fill="none" stroke="black" d="M754.83,-1113.46C744.54,-1109.42 734.92,-1103.54 728,-1095 625.665,-968.685 762.304,-489.994 656,-367 645.692,-355.073 631.005,-347.997 615.755,-343.893"/>
+<polygon fill="none" stroke="black" points="616.219,-340.409 605.692,-341.604 614.667,-347.235 616.219,-340.409"/>
 </g>
 <!-- \\db_connector\\RequestDocument -->
 <g id="node4" class="node"><title>\\db_connector\\RequestDocument</title>
@@ -65,8 +65,8 @@
 </g>
 <!-- \\db_connector\\RequestDocument&#45;&gt;\\db_connector\\JsonConnector -->
 <g id="edge3" class="edge"><title>\\db_connector\\RequestDocument&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M487.464,-1146.97C469.254,-1143.28 450.425,-1136.2 437,-1123 348.451,-1035.92 447.516,-945.817 365,-853 362.489,-850.176 359.644,-847.643 356.575,-845.373"/>
-<polygon fill="none" stroke="black" points="358.331,-842.342 348.008,-839.955 354.589,-848.258 358.331,-842.342"/>
+<path fill="none" stroke="black" d="M487.289,-1147.15C469.066,-1143.46 450.274,-1136.35 437,-1123 341.25,-1026.67 454.082,-928.53 365,-826 362.522,-823.147 359.701,-820.593 356.651,-818.307"/>
+<polygon fill="none" stroke="black" points="358.431,-815.291 348.119,-812.857 354.663,-821.19 358.431,-815.291"/>
 </g>
 <!-- \\db_connector\\InsertReport -->
 <g id="node5" class="node"><title>\\db_connector\\InsertReport</title>
@@ -75,8 +75,8 @@
 </g>
 <!-- \\db_connector\\InsertReport&#45;&gt;\\db_connector\\InsertConnector -->
 <g id="edge4" class="edge"><title>\\db_connector\\InsertReport&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M764.643,-1062.61C750.882,-1058.71 737.159,-1052.11 728,-1041 551.544,-826.948 839.18,-629.326 656,-421 645.591,-409.162 630.867,-402.117 615.613,-398.016"/>
-<polygon fill="none" stroke="black" points="616.08,-394.533 605.553,-395.726 614.526,-401.358 616.08,-394.533"/>
+<path fill="none" stroke="black" d="M764.581,-1062.67C750.817,-1058.77 737.108,-1052.15 728,-1041 537.442,-807.665 853.889,-594.151 656,-367 645.645,-355.114 630.941,-348.052 615.689,-343.949"/>
+<polygon fill="none" stroke="black" points="616.155,-340.466 605.628,-341.66 614.602,-347.292 616.155,-340.466"/>
 </g>
 <!-- \\db_connector\\UpdateRegisteredUser -->
 <g id="node6" class="node"><title>\\db_connector\\UpdateRegisteredUser</title>
@@ -84,15 +84,15 @@
 <text text-anchor="middle" x="814" y="-471.2" font-family="Courier,monospace" font-size="11.00">UpdateRegisteredUser</text>
 </g>
 <!-- \\db_connector\\UpdateConnector -->
-<g id="node26" class="node"><title>\\db_connector\\UpdateConnector</title>
-<polygon fill="none" stroke="black" points="605.5,-358 487.5,-358 487.5,-322 605.5,-322 605.5,-358"/>
-<text text-anchor="start" x="512.5" y="-343.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
-<text text-anchor="start" x="495.5" y="-331.2" font-family="Courier,monospace" font-size="11.00">UpdateConnector</text>
+<g id="node27" class="node"><title>\\db_connector\\UpdateConnector</title>
+<polygon fill="none" stroke="black" points="605.5,-304 487.5,-304 487.5,-268 605.5,-268 605.5,-304"/>
+<text text-anchor="start" x="512.5" y="-289.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
+<text text-anchor="start" x="495.5" y="-277.2" font-family="Courier,monospace" font-size="11.00">UpdateConnector</text>
 </g>
 <!-- \\db_connector\\UpdateRegisteredUser&#45;&gt;\\db_connector\\UpdateConnector -->
 <g id="edge5" class="edge"><title>\\db_connector\\UpdateRegisteredUser&#45;&gt;\\db_connector\\UpdateConnector</title>
-<path fill="none" stroke="black" d="M744.694,-455.94C738.859,-453.323 733.205,-450.357 728,-447 687.799,-421.075 697.006,-391.632 656,-367 643.815,-359.681 629.724,-354.339 615.813,-350.443"/>
-<polygon fill="none" stroke="black" points="616.303,-346.955 605.746,-347.854 614.559,-353.735 616.303,-346.955"/>
+<path fill="none" stroke="black" d="M741.239,-455.887C736.526,-453.307 732.051,-450.362 728,-447 675.972,-403.827 709.376,-354.495 656,-313 644.296,-303.901 629.918,-297.828 615.503,-293.785"/>
+<polygon fill="none" stroke="black" points="616.101,-290.327 605.551,-291.298 614.404,-297.118 616.101,-290.327"/>
 </g>
 <!-- \\db_connector\\RequestReportDetails -->
 <g id="node7" class="node"><title>\\db_connector\\RequestReportDetails</title>
@@ -101,8 +101,8 @@
 </g>
 <!-- \\db_connector\\RequestReportDetails&#45;&gt;\\db_connector\\JsonConnector -->
 <g id="edge6" class="edge"><title>\\db_connector\\RequestReportDetails&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M470.458,-1087.83C458.172,-1083.71 446.405,-1077.7 437,-1069 362.715,-1000.28 434.515,-926.537 365,-853 362.525,-850.382 359.765,-848.013 356.811,-845.87"/>
-<polygon fill="none" stroke="black" points="358.394,-842.732 348.057,-840.408 354.688,-848.67 358.394,-842.732"/>
+<path fill="none" stroke="black" d="M470.493,-1088.19C458.13,-1084.03 446.327,-1077.92 437,-1069 355.612,-991.129 440.989,-909.148 365,-826 362.57,-823.341 359.844,-820.94 356.917,-818.772"/>
+<polygon fill="none" stroke="black" points="358.537,-815.655 348.216,-813.259 354.79,-821.568 358.537,-815.655"/>
 </g>
 <!-- \\db_connector\\InsertWishlist -->
 <g id="node8" class="node"><title>\\db_connector\\InsertWishlist</title>
@@ -111,8 +111,8 @@
 </g>
 <!-- \\db_connector\\InsertWishlist&#45;&gt;\\db_connector\\InsertConnector -->
 <g id="edge7" class="edge"><title>\\db_connector\\InsertWishlist&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M758.08,-1006.45C746.645,-1002.41 735.733,-996.277 728,-987 565.633,-792.215 824.485,-610.518 656,-421 645.579,-409.278 630.927,-402.266 615.754,-398.158"/>
-<polygon fill="none" stroke="black" points="616.277,-394.687 605.747,-395.858 614.708,-401.509 616.277,-394.687"/>
+<path fill="none" stroke="black" d="M758.446,-1006.66C746.854,-1002.62 735.781,-996.438 728,-987 551.544,-772.948 839.18,-575.326 656,-367 645.591,-355.162 630.867,-348.117 615.613,-344.016"/>
+<polygon fill="none" stroke="black" points="616.08,-340.533 605.553,-341.726 614.526,-347.358 616.08,-340.533"/>
 </g>
 <!-- \\db_connector\\RequestLanguage -->
 <g id="node9" class="node"><title>\\db_connector\\RequestLanguage</title>
@@ -121,8 +121,8 @@
 </g>
 <!-- \\db_connector\\RequestLanguage&#45;&gt;\\db_connector\\JsonConnector -->
 <g id="edge8" class="edge"><title>\\db_connector\\RequestLanguage&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M487.496,-1037.46C469.708,-1033.63 451.125,-1026.85 437,-1015 376.648,-964.348 421.824,-907.581 365,-853 362.572,-850.668 359.919,-848.53 357.112,-846.57"/>
-<polygon fill="none" stroke="black" points="358.666,-843.419 348.304,-841.21 355.027,-849.399 358.666,-843.419"/>
+<path fill="none" stroke="black" d="M487.389,-1037.97C469.492,-1034.18 450.871,-1027.3 437,-1015 369.739,-955.368 428.115,-890.004 365,-826 362.517,-823.482 359.769,-821.192 356.844,-819.11"/>
+<polygon fill="none" stroke="black" points="358.552,-816.052 348.204,-813.78 354.877,-822.009 358.552,-816.052"/>
 </g>
 <!-- \\db_connector\\InsertUserReview -->
 <g id="node10" class="node"><title>\\db_connector\\InsertUserReview</title>
@@ -131,8 +131,8 @@
 </g>
 <!-- \\db_connector\\InsertUserReview&#45;&gt;\\db_connector\\InsertConnector -->
 <g id="edge9" class="edge"><title>\\db_connector\\InsertUserReview&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M751.215,-949.618C742.375,-945.698 734.195,-940.333 728,-933 579.704,-757.461 809.808,-591.73 656,-421 645.502,-409.347 630.822,-402.36 615.646,-398.255"/>
-<polygon fill="none" stroke="black" points="616.17,-394.784 605.64,-395.953 614.601,-401.606 616.17,-394.784"/>
+<path fill="none" stroke="black" d="M751.132,-949.688C742.302,-945.76 734.147,-940.374 728,-933 565.633,-738.215 824.485,-556.518 656,-367 645.579,-355.278 630.927,-348.266 615.754,-344.158"/>
+<polygon fill="none" stroke="black" points="616.277,-340.687 605.747,-341.858 614.708,-347.509 616.277,-340.687"/>
 </g>
 <!-- \\db_connector\\UpdateDocument -->
 <g id="node11" class="node"><title>\\db_connector\\UpdateDocument</title>
@@ -141,8 +141,8 @@
 </g>
 <!-- \\db_connector\\UpdateDocument&#45;&gt;\\db_connector\\UpdateConnector -->
 <g id="edge10" class="edge"><title>\\db_connector\\UpdateDocument&#45;&gt;\\db_connector\\UpdateConnector</title>
-<path fill="none" stroke="black" d="M758.483,-403.03C748.328,-399.77 737.824,-396.333 728,-393 695.781,-382.07 688.551,-376.899 656,-367 642.924,-363.023 628.833,-359.192 615.274,-355.726"/>
-<polygon fill="none" stroke="black" points="616.07,-352.317 605.518,-353.271 614.361,-359.106 616.07,-352.317"/>
+<path fill="none" stroke="black" d="M758.462,-407.413C747.891,-403.688 737.239,-398.958 728,-393 687.799,-367.075 697.006,-337.632 656,-313 643.815,-305.681 629.724,-300.339 615.813,-296.443"/>
+<polygon fill="none" stroke="black" points="616.303,-292.955 605.746,-293.854 614.559,-299.735 616.303,-292.955"/>
 </g>
 <!-- \\db_connector\\InsertLanguage -->
 <g id="node12" class="node"><title>\\db_connector\\InsertLanguage</title>
@@ -151,8 +151,8 @@
 </g>
 <!-- \\db_connector\\InsertLanguage&#45;&gt;\\db_connector\\InsertConnector -->
 <g id="edge11" class="edge"><title>\\db_connector\\InsertLanguage&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M758.276,-898.281C746.833,-894.248 735.868,-888.162 728,-879 593.752,-722.679 795.156,-572.969 656,-421 645.408,-409.432 630.693,-402.477 615.513,-398.375"/>
-<polygon fill="none" stroke="black" points="616.04,-394.905 605.51,-396.072 614.469,-401.726 616.04,-394.905"/>
+<path fill="none" stroke="black" d="M758.168,-898.373C746.729,-894.336 735.794,-888.226 728,-879 579.704,-703.461 809.808,-537.73 656,-367 645.502,-355.347 630.822,-348.36 615.646,-344.255"/>
+<polygon fill="none" stroke="black" points="616.17,-340.784 605.64,-341.953 614.601,-347.606 616.17,-340.784"/>
 </g>
 <!-- \\db_connector\\RequestUserLanguage -->
 <g id="node13" class="node"><title>\\db_connector\\RequestUserLanguage</title>
@@ -161,8 +161,8 @@
 </g>
 <!-- \\db_connector\\RequestUserLanguage&#45;&gt;\\db_connector\\JsonConnector -->
 <g id="edge12" class="edge"><title>\\db_connector\\RequestUserLanguage&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M473.93,-978.168C460.883,-974.225 447.952,-968.71 437,-961 389.826,-927.794 409.843,-889.291 365,-853 362.561,-851.026 359.959,-849.182 357.249,-847.46"/>
-<polygon fill="none" stroke="black" points="358.716,-844.268 348.292,-842.372 355.258,-850.355 358.716,-844.268"/>
+<path fill="none" stroke="black" d="M473.869,-979.186C460.682,-975.162 447.715,-969.356 437,-961 383.379,-919.181 415.699,-871.317 365,-826 362.538,-823.799 359.874,-821.767 357.076,-819.891"/>
+<polygon fill="none" stroke="black" points="358.73,-816.804 348.341,-814.725 355.166,-822.829 358.73,-816.804"/>
 </g>
 <!-- \\db_connector\\InsertUserLanguage -->
 <g id="node14" class="node"><title>\\db_connector\\InsertUserLanguage</title>
@@ -171,8 +171,8 @@
 </g>
 <!-- \\db_connector\\InsertUserLanguage&#45;&gt;\\db_connector\\InsertConnector -->
 <g id="edge13" class="edge"><title>\\db_connector\\InsertUserLanguage&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M744.726,-838.114C738.448,-834.658 732.695,-830.356 728,-825 607.766,-687.858 780.538,-554.246 656,-421 645.344,-409.6 630.682,-402.697 615.579,-398.591"/>
-<polygon fill="none" stroke="black" points="616.162,-395.133 605.629,-396.277 614.577,-401.951 616.162,-395.133"/>
+<path fill="none" stroke="black" d="M744.615,-838.21C738.358,-834.737 732.64,-830.403 728,-825 593.752,-668.679 795.156,-518.969 656,-367 645.408,-355.432 630.693,-348.477 615.513,-344.375"/>
+<polygon fill="none" stroke="black" points="616.04,-340.905 605.51,-342.072 614.469,-347.726 616.04,-340.905"/>
 </g>
 <!-- \\db_connector\\InsertReportDetails -->
 <g id="node15" class="node"><title>\\db_connector\\InsertReportDetails</title>
@@ -181,8 +181,8 @@
 </g>
 <!-- \\db_connector\\InsertReportDetails&#45;&gt;\\db_connector\\InsertConnector -->
 <g id="edge14" class="edge"><title>\\db_connector\\InsertReportDetails&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M741.23,-781.876C736.334,-778.848 731.833,-775.257 728,-771 621.731,-652.981 765.972,-535.577 656,-421 645.249,-409.799 630.626,-402.962 615.598,-398.855"/>
-<polygon fill="none" stroke="black" points="616.237,-395.409 605.702,-396.531 614.637,-402.224 616.237,-395.409"/>
+<path fill="none" stroke="black" d="M741.105,-781.987C736.237,-778.934 731.777,-775.308 728,-771 607.766,-633.858 780.538,-500.246 656,-367 645.344,-355.6 630.682,-348.697 615.579,-344.591"/>
+<polygon fill="none" stroke="black" points="616.162,-341.133 605.629,-342.277 614.577,-347.951 616.162,-341.133"/>
 </g>
 <!-- \\db_connector\\InsertItineraryLanguage -->
 <g id="node16" class="node"><title>\\db_connector\\InsertItineraryLanguage</title>
@@ -191,8 +191,8 @@
 </g>
 <!-- \\db_connector\\InsertItineraryLanguage&#45;&gt;\\db_connector\\InsertConnector -->
 <g id="edge15" class="edge"><title>\\db_connector\\InsertItineraryLanguage&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M738.639,-725.965C734.763,-723.367 731.169,-720.396 728,-717 635.621,-618.02 751.483,-516.989 656,-421 645.107,-410.049 630.504,-403.298 615.548,-399.193"/>
-<polygon fill="none" stroke="black" points="616.243,-395.76 605.705,-396.86 614.629,-402.572 616.243,-395.76"/>
+<path fill="none" stroke="black" d="M738.112,-725.832C734.419,-723.264 731.005,-720.337 728,-717 621.731,-598.981 765.972,-481.577 656,-367 645.249,-355.799 630.626,-348.962 615.598,-344.855"/>
+<polygon fill="none" stroke="black" points="616.237,-341.409 605.702,-342.531 614.637,-348.224 616.237,-341.409"/>
 </g>
 <!-- \\db_connector\\RequestWishlist -->
 <g id="node17" class="node"><title>\\db_connector\\RequestWishlist</title>
@@ -201,8 +201,8 @@
 </g>
 <!-- \\db_connector\\RequestWishlist&#45;&gt;\\db_connector\\JsonConnector -->
 <g id="edge16" class="edge"><title>\\db_connector\\RequestWishlist&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M487.424,-924.057C470.672,-920.001 452.691,-914.458 437,-907 400.873,-889.829 399.895,-872.553 365,-853 362.174,-851.417 359.237,-849.881 356.238,-848.399"/>
-<polygon fill="none" stroke="black" points="357.647,-845.194 347.107,-844.12 354.677,-851.533 357.647,-845.194"/>
+<path fill="none" stroke="black" d="M487.499,-926.27C470.392,-922.264 452.197,-916.193 437,-907 395.787,-882.07 404.45,-853.635 365,-826 362.48,-824.235 359.829,-822.562 357.093,-820.98"/>
+<polygon fill="none" stroke="black" points="358.602,-817.819 348.127,-816.234 355.327,-824.006 358.602,-817.819"/>
 </g>
 <!-- \\db_connector\\InsertRegisteredUser -->
 <g id="node18" class="node"><title>\\db_connector\\InsertRegisteredUser</title>
@@ -211,251 +211,261 @@
 </g>
 <!-- \\db_connector\\InsertRegisteredUser&#45;&gt;\\db_connector\\InsertConnector -->
 <g id="edge17" class="edge"><title>\\db_connector\\InsertRegisteredUser&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M738.837,-671.775C734.913,-669.223 731.254,-666.315 728,-663 649.385,-582.926 737.124,-498.531 656,-421 644.891,-410.383 630.278,-403.751 615.39,-399.654"/>
-<polygon fill="none" stroke="black" points="616.141,-396.235 605.601,-397.311 614.512,-403.042 616.141,-396.235"/>
+<path fill="none" stroke="black" d="M738.639,-671.965C734.763,-669.367 731.169,-666.396 728,-663 635.621,-564.02 751.483,-462.989 656,-367 645.107,-356.049 630.504,-349.298 615.548,-345.193"/>
+<polygon fill="none" stroke="black" points="616.243,-341.76 605.705,-342.86 614.629,-348.572 616.243,-341.76"/>
 </g>
-<!-- \\db_connector\\InsertReservation -->
-<g id="node19" class="node"><title>\\db_connector\\InsertReservation</title>
-<polygon fill="none" stroke="black" points="879.5,-654 748.5,-654 748.5,-618 879.5,-618 879.5,-654"/>
-<text text-anchor="middle" x="814" y="-633.2" font-family="Courier,monospace" font-size="11.00">InsertReservation</text>
-</g>
-<!-- \\db_connector\\InsertReservation&#45;&gt;\\db_connector\\InsertConnector -->
-<g id="edge18" class="edge"><title>\\db_connector\\InsertReservation&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M748.253,-622.415C740.841,-618.92 733.856,-614.525 728,-609 662.919,-547.6 723.002,-480.298 656,-421 644.721,-411.018 630.311,-404.606 615.705,-400.518"/>
-<polygon fill="none" stroke="black" points="616.143,-397.022 605.598,-398.044 614.479,-403.821 616.143,-397.022"/>
-</g>
-<!-- \\db_connector\\InsertDocument -->
-<g id="node20" class="node"><title>\\db_connector\\InsertDocument</title>
-<polygon fill="none" stroke="black" points="869.5,-600 758.5,-600 758.5,-564 869.5,-564 869.5,-600"/>
-<text text-anchor="middle" x="814" y="-579.2" font-family="Courier,monospace" font-size="11.00">InsertDocument</text>
-</g>
-<!-- \\db_connector\\InsertDocument&#45;&gt;\\db_connector\\InsertConnector -->
-<g id="edge19" class="edge"><title>\\db_connector\\InsertDocument&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M758.128,-571.399C747.347,-567.515 736.698,-562.218 728,-555 675.972,-511.827 709.376,-462.495 656,-421 644.296,-411.901 629.918,-405.828 615.503,-401.785"/>
-<polygon fill="none" stroke="black" points="616.101,-398.327 605.551,-399.298 614.404,-405.118 616.101,-398.327"/>
-</g>
-<!-- \\db_connector\\UpdateUserReview -->
-<g id="node21" class="node"><title>\\db_connector\\UpdateUserReview</title>
-<polygon fill="none" stroke="black" points="876.5,-384 751.5,-384 751.5,-348 876.5,-348 876.5,-384"/>
-<text text-anchor="middle" x="814" y="-363.2" font-family="Courier,monospace" font-size="11.00">UpdateUserReview</text>
-</g>
-<!-- \\db_connector\\UpdateUserReview&#45;&gt;\\db_connector\\UpdateConnector -->
-<g id="edge20" class="edge"><title>\\db_connector\\UpdateUserReview&#45;&gt;\\db_connector\\UpdateConnector</title>
-<path fill="none" stroke="black" d="M751.422,-359.97C710.806,-355.992 657.571,-350.779 615.678,-346.677"/>
-<polygon fill="none" stroke="black" points="615.854,-343.177 605.56,-345.686 615.171,-350.144 615.854,-343.177"/>
-</g>
-<!-- \\db_connector\\DatabaseConnector -->
-<g id="node31" class="node"><title>\\db_connector\\DatabaseConnector</title>
-<polygon fill="none" stroke="black" points="155,-844 24,-844 24,-808 155,-808 155,-844"/>
-<text text-anchor="start" x="55.5" y="-829.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
-<text text-anchor="start" x="32" y="-817.2" font-family="Courier,monospace" font-size="11.00">DatabaseConnector</text>
-</g>
-<!-- \\db_connector\\JsonConnector&#45;&gt;\\db_connector\\DatabaseConnector -->
-<g id="edge21" class="edge"><title>\\db_connector\\JsonConnector&#45;&gt;\\db_connector\\DatabaseConnector</title>
-<path fill="none" stroke="black" d="M243.924,-826C220.216,-826 191.563,-826 165.467,-826"/>
-<polygon fill="none" stroke="black" points="165.228,-822.5 155.228,-826 165.228,-829.5 165.228,-822.5"/>
-</g>
-<!-- \\db_connector\\RequestItineraryLanguage -->
-<g id="node23" class="node"><title>\\db_connector\\RequestItineraryLanguage</title>
-<polygon fill="none" stroke="black" points="636,-898 457,-898 457,-862 636,-862 636,-898"/>
-<text text-anchor="middle" x="546.5" y="-877.2" font-family="Courier,monospace" font-size="11.00">RequestItineraryLanguage</text>
-</g>
-<!-- \\db_connector\\RequestItineraryLanguage&#45;&gt;\\db_connector\\JsonConnector -->
-<g id="edge22" class="edge"><title>\\db_connector\\RequestItineraryLanguage&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M462.408,-861.944C428.287,-854.529 389.498,-846.1 358.062,-839.269"/>
-<polygon fill="none" stroke="black" points="358.644,-835.814 348.129,-837.111 357.158,-842.654 358.644,-835.814"/>
-</g>
-<!-- \\db_connector\\RequestItineraryReview -->
-<g id="node24" class="node"><title>\\db_connector\\RequestItineraryReview</title>
-<polygon fill="none" stroke="black" points="629,-844 464,-844 464,-808 629,-808 629,-844"/>
-<text text-anchor="middle" x="546.5" y="-823.2" font-family="Courier,monospace" font-size="11.00">RequestItineraryReview</text>
-</g>
-<!-- \\db_connector\\RequestItineraryReview&#45;&gt;\\db_connector\\JsonConnector -->
-<g id="edge23" class="edge"><title>\\db_connector\\RequestItineraryReview&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M463.788,-826C429.451,-826 390.185,-826 358.38,-826"/>
-<polygon fill="none" stroke="black" points="358.332,-822.5 348.332,-826 358.332,-829.5 358.332,-822.5"/>
-</g>
-<!-- \\db_connector\\DeleteWishlist -->
-<g id="node25" class="node"><title>\\db_connector\\DeleteWishlist</title>
-<polygon fill="none" stroke="black" points="869.5,-276 758.5,-276 758.5,-240 869.5,-240 869.5,-276"/>
-<text text-anchor="middle" x="814" y="-255.2" font-family="Courier,monospace" font-size="11.00">DeleteWishlist</text>
+<!-- \\db_connector\\DeleteRegisteredUser -->
+<g id="node19" class="node"><title>\\db_connector\\DeleteRegisteredUser</title>
+<polygon fill="none" stroke="black" points="890,-276 738,-276 738,-240 890,-240 890,-276"/>
+<text text-anchor="middle" x="814" y="-255.2" font-family="Courier,monospace" font-size="11.00">DeleteRegisteredUser</text>
 </g>
 <!-- \\db_connector\\DeleteConnector -->
-<g id="node30" class="node"><title>\\db_connector\\DeleteConnector</title>
+<g id="node32" class="node"><title>\\db_connector\\DeleteConnector</title>
 <polygon fill="none" stroke="black" points="605.5,-195 487.5,-195 487.5,-159 605.5,-159 605.5,-195"/>
 <text text-anchor="start" x="512.5" y="-180.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
 <text text-anchor="start" x="495.5" y="-168.2" font-family="Courier,monospace" font-size="11.00">DeleteConnector</text>
 </g>
+<!-- \\db_connector\\DeleteRegisteredUser&#45;&gt;\\db_connector\\DeleteConnector -->
+<g id="edge18" class="edge"><title>\\db_connector\\DeleteRegisteredUser&#45;&gt;\\db_connector\\DeleteConnector</title>
+<path fill="none" stroke="black" d="M753.747,-239.923C712.771,-227.422 658.153,-210.758 615.416,-197.72"/>
+<polygon fill="none" stroke="black" points="616.244,-194.314 605.658,-194.743 614.201,-201.009 616.244,-194.314"/>
+</g>
+<!-- \\db_connector\\InsertReservation -->
+<g id="node20" class="node"><title>\\db_connector\\InsertReservation</title>
+<polygon fill="none" stroke="black" points="879.5,-654 748.5,-654 748.5,-618 879.5,-618 879.5,-654"/>
+<text text-anchor="middle" x="814" y="-633.2" font-family="Courier,monospace" font-size="11.00">InsertReservation</text>
+</g>
+<!-- \\db_connector\\InsertReservation&#45;&gt;\\db_connector\\InsertConnector -->
+<g id="edge19" class="edge"><title>\\db_connector\\InsertReservation&#45;&gt;\\db_connector\\InsertConnector</title>
+<path fill="none" stroke="black" d="M748.266,-623.039C740.761,-619.444 733.749,-614.856 728,-609 649.385,-528.926 737.124,-444.531 656,-367 644.891,-356.383 630.278,-349.751 615.39,-345.654"/>
+<polygon fill="none" stroke="black" points="616.141,-342.235 605.601,-343.311 614.512,-349.042 616.141,-342.235"/>
+</g>
+<!-- \\db_connector\\InsertDocument -->
+<g id="node21" class="node"><title>\\db_connector\\InsertDocument</title>
+<polygon fill="none" stroke="black" points="869.5,-600 758.5,-600 758.5,-564 869.5,-564 869.5,-600"/>
+<text text-anchor="middle" x="814" y="-579.2" font-family="Courier,monospace" font-size="11.00">InsertDocument</text>
+</g>
+<!-- \\db_connector\\InsertDocument&#45;&gt;\\db_connector\\InsertConnector -->
+<g id="edge20" class="edge"><title>\\db_connector\\InsertDocument&#45;&gt;\\db_connector\\InsertConnector</title>
+<path fill="none" stroke="black" d="M758.279,-572.545C747.24,-568.586 736.447,-562.969 728,-555 662.919,-493.6 723.002,-426.298 656,-367 644.721,-357.018 630.311,-350.606 615.705,-346.518"/>
+<polygon fill="none" stroke="black" points="616.143,-343.022 605.598,-344.044 614.479,-349.821 616.143,-343.022"/>
+</g>
+<!-- \\db_connector\\UpdateUserReview -->
+<g id="node22" class="node"><title>\\db_connector\\UpdateUserReview</title>
+<polygon fill="none" stroke="black" points="876.5,-384 751.5,-384 751.5,-348 876.5,-348 876.5,-384"/>
+<text text-anchor="middle" x="814" y="-363.2" font-family="Courier,monospace" font-size="11.00">UpdateUserReview</text>
+</g>
+<!-- \\db_connector\\UpdateUserReview&#45;&gt;\\db_connector\\UpdateConnector -->
+<g id="edge21" class="edge"><title>\\db_connector\\UpdateUserReview&#45;&gt;\\db_connector\\UpdateConnector</title>
+<path fill="none" stroke="black" d="M754.832,-347.855C745.829,-344.951 736.651,-341.935 728,-339 695.781,-328.07 688.551,-322.899 656,-313 642.924,-309.023 628.833,-305.192 615.274,-301.726"/>
+<polygon fill="none" stroke="black" points="616.07,-298.317 605.518,-299.271 614.361,-305.106 616.07,-298.317"/>
+</g>
+<!-- \\db_connector\\DatabaseConnector -->
+<g id="node33" class="node"><title>\\db_connector\\DatabaseConnector</title>
+<polygon fill="none" stroke="black" points="155,-817 24,-817 24,-781 155,-781 155,-817"/>
+<text text-anchor="start" x="55.5" y="-802.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
+<text text-anchor="start" x="32" y="-790.2" font-family="Courier,monospace" font-size="11.00">DatabaseConnector</text>
+</g>
+<!-- \\db_connector\\JsonConnector&#45;&gt;\\db_connector\\DatabaseConnector -->
+<g id="edge22" class="edge"><title>\\db_connector\\JsonConnector&#45;&gt;\\db_connector\\DatabaseConnector</title>
+<path fill="none" stroke="black" d="M243.924,-799C220.216,-799 191.563,-799 165.467,-799"/>
+<polygon fill="none" stroke="black" points="165.228,-795.5 155.228,-799 165.228,-802.5 165.228,-795.5"/>
+</g>
+<!-- \\db_connector\\RequestItineraryLanguage -->
+<g id="node24" class="node"><title>\\db_connector\\RequestItineraryLanguage</title>
+<polygon fill="none" stroke="black" points="636,-898 457,-898 457,-862 636,-862 636,-898"/>
+<text text-anchor="middle" x="546.5" y="-877.2" font-family="Courier,monospace" font-size="11.00">RequestItineraryLanguage</text>
+</g>
+<!-- \\db_connector\\RequestItineraryLanguage&#45;&gt;\\db_connector\\JsonConnector -->
+<g id="edge23" class="edge"><title>\\db_connector\\RequestItineraryLanguage&#45;&gt;\\db_connector\\JsonConnector</title>
+<path fill="none" stroke="black" d="M468.116,-861.996C457.601,-859.185 446.995,-856.158 437,-853 428.335,-850.262 387.525,-834.467 352.186,-820.661"/>
+<polygon fill="none" stroke="black" points="353.458,-817.401 342.87,-817.019 350.908,-823.92 353.458,-817.401"/>
+</g>
+<!-- \\db_connector\\RequestItineraryReview -->
+<g id="node25" class="node"><title>\\db_connector\\RequestItineraryReview</title>
+<polygon fill="none" stroke="black" points="629,-844 464,-844 464,-808 629,-808 629,-844"/>
+<text text-anchor="middle" x="546.5" y="-823.2" font-family="Courier,monospace" font-size="11.00">RequestItineraryReview</text>
+</g>
+<!-- \\db_connector\\RequestItineraryReview&#45;&gt;\\db_connector\\JsonConnector -->
+<g id="edge24" class="edge"><title>\\db_connector\\RequestItineraryReview&#45;&gt;\\db_connector\\JsonConnector</title>
+<path fill="none" stroke="black" d="M463.788,-817.122C429.451,-813.391 390.185,-809.125 358.38,-805.669"/>
+<polygon fill="none" stroke="black" points="358.652,-802.178 348.332,-804.577 357.896,-809.137 358.652,-802.178"/>
+</g>
+<!-- \\db_connector\\DeleteWishlist -->
+<g id="node26" class="node"><title>\\db_connector\\DeleteWishlist</title>
+<polygon fill="none" stroke="black" points="869.5,-222 758.5,-222 758.5,-186 869.5,-186 869.5,-222"/>
+<text text-anchor="middle" x="814" y="-201.2" font-family="Courier,monospace" font-size="11.00">DeleteWishlist</text>
+</g>
 <!-- \\db_connector\\DeleteWishlist&#45;&gt;\\db_connector\\DeleteConnector -->
-<g id="edge24" class="edge"><title>\\db_connector\\DeleteWishlist&#45;&gt;\\db_connector\\DeleteConnector</title>
-<path fill="none" stroke="black" d="M758.31,-241.315C716.96,-228.7 659.938,-211.303 615.624,-197.784"/>
-<polygon fill="none" stroke="black" points="616.387,-194.357 605.8,-194.787 614.344,-201.052 616.387,-194.357"/>
+<g id="edge25" class="edge"><title>\\db_connector\\DeleteWishlist&#45;&gt;\\db_connector\\DeleteConnector</title>
+<path fill="none" stroke="black" d="M758.31,-198.438C717.047,-194.242 660.178,-188.459 615.904,-183.956"/>
+<polygon fill="none" stroke="black" points="616.103,-180.459 605.8,-182.929 615.395,-187.423 616.103,-180.459"/>
 </g>
 <!-- \\db_connector\\BooleanConnector -->
-<g id="node29" class="node"><title>\\db_connector\\BooleanConnector</title>
-<polygon fill="none" stroke="black" points="358.5,-412 233.5,-412 233.5,-376 358.5,-376 358.5,-412"/>
-<text text-anchor="start" x="262" y="-397.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
-<text text-anchor="start" x="241.5" y="-385.2" font-family="Courier,monospace" font-size="11.00">BooleanConnector</text>
+<g id="node30" class="node"><title>\\db_connector\\BooleanConnector</title>
+<polygon fill="none" stroke="black" points="358.5,-358 233.5,-358 233.5,-322 358.5,-322 358.5,-358"/>
+<text text-anchor="start" x="262" y="-343.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
+<text text-anchor="start" x="241.5" y="-331.2" font-family="Courier,monospace" font-size="11.00">BooleanConnector</text>
 </g>
 <!-- \\db_connector\\UpdateConnector&#45;&gt;\\db_connector\\BooleanConnector -->
-<g id="edge25" class="edge"><title>\\db_connector\\UpdateConnector&#45;&gt;\\db_connector\\BooleanConnector</title>
-<path fill="none" stroke="black" d="M487.238,-352.661C451.814,-360.358 406.309,-370.247 368.687,-378.422"/>
-<polygon fill="none" stroke="black" points="367.831,-375.026 358.802,-380.57 369.318,-381.867 367.831,-375.026"/>
+<g id="edge26" class="edge"><title>\\db_connector\\UpdateConnector&#45;&gt;\\db_connector\\BooleanConnector</title>
+<path fill="none" stroke="black" d="M487.238,-298.661C451.814,-306.358 406.309,-316.247 368.687,-324.422"/>
+<polygon fill="none" stroke="black" points="367.831,-321.026 358.802,-326.57 369.318,-327.867 367.831,-321.026"/>
 </g>
-<!-- \\db_connector\\RequestItinerary -->
-<g id="node27" class="node"><title>\\db_connector\\RequestItinerary</title>
-<polygon fill="none" stroke="black" points="609,-790 484,-790 484,-754 609,-754 609,-790"/>
-<text text-anchor="middle" x="546.5" y="-769.2" font-family="Courier,monospace" font-size="11.00">RequestItinerary</text>
+<!-- \\db_connector\\RequestActiveItinerary -->
+<g id="node28" class="node"><title>\\db_connector\\RequestActiveItinerary</title>
+<polygon fill="none" stroke="black" points="629,-790 464,-790 464,-754 629,-754 629,-790"/>
+<text text-anchor="middle" x="546.5" y="-769.2" font-family="Courier,monospace" font-size="11.00">RequestActiveItinerary</text>
 </g>
-<!-- \\db_connector\\RequestItinerary&#45;&gt;\\db_connector\\JsonConnector -->
-<g id="edge26" class="edge"><title>\\db_connector\\RequestItinerary&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M483.754,-785.418C445.488,-793.733 396.527,-804.372 358.337,-812.671"/>
-<polygon fill="none" stroke="black" points="357.401,-809.293 348.373,-814.837 358.888,-816.133 357.401,-809.293"/>
+<!-- \\db_connector\\RequestActiveItinerary&#45;&gt;\\db_connector\\JsonConnector -->
+<g id="edge27" class="edge"><title>\\db_connector\\RequestActiveItinerary&#45;&gt;\\db_connector\\JsonConnector</title>
+<path fill="none" stroke="black" d="M463.788,-780.878C429.451,-784.609 390.185,-788.875 358.38,-792.331"/>
+<polygon fill="none" stroke="black" points="357.896,-788.863 348.332,-793.423 358.652,-795.822 357.896,-788.863"/>
 </g>
 <!-- \\db_connector\\InsertConnector&#45;&gt;\\db_connector\\BooleanConnector -->
-<g id="edge27" class="edge"><title>\\db_connector\\InsertConnector&#45;&gt;\\db_connector\\BooleanConnector</title>
-<path fill="none" stroke="black" d="M487.238,-394C451.965,-394 406.696,-394 369.167,-394"/>
-<polygon fill="none" stroke="black" points="368.802,-390.5 358.802,-394 368.802,-397.5 368.802,-390.5"/>
+<g id="edge28" class="edge"><title>\\db_connector\\InsertConnector&#45;&gt;\\db_connector\\BooleanConnector</title>
+<path fill="none" stroke="black" d="M487.238,-340C451.965,-340 406.696,-340 369.167,-340"/>
+<polygon fill="none" stroke="black" points="368.802,-336.5 358.802,-340 368.802,-343.5 368.802,-336.5"/>
 </g>
 <!-- \\db_connector\\BooleanConnector&#45;&gt;\\db_connector\\DatabaseConnector -->
-<g id="edge28" class="edge"><title>\\db_connector\\BooleanConnector&#45;&gt;\\db_connector\\DatabaseConnector</title>
-<path fill="none" stroke="black" d="M286.473,-412.013C254.512,-479.53 141.693,-717.856 103.358,-798.837"/>
-<polygon fill="none" stroke="black" points="100.178,-797.375 99.0632,-807.911 106.505,-800.37 100.178,-797.375"/>
+<g id="edge29" class="edge"><title>\\db_connector\\BooleanConnector&#45;&gt;\\db_connector\\DatabaseConnector</title>
+<path fill="none" stroke="black" d="M286.857,-358.277C255.273,-429.167 140.742,-686.231 102.803,-771.387"/>
+<polygon fill="none" stroke="black" points="99.5388,-770.112 98.6661,-780.671 105.933,-772.961 99.5388,-770.112"/>
+</g>
+<!-- \\db_connector\\RequestItinerary -->
+<g id="node31" class="node"><title>\\db_connector\\RequestItinerary</title>
+<polygon fill="none" stroke="black" points="609,-736 484,-736 484,-700 609,-700 609,-736"/>
+<text text-anchor="middle" x="546.5" y="-715.2" font-family="Courier,monospace" font-size="11.00">RequestItinerary</text>
+</g>
+<!-- \\db_connector\\RequestItinerary&#45;&gt;\\db_connector\\JsonConnector -->
+<g id="edge30" class="edge"><title>\\db_connector\\RequestItinerary&#45;&gt;\\db_connector\\JsonConnector</title>
+<path fill="none" stroke="black" d="M483.731,-731.961C468.36,-735.821 451.993,-740.263 437,-745 407.465,-754.331 375.165,-766.643 349.04,-777.154"/>
+<polygon fill="none" stroke="black" points="347.663,-773.936 339.711,-780.936 350.293,-780.423 347.663,-773.936"/>
 </g>
 <!-- \\db_connector\\DeleteConnector&#45;&gt;\\db_connector\\BooleanConnector -->
-<g id="edge29" class="edge"><title>\\db_connector\\DeleteConnector&#45;&gt;\\db_connector\\BooleanConnector</title>
-<path fill="none" stroke="black" d="M524.74,-195.128C480.339,-233.901 376.087,-324.938 325.514,-369.101"/>
-<polygon fill="none" stroke="black" points="323.105,-366.557 317.875,-375.771 327.71,-371.83 323.105,-366.557"/>
+<g id="edge31" class="edge"><title>\\db_connector\\DeleteConnector&#45;&gt;\\db_connector\\BooleanConnector</title>
+<path fill="none" stroke="black" d="M517.957,-195.067C472.895,-224.624 383.423,-283.312 333.259,-316.216"/>
+<polygon fill="none" stroke="black" points="331.109,-313.441 324.667,-321.852 334.948,-319.294 331.109,-313.441"/>
 </g>
 <!-- \\db_connector\\UserDataDownloader -->
-<g id="node32" class="node"><title>\\db_connector\\UserDataDownloader</title>
-<polygon fill="none" stroke="black" points="365,-898 227,-898 227,-862 365,-862 365,-898"/>
-<text text-anchor="middle" x="296" y="-877.2" font-family="Courier,monospace" font-size="11.00">UserDataDownloader</text>
+<g id="node34" class="node"><title>\\db_connector\\UserDataDownloader</title>
+<polygon fill="none" stroke="black" points="365,-871 227,-871 227,-835 365,-835 365,-871"/>
+<text text-anchor="middle" x="296" y="-850.2" font-family="Courier,monospace" font-size="11.00">UserDataDownloader</text>
 </g>
 <!-- \\db_connector\\UserDataDownloader&#45;&gt;\\db_connector\\DatabaseConnector -->
-<g id="edge30" class="edge"><title>\\db_connector\\UserDataDownloader&#45;&gt;\\db_connector\\DatabaseConnector</title>
-<path fill="none" stroke="black" d="M226.904,-862.019C207.034,-856.772 185.22,-851.012 164.977,-845.666"/>
-<polygon fill="none" stroke="black" points="165.743,-842.249 155.181,-843.08 163.956,-849.017 165.743,-842.249"/>
+<g id="edge32" class="edge"><title>\\db_connector\\UserDataDownloader&#45;&gt;\\db_connector\\DatabaseConnector</title>
+<path fill="none" stroke="black" d="M226.904,-835.019C207.034,-829.772 185.22,-824.012 164.977,-818.666"/>
+<polygon fill="none" stroke="black" points="165.743,-815.249 155.181,-816.08 163.956,-822.017 165.743,-815.249"/>
 </g>
 <!-- \\db_connector\\DeleteUserReview -->
-<g id="node33" class="node"><title>\\db_connector\\DeleteUserReview</title>
-<polygon fill="none" stroke="black" points="876.5,-222 751.5,-222 751.5,-186 876.5,-186 876.5,-222"/>
-<text text-anchor="middle" x="814" y="-201.2" font-family="Courier,monospace" font-size="11.00">DeleteUserReview</text>
+<g id="node35" class="node"><title>\\db_connector\\DeleteUserReview</title>
+<polygon fill="none" stroke="black" points="876.5,-168 751.5,-168 751.5,-132 876.5,-132 876.5,-168"/>
+<text text-anchor="middle" x="814" y="-147.2" font-family="Courier,monospace" font-size="11.00">DeleteUserReview</text>
 </g>
 <!-- \\db_connector\\DeleteUserReview&#45;&gt;\\db_connector\\DeleteConnector -->
-<g id="edge31" class="edge"><title>\\db_connector\\DeleteUserReview&#45;&gt;\\db_connector\\DeleteConnector</title>
-<path fill="none" stroke="black" d="M751.422,-197.738C710.806,-193.607 657.571,-188.194 615.678,-183.933"/>
-<polygon fill="none" stroke="black" points="615.863,-180.434 605.56,-182.904 615.155,-187.398 615.863,-180.434"/>
+<g id="edge33" class="edge"><title>\\db_connector\\DeleteUserReview&#45;&gt;\\db_connector\\DeleteConnector</title>
+<path fill="none" stroke="black" d="M751.422,-156.262C710.806,-160.393 657.571,-165.806 615.678,-170.067"/>
+<polygon fill="none" stroke="black" points="615.155,-166.602 605.56,-171.096 615.863,-173.566 615.155,-166.602"/>
 </g>
 <!-- \\db_connector\\UserLogin -->
-<g id="node34" class="node"><title>\\db_connector\\UserLogin</title>
-<polygon fill="none" stroke="black" points="585,-466 508,-466 508,-430 585,-430 585,-466"/>
-<text text-anchor="middle" x="546.5" y="-445.2" font-family="Courier,monospace" font-size="11.00">UserLogin</text>
+<g id="node36" class="node"><title>\\db_connector\\UserLogin</title>
+<polygon fill="none" stroke="black" points="585,-412 508,-412 508,-376 585,-376 585,-412"/>
+<text text-anchor="middle" x="546.5" y="-391.2" font-family="Courier,monospace" font-size="11.00">UserLogin</text>
 </g>
 <!-- \\db_connector\\UserLogin&#45;&gt;\\db_connector\\BooleanConnector -->
-<g id="edge32" class="edge"><title>\\db_connector\\UserLogin&#45;&gt;\\db_connector\\BooleanConnector</title>
-<path fill="none" stroke="black" d="M507.758,-439.799C470.948,-431.8 414.029,-419.431 368.617,-409.563"/>
-<polygon fill="none" stroke="black" points="369.334,-406.137 358.819,-407.433 367.847,-412.977 369.334,-406.137"/>
+<g id="edge34" class="edge"><title>\\db_connector\\UserLogin&#45;&gt;\\db_connector\\BooleanConnector</title>
+<path fill="none" stroke="black" d="M507.758,-385.799C470.948,-377.8 414.029,-365.431 368.617,-355.563"/>
+<polygon fill="none" stroke="black" points="369.334,-352.137 358.819,-353.433 367.847,-358.977 369.334,-352.137"/>
 </g>
 <!-- \\db_connector\\RequestRegisteredUser -->
-<g id="node35" class="node"><title>\\db_connector\\RequestRegisteredUser</title>
-<polygon fill="none" stroke="black" points="625.5,-736 467.5,-736 467.5,-700 625.5,-700 625.5,-736"/>
-<text text-anchor="middle" x="546.5" y="-715.2" font-family="Courier,monospace" font-size="11.00">RequestRegisteredUser</text>
+<g id="node37" class="node"><title>\\db_connector\\RequestRegisteredUser</title>
+<polygon fill="none" stroke="black" points="625.5,-682 467.5,-682 467.5,-646 625.5,-646 625.5,-682"/>
+<text text-anchor="middle" x="546.5" y="-661.2" font-family="Courier,monospace" font-size="11.00">RequestRegisteredUser</text>
 </g>
 <!-- \\db_connector\\RequestRegisteredUser&#45;&gt;\\db_connector\\JsonConnector -->
-<g id="edge33" class="edge"><title>\\db_connector\\RequestRegisteredUser&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M467.308,-734.648C456.97,-737.663 446.628,-741.107 437,-745 399.062,-760.338 358.95,-784.462 331.433,-802.398"/>
-<polygon fill="none" stroke="black" points="329.381,-799.558 322.96,-807.985 333.235,-805.402 329.381,-799.558"/>
+<g id="edge35" class="edge"><title>\\db_connector\\RequestRegisteredUser&#45;&gt;\\db_connector\\JsonConnector</title>
+<path fill="none" stroke="black" d="M467.36,-679.289C456.91,-682.525 446.524,-686.394 437,-691 392.733,-712.41 349.048,-749.313 322.55,-773.936"/>
+<polygon fill="none" stroke="black" points="320.099,-771.437 315.222,-780.843 324.9,-776.532 320.099,-771.437"/>
 </g>
 <!-- \\db_connector\\RequestReport -->
-<g id="node36" class="node"><title>\\db_connector\\RequestReport</title>
-<polygon fill="none" stroke="black" points="598.5,-682 494.5,-682 494.5,-646 598.5,-646 598.5,-682"/>
-<text text-anchor="middle" x="546.5" y="-661.2" font-family="Courier,monospace" font-size="11.00">RequestReport</text>
+<g id="node38" class="node"><title>\\db_connector\\RequestReport</title>
+<polygon fill="none" stroke="black" points="598.5,-628 494.5,-628 494.5,-592 598.5,-592 598.5,-628"/>
+<text text-anchor="middle" x="546.5" y="-607.2" font-family="Courier,monospace" font-size="11.00">RequestReport</text>
 </g>
 <!-- \\db_connector\\RequestReport&#45;&gt;\\db_connector\\JsonConnector -->
-<g id="edge34" class="edge"><title>\\db_connector\\RequestReport&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M494.303,-671.029C475.473,-675.055 454.493,-681.317 437,-691 387.045,-718.652 342,-768.677 317.175,-799.453"/>
-<polygon fill="none" stroke="black" points="314.194,-797.579 310.722,-807.588 319.678,-801.929 314.194,-797.579"/>
+<g id="edge36" class="edge"><title>\\db_connector\\RequestReport&#45;&gt;\\db_connector\\JsonConnector</title>
+<path fill="none" stroke="black" d="M494.362,-616.074C475.332,-619.993 454.2,-626.431 437,-637 380.797,-671.536 335.24,-736.038 312.576,-772.364"/>
+<polygon fill="none" stroke="black" points="309.552,-770.601 307.315,-780.958 315.522,-774.257 309.552,-770.601"/>
 </g>
 <!-- \\db_connector\\InsertItineraryReview -->
-<g id="node37" class="node"><title>\\db_connector\\InsertItineraryReview</title>
+<g id="node39" class="node"><title>\\db_connector\\InsertItineraryReview</title>
 <polygon fill="none" stroke="black" points="893,-546 735,-546 735,-510 893,-510 893,-546"/>
 <text text-anchor="middle" x="814" y="-525.2" font-family="Courier,monospace" font-size="11.00">InsertItineraryReview</text>
 </g>
 <!-- \\db_connector\\InsertItineraryReview&#45;&gt;\\db_connector\\InsertConnector -->
-<g id="edge35" class="edge"><title>\\db_connector\\InsertItineraryReview&#45;&gt;\\db_connector\\InsertConnector</title>
-<path fill="none" stroke="black" d="M744.694,-509.94C738.859,-507.323 733.205,-504.357 728,-501 687.799,-475.075 697.006,-445.632 656,-421 643.815,-413.681 629.724,-408.339 615.813,-404.443"/>
-<polygon fill="none" stroke="black" points="616.303,-400.955 605.746,-401.854 614.559,-407.735 616.303,-400.955"/>
+<g id="edge37" class="edge"><title>\\db_connector\\InsertItineraryReview&#45;&gt;\\db_connector\\InsertConnector</title>
+<path fill="none" stroke="black" d="M741.239,-509.887C736.526,-507.307 732.051,-504.362 728,-501 675.972,-457.827 709.376,-408.495 656,-367 644.296,-357.901 629.918,-351.828 615.503,-347.785"/>
+<polygon fill="none" stroke="black" points="616.101,-344.327 605.551,-345.298 614.404,-351.118 616.101,-344.327"/>
 </g>
 <!-- \\db_connector\\RequestWishlistJoinItinerary -->
-<g id="node38" class="node"><title>\\db_connector\\RequestWishlistJoinItinerary</title>
-<polygon fill="none" stroke="black" points="649.5,-628 443.5,-628 443.5,-592 649.5,-592 649.5,-628"/>
-<text text-anchor="middle" x="546.5" y="-607.2" font-family="Courier,monospace" font-size="11.00">RequestWishlistJoinItinerary</text>
+<g id="node40" class="node"><title>\\db_connector\\RequestWishlistJoinItinerary</title>
+<polygon fill="none" stroke="black" points="649.5,-574 443.5,-574 443.5,-538 649.5,-538 649.5,-574"/>
+<text text-anchor="middle" x="546.5" y="-553.2" font-family="Courier,monospace" font-size="11.00">RequestWishlistJoinItinerary</text>
 </g>
 <!-- \\db_connector\\RequestWishlistJoinItinerary&#45;&gt;\\db_connector\\JsonConnector -->
-<g id="edge36" class="edge"><title>\\db_connector\\RequestWishlistJoinItinerary&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M453.257,-628.042C447.563,-630.637 442.086,-633.605 437,-637 374.901,-678.45 330.091,-757.103 309.551,-798.672"/>
-<polygon fill="none" stroke="black" points="306.284,-797.39 305.083,-807.916 312.586,-800.436 306.284,-797.39"/>
+<g id="edge38" class="edge"><title>\\db_connector\\RequestWishlistJoinItinerary&#45;&gt;\\db_connector\\JsonConnector</title>
+<path fill="none" stroke="black" d="M452.204,-574.066C446.859,-576.657 441.74,-579.617 437,-583 368.714,-631.73 325.294,-725.143 306.991,-771.503"/>
+<polygon fill="none" stroke="black" points="303.695,-770.321 303.368,-780.911 310.228,-772.837 303.695,-770.321"/>
 </g>
 <!-- \\db_connector\\RequestReportJoinReportDetails -->
-<g id="node39" class="node"><title>\\db_connector\\RequestReportJoinReportDetails</title>
-<polygon fill="none" stroke="black" points="656,-574 437,-574 437,-538 656,-538 656,-574"/>
-<text text-anchor="middle" x="546.5" y="-553.2" font-family="Courier,monospace" font-size="11.00">RequestReportJoinReportDetails</text>
+<g id="node41" class="node"><title>\\db_connector\\RequestReportJoinReportDetails</title>
+<polygon fill="none" stroke="black" points="656,-520 437,-520 437,-484 656,-484 656,-520"/>
+<text text-anchor="middle" x="546.5" y="-499.2" font-family="Courier,monospace" font-size="11.00">RequestReportJoinReportDetails</text>
 </g>
 <!-- \\db_connector\\RequestReportJoinReportDetails&#45;&gt;\\db_connector\\JsonConnector -->
-<g id="edge37" class="edge"><title>\\db_connector\\RequestReportJoinReportDetails&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M451.464,-574.045C446.364,-576.644 441.495,-579.611 437,-583 362.62,-639.076 321.222,-747.056 305.051,-798.041"/>
-<polygon fill="none" stroke="black" points="301.665,-797.144 302.065,-807.731 308.355,-799.205 301.665,-797.144"/>
+<g id="edge39" class="edge"><title>\\db_connector\\RequestReportJoinReportDetails&#45;&gt;\\db_connector\\JsonConnector</title>
+<path fill="none" stroke="black" d="M450.762,-520.089C445.897,-522.679 441.266,-525.633 437,-529 356.204,-592.77 317.278,-715.978 303.306,-771.127"/>
+<polygon fill="none" stroke="black" points="299.889,-770.363 300.91,-780.908 306.689,-772.028 299.889,-770.363"/>
 </g>
 <!-- \\db_connector\\RequestReservation -->
-<g id="node40" class="node"><title>\\db_connector\\RequestReservation</title>
-<polygon fill="none" stroke="black" points="615.5,-520 477.5,-520 477.5,-484 615.5,-484 615.5,-520"/>
-<text text-anchor="middle" x="546.5" y="-499.2" font-family="Courier,monospace" font-size="11.00">RequestReservation</text>
+<g id="node42" class="node"><title>\\db_connector\\RequestReservation</title>
+<polygon fill="none" stroke="black" points="615.5,-466 477.5,-466 477.5,-430 615.5,-430 615.5,-466"/>
+<text text-anchor="middle" x="546.5" y="-445.2" font-family="Courier,monospace" font-size="11.00">RequestReservation</text>
 </g>
 <!-- \\db_connector\\RequestReservation&#45;&gt;\\db_connector\\JsonConnector -->
-<g id="edge38" class="edge"><title>\\db_connector\\RequestReservation&#45;&gt;\\db_connector\\JsonConnector</title>
-<path fill="none" stroke="black" d="M477.491,-509.236C462.975,-513.299 448.555,-519.519 437,-529 350.085,-600.311 313.996,-738.023 302.006,-797.499"/>
-<polygon fill="none" stroke="black" points="298.503,-797.178 300.041,-807.66 305.376,-798.507 298.503,-797.178"/>
+<g id="edge40" class="edge"><title>\\db_connector\\RequestReservation&#45;&gt;\\db_connector\\JsonConnector</title>
+<path fill="none" stroke="black" d="M477.262,-454.961C462.757,-459.037 448.399,-465.332 437,-475 343.567,-554.244 310.682,-707.333 300.759,-770.588"/>
+<polygon fill="none" stroke="black" points="297.275,-770.225 299.261,-780.632 304.198,-771.258 297.275,-770.225"/>
 </g>
 <!-- \\db_connector\\DeleteItinerary -->
-<g id="node41" class="node"><title>\\db_connector\\DeleteItinerary</title>
-<polygon fill="none" stroke="black" points="873,-168 755,-168 755,-132 873,-132 873,-168"/>
-<text text-anchor="middle" x="814" y="-147.2" font-family="Courier,monospace" font-size="11.00">DeleteItinerary</text>
+<g id="node43" class="node"><title>\\db_connector\\DeleteItinerary</title>
+<polygon fill="none" stroke="black" points="873,-114 755,-114 755,-78 873,-78 873,-114"/>
+<text text-anchor="middle" x="814" y="-93.2" font-family="Courier,monospace" font-size="11.00">DeleteItinerary</text>
 </g>
 <!-- \\db_connector\\DeleteItinerary&#45;&gt;\\db_connector\\DeleteConnector -->
-<g id="edge39" class="edge"><title>\\db_connector\\DeleteItinerary&#45;&gt;\\db_connector\\DeleteConnector</title>
-<path fill="none" stroke="black" d="M754.735,-155.925C713.753,-160.093 658.769,-165.685 615.735,-170.061"/>
-<polygon fill="none" stroke="black" points="615.224,-166.595 605.629,-171.089 615.932,-173.559 615.224,-166.595"/>
+<g id="edge41" class="edge"><title>\\db_connector\\DeleteItinerary&#45;&gt;\\db_connector\\DeleteConnector</title>
+<path fill="none" stroke="black" d="M754.735,-113.776C713.667,-126.305 658.537,-143.124 615.463,-156.266"/>
+<polygon fill="none" stroke="black" points="614.173,-153 605.629,-159.266 616.215,-159.695 614.173,-153"/>
 </g>
 <!-- \\db_connector\\ClearWishlist -->
-<g id="node42" class="node"><title>\\db_connector\\ClearWishlist</title>
-<polygon fill="none" stroke="black" points="866,-114 762,-114 762,-78 866,-78 866,-114"/>
-<text text-anchor="middle" x="814" y="-93.2" font-family="Courier,monospace" font-size="11.00">ClearWishlist</text>
+<g id="node44" class="node"><title>\\db_connector\\ClearWishlist</title>
+<polygon fill="none" stroke="black" points="866,-60 762,-60 762,-24 866,-24 866,-60"/>
+<text text-anchor="middle" x="814" y="-39.2" font-family="Courier,monospace" font-size="11.00">ClearWishlist</text>
 </g>
 <!-- \\db_connector\\ClearWishlist&#45;&gt;\\db_connector\\DeleteConnector -->
-<g id="edge40" class="edge"><title>\\db_connector\\ClearWishlist&#45;&gt;\\db_connector\\DeleteConnector</title>
-<path fill="none" stroke="black" d="M761.809,-111.618C720.255,-124.295 661.293,-142.283 615.73,-156.184"/>
-<polygon fill="none" stroke="black" points="614.473,-152.908 605.929,-159.174 616.515,-159.604 614.473,-152.908"/>
+<g id="edge42" class="edge"><title>\\db_connector\\ClearWishlist&#45;&gt;\\db_connector\\DeleteConnector</title>
+<path fill="none" stroke="black" d="M761.938,-56.1035C750.578,-59.8217 738.728,-64.1654 728,-69 674.595,-93.0661 617.249,-129.375 581.869,-153.136"/>
+<polygon fill="none" stroke="black" points="579.684,-150.389 573.363,-158.892 583.607,-156.186 579.684,-150.389"/>
 </g>
 <!-- \\db_connector\\UpdateItinerary -->
-<g id="node43" class="node"><title>\\db_connector\\UpdateItinerary</title>
+<g id="node45" class="node"><title>\\db_connector\\UpdateItinerary</title>
 <polygon fill="none" stroke="black" points="873,-330 755,-330 755,-294 873,-294 873,-330"/>
 <text text-anchor="middle" x="814" y="-309.2" font-family="Courier,monospace" font-size="11.00">UpdateItinerary</text>
 </g>
 <!-- \\db_connector\\UpdateItinerary&#45;&gt;\\db_connector\\UpdateConnector -->
-<g id="edge41" class="edge"><title>\\db_connector\\UpdateItinerary&#45;&gt;\\db_connector\\UpdateConnector</title>
-<path fill="none" stroke="black" d="M754.735,-318.145C713.753,-322.467 658.769,-328.265 615.735,-332.804"/>
-<polygon fill="none" stroke="black" points="615.207,-329.34 605.629,-333.87 615.941,-336.301 615.207,-329.34"/>
-</g>
-<!-- \\db_connector\\DeleteRegisteredUser -->
-<g id="node44" class="node"><title>\\db_connector\\DeleteRegisteredUser</title>
-<polygon fill="none" stroke="black" points="890,-60 738,-60 738,-24 890,-24 890,-60"/>
-<text text-anchor="middle" x="814" y="-39.2" font-family="Courier,monospace" font-size="11.00">DeleteRegisteredUser</text>
-</g>
-<!-- \\db_connector\\DeleteRegisteredUser&#45;&gt;\\db_connector\\DeleteConnector -->
-<g id="edge42" class="edge"><title>\\db_connector\\DeleteRegisteredUser&#45;&gt;\\db_connector\\DeleteConnector</title>
-<path fill="none" stroke="black" d="M750.172,-60.1338C742.602,-62.8511 735.058,-65.8193 728,-69 674.595,-93.0661 617.249,-129.375 581.869,-153.136"/>
-<polygon fill="none" stroke="black" points="579.684,-150.389 573.363,-158.892 583.607,-156.186 579.684,-150.389"/>
+<g id="edge43" class="edge"><title>\\db_connector\\UpdateItinerary&#45;&gt;\\db_connector\\UpdateConnector</title>
+<path fill="none" stroke="black" d="M754.735,-306.294C713.753,-302.281 658.769,-296.896 615.735,-292.682"/>
+<polygon fill="none" stroke="black" points="615.923,-289.184 605.629,-291.693 615.24,-296.151 615.923,-289.184"/>
 </g>
 </g>
 </svg>
