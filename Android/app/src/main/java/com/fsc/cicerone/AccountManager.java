@@ -1,5 +1,7 @@
 package com.fsc.cicerone;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,12 +105,15 @@ public abstract class AccountManager {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
-                //TODO: Complete
+                // Do nothing
             }
 
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                //TODO: Complete
+                JSONObject result = jsonArray.getJSONObject(0);
+                if(!result.getBoolean("result")){
+                    Log.e("DELETE_USER_ERROR", result.getString("error"));
+                }
             }
         }, currentLoggedUser.getCredentials());
         connector.execute();

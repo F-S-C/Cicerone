@@ -545,7 +545,7 @@ public class ProfileFragment extends Fragment {
             startActivity(new Intent(context, LoginActivity.class));
             context.finish();
         };
-        new androidx.appcompat.app.AlertDialog.Builder(context)
+        new AlertDialog.Builder(context)
                 .setTitle(context.getString(R.string.are_you_sure))
                 .setMessage(context.getString(R.string.sure_to_delete_account))
                 .setPositiveButton(context.getString(R.string.yes), positiveClickListener)
