@@ -26,13 +26,54 @@
             app:layout_constraintVertical_chainStyle="packed"
             app:srcCompat="@android:color/darker_gray" />
 
+        <TableLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:stretchColumns="0,1"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itinerary_number">
+
+            <TableRow>
+
+                <TextView
+                    android:maxLength="5"
+                    android:ellipsize="end"
+                    android:id="@+id/location"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/position_pin"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/location" />
+
+                <TextView
+                    android:id="@+id/beginning"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/flight_takeoff"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/beginning_date" />
+            </TableRow>
+        </TableLayout>
+
         <TextView
             android:id="@+id/itinerary_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="4dp"
             android:text="@android:string/untitled"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_constraintBottom_toTopOf="@+id/itinerary_number"
@@ -44,11 +85,10 @@
             android:id="@+id/itinerary_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:text="@string/example_number"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintBottom_toTopOf="@+id/action_button_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itinerary_title" />
@@ -115,45 +155,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/action_button_1" />
         -->
-        <LinearLayout
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itinerary_number"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/itinerary_price_badge"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/position_pin"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/location" />
-
-            <TextView
-                android:id="@+id/beginning"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableEnd="@drawable/flight_takeoff"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/beginning_date" />
-
-            <TextView
-                android:id="@+id/ending"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableEnd="@drawable/flight_land"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/ending_date" />
-        </LinearLayout>
+            android:layout_marginTop="16dp"
+            android:background="@drawable/price_badge_style"
+            android:elevation="2dp"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:text="@string/price_value"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="@id/media_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/media_image"
+            app:layout_constraintVertical_bias="0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

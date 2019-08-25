@@ -256,7 +256,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                     itineraryNumber = itemView.findViewById(R.id.itinerary_number);
                     location = itemView.findViewById(R.id.location);
                     beginning = itemView.findViewById(R.id.beginning);
-                    ending = itemView.findViewById(R.id.ending);
+//                    ending = itemView.findViewById(R.id.ending);
                     break;
 
                 case REVIEWS_LIST:

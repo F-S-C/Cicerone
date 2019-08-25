@@ -6,10 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,10 +71,14 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
                     DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                     holder.beginning.setText(outputFormat.format(itineraryList[position].getBeginningDate()));
-                    holder.ending.setText(outputFormat.format(itineraryList[position].getEndingDate()));
+//                    holder.ending.setText(outputFormat.format(itineraryList[position].getEndingDate()));
                     holder.itineraryTitle.setText(title);
                     holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
                     holder.location.setText(location);
+
+                    holder.priceBadge.setText(String.format(context.getString(R.string.price_value), itineraryList[position].getFullPrice()));
+
+                    Picasso.get().load(itineraryList[position].getImageUrl()).into(holder.imageView);
                 } catch (JSONException e) {
                     Log.e(ERROR_TAG, e.getMessage());
                 }
@@ -110,7 +117,9 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         TextView itineraryNumber;
         TextView location;
         TextView beginning;
-        TextView ending;
+//        TextView ending; //TODO: Remove from class diagram
+        ImageView imageView; //TODO: Add to class diagram
+        TextView priceBadge; //TODO: Add to class diagram
 
 
         ViewHolder(View itemView) {
@@ -119,7 +128,9 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             itineraryNumber = itemView.findViewById(R.id.itinerary_number);
             location = itemView.findViewById(R.id.location);
             beginning = itemView.findViewById(R.id.beginning);
-            ending = itemView.findViewById(R.id.ending);
+//            ending = itemView.findViewById(R.id.ending);
+            imageView = itemView.findViewById(R.id.media_image);
+            priceBadge = itemView.findViewById(R.id.itinerary_price_badge);
             itemView.setOnClickListener(this);
         }
 

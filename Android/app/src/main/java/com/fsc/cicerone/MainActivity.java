@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
         navView = findViewById(R.id.bottom_navigation);
         navView.setOnNavigationItemSelectedListener(item -> {
-            boolean toReturn = false;
             ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+            boolean toReturn = false;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     changeCurrentFragment(homeFragment);
@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.navigation_profile:
                     changeCurrentFragment(profileFragment);
-                    toReturn = true;
                     supportActionBar.setTitle(getString(R.string.account));
+                    toReturn = true;
                     break;
                 default:
                     break;
@@ -111,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
     private void changeCurrentFragment(Fragment nextFragment) {
         fragmentManager.beginTransaction().hide(activeFragment).show(nextFragment).commit();
         activeFragment = nextFragment;
+        ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setDisplayHomeAsUpEnabled(!nextFragment.equals(homeFragment));
+        supportActionBar.setDisplayShowHomeEnabled(!nextFragment.equals(homeFragment));
     }
 
     @Override
@@ -123,9 +126,14 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, (arg0, arg1) -> MainActivity.super.onBackPressed())
                     .create()
                     .show();
-        }
-        else {
+        } else {
             navView.setSelectedItemId(R.id.navigation_home);
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() { //TODO: Add to class diagram
+        onBackPressed();
+        return true;
     }
 }

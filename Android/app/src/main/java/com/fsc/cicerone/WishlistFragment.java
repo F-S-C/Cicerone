@@ -56,7 +56,6 @@ public class WishlistFragment extends Fragment {
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         requireData(view, parameters, recyclerView);
 
         clearWishlist.setOnClickListener(v -> {
