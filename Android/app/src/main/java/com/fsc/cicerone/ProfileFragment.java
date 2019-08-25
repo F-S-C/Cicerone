@@ -536,7 +536,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void deleteAccount() {
+    public void deleteAccount() {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
             AccountManager.deleteCurrentAccount();
             preferences.edit().remove("session").apply();
