@@ -15,8 +15,6 @@ import com.google.android.material.tabs.TabLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
-
 public class ItineraryReviewFragment extends AppCompatActivity {
 
     TabLayout tabLayout;
@@ -56,6 +54,7 @@ public class ItineraryReviewFragment extends AppCompatActivity {
             try {
                 Itinerary itinerary = new Itinerary(new JSONObject(bundle.getString("itinerary")));
                 bundle.putString("reviewed_itinerary", String.valueOf(itinerary.getCode()));
+                bundle.putString("itinerary", itinerary.toJSONObject().toString());
                 title.setText(itinerary.getTitle());
                 rating.setRating(bundle.getFloat("rating"));
                 author.setText(itinerary.getUsername());
@@ -74,7 +73,7 @@ public class ItineraryReviewFragment extends AppCompatActivity {
                         fragment.setArguments(bundle);
                         break;
                     case 1:
-                        fragment = new InsertReviewFragment();
+                        fragment = new InsertItineraryReviewFragment();
                         fragment.setArguments(bundle);
                         break;
                     default:
