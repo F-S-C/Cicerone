@@ -265,6 +265,8 @@ public class InsertItineraryReviewFragment extends Fragment {
 
                 Log.e("p", object.toString());
                 if (object.getBoolean("result")) {
+                    Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.updated_review), Toast.LENGTH_SHORT).show();
+
                     Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
                     Bundle b = new Bundle();
                     b.putString("reviewed_itinerary",param.getString("reviewed_itinerary"));
