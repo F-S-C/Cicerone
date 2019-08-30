@@ -18,7 +18,7 @@ class InsertReportDetails extends InsertConnector
 $connector = new InsertReportDetails();
 $connector->add_value(array($_POST['report_code'],
     $_POST['object'],
-    $_POST['report_body'],
+    trim($_POST['report_body']),
     $_POST['state']
 ));
 print $connector->get_content();
