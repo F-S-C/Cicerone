@@ -36,7 +36,7 @@ public class WishlistFragment extends Fragment {
     private TextView numberItineraries;
     private Button clearWishlist;
 
-    private static final String ERROR_TAG = "ERROR IN " + AccountDetails.class.getName();
+    private static final String ERROR_TAG = "ERROR IN " + WishlistFragment.class.getName();
 
 
     @Nullable
