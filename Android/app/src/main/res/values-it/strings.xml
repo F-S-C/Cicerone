@@ -159,4 +159,5 @@
     <string name="major_date_required">È necessario essere maggiorenni per iscriversi.</string>
     <string name="date_invalid">La data inserita non è valida.</string>
     <string name="report_canceled">Report annullato.</string>
+    <string name="close_report">Chiudi</string>
 </resources>
