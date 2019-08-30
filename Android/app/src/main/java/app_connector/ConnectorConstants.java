@@ -173,6 +173,10 @@ public final class ConnectorConstants {
      */
     public static final String INSERT_DOCUMENT = SERVER_URL + "/InsertDocument.php";
 
+    /**
+     * URL of the server-side connector for the report details table.
+     */
+    public static final String UPDATE_REPORT_DETAILS = SERVER_URL + "/UpdateReportDetails.php";
 }
 
 

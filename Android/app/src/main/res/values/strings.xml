@@ -182,4 +182,5 @@
     <string name="connection_error">No internet connection.</string>
     <string name="major_date_required">You must be an adult to register.</string>
     <string name="date_invalid">The date entered is not valid.</string>
+    <string name="report_canceled">Report canceled.</string>
 </resources>

@@ -119,6 +119,21 @@
                 android:text="@string/lorem_ipsum"
                 android:textColor="@android:color/background_dark" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_report_btn"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_red_dark" />
+
         </LinearLayout>
     </LinearLayout>
 

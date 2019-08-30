@@ -158,4 +158,5 @@
     <string name="connection_error">Connessione a internet assente.</string>
     <string name="major_date_required">È necessario essere maggiorenni per iscriversi.</string>
     <string name="date_invalid">La data inserita non è valida.</string>
+    <string name="report_canceled">Report annullato.</string>
 </resources>
