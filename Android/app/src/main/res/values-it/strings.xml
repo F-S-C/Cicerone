@@ -127,7 +127,7 @@
     <string name="confirm_delete_wishlist">Sei sicuro di voler svuotare la tua wishlist?</string>
     <string name="delete_your_account">Rimuovi il tuo account</string>
     <string name="sure_to_delete_account">Sei sicuro/a di voler cancellare permanente il tuo account? Perderai tutti i dati che vi sono collegati e non ci sarà alcun modo di recuperarli.</string>
-    <string name="registration_in_progress">Registrazione in corso...</string>
+    <string name="registration_in_progress">Registrazione in corso…</string>
     <string name="hi">Ciao!</string>
     <string name="welcome_text">Bastano pochi passaggi e sarai pronto a partire!</string>
     <string name="empty_email_error">Inserisci la tua e-mail</string>
@@ -137,7 +137,7 @@
     <string name="fiscal_code">Codice Fiscale</string>
     <string name="cellphone_ins">Telefono</string>
     <string name="next">Avanti</string>
-    <string name="almost_there">Ci siamo quasi...</string>
+    <string name="almost_there">Ci siamo quasi…</string>
     <string name="expiry_date">Data di Scadenza</string>
     <string name="great">Ottimo!</string>
     <string name="last_step_text">Ultimo passaggio, ci servono un documento d\'identità e le lingue che conosci</string>
@@ -158,6 +158,11 @@
     <string name="connection_error">Connessione a internet assente.</string>
     <string name="major_date_required">È necessario essere maggiorenni per iscriversi.</string>
     <string name="date_invalid">La data inserita non è valida.</string>
+    <string name="insert_details">Inserisci i dettagli</string>
+    <string name="number_of_adults">Numero di adulti</string>
+    <string name="number_of_children">Numero di bambini</string>
+    <string name="requested_date">Data richiesta</string>
+    <string name="reservation_dialog_message">Inserire di seguito tutti i dettagli necessari a richiedere una prenotazione. Tutti i campi sono obbligatori.</string>
     <string name="take_charge">Prendi in carico</string>
     <string name="close_report">Chiudi</string>
     <string name="report_taking_charge">Segnalazione presa in carico.</string>

@@ -427,7 +427,7 @@
                 android:background="@drawable/primary_button_style"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="reservation"
+                android:onClick="askForReservation"
                 android:text="@string/request_reservation"
                 android:textColor="@color/colorWhite" />
 

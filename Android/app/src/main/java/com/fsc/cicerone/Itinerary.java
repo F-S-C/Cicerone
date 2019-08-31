@@ -265,18 +265,18 @@ public class Itinerary {
     }
 
     /**
-     * Get the itinerary's reservation date.
+     * Get the itinerary's askForReservation date.
      *
-     * @return The itinerary's reservation date.
+     * @return The itinerary's askForReservation date.
      */
     public Date getReservationDate() {
         return reservationDate;
     }
 
     /**
-     * Set the itinerary's reservation Date.
+     * Set the itinerary's askForReservation Date.
      *
-     * @param reservationDate The new itinerary's reservation date.
+     * @param reservationDate The new itinerary's askForReservation date.
      */
     public void setReservationDate(Date reservationDate) {
         this.reservationDate = reservationDate;

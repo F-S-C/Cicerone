@@ -57,11 +57,6 @@ abstract class InsertConnector extends BooleanConnector
         $types = str_repeat($this::COLUMNS_TYPE, sizeof($this->values_to_add));
 
         try {
-            foreach ($data as $value) {
-                if (!isset($value)) {
-                    throw new InvalidArgumentException("Some required fields are missing!");
-                }
-            }
             if ($statement = $this->connection->prepare($query)) {
                 $statement->bind_param($types, ...$data);
                 if ($statement->execute()) {
