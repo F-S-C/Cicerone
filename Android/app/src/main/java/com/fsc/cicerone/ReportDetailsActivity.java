@@ -1,5 +1,6 @@
 package com.fsc.cicerone;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,12 +49,17 @@ public class ReportDetailsActivity extends AppCompatActivity {
             getReportFromServer(parameters);
             cancButton.setEnabled(false);
             cancButton.setVisibility(View.GONE);
-            cancButton.setOnClickListener(view ->{
-                deleteReport(parameters);
-            });
+            cancButton.setOnClickListener(view -> deleteReport(parameters));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
     }
 
     private void getReportFromServer(JSONObject params){
@@ -105,7 +111,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
+            public void onEndConnection(JSONArray jsonArray){
                 Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
                 params.remove("state");
                 getReportFromServer(params);
@@ -113,7 +119,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
         });
         try {
             connector.setObjectToSend(params);
-            params.put("state", 3); //TODO SPECIFICARE IL "VALUE" TRAMITE LA FUNZIONE INSERITA NELL'IF-40
+            params.put("state", ReportStatus.getInt(ReportStatus.CLOSED));
             connector.execute();
         }catch(JSONException e){
             Log.e(ERROR_TAG,e.toString());

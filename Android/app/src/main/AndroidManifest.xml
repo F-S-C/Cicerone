@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AdminUserProfile"></activity>
-        <activity android:name=".UsersList" />
+        <activity android:name=".UsersListFragment" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".ItineraryReviewFragment" />
         <activity android:name=".AdminItineraryDetails" />

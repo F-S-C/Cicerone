@@ -32,7 +32,7 @@ public class AdminMainActivity extends AppCompatActivity {
     /**
      * The registered users list fragment (third tab).
      */
-    private final Fragment usersListFragment = new UsersList();
+    private final Fragment usersListFragment = new UsersListFragment();
 
     /**
      * The fragment manager used to load, unload, show and hide the fragments.
