@@ -13,7 +13,7 @@ require_once("JsonConnector.php");
  */
 class RequestReportJoinReportDetails extends JsonConnector
 {
-    /** @var string|null The report's code. */
+    /** @var int|null The report's code. */
     private $report_code;
     /** @var string|null The report's author's username. */
     private $username;
@@ -22,7 +22,7 @@ class RequestReportJoinReportDetails extends JsonConnector
 
     /**
      * RequestReportJoinReportDetails constructor.
-     * @param string|null $report_code The report's code.
+     * @param int|null $report_code The report's code.
      * @param string|null $reported_user The reported user's username.
      * @param string|null $username The report's author's username.
      */
@@ -53,7 +53,7 @@ class RequestReportJoinReportDetails extends JsonConnector
         if (isset($this->report_code)) {
             array_push($conditions, "report.report_code = ?");
             array_push($data, $this->report_code);
-            $types .= "s";
+            $types .= "i";
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 

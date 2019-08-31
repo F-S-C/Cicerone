@@ -182,6 +182,9 @@
     <string name="connection_error">No internet connection.</string>
     <string name="major_date_required">You must be an adult to register.</string>
     <string name="date_invalid">The date entered is not valid.</string>
+    <string name="take_charge">Take charge</string>
+    <string name="report_taking_charge">Reporting taking charge.</string>
+    <string name="report_closed">Reporting closed.</string>
     <string name="user_type_admin" translatable="false">Admin</string>
     <string name="close_report">Close</string>
     <string name="report_canceled">Report canceled.</string>

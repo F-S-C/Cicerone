@@ -28,4 +28,23 @@ public enum ReportStatus {
                 return null;
         }
     }
+
+    /**
+     * @param state The report status.
+     * @return  The integer that corresponding to the enum type.
+     */
+    public static Integer getInt (ReportStatus state){
+        switch (state){
+            case OPEN:
+                return 0;
+            case PENDING:
+                return 1;
+            case CLOSED:
+                return 2;
+            case CANCELED:
+                return 3;
+            default:
+                    return null;
+        }
+    }
 }
