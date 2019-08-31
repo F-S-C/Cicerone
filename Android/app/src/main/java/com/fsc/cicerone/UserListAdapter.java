@@ -1,6 +1,5 @@
 package com.fsc.cicerone;
 
-import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -17,10 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -35,10 +30,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     private final Context context;
     private JSONArray mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
-
-
-
+    private ItemClickListener mClickListener = null;
 
     /**
      * Constructor.

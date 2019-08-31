@@ -24,13 +24,11 @@ import app_connector.GetDataConnector;
 public class UsersListFragment extends Fragment {
 
     private UserListAdapter adapter;
-    private static final String ERROR_TAG = "ERROR IN " + UsersListFragment.class.getName();
-    private Context context;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        context = Objects.requireNonNull(getActivity());
+        Context context = Objects.requireNonNull(getActivity());
         View view = inflater.inflate(R.layout.activity_users_list, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.user_list);
