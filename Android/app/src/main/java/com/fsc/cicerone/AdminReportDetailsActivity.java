@@ -154,7 +154,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
                 JSONObject object = jsonArray.getJSONObject(0);
                 Log.e("p", object.toString());
                 if (object.getBoolean("result")) {
-                    Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();
                     getReportFromServer(params);
                 }
             }
