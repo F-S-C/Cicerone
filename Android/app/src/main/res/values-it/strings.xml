@@ -82,7 +82,7 @@
     <string name="canceled">Cancellata</string>
     <string name="description">"Descrizione: "</string>
     <string name="are_you_sure">Sicuro?</string>
-    <string name="sure_to_exit">Sei sicuro di voler uscire dall\'applicazione?</string>
+    <string name="sure_to_exit">Sei sicuro/a di voler uscire dall\'applicazione?</string>
     <string name="confirm_delete">Sei sicuro di voler rimuovere questo itinerario?</string>
     <string name="delete_itinerary">Rimuovi itinerario</string>
     <string name="edit_itinerary">Aggiorna itinerario</string>
@@ -168,4 +168,6 @@
     <string name="report_taking_charge">Segnalazione presa in carico.</string>
     <string name="report_closed">Segnalazione chiusa.</string>
     <string name="report_canceled">Report annullato.</string>
+    <string name="remove_reservation">Rimuovi la prenotazione</string>
+    <string name="sure_to_remove_reservation">Sei sicuro/a di voler cancellare la tua prenotazione?</string>
 </resources>

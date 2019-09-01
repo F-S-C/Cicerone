@@ -193,4 +193,6 @@
     <string name="user_type_admin" translatable="false">Admin</string>
     <string name="close_report">Close</string>
     <string name="report_canceled">Report canceled.</string>
+    <string name="remove_reservation">Remove reservation</string>
+    <string name="sure_to_remove_reservation">Are you sure you want to remove your reservation?</string>
 </resources>

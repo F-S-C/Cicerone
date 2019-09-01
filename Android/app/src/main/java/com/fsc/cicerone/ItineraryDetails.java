@@ -273,7 +273,8 @@ public class ItineraryDetails extends AppCompatActivity {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 if (jsonArray.length() > 0) {
-                    requestReservation.setVisibility(View.GONE);
+                    requestReservation.setText(getString(R.string.remove_reservation));
+                    requestReservation.setOnClickListener(v -> removeReservation(v));
                 }
             }
         });
@@ -331,6 +332,15 @@ public class ItineraryDetails extends AppCompatActivity {
                     // Do nothing
                 });
         builder.show();
+    }
+
+    public void removeReservation(View v) {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.are_you_sure))
+                .setMessage(getString(R.string.sure_to_remove_reservation))
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> ReservationManager.removeReservation(itinerary))
+                .setNegativeButton(getString(R.string.no), null)
+                .show();
     }
 
     public void goToAuthor(View view) {

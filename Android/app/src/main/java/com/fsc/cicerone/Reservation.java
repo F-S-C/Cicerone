@@ -73,8 +73,12 @@ public class Reservation {
             result.put("number_of_children", this.numberOfChildren);
             result.put("number_of_adults", this.numberOfAdults);
             result.put("total", this.total);
-            result.put("requested_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.requestedDate));
-            result.put("forwading_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.forwardingDate));
+            if (this.requestedDate != null) {
+                result.put("requested_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.requestedDate));
+            }
+            if (this.forwardingDate != null) {
+                result.put("forwading_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.forwardingDate));
+            }
             if (this.confirmationDate != null) {
                 result.put("confirm_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.confirmationDate));
             }
