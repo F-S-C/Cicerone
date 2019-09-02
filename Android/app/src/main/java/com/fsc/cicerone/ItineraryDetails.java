@@ -351,5 +351,7 @@ public class ItineraryDetails extends AppCompatActivity {
         view.getContext().startActivity(i);
     }
 
+
+
 }
 

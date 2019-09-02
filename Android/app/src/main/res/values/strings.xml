@@ -195,4 +195,11 @@
     <string name="report_canceled">Report canceled.</string>
     <string name="remove_reservation">Remove reservation</string>
     <string name="sure_to_remove_reservation">Are you sure you want to remove your reservation?</string>
+    <string name="new_report">New report</string>
+    <string name="user_to_report">User to report</string>
+    <string name="object_report">Object of the report</string>
+    <string name="report_body">Report body</string>
+    <string name="report_sent">Report sent.</string>
+    <string name="insert_report">Insert report</string>
+    <string name="report_dialog_message">Please insert all the requested informations to make a report. All fields are required.</string>
 </resources>

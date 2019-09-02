@@ -3,17 +3,20 @@ package com.fsc.cicerone;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +34,9 @@ import app_connector.SendInPostConnector;
 public class ReportFragment extends Fragment {
 
     Adapter adapter;
+    Fragment fragment = null;
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
     private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
 
@@ -46,6 +52,9 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_report_fragment, container, false);
+
+        Button insertReport = view.findViewById(R.id.newReport);
+
 
         SharedPreferences preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
 
@@ -64,8 +73,19 @@ public class ReportFragment extends Fragment {
             Log.e(ERROR_TAG, e.toString());
         }
 
+        insertReport.setOnClickListener(v -> {
+            fragment = new InsertReportFragment();
+            fragmentManager = getFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame, fragment);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
+                    });
+
         return view;
     }
+
+
 
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
@@ -85,5 +105,9 @@ public class ReportFragment extends Fragment {
         connector.setObjectToSend(parameters);
         connector.execute();
     }
+
+
+
+
 
 }

@@ -4,6 +4,7 @@ package app_connector;
  * Connector Constants for Cicerone's connector.
  */
 public final class ConnectorConstants {
+
     private ConnectorConstants() {
     }
 
@@ -187,6 +188,18 @@ public final class ConnectorConstants {
      * URL of the server-side connector to remove a reservation.
      */
     public static final String DELETE_RESERVATION = SERVER_URL + "/DeleteReservation.php";
+
+    /**
+     * URL of the server-side connector for the report details table.
+     */
+    public static final String INSERT_REPORT = SERVER_URL + "/InsertReport.php";
+
+    /**
+     * URL of the server-side connector for the report details table.
+     */
+    public static final String INSERT_REPORT_DETAILS = SERVER_URL + "/InsertReportDetails.php";
+
+
 }
 
 
