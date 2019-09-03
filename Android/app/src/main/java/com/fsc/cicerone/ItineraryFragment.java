@@ -1,9 +1,11 @@
 package com.fsc.cicerone;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ import app_connector.SendInPostConnector;
 public class ItineraryFragment extends Fragment {
 
     Adapter adapter;
+    Button newItinerary;
 
     private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
 
@@ -42,6 +45,8 @@ public class ItineraryFragment extends Fragment {
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
+        newItinerary = view.findViewById(R.id.newItinerary);
+
 
         final JSONObject parameters = currentLoggedUser.getCredentials();
         parameters.remove("password");
@@ -50,6 +55,11 @@ public class ItineraryFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         requireData(view, parameters, recyclerView);
+
+        newItinerary.setOnClickListener(v -> {
+            Intent i = new Intent().setClass(getActivity(), ItineraryCreation.class);
+            startActivity(i);
+        });
 
         return view;
     }
