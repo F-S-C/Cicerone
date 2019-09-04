@@ -2,8 +2,6 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("BooleanConnector.php");
 
 /**
@@ -32,18 +30,16 @@ class CheckIfUserCanReviewUser extends BooleanConnector
      * @see DatabaseConnector::get_content()
      */
     public function get_content(): string
-    {
-        $to_return = array();
-        
+    {        
         $query = "SELECT res.username AS Glob1, ress.username AS Glob2, itinerary.username AS Cic
         FROM reservation AS res, reservation AS ress, itinerary
         WHERE res.username <> ress.username AND itinerary.itinerary_code=res.booked_itinerary AND itinerary.itinerary_code=ress.booked_itinerary AND res.requested_date=ress.requested_date AND res.requested_date<CURRENT_DATE AND
-        ((res.username=? AND ress.username=?) OR (res.username=? and itinerary.username=?) OR (res.username=? AND itinerary.username=?))"
+        ((res.username=? AND ress.username=?) OR (res.username=? and itinerary.username=?) OR (res.username=? AND itinerary.username=?))";
         
         if ($statement = $this->connection->prepare($query)) {
             if(!isset($this->username) || !isset($this->reviewed_user))
                 die(json_encode(self::get_false("Required fields missing")));
-            $statement->bind_param("ssssss",username,reviewed_user,username,reviewed_user, reviewed_user, username);
+            $statement->bind_param("ssssss",$username,$reviewed_user,$username,$reviewed_user,$reviewed_user,$username);
             if ($statement->execute()) {
                 $result = $statement->get_result();
                 if($result->num_rows == 0){

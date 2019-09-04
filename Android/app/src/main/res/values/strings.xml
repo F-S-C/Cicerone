@@ -193,8 +193,13 @@
     <string name="user_type_admin" translatable="false">Admin</string>
     <string name="close_report">Close</string>
     <string name="report_canceled">Report canceled.</string>
+    <string name="remove_user">Remove user</string>
     <string name="remove_reservation">Remove reservation</string>
     <string name="sure_to_remove_reservation">Are you sure you want to remove your reservation?</string>
+    <string name="created_itineraries">Itineraries created</string>
+    <string name="partecipation_itinerary">Participation in itineraries</string>
+    <string name="doc_not_found">Document not found.</string>
+    <string name="no_active_itineraries">At the moment, there aren\'t active itineraries.</string>
     <string name="new_report">New report</string>
     <string name="user_to_report">User to report</string>
     <string name="object_report">Object of the report</string>

@@ -87,7 +87,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             i = new Intent().setClass(v.getContext(), AdminUserProfile.class);
-            i.putExtra("username",userList[position].getUsername());
+            i.putExtra("user",userList[position].toJSONObject().toString());
             v.getContext().startActivity(i);
         });
 

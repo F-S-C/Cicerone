@@ -1,11 +1,13 @@
 package com.fsc.cicerone;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
+
+import java.util.Objects;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -26,9 +30,9 @@ import app_connector.GetDataConnector;
  */
 public class HomeFragment extends Fragment {
     private WishlistAdapter adapter;
+    private Activity context;
 
-
-    private static final String ERROR_TAG = "ERROR IN " + HomeFragment.class.getName();
+    //private static final String ERROR_TAG = "ERROR IN " + HomeFragment.class.getName();
 
 
     public HomeFragment() {
@@ -39,6 +43,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        context = Objects.requireNonNull(getActivity());
         RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
@@ -59,9 +64,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 progressBar.setVisibility(View.GONE);
-                adapter = new WishlistAdapter(getActivity(), jsonArray);
+                if (jsonArray.length() > 0) {
+                    adapter = new WishlistAdapter(getActivity(), jsonArray);
+                    recyclerView.setAdapter(adapter);
+                }
+                else{
+                    Toast.makeText(context , HomeFragment.this.getString(R.string.no_active_itineraries), Toast.LENGTH_SHORT).show();
 
-                recyclerView.setAdapter(adapter);
+                }
             }
         });
         connector.execute();

@@ -29,7 +29,7 @@ public class ItineraryFragment extends Fragment {
     Adapter adapter;
     Button newItinerary;
 
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
+    private static final String ERROR_TAG = "ERROR IN " + ItineraryFragment.class.getName();
 
     /**
      * Empty constructor
