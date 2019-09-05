@@ -26,9 +26,9 @@ class RequestReportJoinReportDetails extends JsonConnector
      * @param string|null $reported_user The reported user's username.
      * @param string|null $username The report's author's username.
      */
-    public function __construct(string $report_code = null, string $reported_user = null, string $username = null)
+    public function __construct(int $report_code = null, string $reported_user = null, string $username = null)
     {
-        $this->report_code = isset($report_code) && $report_code != "" ? $report_code : null;
+        $this->report_code = isset($report_code) ? $report_code : null;
         $this->username = isset($username) && $username != "" ? strtolower($username) : null;
         $this->reported_user = isset($reported_user) && $reported_user != "" ? strtolower($reported_user) : null;
         parent::__construct();
@@ -37,7 +37,6 @@ class RequestReportJoinReportDetails extends JsonConnector
     protected function fetch_all_rows(): array
     {
         $query = "SELECT * FROM report INNER JOIN report_details ON report.report_code = report_details.report_code";
-
         $conditions = array();
         $data = array();
         $types = "";
@@ -60,7 +59,7 @@ class RequestReportJoinReportDetails extends JsonConnector
 
 
         if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->reported_user) || isset($this->username)) {
+            if (isset($this->report_code) || isset($this->reported_user) || isset($this->username)) {
                 $statement->bind_param($types, ...$data);
             }
             if ($statement->execute()) {

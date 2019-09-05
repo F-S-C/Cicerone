@@ -82,7 +82,7 @@
     <string name="canceled">Cancellata</string>
     <string name="description">"Descrizione: "</string>
     <string name="are_you_sure">Sicuro?</string>
-    <string name="sure_to_exit">Sei sicuro di voler uscire dall\'applicazione?</string>
+    <string name="sure_to_exit">Sei sicuro/a di voler uscire dall\'applicazione?</string>
     <string name="confirm_delete">Sei sicuro di voler rimuovere questo itinerario?</string>
     <string name="delete_itinerary">Rimuovi itinerario</string>
     <string name="edit_itinerary">Aggiorna itinerario</string>
@@ -127,7 +127,7 @@
     <string name="confirm_delete_wishlist">Sei sicuro di voler svuotare la tua wishlist?</string>
     <string name="delete_your_account">Rimuovi il tuo account</string>
     <string name="sure_to_delete_account">Sei sicuro/a di voler cancellare permanente il tuo account? Perderai tutti i dati che vi sono collegati e non ci sarà alcun modo di recuperarli.</string>
-    <string name="registration_in_progress">Registrazione in corso...</string>
+    <string name="registration_in_progress">Registrazione in corso…</string>
     <string name="hi">Ciao!</string>
     <string name="welcome_text">Bastano pochi passaggi e sarai pronto a partire!</string>
     <string name="empty_email_error">Inserisci la tua e-mail</string>
@@ -137,7 +137,7 @@
     <string name="fiscal_code">Codice Fiscale</string>
     <string name="cellphone_ins">Telefono</string>
     <string name="next">Avanti</string>
-    <string name="almost_there">Ci siamo quasi...</string>
+    <string name="almost_there">Ci siamo quasi…</string>
     <string name="expiry_date">Data di Scadenza</string>
     <string name="great">Ottimo!</string>
     <string name="last_step_text">Ultimo passaggio, ci servono un documento d\'identità e le lingue che conosci</string>
@@ -158,4 +158,30 @@
     <string name="connection_error">Connessione a internet assente.</string>
     <string name="major_date_required">È necessario essere maggiorenni per iscriversi.</string>
     <string name="date_invalid">La data inserita non è valida.</string>
+    <string name="insert_details">Inserisci i dettagli</string>
+    <string name="number_of_adults">Numero di adulti</string>
+    <string name="number_of_children">Numero di bambini</string>
+    <string name="requested_date">Data richiesta</string>
+    <string name="reservation_dialog_message">Inserire di seguito tutti i dettagli necessari a richiedere una prenotazione. Tutti i campi sono obbligatori.</string>
+    <string name="take_charge">Prendi in carico</string>
+    <string name="close_report">Chiudi</string>
+    <string name="report_taking_charge">Segnalazione presa in carico.</string>
+    <string name="report_closed">Segnalazione chiusa.</string>
+    <string name="report_canceled">Report annullato.</string>
+    <string name="remove_user">Rimuovi utente</string>
+    <string name="remove_reservation">Rimuovi la prenotazione</string>
+    <string name="sure_to_remove_reservation">Sei sicuro/a di voler cancellare la tua prenotazione?</string>
+    <string name="clear_all">Cancella tutto</string>
+    <string name="search">Cerca</string>
+    <string name="search_location">Cerca un luogo…</string>
+    <string name="created_itineraries">Itinerari creati</string>
+    <string name="partecipation_itinerary">Partecipazione itinerari</string>
+    <string name="doc_not_found">Nessun documento trovato.</string>
+    <string name="no_active_itineraries">Al momento, non ci sono itinerari attivi.</string>
+    <string name="new_report">Nuova segnalazione</string>
+    <string name="user_to_report">Utente da segnalare</string>
+    <string name="report_body">Messaggio della segnalazione</string>
+    <string name="report_dialog_message">Inserire tutte le informazioni richieste. Tutti i campi sono obbligatori.</string>
+    <string name="report_sent">Segnalazione inviata.</string>
+    <string name="object_report">Oggetto della segnalazione</string>
 </resources>

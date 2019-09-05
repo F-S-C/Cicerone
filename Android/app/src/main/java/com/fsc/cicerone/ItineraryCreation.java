@@ -1,6 +1,7 @@
 package com.fsc.cicerone;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -390,10 +391,11 @@ public class ItineraryCreation extends AppCompatActivity {
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 JSONObject object = jsonArray.getJSONObject(0);
-                // TODO Change page
-                Log.e("p", object.toString());
                 if (object.getBoolean("result")) {
                     Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
                 }
 
             }

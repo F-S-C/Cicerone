@@ -31,7 +31,7 @@ public class SelectedUserReviewFragment extends Fragment {
 
     Adapter adapter;
 
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
+    private static final String ERROR_TAG = "ERROR IN " + SelectedUserReviewFragment.class.getName();
 
     /**
      * Empty Constructor
@@ -49,7 +49,6 @@ public class SelectedUserReviewFragment extends Fragment {
         try {
             final JSONObject parameters = new JSONObject();
             parameters.put("reviewed_user", Objects.requireNonNull(bundle).getString("reviewed_user"));
-            Log.e("ru",Objects.requireNonNull(bundle).getString("reviewed_user"));
             // set up the RecyclerView
             RecyclerView recyclerView = view.findViewById(R.id.review_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

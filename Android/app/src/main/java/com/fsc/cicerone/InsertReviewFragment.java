@@ -26,7 +26,7 @@ import app_connector.SendInPostConnector;
 
 public class InsertReviewFragment extends Fragment {
 
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
+    //private static final String ERROR_TAG = "ERROR IN " + InsertReviewFragment.class.getName();
     private  JSONObject result;
     private Button submitReview;
     private Button updateReview;
@@ -38,6 +38,7 @@ public class InsertReviewFragment extends Fragment {
     private TextView messageDescription;
     private JSONObject param;
     private JSONObject sendParam;
+
     public InsertReviewFragment() {
         // Required empty public constructor
     }

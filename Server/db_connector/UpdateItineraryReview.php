@@ -9,7 +9,7 @@ use mysqli_sql_exception;
 require_once("UpdateConnector.php");
 
 /**
- * Update a user's review.
+ * Update a itinerary review.
  * @package db_connector
  */
 class UpdateItineraryReview extends UpdateConnector
@@ -19,23 +19,23 @@ class UpdateItineraryReview extends UpdateConnector
     protected const ID_COLUMN_TYPE = "s";
 
     /**
-     * @var int The code of the reviewed itinerary that will be updated.
+     * @var string The code of the reviewed itinerary.
      */
     private $reviewed_itinerary;
 
     /**
-     * UpdateUserReview constructor.
+     * UpdateItineraryReview constructor.
      * @param string $username The author of the review.
-     * @param int $reviewed_itinerary The code of the reviewed itinerary that will be updated.
+     * @param string $reviewed_itinerary The code of the reviewed itinerary.
      * @warning If the username or the reviewed_itinerary is not set, the connector will die with an error.
      */
-    public function __construct(string $username = null, int $reviewed_itinerary= null)
+    public function __construct(string $username = null, string $reviewed_itinerary = null)
     {
-        if (!isset($username) || !isset($reviewed_itinerary || $username == "") {
+        if (!isset($username) || !isset($reviewed_itinerary) || $reviewed_itinerary == "" || $username == "") {
             die(json_encode(self::get_false("Some required fields are missing.")));
         }
         parent::__construct(strtolower($username));
-        $this->reviewed_itinerary = $reviewed_itinerary;
+        $this->reviewed_itinerary = strtolower($reviewed_itinerary);
     }
 
     /**

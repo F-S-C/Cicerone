@@ -32,7 +32,7 @@ public class AdminMainActivity extends AppCompatActivity {
     /**
      * The registered users list fragment (third tab).
      */
-    private final Fragment usersListFragment = new HomeFragment();
+    private final Fragment usersListFragment = new UsersListFragment();
 
     /**
      * The fragment manager used to load, unload, show and hide the fragments.
@@ -63,6 +63,8 @@ public class AdminMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
+        ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setTitle(getString(R.string.active_itineraries));
         final Dialog logoutDialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar);
         Objects.requireNonNull(logoutDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
         logoutDialog.setContentView(R.layout.activity_logout);
@@ -71,7 +73,6 @@ public class AdminMainActivity extends AppCompatActivity {
         navView = findViewById(R.id.bottom_navigation_admin);
         navView.setOnNavigationItemSelectedListener(item -> {
                     boolean toReturn = false;
-                    ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
                     switch (item.getItemId()) {
                         case R.id.navigation_itineraries_active_admin:
                             changeCurrentFragment(itineraryActiveFragment);

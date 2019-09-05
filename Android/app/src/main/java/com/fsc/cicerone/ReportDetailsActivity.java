@@ -1,8 +1,12 @@
 package com.fsc.cicerone;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +28,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
     private TextView status;
     private TextView reportedUser;
     private TextView bodyText;
+    private Button cancButton;
     private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
 
     @Override
@@ -40,6 +45,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
         status = findViewById(R.id.status_text);
         reportedUser = findViewById(R.id.report_user_activity);
         bodyText = findViewById(R.id.body_report_activity);
+        cancButton = findViewById(R.id.delete_report_btn);
         JSONObject parameters = new JSONObject();
         try {
             //Get the bundle
@@ -47,9 +53,19 @@ public class ReportDetailsActivity extends AppCompatActivity {
             //Extract the data
             parameters.put("report_code", Objects.requireNonNull(bundle).getString("report_code"));
             getReportFromServer(parameters);
+            cancButton.setEnabled(false);
+            cancButton.setVisibility(View.GONE);
+            cancButton.setOnClickListener(view -> deleteReport(parameters));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
     }
 
     private void getReportFromServer(JSONObject params){
@@ -69,6 +85,8 @@ public class ReportDetailsActivity extends AppCompatActivity {
                 switch (Objects.requireNonNull(ReportStatus.getValue(result.getInt("state")))) {
                     case OPEN:
                         statusText += getString(R.string.open);
+                        cancButton.setEnabled(true);
+                        cancButton.setVisibility(View.VISIBLE);
                         break;
                     case CLOSED:
                         statusText += getString(R.string.closed);
@@ -95,5 +113,28 @@ public class ReportDetailsActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+    
+    private void deleteReport(JSONObject params){
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REPORT_DETAILS, new DatabaseConnector.CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+                // Do nothing
+            }
+
+            @Override
+            public void onEndConnection(JSONArray jsonArray){
+                Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
+                params.remove("state");
+                getReportFromServer(params);
+            }
+        });
+        try {
+            connector.setObjectToSend(params);
+            params.put("state", ReportStatus.getInt(ReportStatus.CLOSED));
+            connector.execute();
+        }catch(JSONException e){
+            Log.e(ERROR_TAG,e.toString());
+        }
     }
 }

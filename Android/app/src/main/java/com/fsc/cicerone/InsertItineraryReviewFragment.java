@@ -39,7 +39,6 @@ public class InsertItineraryReviewFragment extends Fragment {
     private JSONObject param;
     private JSONObject sendParam;
     public InsertItineraryReviewFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -59,7 +58,6 @@ public class InsertItineraryReviewFragment extends Fragment {
 
 
          param = new JSONObject();
-         sendParam = new JSONObject();
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
@@ -67,6 +65,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
             param.put("username",currentLoggedUser.getUsername());
             param.put("booked_itinerary",Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
+            param.put("itinerary",bundle.getString("itinerary"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -86,23 +85,24 @@ public class InsertItineraryReviewFragment extends Fragment {
 
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                sendParam = new JSONObject();
 
                 if(jsonArray.length()>0)
                 {
                     message.setVisibility(View.GONE);
+                    parameters.put("reviewed_itinerary", parameters.getString("booked_itinerary"));
                     checkReview(parameters);
 
                     submitReview.setOnClickListener(v -> {
                         if (allFilled()) {
                             try {
+                                sendParam.put("itinerary",param.getString("itinerary"));
                                 sendParam.put("username", param.getString("username"));
-                                sendParam.put("reviewed_user", param.getString("reviewed_user"));
+                                sendParam.put("reviewed_itinerary", param.getString("reviewed_itinerary"));
                                 sendParam.put("description", descriptionReview.getText().toString());
                                 sendParam.put("feedback", (int) feedbackReview.getRating());
+                                sendParam.put("itinerary",parameters.getString("itinerary"));
                                 Log.e("username:", sendParam.getString("username"));
-                                Log.e("reviewed_user:", sendParam.getString("reviewed_user"));
-                                Log.e("description:", sendParam.getString("description"));
-                                Log.e("feedback:", sendParam.getString("feedback"));
 
                                 submitReview(sendParam);
                             } catch (JSONException e) {
@@ -112,14 +112,26 @@ public class InsertItineraryReviewFragment extends Fragment {
                             Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
 
                     });
-                    deleteReview.setOnClickListener(v -> deleteReview(param));
+                    deleteReview.setOnClickListener(v -> {
+
+                        try {
+                            sendParam.put("username", parameters.getString("username"));
+                            sendParam.put("reviewed_itinerary",parameters.getString("reviewed_itinerary"));
+                            sendParam.put("itinerary",parameters.getString("itinerary"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        deleteReview(sendParam);
+
+                    });
                     updateReview.setOnClickListener(v -> {
                         if (allFilled()) {
                             try {
-                                sendParam.put("username", param.getString("username"));
-                                sendParam.put("reviewed_itinerary", param.getString("reviewed_itinerary"));
+                                sendParam.put("username", parameters.getString("username"));
+                                sendParam.put("reviewed_itinerary", parameters.getString("reviewed_itinerary"));
                                 sendParam.put("description", descriptionReview.getText().toString());
                                 sendParam.put("feedback", (int) feedbackReview.getRating());
+                                sendParam.put("itinerary",parameters.getString("itinerary"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -179,7 +191,7 @@ public class InsertItineraryReviewFragment extends Fragment {
         connector.execute();
     }
 
-    private void submitReview(JSONObject sendparam) {
+    private void submitReview(JSONObject sendParam) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -192,9 +204,10 @@ public class InsertItineraryReviewFragment extends Fragment {
 
                 if (object.getBoolean("result")) {
                     Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.added_review), Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getActivity(), ProfileActivity.class);
+                    Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
                     Bundle b = new Bundle();
-                    b.putString("reviewed_itinerary",sendparam.getString("reviewed_itinerary"));
+                    b.putString("reviewed_itinerary",sendParam.getString("reviewed_itinerary"));
+                    b.putString("itinerary",sendParam.getString("itinerary"));
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     i.putExtras(b);
                     startActivity(i);
@@ -202,7 +215,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
             }
         });
-        connector.setObjectToSend(sendparam);
+        connector.setObjectToSend(sendParam);
         connector.execute();
     }
 
@@ -224,9 +237,10 @@ public class InsertItineraryReviewFragment extends Fragment {
 
                 if (object.getBoolean("result")) {
                     Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.deleted_review), Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getActivity(), ProfileActivity.class);
+                    Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
                     Bundle b = new Bundle();
                     b.putString("reviewed_itinerary",param.getString("reviewed_itinerary"));
+                    b.putString("itinerary",param.getString("itinerary"));
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     i.putExtras(b);
                     startActivity(i);
@@ -251,9 +265,12 @@ public class InsertItineraryReviewFragment extends Fragment {
 
                 Log.e("p", object.toString());
                 if (object.getBoolean("result")) {
-                    Intent i = new Intent(getActivity(), ProfileActivity.class);
+                    Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.updated_review), Toast.LENGTH_SHORT).show();
+
+                    Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
                     Bundle b = new Bundle();
                     b.putString("reviewed_itinerary",param.getString("reviewed_itinerary"));
+                    b.putString("itinerary",param.getString("itinerary"));
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     i.putExtras(b);
                     startActivity(i);

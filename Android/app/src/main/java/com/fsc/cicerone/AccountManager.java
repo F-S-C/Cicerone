@@ -55,7 +55,7 @@ public abstract class AccountManager {
          *
          * @param success Whether the previous operations were executed with success or not.
          */
-        void accept(boolean success);
+        void accept(boolean success) throws JSONException;
     }
 
     /**
@@ -162,7 +162,7 @@ public abstract class AccountManager {
                 }
 
                 @Override
-                public void onEndConnection(JSONArray jsonArray) {
+                public void onEndConnection(JSONArray jsonArray) throws JSONException {
                     result.accept(jsonArray.length() > 0);
                 }
             }, obj);
@@ -189,7 +189,7 @@ public abstract class AccountManager {
                 }
 
                 @Override
-                public void onEndConnection(JSONArray jsonArray) {
+                public void onEndConnection(JSONArray jsonArray) throws JSONException {
                     result.accept(jsonArray.length() > 0);
                 }
             }, obj);

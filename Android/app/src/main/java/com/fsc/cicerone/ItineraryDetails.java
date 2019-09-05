@@ -1,5 +1,7 @@
 package com.fsc.cicerone;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -22,7 +25,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -46,9 +52,11 @@ public class ItineraryDetails extends AppCompatActivity {
     private TextView minP;
     private TextView maxP;
     private TextView repetitions;
-    private  TextView duration;
-    private  TextView fPrice;
-    private  TextView rPrice;
+    private TextView duration;
+    private TextView fPrice;
+    private TextView rPrice;
+
+    private Itinerary itinerary;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
     private static final String IT_CODE = "itinerary_code";
@@ -58,24 +66,24 @@ public class ItineraryDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_details);
-         requestReservation = findViewById(R.id.requestReservation);
-         intoWishlist = findViewById(R.id.intoWishlist);
-         removeFromWishlist = findViewById(R.id.removeFromWishlist);
-         itineraryTitle = findViewById(R.id.title);
-         image = findViewById(R.id.image);
-         description = findViewById(R.id.description);
-         bDate = findViewById(R.id.beginningDate);
-         eDate = findViewById(R.id.endingDate);
-         rDate = findViewById(R.id.reservationDate);
-         review = findViewById(R.id.itineraryReview);
-         author = findViewById(R.id.author);
-         minP = findViewById(R.id.minP);
-         maxP = findViewById(R.id.maxP);
-         location = findViewById(R.id.location);
-         repetitions = findViewById(R.id.repetitions);
-         duration = findViewById(R.id.duration);
-         fPrice = findViewById(R.id.fPrice);
-         rPrice = findViewById(R.id.rPrice);
+        requestReservation = findViewById(R.id.requestReservation);
+        intoWishlist = findViewById(R.id.intoWishlist);
+        removeFromWishlist = findViewById(R.id.removeFromWishlist);
+        itineraryTitle = findViewById(R.id.title);
+        image = findViewById(R.id.image);
+        description = findViewById(R.id.description);
+        bDate = findViewById(R.id.beginningDate);
+        eDate = findViewById(R.id.endingDate);
+        rDate = findViewById(R.id.reservationDate);
+        review = findViewById(R.id.itineraryReview);
+        author = findViewById(R.id.author);
+        minP = findViewById(R.id.minP);
+        maxP = findViewById(R.id.maxP);
+        location = findViewById(R.id.location);
+        repetitions = findViewById(R.id.repetitions);
+        duration = findViewById(R.id.duration);
+        fPrice = findViewById(R.id.fPrice);
+        rPrice = findViewById(R.id.rPrice);
         final Dialog deleteDialog = new Dialog(ItineraryDetails.this, android.R.style.Theme_Black_NoTitleBar);
         Objects.requireNonNull(deleteDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
         deleteDialog.setContentView(R.layout.activity_delete_itinerary);
@@ -86,8 +94,6 @@ public class ItineraryDetails extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-       final Itinerary itinerary;
-
 
         try {
             String s = Objects.requireNonNull(bundle).getString("itinerary");
@@ -95,7 +101,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
             object.put("itinerary_in_wishlist", itinerary.getCode());
             object.put("username", currentLoggedUser.getUsername());
-            objectReview.put("reviewed_itinerary",itinerary.getCode());
+            objectReview.put("reviewed_itinerary", itinerary.getCode());
             checkWishlist(object);
             getDataFromServer(itinerary);
             getItineraryReviews(objectReview);
@@ -104,12 +110,11 @@ public class ItineraryDetails extends AppCompatActivity {
             object2.put("booked_itinerary", itinerary.getCode());
 
             review.setOnTouchListener((v, event) -> {
-                if(event.getAction() == MotionEvent.ACTION_UP)
-                {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewFragment.class);
-                    i.putExtra("itinerary",itinerary.toJSONObject().toString());
-                    i.putExtra("rating",review.getRating());
-                    i.putExtra("reviewed_itinerary",itinerary.getCode());
+                    i.putExtra("itinerary", itinerary.toJSONObject().toString());
+                    i.putExtra("rating", review.getRating());
+                    i.putExtra("reviewed_itinerary", itinerary.getCode());
                     startActivity(i);
                 }
                 return true;
@@ -135,15 +140,12 @@ public class ItineraryDetails extends AppCompatActivity {
         });
 
 
-
         intoWishlist.setOnClickListener(v -> addToWishlist(object));
-
 
 
     }
 
-    public void addToWishlist ( JSONObject params)
-    {
+    public void addToWishlist(JSONObject params) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_WISHLIST, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -164,8 +166,7 @@ public class ItineraryDetails extends AppCompatActivity {
         connector.execute();
     }
 
-    public void deleteFromWishlist (JSONObject params)
-    {
+    public void deleteFromWishlist(JSONObject params) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_WISHLIST, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -199,15 +200,10 @@ public class ItineraryDetails extends AppCompatActivity {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
 
-                if ( jsonArray.length() > 0)
-                {
+                if (jsonArray.length() > 0) {
                     intoWishlist.setVisibility(View.GONE);
                     removeFromWishlist.setVisibility(View.VISIBLE);
-                }
-
-
-                else
-                {
+                } else {
                     intoWishlist.setVisibility(View.VISIBLE);
                     removeFromWishlist.setVisibility(View.GONE);
                 }
@@ -219,8 +215,7 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
 
-    public void getDataFromServer(Itinerary itinerary)
-    {
+    public void getDataFromServer(Itinerary itinerary) {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
         itineraryTitle.setText(itinerary.getTitle());
@@ -228,7 +223,7 @@ public class ItineraryDetails extends AppCompatActivity {
         Picasso.get().load(itinerary.getImageUrl()).into(image);
         author.setText(itinerary.getUsername());
         String dur = itinerary.getDuration();
-        duration.setText(dur.substring(0,5));
+        duration.setText(dur.substring(0, 5));
         location.setText(itinerary.getLocation());
         repetitions.setText(String.valueOf(itinerary.getRepetitions()));
         fPrice.setText(Float.toString(itinerary.getFullPrice()));
@@ -240,8 +235,7 @@ public class ItineraryDetails extends AppCompatActivity {
         rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
-    public void getItineraryReviews(JSONObject itineraryCode)
-    {
+    public void getItineraryReviews(JSONObject itineraryCode) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -250,17 +244,17 @@ public class ItineraryDetails extends AppCompatActivity {
 
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                if(jsonArray.length() > 0) {
-                    int n=0;
+                if (jsonArray.length() > 0) {
+                    int n = 0;
                     float sum = 0;
                     do {
-                        sum+= jsonArray.getJSONObject(n).getInt("feedback");
-                        n = n+1;
+                        sum += jsonArray.getJSONObject(n).getInt("feedback");
+                        n = n + 1;
                     }
-                    while(n < jsonArray.length());
-                    float total = sum/n;
+                    while (n < jsonArray.length());
+                    float total = sum / n;
                     review.setRating(total);
-                }else{
+                } else {
                     review.setRating(0);
                 }
             }
@@ -269,8 +263,7 @@ public class ItineraryDetails extends AppCompatActivity {
         connector.execute();
     }
 
-    public void isReservated(JSONObject reservation)
-    {
+    public void isReservated(JSONObject reservation) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -279,8 +272,9 @@ public class ItineraryDetails extends AppCompatActivity {
 
             @Override
             public void onEndConnection(JSONArray jsonArray) {
-                if(jsonArray.length() > 0) {
-                    requestReservation.setVisibility(View.GONE);
+                if (jsonArray.length() > 0) {
+                    requestReservation.setText(getString(R.string.remove_reservation));
+                    requestReservation.setOnClickListener(v -> removeReservation(v));
                 }
             }
         });
@@ -289,19 +283,75 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
 
+    public void askForReservation(View view) {
+        View v = getLayoutInflater().inflate(R.layout.dialog_new_reservation, null);
+        final Calendar myCalendar = Calendar.getInstance();
 
-    public void reservation(View view)
-    {
-        Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.loading), Toast.LENGTH_SHORT).show();
+        // Get a reference to all the fields in the dialog
+        EditText requestedDateInput = v.findViewById(R.id.requested_date_input);
+        EditText numberOfAdultsInput = v.findViewById(R.id.number_of_adults_input);
+        EditText numberOfChildrenInput = v.findViewById(R.id.number_of_children_input);
+
+        // Set up the date picker on requestedDateInput click.
+        DatePickerDialog.OnDateSetListener date = (view1, year, monthOfYear, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            String myFormat = "yyyy-MM-dd";
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+            requestedDateInput.setText(sdf.format(myCalendar.getTime()));
+        };
+
+        requestedDateInput.setOnClickListener(v1 -> {
+            DatePickerDialog dialog = new DatePickerDialog(ItineraryDetails.this, date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH));
+            dialog.getDatePicker().setMinDate(itinerary.getBeginningDate().getTime());
+            dialog.getDatePicker().setMaxDate(itinerary.getEndingDate().getTime());
+            dialog.show();
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.insert_details));
+        builder.setMessage(getString(R.string.reservation_dialog_message));
+        builder.setView(v)
+                .setPositiveButton(R.string.yes, (dialog, id) -> {
+                    try {
+                        ReservationManager.addReservation(itinerary,
+                                Integer.parseInt(numberOfAdultsInput.getText().toString()),
+                                Integer.parseInt(numberOfChildrenInput.getText().toString()),
+                                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(requestedDateInput.getText().toString()),
+                                new Date());
+                    } catch (ParseException e) {
+                        Log.e(ERROR_TAG, e.getMessage());
+                    }
+                    Toast.makeText(ItineraryDetails.this, "Reservation added", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton(R.string.no, (dialog, id) -> {
+                    // Do nothing
+                });
+        builder.show();
+    }
+
+    public void removeReservation(View v) {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.are_you_sure))
+                .setMessage(getString(R.string.sure_to_remove_reservation))
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> ReservationManager.removeReservation(itinerary))
+                .setNegativeButton(getString(R.string.no), null)
+                .show();
     }
 
     public void goToAuthor(View view) {
-        Intent i = new Intent().setClass(view.getContext(),ProfileActivity.class);
+        Intent i = new Intent().setClass(view.getContext(), ProfileActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("reviewed_user",author.getText().toString());
+        bundle.putString("reviewed_user", author.getText().toString());
         i.putExtras(bundle);
         view.getContext().startActivity(i);
     }
+
+
 
 }
 

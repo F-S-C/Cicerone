@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The discover fragment (second tab).
      */
-    private final Fragment discoverFragment = new HomeFragment();
+    private final Fragment discoverFragment = new DiscoverFragment();
 
     /**
      * The wishlist fragment (third tab).
