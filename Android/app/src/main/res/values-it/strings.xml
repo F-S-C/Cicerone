@@ -183,5 +183,6 @@
     <string name="report_body">Messaggio della segnalazione</string>
     <string name="report_dialog_message">Inserire tutte le informazioni richieste. Tutti i campi sono obbligatori.</string>
     <string name="report_sent">Segnalazione inviata.</string>
+    <string name="insert_report">Inserisci segnalazione</string>
     <string name="object_report">Oggetto della segnalazione</string>
 </resources>

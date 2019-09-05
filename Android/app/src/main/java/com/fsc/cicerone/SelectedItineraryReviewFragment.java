@@ -48,7 +48,6 @@ public class SelectedItineraryReviewFragment extends Fragment {
         Bundle bundle = getArguments();
         try {
             final JSONObject parameters = new JSONObject();
-            //Log.e("rev_code",Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
             parameters.put("reviewed_itinerary", Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
             // set up the RecyclerView
             RecyclerView recyclerView = view.findViewById(R.id.review_list);
