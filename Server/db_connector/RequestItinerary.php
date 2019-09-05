@@ -34,10 +34,10 @@ class RequestItinerary extends JsonConnector
     public function __construct(string $owner = null, string $location = null, string $beginning_date = null, string $ending_date = null, string $code = null)
     {
         $this->owner = isset($owner) && $owner != "" ? strtolower($owner) : null;
-        $this->location = isset($location) && $location == "" ? $location : null;
-        $this->beginning_date = isset($beginning_date) && $beginning_date == "" ? $beginning_date : null;
-        $this->ending_date = isset($ending_date) && $ending_date == "" ? $ending_date : null;
-        $this->code = isset($code) && $code == "" ? $code : null;
+        $this->location = isset($location) && $location != "" ? $location : null;
+        $this->beginning_date = isset($beginning_date) && $beginning_date != "" ? $beginning_date : null;
+        $this->ending_date = isset($ending_date) && $ending_date != "" ? $ending_date : null;
+        $this->code = isset($code) && $code != "" ? $code : null;
         parent::__construct();
     }
 
@@ -57,8 +57,9 @@ class RequestItinerary extends JsonConnector
             $types .= "s";
         }
         if (isset($this->location)) {
-            array_push($conditions, "location = ?");
-            array_push($data, $this->location);
+            array_push($conditions, "location LIKE ?");
+            $location = "%" . $this->location . "%";
+            array_push($data, $location);
             $types .= "s";
         }
         if (isset($this->code)) {
@@ -72,9 +73,9 @@ class RequestItinerary extends JsonConnector
             if (substr_count($date_condition, "?") == 6) {
                 array_push($data, $this->beginning_date, $this->ending_date, $this->beginning_date, $this->ending_date, $this->beginning_date, $this->ending_date);
             } else if (isset($this->beginning_date)) {
-                array_push($data, $this->beginning_date);
+                array_push($data, $this->beginning_date, $this->beginning_date);
             } else {
-                array_push($data, $this->ending_date);
+                array_push($data, $this->ending_date, $this->ending_date);
             }
             $types .= str_repeat("s", substr_count($date_condition, "?"));
         }
@@ -105,10 +106,8 @@ class RequestItinerary extends JsonConnector
         $date_condition = "";
         if (isset($this->beginning_date) && isset($this->ending_date)) {
             $date_condition = "(beginning_date <= ? AND ending_date >= ?) OR (beginning_date >= ? AND ending_date <= ?) OR (beginning_date <= ? AND ending_date >= ?)";
-        } else if (isset($this->beginning_date)) {
-            $date_condition = "beginning_date <= ?";
-        } else if (isset($this->ending_date)) {
-            $date_condition = "ending_date >= ?";
+        } else if (isset($this->beginning_date) || isset($this->ending_date)) {
+            $date_condition = "beginning_date <= ? AND ending_date >= ?";
         }
         return $date_condition;
     }

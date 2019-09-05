@@ -35,7 +35,7 @@ public class SendInPostConnector extends DatabaseConnector {
      */
     public SendInPostConnector() {
         super();
-        objectToSend = null;
+        objectToSend = new JSONObject();
     }
 
     /**
@@ -45,7 +45,7 @@ public class SendInPostConnector extends DatabaseConnector {
      */
     public SendInPostConnector(String url) {
         super(url);
-        objectToSend = null;
+        objectToSend = new JSONObject();
     }
 
     /**
@@ -57,7 +57,7 @@ public class SendInPostConnector extends DatabaseConnector {
      */
     public SendInPostConnector(String url, CallbackInterface callback) {
         super(url, callback);
-        objectToSend = null;
+        objectToSend = new JSONObject();
     }
 
     /**

@@ -171,6 +171,9 @@
     <string name="remove_user">Rimuovi utente</string>
     <string name="remove_reservation">Rimuovi la prenotazione</string>
     <string name="sure_to_remove_reservation">Sei sicuro/a di voler cancellare la tua prenotazione?</string>
+    <string name="clear_all">Cancella tutto</string>
+    <string name="search">Cerca</string>
+    <string name="search_location">Cerca un luogo…</string>
     <string name="created_itineraries">Itinerari creati</string>
     <string name="partecipation_itinerary">Partecipazione itinerari</string>
     <string name="doc_not_found">Nessun documento trovato.</string>
