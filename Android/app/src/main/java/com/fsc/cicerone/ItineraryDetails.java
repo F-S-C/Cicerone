@@ -55,6 +55,7 @@ public class ItineraryDetails extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
+    private JSONObject object2;
 
     private Itinerary itinerary;
 
@@ -89,7 +90,7 @@ public class ItineraryDetails extends AppCompatActivity {
         deleteDialog.setContentView(R.layout.activity_delete_itinerary);
         deleteDialog.setCancelable(true);
         JSONObject object = new JSONObject();
-        JSONObject object2 = new JSONObject();
+         object2 = new JSONObject();
         JSONObject objectReview = new JSONObject();
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
@@ -276,6 +277,11 @@ public class ItineraryDetails extends AppCompatActivity {
                     requestReservation.setText(getString(R.string.remove_reservation));
                     requestReservation.setOnClickListener(v -> removeReservation(v));
                 }
+                else
+                {
+                    requestReservation.setText(getString(R.string.request_reservation));
+                    requestReservation.setOnClickListener(v -> askForReservation(v));
+                }
             }
         });
         connector.setObjectToSend(reservation);
@@ -326,6 +332,7 @@ public class ItineraryDetails extends AppCompatActivity {
                     } catch (ParseException e) {
                         Log.e(ERROR_TAG, e.getMessage());
                     }
+                    isReservated(object2);
                     Toast.makeText(ItineraryDetails.this, "Reservation added", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton(R.string.no, (dialog, id) -> {
@@ -338,7 +345,10 @@ public class ItineraryDetails extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.are_you_sure))
                 .setMessage(getString(R.string.sure_to_remove_reservation))
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> ReservationManager.removeReservation(itinerary))
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                    ReservationManager.removeReservation(itinerary);
+                    isReservated(object2);
+                })
                 .setNegativeButton(getString(R.string.no), null)
                 .show();
     }
