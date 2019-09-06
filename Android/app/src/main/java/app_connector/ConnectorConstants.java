@@ -190,6 +190,11 @@ public final class ConnectorConstants {
     public static final String DELETE_RESERVATION = SERVER_URL + "/DeleteReservation.php";
 
     /**
+     * URL of the server-side connector for the reservations and itineraries details table.
+     */
+    public static final String REQUEST_RESERVATION_JOIN_ITINERARY = SERVER_URL + "/RequestItineraryJoinReservation.php";
+    
+    /**
      * URL of the server-side connector for the report details table.
      */
     public static final String INSERT_REPORT = SERVER_URL + "/InsertReport.php";

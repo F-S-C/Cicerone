@@ -171,6 +171,8 @@
     <string name="remove_user">Rimuovi utente</string>
     <string name="remove_reservation">Rimuovi la prenotazione</string>
     <string name="sure_to_remove_reservation">Sei sicuro/a di voler cancellare la tua prenotazione?</string>
+    <string name="decline_reservation">Declina</string>
+    <string name="confirm_reservation">Conferma</string>
     <string name="clear_all">Cancella tutto</string>
     <string name="search">Cerca</string>
     <string name="search_location">Cerca un luogo…</string>
@@ -179,6 +181,7 @@
     <string name="doc_not_found">Nessun documento trovato.</string>
     <string name="no_active_itineraries">Al momento, non ci sono itinerari attivi.</string>
     <string name="new_report">Nuova segnalazione</string>
+    <string name="no_requests_reservation">Al momento non ci sono richieste di prenotazione.</string>
     <string name="user_to_report">Utente da segnalare</string>
     <string name="report_body">Messaggio della segnalazione</string>
     <string name="report_dialog_message">Inserire tutte le informazioni richieste. Tutti i campi sono obbligatori.</string>

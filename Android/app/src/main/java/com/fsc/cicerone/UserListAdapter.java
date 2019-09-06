@@ -25,7 +25,7 @@ import app_connector.SendInPostConnector;
  */
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
-    private static final String ERROR_TAG = "ERROR IN " + WishlistAdapter.class.getName();
+    private static final String ERROR_TAG = "ERROR IN " + UserListAdapter.class.getName();
 
     private final Context context;
     private JSONArray mData;

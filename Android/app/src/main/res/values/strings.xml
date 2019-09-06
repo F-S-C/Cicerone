@@ -193,6 +193,8 @@
     <string name="remove_user">Remove user</string>
     <string name="remove_reservation">Remove reservation</string>
     <string name="sure_to_remove_reservation">Are you sure you want to remove your reservation?</string>
+    <string name="confirm_reservation">Confirm</string>
+    <string name="decline_reservation">Decline</string>
     <string name="clear_all">Clear all</string>
     <string name="search">Search</string>
     <string name="search_location">Search a location…</string>
@@ -207,4 +209,5 @@
     <string name="report_sent">Report sent.</string>
     <string name="insert_report">Insert report</string>
     <string name="report_dialog_message">Please insert all the requested informations to make a report. All fields are required.</string>
+    <string name="no_requests_reservation">At the moment there are no reservation requests.</string>
 </resources>

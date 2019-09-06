@@ -69,6 +69,9 @@ public class AccountDetails extends Fragment {
                     case 3:
                         fragment = new ItineraryFragment();
                         break;
+                    case 4:
+                        fragment = new ReservationFragment();
+                        break;
                     default:
                         break;
                 }
@@ -98,7 +101,9 @@ public class AccountDetails extends Fragment {
         String nameSurname = currentLoggedUser.getName() + " " + currentLoggedUser.getSurname();
         TextView nameSurnameTextView = holderView.findViewById(R.id.name_surname);
         nameSurnameTextView.setText(nameSurname);
-        if (currentLoggedUser.getUserType() == UserType.GLOBETROTTER)
+        if (currentLoggedUser.getUserType() == UserType.GLOBETROTTER) {
             tabLayout.removeTabAt(3);
+            tabLayout.removeTabAt(4);
+        }
     }
 }
