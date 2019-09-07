@@ -189,4 +189,5 @@
     <string name="report_dialog_message">Inserire tutte le informazioni richieste. Tutti i campi sono obbligatori.</string>
     <string name="report_sent">Segnalazione inviata.</string>
     <string name="object_report">Oggetto della segnalazione</string>
+    <string name="avg_earn">Guadagno medio: %.2f €</string>
 </resources>

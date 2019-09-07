@@ -30,7 +30,7 @@ class RequestItineraryJoinReservation extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT itinerary.title, reservation.username, reservation.number_of_children, reservation.number_of_adults, reservation.requested_date FROM reservation, itinerary WHERE reservation.booked_itinerary = itinerary.itinerary_code";
+        $query = "SELECT itinerary.title, reservation.username, reservation.number_of_children, reservation.number_of_adults, reservation.requested_date, reservation.total, reservation.confirm_date FROM reservation, itinerary WHERE reservation.booked_itinerary = itinerary.itinerary_code";
         if ($this->owner) {
             $query .= " AND itinerary.username = ?";
         }

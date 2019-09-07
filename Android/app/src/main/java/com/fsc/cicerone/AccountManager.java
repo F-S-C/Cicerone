@@ -1,6 +1,8 @@
 package com.fsc.cicerone;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -250,6 +252,44 @@ public abstract class AccountManager {
                 }
             });
             connector.setObjectToSend(doc);
+            connector.execute();
+        }catch (JSONException e){
+            Log.e(ERROR_TAG, e.toString());
+        }
+    }
+
+    /**
+     * Gets the average earnings of a user.
+     *
+     * @param username The username.
+     * @param t The TextView to be set with the earnings.
+     * @param c The application context.
+     */
+    public static void userAvgEarnings(String username, TextView t, Context c){
+        JSONObject user = new JSONObject();
+        try {
+            user.put("owner", username);
+            SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, new DatabaseConnector.CallbackInterface() {
+                @Override
+                public void onStartConnection() {
+                    //Do nothing
+                }
+
+                @Override
+                public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                    int count = 0;
+                    float sum = 0;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        if (!jsonArray.getJSONObject(i).isNull("confirm_date")) {
+                            if (!jsonArray.getJSONObject(i).getString("confirm_date").equals("0000-00-00")) {
+                                count++;
+                                sum += Float.valueOf(jsonArray.getJSONObject(i).getString("total"));
+                            }
+                        }
+                    }
+                    t.setText(c.getString(R.string.avg_earn, (count < 1) ? 0 : (sum/count) ));
+                }
+            },user);
             connector.execute();
         }catch (JSONException e){
             Log.e(ERROR_TAG, e.toString());

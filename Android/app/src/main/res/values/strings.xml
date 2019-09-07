@@ -211,4 +211,5 @@
     <string name="report_dialog_message">Please insert all the requested informations to make a report. All fields are required.</string>
     <string name="itinerary_earn">Average earnings: %.2f €</string>
     <string name="no_requests_reservation">At the moment there are no reservation requests.</string>
+    <string name="avg_earn">Average earnings: %.2f €</string>
 </resources>

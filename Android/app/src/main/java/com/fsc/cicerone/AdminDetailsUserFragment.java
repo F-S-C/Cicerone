@@ -40,6 +40,7 @@ public class AdminDetailsUserFragment extends Fragment {
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
+    private TextView avgEarn;
     private String data;
     private DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
@@ -66,6 +67,7 @@ public class AdminDetailsUserFragment extends Fragment {
         documentNumber = view.findViewById(R.id.nrDoc_user_admin);
         documentType = view.findViewById(R.id.typeDoc_user_admin);
         documentExpiryDate = view.findViewById(R.id.dateEx_user_admin);
+        avgEarn = view.findViewById(R.id.avg_earn);
         TextView sex = view.findViewById(R.id.sex_user_admin);
         Button removeUser = view.findViewById(R.id.remove_user_admin);
         Bundle bundle = getArguments();
@@ -73,6 +75,10 @@ public class AdminDetailsUserFragment extends Fragment {
         User user = null;
         try {
             user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
+            if(user.getUserType() == UserType.CICERONE) {
+                avgEarn.setVisibility(View.VISIBLE);
+                AccountManager.userAvgEarnings(user.getUsername(), avgEarn, context);
+            }
         } catch (JSONException e) {
             Log.e(ERROR_TAG,e.getMessage());
         }
