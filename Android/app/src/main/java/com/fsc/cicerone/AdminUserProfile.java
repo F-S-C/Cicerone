@@ -82,7 +82,7 @@ public class AdminUserProfile extends AppCompatActivity {
                         break;
                     case 2:
                         supportActionBar.setTitle(getString(R.string.created_itineraries));
-                        fragment = new ItineraryFragment(); //TODO storico cicerone
+                        fragment = new CiceroneItineraryListFragment();
                         fragment.setArguments(bundle);
                     default:
                         break;
