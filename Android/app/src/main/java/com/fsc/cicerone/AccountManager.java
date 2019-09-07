@@ -20,6 +20,10 @@ public abstract class AccountManager {
     private static User currentLoggedUser;
     private static final String ERROR_TAG = "ERROR IN " + AccountManager.class.getName();
 
+    private AccountManager() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Get the current logged user if present.
      *

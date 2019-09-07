@@ -148,10 +148,9 @@ public class Itinerary {
         } catch (JSONException e) {
             reducedPrice = 0;
         }
-        try
-        {
-           imageUrl = itinerary.getString("image_url");
-        } catch(JSONException e) {
+        try {
+            imageUrl = itinerary.getString("image_url");
+        } catch (JSONException e) {
             imageUrl = null;
         }
     }
@@ -170,7 +169,7 @@ public class Itinerary {
      *
      * @param code The new itinerary's code.
      */
-    public void setName( int code) {
+    public void setName(int code) {
         this.itineraryCode = code;
     }
 
@@ -190,6 +189,24 @@ public class Itinerary {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * Get the itinerary's code.
+     *
+     * @return The itinerary's code.
+     */
+    public int getItineraryCode() {
+        return itineraryCode;
+    }
+
+    /**
+     * Set the itinerary's code.
+     *
+     * @param itineraryCode The new itinerary's code.
+     */
+    public void setItineraryCode(int itineraryCode) {
+        this.itineraryCode = itineraryCode;
     }
 
     /**
@@ -368,7 +385,7 @@ public class Itinerary {
      *
      * @param duration The new itinerary's duration.
      */
-    public void setDuration(String duration ) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
@@ -387,7 +404,7 @@ public class Itinerary {
      *
      * @param fullPrice price The new itinerary's full price.
      */
-    public void setFullPrice(float fullPrice ) {
+    public void setFullPrice(float fullPrice) {
         this.fullPrice = fullPrice;
     }
 
@@ -406,7 +423,7 @@ public class Itinerary {
      *
      * @param reducedPrice price The new itinerary's reduced price.
      */
-    public void setReducedPrice(float reducedPrice ) {
+    public void setReducedPrice(float reducedPrice) {
         this.reducedPrice = reducedPrice;
     }
 
@@ -425,7 +442,7 @@ public class Itinerary {
      *
      * @param imageUrl price The new itinerary's image url.
      */
-    public void setImageUrl(String imageUrl ) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -449,8 +466,8 @@ public class Itinerary {
             result.put("minimum_participants_number", String.valueOf(this.minParticipants));
             result.put("maximum_participants_number", String.valueOf(this.maxParticipants));
             result.put("repetitions_per_day", String.valueOf(this.repetitions));
-            result.put("full_price",this.fullPrice);
-            result.put("reduced_price",this.reducedPrice);
+            result.put("full_price", this.fullPrice);
+            result.put("reduced_price", this.reducedPrice);
             result.put("image_url", this.imageUrl);
         } catch (JSONException e) {
             result = null;

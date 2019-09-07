@@ -1,6 +1,6 @@
 package com.fsc.cicerone;
 
-import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -30,14 +29,17 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     private JSONArray mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context context;
+    private ViewHolder previouslyClickedHolder = null;
 
     /**
      * Constructor.
      *
-     * @param context    The parent Context.
-     * @param jsonArray  The array of JSON Objects got from server.
+     * @param context   The parent Context.
+     * @param jsonArray The array of JSON Objects got from server.
      */
     ReservationAdapter(Context context, JSONArray jsonArray) {
+        this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mData = jsonArray;
     }
@@ -47,34 +49,45 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-                View reservationView = mInflater.inflate(R.layout.reservation_list, parent, false);
-                return new ViewHolder(reservationView);
+        View reservationView = mInflater.inflate(R.layout.reservation_list, parent, false);
+        return new ViewHolder(reservationView);
     }
 
     // binds the data to the TextView in each row
-    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Reservation reservation = new Reservation.Builder(mData.getJSONObject(position)).build();
             DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-            holder.requestedDate.setText(outputFormat.format(inputDate.parse(mData.getJSONObject(position).getString("requested_date"))));
-            holder.itineraryTitle.setText(mData.getJSONObject(position).getString("title"));
-            holder.globetrotter.setText(mData.getJSONObject(position).getString("username"));
-            Integer numberChildren = mData.getJSONObject(position).getInt("number_of_children");
-            holder.numberChildren.setText(String.format("%d",numberChildren));
-            Integer numberAdults = mData.getJSONObject(position).getInt("number_of_adults");
-            holder.numberAdults.setText(String.format("%d",numberAdults));
-        } catch (JSONException | ParseException e) {
+
+            holder.requestedDate.setText(outputFormat.format(reservation.getRequestedDate()));
+            holder.itineraryTitle.setText(reservation.getItinerary().getTitle());
+            holder.globetrotter.setText(reservation.getClient().getUsername());
+            holder.numberChildren.setText(String.valueOf(reservation.getNumberOfChildren()));
+            holder.numberAdults.setText(String.valueOf(reservation.getNumberOfAdults()));
+
+            holder.confirmReservation.setOnClickListener(v -> new AlertDialog.Builder(context)
+                    .setTitle(context.getString(R.string.are_you_sure))
+                    .setPositiveButton(context.getString(R.string.yes), (dialog, which) -> ReservationManager.confirmReservation(reservation))
+                    .setNegativeButton(context.getString(R.string.no), null)
+                    .show());
+        } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }
 
         holder.itemView.setOnClickListener(v -> {
-           holder.confirmReservation.setVisibility(View.VISIBLE);
-           holder.declineReservation.setVisibility(View.VISIBLE);
+            if (previouslyClickedHolder != null) {
+                previouslyClickedHolder.confirmReservation.setVisibility(View.GONE);
+                previouslyClickedHolder.declineReservation.setVisibility(View.GONE);
+            }
+            if (previouslyClickedHolder != holder) {
+                holder.confirmReservation.setVisibility(View.VISIBLE);
+                holder.declineReservation.setVisibility(View.VISIBLE);
+            }
+            previouslyClickedHolder = (previouslyClickedHolder != holder) ? holder : null;
         });
 
-    }//END onBindViewHolder
+    }
 
     /**
      * Return the length of the JSON array passed into the Adapter.
@@ -118,8 +131,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-            }
         }
+    }
 
 
     /**

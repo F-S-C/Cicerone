@@ -13,7 +13,11 @@ import app_connector.SendInPostConnector;
 
 public abstract class ReservationManager {
 
-    public static void removeReservation(Itinerary itinerary){
+    private ReservationManager(){
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static void removeReservation(Itinerary itinerary) {
         Reservation reservation = new Reservation.Builder(AccountManager.getCurrentLoggedUser(), itinerary).build();
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_RESERVATION, new DatabaseConnector.CallbackInterface() {
             @Override
@@ -31,10 +35,10 @@ public abstract class ReservationManager {
 
     public static Reservation addReservation(Itinerary itinerary, int numberOfAdults, int numberOfChildren, Date requestedDate, Date forwardingDate) {
         Reservation reservation = new Reservation.Builder(AccountManager.getCurrentLoggedUser(), itinerary)
-                .numberOfAudults(numberOfAdults)
+                .numberOfAdults(numberOfAdults)
                 .numberOfChildren(numberOfChildren)
                 .requestedDate(requestedDate)
-                .forwadingDate(forwardingDate)
+                .forwardingDate(forwardingDate)
                 .build();
 
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_RESERVATION, new DatabaseConnector.CallbackInterface() {
@@ -52,5 +56,15 @@ public abstract class ReservationManager {
         connector.execute();
 
         return reservation;
+    }
+
+    public static void confirmReservation(Reservation reservation) {
+        reservation.setConfirmationDate(new Date());
+
+        // TODO: Send email to globetrotter (IF-34)
+
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_RESERVATION);
+        connector.setObjectToSend(reservation.toJSONObject());
+        connector.execute();
     }
 }
