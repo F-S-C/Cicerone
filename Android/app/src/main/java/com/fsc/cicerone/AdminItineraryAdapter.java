@@ -141,7 +141,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
                     int count = 0;
                     float price = 0;
                     for(int i = 0; i < jsonArray.length(); i++) {
-                        if(jsonArray.getJSONObject(i).isNull("confirm_date")) {
+                        if(!jsonArray.getJSONObject(i).isNull("confirm_date")) {
                             if (!jsonArray.getJSONObject(i).getString("confirm_date").equals("0000-00-00")) {
                                 price += Float.valueOf(jsonArray.getJSONObject(i).getString("total"));
                                 count++;
