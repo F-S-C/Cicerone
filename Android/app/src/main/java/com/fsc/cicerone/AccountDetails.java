@@ -103,7 +103,7 @@ public class AccountDetails extends Fragment {
         nameSurnameTextView.setText(nameSurname);
         if (currentLoggedUser.getUserType() == UserType.GLOBETROTTER) {
             tabLayout.removeTabAt(3);
-            tabLayout.removeTabAt(4);
+            tabLayout.removeTabAt(3);
         }
     }
 }
