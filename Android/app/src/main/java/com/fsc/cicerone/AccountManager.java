@@ -120,7 +120,7 @@ public abstract class AccountManager {
      * Delete the current logged account from the system.
      */
     public static void deleteCurrentAccount() {
-        if(!isLogged())
+        if (!isLogged())
             return;
 
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
@@ -132,7 +132,7 @@ public abstract class AccountManager {
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 JSONObject result = jsonArray.getJSONObject(0);
-                if(!result.getBoolean("result")){
+                if (!result.getBoolean("result")) {
                     Log.e("DELETE_USER_ERROR", result.getString("error"));
                 }
             }
@@ -154,7 +154,7 @@ public abstract class AccountManager {
     /**
      * Control if username exists on server.
      *
-     * @param user The username to verify.
+     * @param user   The username to verify.
      * @param result A function to be executed after the check.
      */
     public static void checkIfUsernameExists(String user, BooleanRunnable result) {
@@ -181,7 +181,7 @@ public abstract class AccountManager {
     /**
      * Control if email exists on server.
      *
-     * @param email The email to verify.
+     * @param email  The email to verify.
      * @param result A function to be executed after the check.
      */
     public static void checkIfEmailExists(String email, BooleanRunnable result) {
@@ -208,11 +208,11 @@ public abstract class AccountManager {
     /**
      * Inserts the user into the database.
      *
-     * @param user User to insert in the database.
+     * @param user   User to insert in the database.
      * @param result A function to be executed after the insert attempt.
      */
-    public static void insertUser(User user, BooleanRunnable result){
-        Log.i("USERDATA",user.toJSONObject().toString());
+    public static void insertUser(User user, BooleanRunnable result) {
+        Log.i("USERDATA", user.toJSONObject().toString());
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_USER, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -222,8 +222,8 @@ public abstract class AccountManager {
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 result.accept(jsonArray.getJSONObject(0).getBoolean("result"));
-                if(!jsonArray.getJSONObject(0).getBoolean("result"))
-                    Log.e("ERROR INSERT USER",jsonArray.getJSONObject(0).getString("error"));
+                if (!jsonArray.getJSONObject(0).getBoolean("result"))
+                    Log.e("ERROR INSERT USER", jsonArray.getJSONObject(0).getString("error"));
             }
         });
         connector.setObjectToSend(user.toJSONObject());
@@ -235,13 +235,13 @@ public abstract class AccountManager {
      *
      * @param username The username of the document owner.
      * @param document Document to insert in the database.
-     * @param result A function to be executed after the insert attempt.
+     * @param result   A function to be executed after the insert attempt.
      */
-    public static void insertUserDocument(String username, Document document, BooleanRunnable result){
+    public static void insertUserDocument(String username, Document document, BooleanRunnable result) {
         JSONObject doc = document.getJSONObject();
         try {
             doc.put("username", username);
-            Log.i("DOCUMENT",doc.toString());
+            Log.i("DOCUMENT", doc.toString());
             SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_DOCUMENT, new DatabaseConnector.CallbackInterface() {
                 @Override
                 public void onStartConnection() {
@@ -251,13 +251,13 @@ public abstract class AccountManager {
                 @Override
                 public void onEndConnection(JSONArray jsonArray) throws JSONException {
                     result.accept(jsonArray.getJSONObject(0).getBoolean("result"));
-                    if(!jsonArray.getJSONObject(0).getBoolean("result"))
-                        Log.e("ERROR INSERT DOCUMENT",jsonArray.getJSONObject(0).getString("error"));
+                    if (!jsonArray.getJSONObject(0).getBoolean("result"))
+                        Log.e("ERROR INSERT DOCUMENT", jsonArray.getJSONObject(0).getString("error"));
                 }
             });
             connector.setObjectToSend(doc);
             connector.execute();
-        }catch (JSONException e){
+        } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
         }
     }
@@ -266,10 +266,10 @@ public abstract class AccountManager {
      * Gets the average earnings of a user.
      *
      * @param username The username.
-     * @param t The TextView to be set with the earnings.
-     * @param c The application context.
+     * @param t        The TextView to be set with the earnings.
+     * @param c        The application context.
      */
-    public static void userAvgEarnings(String username, TextView t, Context c){
+    public static void userAvgEarnings(String username, TextView t, Context c) {
         JSONObject user = new JSONObject();
         try {
             user.put("owner", username);
@@ -291,11 +291,11 @@ public abstract class AccountManager {
                             }
                         }
                     }
-                    t.setText(c.getString(R.string.avg_earn, (count < 1) ? 0 : (sum/count) ));
+                    t.setText(c.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
                 }
-            },user);
+            }, user);
             connector.execute();
-        }catch (JSONException e){
+        } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
         }
     }

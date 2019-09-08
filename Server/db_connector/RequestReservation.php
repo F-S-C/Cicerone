@@ -50,20 +50,9 @@ class RequestReservation extends JsonConnector
             $types .= "i";
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
-		$query .= " AND confirm_date <> '0000-00-00'";
 
-        if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->username) || isset($this->itinerary)) {
-                $statement->bind_param($types, ...$data);
-            }
-            if ($statement->execute()) {
-                $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-            } else {
-                throw new mysqli_sql_exception($statement->error);
-            }
-        } else {
-            throw new mysqli_sql_exception($this->connection->error);
-        }
+        $to_return = $this->execute_query($query, $data, $types);
+
         return $to_return;
     }
 

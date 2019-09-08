@@ -123,20 +123,59 @@ public class Reservation {
         }
 
         public Builder(JSONObject jsonObject) {
-            this.client = new User();
-            this.itinerary = new Itinerary();
-            try {
-                this.client.setUsername(jsonObject.getString("username"));
-                this.itinerary.setItineraryCode(jsonObject.getInt("booked_itinerary"));
-                if (jsonObject.has("title")) this.itinerary.setTitle(jsonObject.getString("title"));
-                this.numberOfChildren = jsonObject.getInt("number_of_children");
-                this.numberOfAdults = jsonObject.getInt("number_of_adults");
+            final String ERROR_TAG = "ERR_CREATE_RESERVATION";
 
+            User tempClient;
+            try {
+                tempClient = new User(jsonObject.getJSONObject("username"));
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                tempClient = new User();
+            }
+            this.client = tempClient;
+
+            Itinerary tempItinerary;
+            try {
+                tempItinerary = new Itinerary(jsonObject.getJSONObject("booked_itinerary"));
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                tempItinerary = new Itinerary();
+            }
+            this.itinerary = tempItinerary;
+
+            try {
+                this.numberOfChildren = jsonObject.getInt("number_of_children");
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                this.numberOfChildren = 0;
+            }
+
+            try {
+                this.numberOfAdults = jsonObject.getInt("number_of_adults");
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                this.numberOfAdults = 0;
+            }
+
+            try {
                 this.requestedDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("requested_date"));
+            } catch (JSONException | ParseException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                this.requestedDate = null;
+            }
+
+            try {
                 this.forwardingDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("forwading_date"));
+            } catch (JSONException | ParseException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                this.forwardingDate = null;
+            }
+
+            try {
                 this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("confirm_date"));
             } catch (JSONException | ParseException e) {
-                Log.e("ERROR_CREATE_RESERV", e.getMessage());
+                Log.e(ERROR_TAG, e.getMessage());
+                this.confirmationDate = null;
             }
         }
 

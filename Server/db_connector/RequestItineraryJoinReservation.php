@@ -2,8 +2,6 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
 
 /**
@@ -30,22 +28,26 @@ class RequestItineraryJoinReservation extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT reservation.booked_itinerary, itinerary.title, reservation.username, reservation.number_of_children, reservation.number_of_adults, reservation.requested_date, reservation.total, reservation.confirm_date, reservation.forwading_date FROM reservation, itinerary WHERE reservation.booked_itinerary = itinerary.itinerary_code";
+        $query = "SELECT reservation.* FROM reservation, itinerary WHERE reservation.booked_itinerary = itinerary.itinerary_code";
+        $parameters = array();
+        $types = "";
         if ($this->owner) {
             $query .= " AND itinerary.username = ?";
+            array_push($parameters, $this->owner);
+            $types .= "s";
+        }
+        $to_return = $this->execute_query($query, $parameters, $types);
+
+        foreach ($to_return as &$row) {
+            $query = "SELECT * FROM itinerary WHERE itinerary_code = ?";
+            $parameters = array($row['booked_itinerary']);
+            $row['booked_itinerary'] = $this->execute_query($query, $parameters, "i")[0];
         }
 
-        if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->owner)) {
-                $statement->bind_param("s", $this->owner);
-            }
-            if ($statement->execute()) {
-                $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-            } else {
-                throw new mysqli_sql_exception($statement->error);
-            }
-        } else {
-            throw new mysqli_sql_exception($this->connection->error);
+        foreach ($to_return as &$row) {
+            $query = "SELECT * FROM registered_user WHERE username = ?";
+            $parameters = array($row['username']);
+            $row['username'] = $this->execute_query($query, $parameters, "s")[0];
         }
 
         return $to_return;

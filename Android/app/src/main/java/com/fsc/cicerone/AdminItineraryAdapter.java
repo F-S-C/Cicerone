@@ -38,8 +38,8 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
     /**
      * Constructor.
      *
-     * @param context    The parent Context.
-     * @param jsonArray  The array of JSON Objects got from server.
+     * @param context   The parent Context.
+     * @param jsonArray The array of JSON Objects got from server.
      */
     AdminItineraryAdapter(Context context, JSONArray jsonArray) {
         this.mInflater = LayoutInflater.from(context);
@@ -123,13 +123,14 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
 
     /**
      * Set the average earnings of an itinerary.
+     *
      * @param itineraryCode The itinerary code.
-     * @param t The TextView which shows the average earnings.
+     * @param t             The TextView which shows the average earnings.
      */
-    private void setItineraryAvgPrice(Integer itineraryCode, TextView t){
+    private void setItineraryAvgPrice(Integer itineraryCode, TextView t) {
         JSONObject params = new JSONObject();
-        try{
-            params.put("booked_itinerary",itineraryCode);
+        try {
+            params.put("booked_itinerary", itineraryCode);
             SendInPostConnector conn = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION, new DatabaseConnector.CallbackInterface() {
                 @Override
                 public void onStartConnection() {
@@ -140,20 +141,20 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
                 public void onEndConnection(JSONArray jsonArray) throws JSONException {
                     int count = 0;
                     float price = 0;
-                    for(int i = 0; i < jsonArray.length(); i++) {
-                        if(!jsonArray.getJSONObject(i).isNull("confirm_date")) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        if (!jsonArray.getJSONObject(i).isNull("confirm_date")) {
                             if (!jsonArray.getJSONObject(i).getString("confirm_date").equals("0000-00-00")) {
                                 price += Float.valueOf(jsonArray.getJSONObject(i).getString("total"));
                                 count++;
                             }
                         }
                     }
-                    t.setText(context.getString(R.string.itinerary_earn, (count < 1) ? 0 : price/count));
+                    t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
                 }
-            },params);
+            }, params);
             conn.execute();
-        }catch (JSONException e){
-            Log.e(ERROR_TAG,e.toString());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.toString());
         }
     }
 }

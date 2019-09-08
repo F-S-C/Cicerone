@@ -1,6 +1,5 @@
 package com.fsc.cicerone;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,11 +11,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -26,7 +30,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     private static final String ERROR_TAG = "ERROR IN " + ReservationAdapter.class.getName();
 
-    private JSONArray mData;
+    private List<Reservation> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private Context context;
@@ -41,7 +45,19 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     ReservationAdapter(Context context, JSONArray jsonArray) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        this.mData = jsonArray;
+        this.mData = new ArrayList<>(jsonArray.length());
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                Reservation toAdd = new Reservation.Builder(jsonArray.getJSONObject(i)).build();
+
+                // The reservation must be shown if and only if it was not yet confirmed.
+                if (!toAdd.isConfirmed()) {
+                    this.mData.add(toAdd);
+                }
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+            }
+        }
     }
 
     // inflates the row layout from xml when needed
@@ -56,24 +72,33 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        try {
-            Reservation reservation = new Reservation.Builder(mData.getJSONObject(position)).build();
-            DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
-            holder.requestedDate.setText(outputFormat.format(reservation.getRequestedDate()));
-            holder.itineraryTitle.setText(reservation.getItinerary().getTitle());
-            holder.globetrotter.setText(reservation.getClient().getUsername());
-            holder.numberChildren.setText(String.valueOf(reservation.getNumberOfChildren()));
-            holder.numberAdults.setText(String.valueOf(reservation.getNumberOfAdults()));
 
-            holder.confirmReservation.setOnClickListener(v -> new AlertDialog.Builder(context)
-                    .setTitle(context.getString(R.string.are_you_sure))
-                    .setPositiveButton(context.getString(R.string.yes), (dialog, which) -> ReservationManager.confirmReservation(reservation))
-                    .setNegativeButton(context.getString(R.string.no), null)
-                    .show());
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-        }
+        holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
+        holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
+        holder.globetrotter.setText(mData.get(position).getClient().getUsername());
+        holder.numberChildren.setText(String.valueOf(mData.get(position).getNumberOfChildren()));
+        holder.numberAdults.setText(String.valueOf(mData.get(position).getNumberOfAdults()));
+
+        holder.confirmReservation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.are_you_sure))
+                .setPositiveButton(context.getString(R.string.yes), (dialog, which) -> {
+                    ReservationManager.confirmReservation(mData.get(position));
+                    removeAt(position);
+                })
+                .setNegativeButton(context.getString(R.string.no), null)
+                .show());
+
+        holder.declineReservation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.are_you_sure))
+                .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
+                    ReservationManager.refuseReservation(mData.get(position));
+                    removeAt(position);
+                }))
+                .setNegativeButton(context.getString(R.string.no), null)
+                .show());
+
 
         holder.itemView.setOnClickListener(v -> {
             if (previouslyClickedHolder != null) {
@@ -96,7 +121,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
      */
     @Override
     public int getItemCount() {
-        return mData.length();
+        return mData.size();
     }
 
     /**
@@ -132,8 +157,14 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
+
     }
 
+    public void removeAt(int position) {
+        mData.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size());
+    }
 
     /**
      * Item Click Listener for parent activity will implement this method to respond to click events.

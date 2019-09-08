@@ -4,6 +4,7 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -13,24 +14,19 @@ import app_connector.SendInPostConnector;
 
 public abstract class ReservationManager {
 
+    private interface RunnableUsingJSONArray {
+        void run(JSONArray jsonArray) throws JSONException;
+    }
+
     private ReservationManager(){
         throw new IllegalStateException("Utility class");
     }
 
     public static void removeReservation(Itinerary itinerary) {
         Reservation reservation = new Reservation.Builder(AccountManager.getCurrentLoggedUser(), itinerary).build();
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_RESERVATION, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                // TODO: Complete
-            }
-        }, reservation.toJSONObject());
-        connector.execute();
+        deleteReservationFromServer(reservation, jsonArray -> {
+            // TODO: Check and send email to cicerone (IF-34)
+        });
     }
 
     public static Reservation addReservation(Itinerary itinerary, int numberOfAdults, int numberOfChildren, Date requestedDate, Date forwardingDate) {
@@ -61,9 +57,40 @@ public abstract class ReservationManager {
     public static void confirmReservation(Reservation reservation) {
         reservation.setConfirmationDate(new Date());
 
-        // TODO: Send email to globetrotter (IF-34)
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_RESERVATION, new DatabaseConnector.CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+                // Do nothing
+            }
 
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_RESERVATION);
+            @Override
+            public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                // TODO: Check and send email to globetrotter (IF-34)
+            }
+        });
+        connector.setObjectToSend(reservation.toJSONObject());
+        connector.execute();
+    }
+
+    public static void refuseReservation(Reservation reservation) {
+        deleteReservationFromServer(reservation, jsonArray -> {
+            // TODO: Check and send email to globetrotter (IF-34)
+        });
+        // Garbage collector has to destroy 'reservation'.
+    }
+
+    private static void deleteReservationFromServer(Reservation reservation, RunnableUsingJSONArray callback){
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_RESERVATION, new DatabaseConnector.CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+                // Do nothing
+            }
+
+            @Override
+            public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                callback.run(jsonArray);
+            }
+        });
         connector.setObjectToSend(reservation.toJSONObject());
         connector.execute();
     }
