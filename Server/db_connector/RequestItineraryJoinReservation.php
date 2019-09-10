@@ -11,15 +11,20 @@ require_once("JsonConnector.php");
 class RequestItineraryJoinReservation extends JsonConnector
 {
     /** @var string|null The itinerary's author's username. */
-    private $owner;
+    private $itinerary_owner;
+
+    /** @var string|null The itinerary's author's username. */
+    private $globetrotter;
 
     /**
      * RequestItineraryJoinReservation constructor.
+     * @param string|null $globetrotter The reservation's globetrotter.
      * @param string|null $owner The itinerary's author's username.
      */
-    public function __construct(string $owner = null)
+    public function __construct(string $globetrotter = null, string $owner = null)
     {
-        $this->owner = isset($owner) && $owner != "" ? strtolower($owner) : null;
+        $this->itinerary_owner = isset($owner) && $owner != "" ? strtolower($owner) : null;
+        $this->globetrotter = isset($globetrotter) && $globetrotter != "" ? strtolower($globetrotter) : null;
         parent::__construct();
     }
 
@@ -31,9 +36,14 @@ class RequestItineraryJoinReservation extends JsonConnector
         $query = "SELECT reservation.* FROM reservation, itinerary WHERE reservation.booked_itinerary = itinerary.itinerary_code";
         $parameters = array();
         $types = "";
-        if ($this->owner) {
+        if ($this->itinerary_owner) {
             $query .= " AND itinerary.username = ?";
-            array_push($parameters, $this->owner);
+            array_push($parameters, $this->itinerary_owner);
+            $types .= "s";
+        }
+        if ($this->globetrotter) {
+            $query .= " AND reservation.username = ?";
+            array_push($parameters, $this->globetrotter);
             $types .= "s";
         }
         $to_return = $this->execute_query($query, $parameters, $types);
@@ -54,5 +64,5 @@ class RequestItineraryJoinReservation extends JsonConnector
     }
 }
 
-$connector = new RequestItineraryJoinReservation($_POST['username']);
+$connector = new RequestItineraryJoinReservation($_POST['username'], $_POST['cicerone']);
 print $connector->get_content();

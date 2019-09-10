@@ -77,7 +77,7 @@ public class AdminUserProfile extends AppCompatActivity {
                         break;
                     case 1:
                         supportActionBar.setTitle(getString(R.string.participation_itinerary));
-                        fragment = new InsertReviewFragment(); //TODO storico globetrotter
+                        fragment = new GlobetrotterItineraryListFragment();
                         fragment.setArguments(bundle);
                         break;
                     case 2:

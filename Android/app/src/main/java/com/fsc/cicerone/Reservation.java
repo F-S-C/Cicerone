@@ -79,6 +79,7 @@ public class Reservation {
         try {
             result.put("username", this.client.getUsername());
             result.put("booked_itinerary", this.itinerary.getCode());
+            result.put("cicerone", this.itinerary.getUsername());
             result.put("number_of_children", this.numberOfChildren);
             result.put("number_of_adults", this.numberOfAdults);
             result.put("total", this.total);

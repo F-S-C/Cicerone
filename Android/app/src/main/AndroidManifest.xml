@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CiceroneItineraryListFragment"></activity>
+        <activity android:name=".GlobetrotterItineraryListFragment"></activity>
+        <activity android:name=".CiceroneItineraryListFragment" />
         <activity android:name=".AdminDetailsUserFragment" />
-        <activity android:name=".ReservationFragment"></activity>
+        <activity android:name=".ReservationFragment" />
         <activity android:name=".AdminUserProfile" />
         <activity android:name=".UsersListFragment" />
         <activity android:name=".RegistrationActivity" />
@@ -49,9 +50,9 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

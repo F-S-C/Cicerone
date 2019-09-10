@@ -212,6 +212,7 @@
     <string name="itinerary_earn">Average earnings: %.2f €</string>
     <string name="no_requests_reservation">At the moment there are no reservation requests.</string>
     <string name="avg_earn">Average earnings: %.2f €</string>
+    <string name="no_itineraries_history">At the moment it has not made any itinerary.</string>
     <string name="participations">Participations</string>
     <string name="my_itineraries">My itineraries</string>
     <string name="no_itineraries">You are not partecipating at any itinerary.</string>

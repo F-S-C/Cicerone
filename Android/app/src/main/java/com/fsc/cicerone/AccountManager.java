@@ -272,7 +272,7 @@ public abstract class AccountManager {
     public static void userAvgEarnings(String username, TextView t, Context c) {
         JSONObject user = new JSONObject();
         try {
-            user.put("owner", username);
+            user.put("cicerone", username);
             SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, new DatabaseConnector.CallbackInterface() {
                 @Override
                 public void onStartConnection() {
@@ -281,6 +281,7 @@ public abstract class AccountManager {
 
                 @Override
                 public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                    // TODO: Use Reservation object
                     int count = 0;
                     float sum = 0;
                     for (int i = 0; i < jsonArray.length(); i++) {
