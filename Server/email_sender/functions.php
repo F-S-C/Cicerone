@@ -49,4 +49,17 @@ function getDataFromDB($username, $itinerary_code){
     mysqli_close($link);
     return array_merge($user, $itinerary);
 }
+
+function getSMTPData($id){
+    switch($id){
+        case 1:
+            return 'noreply.cicerone.app@gmail.com';
+        case 2:
+            return 'X36Y$^8s6u';
+        case 3:
+            return 'Cicerone';
+        default:
+            return null;
+    }
+}
 ?>

@@ -25,12 +25,12 @@ $mail->isSMTP();                                     // Set mailer to use SMTP
 $mail->Host = 'smtp.gmail.com';                      // Specify main and backup server
 $mail->Port = 587;                                   // Set the SMTP port
 $mail->SMTPAuth = true;                              // Enable SMTP authentication
-$mail->Username = 'noreply.cicerone.app@gmail.com';  // SMTP username
-$mail->Password = 'X36Y$^8s6u';                      // SMTP password
+$mail->Username = getSMTPData(1);            // SMTP username
+$mail->Password = getSMTPData(2);             // SMTP password
 $mail->SMTPSecure = 'tls';                           // Enable encryption
 
-$mail->From = 'noreply.cicerone.app@gmail.com';
-$mail->FromName = 'Cicerone';
+$mail->From = getSMTPData(1);
+$mail->FromName = getSMTPData(3); 
 $mail->AddAddress($recipient_email);  // Destinatario
 
 $mail->IsHTML(true);                                 // Set email format to HTML
