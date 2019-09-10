@@ -107,7 +107,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
         ViewHolder(View itemView) {
             super(itemView);
             itineraryTitle = itemView.findViewById(R.id.itinerary_title);
-            itineraryNumber = itemView.findViewById(R.id.itinerary_number);
+            itineraryNumber = itemView.findViewById(R.id.itinerary_cicerone);
             location = itemView.findViewById(R.id.location);
             beginning = itemView.findViewById(R.id.beginning);
             ending = itemView.findViewById(R.id.ending);
