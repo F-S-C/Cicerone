@@ -18,6 +18,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
+import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -29,14 +30,6 @@ import javax.net.ssl.HttpsURLConnection;
 public class SendInPostConnector extends DatabaseConnector {
 
     private JSONObject objectToSend; // The object that will be sent
-
-    /**
-     * Default constructor.
-     */
-    public SendInPostConnector() {
-        super();
-        objectToSend = new JSONObject();
-    }
 
     /**
      * Constructor.

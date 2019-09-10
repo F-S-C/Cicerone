@@ -33,26 +33,8 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
         void onEndConnection(JSONArray jsonArray) throws JSONException;
     }
 
-    String fileUrl; // The URL of the server-side script
+    final String fileUrl; // The URL of the server-side script
     private CallbackInterface callback; // A reference to a CallbackInterface
-
-    /**
-     * Default constructor.
-     */
-    DatabaseConnector() {
-        super();
-        callback = new CallbackInterface() {
-            @Override
-            public void onEndConnection(JSONArray jsonArray) {
-                // Do nothing by default
-            }
-
-            @Override
-            public void onStartConnection() {
-                // Do nothing by default
-            }
-        };
-    }
 
     /**
      * Constructor.
@@ -86,15 +68,6 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
         super();
         fileUrl = url;
         this.callback = callback;
-    }
-
-    /**
-     * Sets the URL of the server-side script.
-     *
-     * @param fileUrl The new URL of the server-side script.
-     */
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
     }
 
     /**
