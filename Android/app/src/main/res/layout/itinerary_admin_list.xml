@@ -61,7 +61,7 @@
             android:text="@string/location" />
 
         <TextView
-            android:id="@+id/requested"
+            android:id="@+id/beginning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
