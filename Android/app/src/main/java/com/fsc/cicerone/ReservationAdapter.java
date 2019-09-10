@@ -19,7 +19,6 @@ import org.json.JSONException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,6 +34,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     private ItemClickListener mClickListener;
     private Context context;
     private ViewHolder previouslyClickedHolder = null;
+    private int layout = R.layout.reservation_list;
 
     /**
      * Constructor.
@@ -60,12 +60,33 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         }
     }
 
+
+
+    ReservationAdapter(Context context, JSONArray jsonArray,int layout) {
+        this.context = context;
+        this.mInflater = LayoutInflater.from(context);
+        this.layout = layout;
+        this.mData = new ArrayList<>(jsonArray.length());
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                Reservation toAdd = new Reservation.Builder(jsonArray.getJSONObject(i)).build();
+
+                // The reservation must be shown if and only if it was not yet confirmed.
+                if (!toAdd.isConfirmed()) {
+                    this.mData.add(toAdd);
+                }
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+            }
+        }
+    }
+
     // inflates the row layout from xml when needed
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View reservationView = mInflater.inflate(R.layout.reservation_list, parent, false);
+        View reservationView = mInflater.inflate(layout, parent, false);
         return new ViewHolder(reservationView);
     }
 
@@ -81,34 +102,66 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         holder.numberChildren.setText(String.valueOf(mData.get(position).getNumberOfChildren()));
         holder.numberAdults.setText(String.valueOf(mData.get(position).getNumberOfAdults()));
 
-        holder.confirmReservation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
-                .setTitle(context.getString(R.string.are_you_sure))
-                .setPositiveButton(context.getString(R.string.yes), (dialog, which) -> {
-                    ReservationManager.confirmReservation(mData.get(position));
-                    removeAt(position);
-                })
-                .setNegativeButton(context.getString(R.string.no), null)
-                .show());
+        if(holder.confirmReservation != null)
+        {
+            holder.confirmReservation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
+                    .setTitle(context.getString(R.string.are_you_sure))
+                    .setPositiveButton(context.getString(R.string.yes), (dialog, which) -> {
+                        ReservationManager.confirmReservation(mData.get(position));
+                        removeAt(position);
+                    })
+                    .setNegativeButton(context.getString(R.string.no), null)
+                    .show());
+        }
 
-        holder.declineReservation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
-                .setTitle(context.getString(R.string.are_you_sure))
-                .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
-                    ReservationManager.refuseReservation(mData.get(position));
-                    removeAt(position);
-                }))
-                .setNegativeButton(context.getString(R.string.no), null)
-                .show());
+        if(holder.declineReservation != null)
+        {
+            holder.declineReservation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
+                    .setTitle(context.getString(R.string.are_you_sure))
+                    .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
+                        ReservationManager.refuseReservation(mData.get(position));
+                        removeAt(position);
+                    }))
+                    .setNegativeButton(context.getString(R.string.no), null)
+                    .show());
+        }
+
+        if(holder.removeParticipation != null)
+        {
+            holder.removeParticipation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
+                    .setTitle(context.getString(R.string.are_you_sure))
+                    .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
+                        ReservationManager.refuseReservation(mData.get(position));
+                        removeAt(position);
+                    }))
+                    .setNegativeButton(context.getString(R.string.no), null)
+                    .show());
+        }
 
 
         holder.itemView.setOnClickListener(v -> {
-            if (previouslyClickedHolder != null) {
-                previouslyClickedHolder.confirmReservation.setVisibility(View.GONE);
-                previouslyClickedHolder.declineReservation.setVisibility(View.GONE);
+            if(layout == R.layout.reservation_list)
+            {
+                if (previouslyClickedHolder != null) {
+                    previouslyClickedHolder.confirmReservation.setVisibility(View.GONE);
+                    previouslyClickedHolder.declineReservation.setVisibility(View.GONE);
+                }
+                if (previouslyClickedHolder != holder) {
+                    holder.confirmReservation.setVisibility(View.VISIBLE);
+                    holder.declineReservation.setVisibility(View.VISIBLE);
+                }
             }
-            if (previouslyClickedHolder != holder) {
-                holder.confirmReservation.setVisibility(View.VISIBLE);
-                holder.declineReservation.setVisibility(View.VISIBLE);
+            else if(layout == R.layout.participation_list)
+            {
+                if (previouslyClickedHolder != null)
+                    previouslyClickedHolder.removeParticipation.setVisibility(View.GONE);
+
+
+                if (previouslyClickedHolder != holder)
+                    holder.removeParticipation.setVisibility(View.VISIBLE);
+
             }
+
             previouslyClickedHolder = (previouslyClickedHolder != holder) ? holder : null;
         });
 
@@ -137,14 +190,23 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         TextView requestedDate;
         Button confirmReservation;
         Button declineReservation;
+        Button removeParticipation;
 
 
         ViewHolder(View itemView) {
             super(itemView);
-            confirmReservation = itemView.findViewById(R.id.reservation_confirm);
-            confirmReservation.setVisibility(View.GONE);
-            declineReservation = itemView.findViewById(R.id.reservation_decline);
-            declineReservation.setVisibility(View.GONE);
+            if(layout == R.layout.reservation_list)
+            {
+                confirmReservation = itemView.findViewById(R.id.reservation_confirm);
+                confirmReservation.setVisibility(View.GONE);
+                declineReservation = itemView.findViewById(R.id.reservation_decline);
+                declineReservation.setVisibility(View.GONE);
+            }
+            else
+            {
+                removeParticipation = itemView.findViewById(R.id.removeParticipation);
+                removeParticipation.setVisibility(View.GONE);
+            }
             itineraryTitle = itemView.findViewById(R.id.itinerary_requested);
             globetrotter = itemView.findViewById(R.id.reservation_globetrotter);
             numberAdults = itemView.findViewById(R.id.nr_adults_requested);

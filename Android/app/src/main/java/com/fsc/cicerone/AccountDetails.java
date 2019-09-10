@@ -102,8 +102,7 @@ public class AccountDetails extends Fragment {
         TextView nameSurnameTextView = holderView.findViewById(R.id.name_surname);
         nameSurnameTextView.setText(nameSurname);
         if (currentLoggedUser.getUserType() == UserType.GLOBETROTTER) {
-            tabLayout.removeTabAt(3);
-            tabLayout.removeTabAt(3);
+            tabLayout.removeTabAt(4);
         }
     }
 }
