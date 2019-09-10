@@ -76,6 +76,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/no_itineraries"
             android:textAlignment="center"
+            android:visibility="gone"
             android:textSize="18sp" />
 
         <androidx.recyclerview.widget.RecyclerView

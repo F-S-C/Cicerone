@@ -107,7 +107,7 @@ public class ItineraryFragment extends Fragment {
             participations.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
             getParticipations(v,parameters,madeItineraries);
             newItinerary.setVisibility(View.GONE);
-            message.setVisibility(View.VISIBLE);
+
 
 
         });
@@ -150,6 +150,8 @@ public class ItineraryFragment extends Fragment {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 //progressBar.setVisibility(View.GONE);
+                if(jsonArray.length() == 0)
+                    message.setVisibility(View.VISIBLE);
                 adapter2 = new ReservationAdapter(getActivity(), jsonArray,R.layout.participation_list);
                 recyclerView.setAdapter(adapter2);
             }

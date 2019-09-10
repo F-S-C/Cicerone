@@ -228,6 +228,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         notifyItemRangeChanged(position, mData.size());
     }
 
+
     /**
      * Item Click Listener for parent activity will implement this method to respond to click events.
      */
