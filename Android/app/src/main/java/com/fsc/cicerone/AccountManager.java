@@ -300,4 +300,32 @@ public abstract class AccountManager {
             Log.e(ERROR_TAG, e.toString());
         }
     }
+
+    public static void sendEmailWithContacts(Itinerary itinerary, User deliveryToUser, BooleanRunnable result){
+        JSONObject data = new JSONObject();
+        try {
+            data.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            data.put("itinerary_code",itinerary.getCode());
+            data.put("recipient_email",deliveryToUser.getEmail());
+            SendInPostConnector sendEmailConnector = new SendInPostConnector(ConnectorConstants.EMAIL_SENDER, new DatabaseConnector.CallbackInterface() {
+                @Override
+                public void onStartConnection() {
+                    //Do nothing
+                }
+
+                @Override
+                public void onEndConnection(JSONArray jsonArray) throws JSONException {
+                    result.accept(jsonArray.getJSONObject(0).getBoolean("result"));
+                    if(jsonArray.getJSONObject(0).getBoolean("result")){
+                        Log.i("SEND OK","true");
+                    }else{
+                        Log.e("SEND ERROR", jsonArray.getJSONObject(0).getString("error"));
+                    }
+                }
+            }, data);
+            sendEmailConnector.execute();
+        }catch(JSONException e){
+            Log.e(ERROR_TAG,e.toString());
+        }
+    }
 }

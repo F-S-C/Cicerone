@@ -208,6 +208,11 @@ public final class ConnectorConstants {
     public static final String INSERT_REPORT_DETAILS = SERVER_URL + "/InsertReportDetails.php";
 
     /**
+     * URL of the script that takes care of sending the e-mails.
+     */
+    public static final String EMAIL_SENDER = "https://fscgroup.ddns.net" + "/email_sender/sender.php";
+    
+    /** 
      * URL of the server-side connector for updating a reservation.
      */
     public static final String UPDATE_RESERVATION = SERVER_URL + "/UpdateReservation.php";

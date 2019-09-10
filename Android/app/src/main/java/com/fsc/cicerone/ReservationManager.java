@@ -1,6 +1,7 @@
 package com.fsc.cicerone;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,20 +57,13 @@ public abstract class ReservationManager {
 
     public static void confirmReservation(Reservation reservation) {
         reservation.setConfirmationDate(new Date());
-
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_RESERVATION, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                // TODO: Check and send email to globetrotter (IF-34)
+        AccountManager.sendEmailWithContacts(reservation.getItinerary(),reservation.getClient(), (result) -> {
+            if(result) {
+                SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_RESERVATION);
+                connector.setObjectToSend(reservation.toJSONObject());
+                connector.execute();
             }
         });
-        connector.setObjectToSend(reservation.toJSONObject());
-        connector.execute();
     }
 
     public static void refuseReservation(Reservation reservation) {
