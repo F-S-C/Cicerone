@@ -47,6 +47,7 @@ public class ItineraryCreation extends AppCompatActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
     private static final String DATE_FORMAT = "dd-MM-yy";
+    private static String URL = "image_url";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,30 +278,26 @@ public class ItineraryCreation extends AppCompatActivity {
     }
 
     public void sendData(View view) {
-        JSONObject params = new JSONObject();
         boolean canSend = allFilled();
         if (canSend) {
-            try {
-                params.put("title", title.getText().toString());
-                params.put("description", description.getText().toString());
-                params.put("beginning_date", selectBeginningDate.getText().toString());
-                params.put("ending_date", selectEndingDate.getText().toString());
-                params.put("end_reservations_date", selectReservationDate.getText().toString());
-                params.put("maximum_participants_number", maxParticipants.getText().toString());
-                params.put("minimum_participants_number", minParticipants.getText().toString());
-                params.put("repetitions_per_day", repetitions.getText().toString());
-                params.put("location", location.getText().toString());
-                params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
-                params.put("full_price", fullPrice.getText().toString());
-                params.put("reduced_price", reducedPrice.getText().toString());
-                params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
 
-                submit(params);
+            ItineraryManager.uploadItinerary(
+                    title.getText().toString(),
+                    description.getText().toString(),
+                    selectBeginningDate.getText().toString(),
+                    selectEndingDate.getText().toString(),
+                    selectReservationDate.getText().toString(),
+                    location.getText().toString(),
+                    durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
+                    Integer.parseInt(repetitions.getText().toString()),
+                    Integer.parseInt(minParticipants.getText().toString()),
+                    Integer.parseInt(maxParticipants.getText().toString()),
+                    Float.parseFloat(fullPrice.getText().toString()),
+                    Float.parseFloat(reducedPrice.getText().toString()),
+                    URL
+                    );
 
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         } else {
             Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
         }

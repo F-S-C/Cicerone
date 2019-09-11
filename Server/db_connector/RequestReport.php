@@ -26,7 +26,7 @@ class RequestReport extends JsonConnector
      * @param string|null $reported_user The reported user's username.
      * @param string|null $username The report's author's username.
      */
-    public function __construct(string $report_code = null, string $reported_user = null, string $username = null)
+    public function __construct(int $report_code = null, string $reported_user = null, string $username = null)
     {
         $this->report_code = isset($report_code) && $report_code != "" ? $report_code : null;
         $this->username = isset($username) && $username != "" ? strtolower($username) : null;
@@ -57,7 +57,7 @@ class RequestReport extends JsonConnector
         if (isset($this->report_code)) {
             array_push($conditions, "report_code = ?");
             array_push($data, $this->report_code);
-            $types .= "s";
+            $types .= "i";
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
