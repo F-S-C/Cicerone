@@ -208,12 +208,12 @@
     <string name="report_body">Report body</string>
     <string name="report_sent">Report sent.</string>
     <string name="insert_report">Insert report</string>
-    <string name="report_dialog_message">Please insert all the requested informations to make a report. All fields are required.</string>
+    <string name="report_dialog_message">Please insert all the requested information to make a report. All fields are required.</string>
     <string name="itinerary_earn">Average earnings: %.2f €</string>
     <string name="no_requests_reservation">At the moment there are no reservation requests.</string>
     <string name="avg_earn">Average earnings: %.2f €</string>
-    <string name="no_itineraries_history">At the moment it has not made any itinerary.</string>
-    <string name="participations">Participations</string>
+    <string name="no_itineraries_history">At the moment you haven\'t taken part to an itinerary.</string>
+    <string name="participations">Participation</string>
     <string name="my_itineraries">My itineraries</string>
-    <string name="no_itineraries">You are not partecipating at any itinerary.</string>
+    <string name="no_itineraries">You are not participating at any itinerary.</string>
 </resources>

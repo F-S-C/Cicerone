@@ -1,11 +1,7 @@
 package com.fsc.cicerone;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -19,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -85,12 +82,8 @@ public class ItineraryDetails extends AppCompatActivity {
         duration = findViewById(R.id.duration);
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
-        final Dialog deleteDialog = new Dialog(ItineraryDetails.this, android.R.style.Theme_Black_NoTitleBar);
-        Objects.requireNonNull(deleteDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
-        deleteDialog.setContentView(R.layout.activity_delete_itinerary);
-        deleteDialog.setCancelable(true);
         JSONObject object = new JSONObject();
-         object2 = new JSONObject();
+        object2 = new JSONObject();
         JSONObject objectReview = new JSONObject();
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
@@ -125,20 +118,12 @@ public class ItineraryDetails extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        removeFromWishlist.setOnClickListener(v -> {
-            Button noButton = deleteDialog.findViewById(R.id.no_logout_button);
-            noButton.setOnClickListener(view -> deleteDialog.hide());
-
-            Button yesButton = deleteDialog.findViewById(R.id.yes_logout_button);
-            yesButton.setOnClickListener(view -> {
-                deleteDialog.hide();
-                deleteDialog.dismiss();
-                deleteFromWishlist(object);
-
-
-            });
-            deleteDialog.show();
-        });
+        removeFromWishlist.setOnClickListener(v -> new MaterialAlertDialogBuilder(ItineraryDetails.this).
+                setTitle(getString(R.string.are_you_sure))
+                .setMessage(getString(R.string.confirm_delete))
+                .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteFromWishlist(object)))
+                .setNegativeButton(getString(R.string.no), null)
+                .show());
 
 
         intoWishlist.setOnClickListener(v -> addToWishlist(object));
@@ -276,9 +261,7 @@ public class ItineraryDetails extends AppCompatActivity {
                 if (jsonArray.length() > 0) {
                     requestReservation.setText(getString(R.string.remove_reservation));
                     requestReservation.setOnClickListener(v -> removeReservation(v));
-                }
-                else
-                {
+                } else {
                     requestReservation.setText(getString(R.string.request_reservation));
                     requestReservation.setOnClickListener(v -> askForReservation(v));
                 }
@@ -318,10 +301,10 @@ public class ItineraryDetails extends AppCompatActivity {
             dialog.show();
         });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.insert_details));
-        builder.setMessage(getString(R.string.reservation_dialog_message));
-        builder.setView(v)
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.insert_details))
+                .setMessage(getString(R.string.reservation_dialog_message))
+                .setView(v)
                 .setPositiveButton(R.string.yes, (dialog, id) -> {
                     try {
                         ReservationManager.addReservation(itinerary,
@@ -337,12 +320,12 @@ public class ItineraryDetails extends AppCompatActivity {
                 })
                 .setNegativeButton(R.string.no, (dialog, id) -> {
                     // Do nothing
-                });
-        builder.show();
+                })
+                .show();
     }
 
     public void removeReservation(View v) {
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.are_you_sure))
                 .setMessage(getString(R.string.sure_to_remove_reservation))
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
@@ -360,7 +343,6 @@ public class ItineraryDetails extends AppCompatActivity {
         i.putExtras(bundle);
         view.getContext().startActivity(i);
     }
-
 
 
 }

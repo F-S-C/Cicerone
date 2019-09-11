@@ -1,8 +1,5 @@
 package com.fsc.cicerone;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import android.app.AlertDialog;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -167,7 +169,7 @@ public class AdminDetailsUserFragment extends Fragment {
             startActivity(new Intent(context, AdminMainActivity.class));
             context.finish();
         };
-        new AlertDialog.Builder(context)
+        new MaterialAlertDialogBuilder(context)
                 .setTitle(context.getString(R.string.are_you_sure))
                 .setMessage(context.getString(R.string.sure_to_delete_account))
                 .setPositiveButton(context.getString(R.string.yes), positiveClickListener)

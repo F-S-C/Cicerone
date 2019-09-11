@@ -2,7 +2,6 @@ package com.fsc.cicerone;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DownloadManager;
@@ -11,8 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +31,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,7 +67,7 @@ public class ProfileFragment extends Fragment {
     private EditText documentNumber;
     private EditText documentType;
     private EditText documentExpiryDate;
-    private Dialog switchToCiceroneDialog;
+    private Dialog switchToCiceroneDialog; // TODO: Remove this field
     private Button switchButton;
     private Button modifyButton;
     private Calendar birthCalendar;
@@ -93,15 +92,6 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         context = Objects.requireNonNull(getActivity());
         View view = inflater.inflate(R.layout.activity_profile_fragment, container, false);
-        Dialog logoutDialog = new Dialog(Objects.requireNonNull(getContext()), android.R.style.Theme_Black_NoTitleBar);
-        Objects.requireNonNull(logoutDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
-        logoutDialog.setContentView(R.layout.activity_logout);
-        logoutDialog.setCancelable(true);
-
-        switchToCiceroneDialog = new Dialog(Objects.requireNonNull(getContext()), android.R.style.Theme_Black_NoTitleBar);
-        Objects.requireNonNull(switchToCiceroneDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
-        switchToCiceroneDialog.setContentView(R.layout.switch_to_cicerone);
-        switchToCiceroneDialog.setCancelable(true);
 
         preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         name = view.findViewById(R.id.name);
@@ -139,18 +129,12 @@ public class ProfileFragment extends Fragment {
             updateParams.put("username", AccountManager.getCurrentLoggedUser().getUsername());
             updateParams.put("user_type", AccountManager.getCurrentLoggedUser().getUserType().toInt());
 
-            switchButton.setOnClickListener(view1 -> {
-                Button noButton = switchToCiceroneDialog.findViewById(R.id.switch_cicerone_no_button);
-                noButton.setOnClickListener(v -> switchToCiceroneDialog.hide());
-
-                Button yesButton = switchToCiceroneDialog.findViewById(R.id.switch_cicerone_yes_button);
-                yesButton.setOnClickListener(v -> {
-                    switchToCiceroneDialog.hide();
-                    switchToCicerone(updateParams);
-                });
-
-                switchToCiceroneDialog.show();
-            });
+            switchButton.setOnClickListener(view1 -> new MaterialAlertDialogBuilder(context)
+                    .setTitle(context.getString(R.string.are_you_sure))
+                    .setMessage(context.getString(R.string.answer_switch_to_cicerone))
+                    .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> switchToCicerone(updateParams)))
+                    .setNegativeButton(context.getString(R.string.no), null)
+                    .show());
         } catch (JSONException e) {
             Log.e("EXCEPTION", e.toString());
         }
@@ -165,23 +149,18 @@ public class ProfileFragment extends Fragment {
         documentExpiryDate.setEnabled(false);
         sexList.setEnabled(false);
 
-        logoutButton.setOnClickListener(view1 -> {
-            Button noButton = logoutDialog.findViewById(R.id.no_logout_button);
-            noButton.setOnClickListener(v -> logoutDialog.hide());
-
-            Button yesButton = logoutDialog.findViewById(R.id.yes_logout_button);
-            yesButton.setOnClickListener(v -> {
-                logoutDialog.hide();
-                logoutDialog.dismiss();
-                AccountManager.logout();
-                preferences.edit().remove("session").apply();
-                Intent i = new Intent(getActivity(), SplashActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-            });
-
-            logoutDialog.show();
-        });
+        logoutButton.setOnClickListener(view1 -> new MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.are_you_sure))
+                .setMessage(context.getString(R.string.exit_confirm_answer))
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                    AccountManager.logout();
+                    preferences.edit().remove("session").apply();
+                    Intent i = new Intent(getActivity(), SplashActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                })
+                .setNegativeButton(getString(R.string.no), null)
+                .show());
 
         modifyButton.setOnClickListener(view1 -> {
             if (!name.isEnabled()) {
@@ -319,7 +298,6 @@ public class ProfileFragment extends Fragment {
                 JSONObject userData = jsonArray.getJSONObject(0);
 
                 if (userData.getBoolean("result")) {
-                    switchToCiceroneDialog.dismiss();
                     Toast.makeText(getActivity(), getString(R.string.operation_completed), Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getActivity(), SplashActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -471,13 +449,12 @@ public class ProfileFragment extends Fragment {
             if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     // show an alert dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage(getString(R.string.external_storage_permission_required_message));
-                    builder.setTitle(getString(R.string.please_grant_permission));
-                    builder.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE));
-                    builder.setNeutralButton(getString(R.string.cancel), null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    new MaterialAlertDialogBuilder(context)
+                            .setMessage(getString(R.string.external_storage_permission_required_message))
+                            .setTitle(getString(R.string.please_grant_permission))
+                            .setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE))
+                            .setNegativeButton(getString(R.string.cancel), null)
+                            .show();
                 } else {
                     // Request permission
                     ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
@@ -543,7 +520,7 @@ public class ProfileFragment extends Fragment {
             startActivity(new Intent(context, LoginActivity.class));
             context.finish();
         };
-        new AlertDialog.Builder(context)
+        new MaterialAlertDialogBuilder(context)
                 .setTitle(context.getString(R.string.are_you_sure))
                 .setMessage(context.getString(R.string.sure_to_delete_account))
                 .setPositiveButton(context.getString(R.string.yes), positiveClickListener)

@@ -116,7 +116,7 @@ public class Reservation {
         private int numberOfChildren;
         private Date requestedDate;
         private Date forwardingDate;
-        private Date confirmationDate;
+        private Date confirmationDate = null;
 
         public Builder(User client, Itinerary itinerary) {
             this.client = client;
