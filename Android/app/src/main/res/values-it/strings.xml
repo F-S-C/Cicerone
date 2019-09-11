@@ -194,7 +194,4 @@
     <string name="participations">Partecipazioni</string>
     <string name="my_itineraries">I miei itinerari</string>
     <string name="no_itineraries">Non stai partecipando a nessun itinerario.</string>
-    <string name="my_itineraries">I miei itinerari</string>
-    <string name="no_itineraries">Non stai partecipando ad alcun itinerario.</string>
-    <string name="no_itineraries_history">Al momento non si è partecipati ad alcun itinerario.</string>
 </resources>
