@@ -1,11 +1,16 @@
 package com.fsc.cicerone;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import app_connector.ConnectorConstants;
 
 public class Reservation {
 
@@ -60,6 +65,10 @@ public class Reservation {
         return confirmationDate != null;
     }
 
+    public void setConfirmationDate(Date confirmationDate) {
+        this.confirmationDate = confirmationDate;
+    }
+
     /**
      * Convert the askForReservation to a JSON Object.
      *
@@ -70,17 +79,18 @@ public class Reservation {
         try {
             result.put("username", this.client.getUsername());
             result.put("booked_itinerary", this.itinerary.getCode());
+            result.put("cicerone", this.itinerary.getUsername());
             result.put("number_of_children", this.numberOfChildren);
             result.put("number_of_adults", this.numberOfAdults);
             result.put("total", this.total);
             if (this.requestedDate != null) {
-                result.put("requested_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.requestedDate));
+                result.put("requested_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.requestedDate));
             }
             if (this.forwardingDate != null) {
-                result.put("forwading_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.forwardingDate));
+                result.put("forwading_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.forwardingDate));
             }
             if (this.confirmationDate != null) {
-                result.put("confirm_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.confirmationDate));
+                result.put("confirm_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.confirmationDate));
             }
         } catch (JSONException e) {
             result = null;
@@ -106,14 +116,71 @@ public class Reservation {
         private int numberOfChildren;
         private Date requestedDate;
         private Date forwardingDate;
-        private Date confirmationDate;
+        private Date confirmationDate = null;
 
         public Builder(User client, Itinerary itinerary) {
             this.client = client;
             this.itinerary = itinerary;
         }
 
-        public Builder numberOfAudults(int numberOfAdults) {
+        public Builder(JSONObject jsonObject) {
+            final String ERROR_TAG = "ERR_CREATE_RESERVATION";
+
+            User tempClient;
+            try {
+                tempClient = new User(jsonObject.getJSONObject("username"));
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                tempClient = new User();
+            }
+            this.client = tempClient;
+
+            Itinerary tempItinerary;
+            try {
+                tempItinerary = new Itinerary(jsonObject.getJSONObject("booked_itinerary"));
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                tempItinerary = new Itinerary();
+            }
+            this.itinerary = tempItinerary;
+
+            try {
+                this.numberOfChildren = jsonObject.getInt("number_of_children");
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                this.numberOfChildren = 0;
+            }
+
+            try {
+                this.numberOfAdults = jsonObject.getInt("number_of_adults");
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                this.numberOfAdults = 0;
+            }
+
+            try {
+                this.requestedDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("requested_date"));
+            } catch (JSONException | ParseException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                this.requestedDate = null;
+            }
+
+            try {
+                this.forwardingDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("forwading_date"));
+            } catch (JSONException | ParseException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                this.forwardingDate = null;
+            }
+
+            try {
+                this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("confirm_date"));
+            } catch (JSONException | ParseException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+                this.confirmationDate = null;
+            }
+        }
+
+        public Builder numberOfAdults(int numberOfAdults) {
             this.numberOfAdults = numberOfAdults >= 0 ? numberOfAdults : 0;
             return this;
         }
@@ -128,7 +195,7 @@ public class Reservation {
             return this;
         }
 
-        public Builder forwadingDate(Date forwardingDate) {
+        public Builder forwardingDate(Date forwardingDate) {
             this.forwardingDate = forwardingDate;
             return this;
         }

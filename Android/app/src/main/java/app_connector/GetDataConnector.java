@@ -13,13 +13,6 @@ import javax.net.ssl.HttpsURLConnection;
 public class GetDataConnector extends DatabaseConnector {
 
     /**
-     * Default constructor.
-     */
-    public GetDataConnector() {
-        super();
-    }
-
-    /**
      * Constructor.
      *
      * @param url The url of the server-side script.

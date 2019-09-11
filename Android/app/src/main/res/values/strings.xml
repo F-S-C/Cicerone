@@ -194,11 +194,13 @@
     <string name="remove_user">Remove user</string>
     <string name="remove_reservation">Remove reservation</string>
     <string name="sure_to_remove_reservation">Are you sure you want to remove your reservation?</string>
+    <string name="confirm_reservation">Confirm</string>
+    <string name="decline_reservation">Decline</string>
     <string name="clear_all">Clear all</string>
     <string name="search">Search</string>
     <string name="search_location">Search a location…</string>
     <string name="created_itineraries">Itineraries created</string>
-    <string name="partecipation_itinerary">Participation in itineraries</string>
+    <string name="participation_itinerary">Participation in itineraries</string>
     <string name="doc_not_found">Document not found.</string>
     <string name="no_active_itineraries">At the moment, there aren\'t active itineraries.</string>
     <string name="new_report">New report</string>
@@ -207,5 +209,12 @@
     <string name="report_body">Report body</string>
     <string name="report_sent">Report sent.</string>
     <string name="insert_report">Insert report</string>
-    <string name="report_dialog_message">Please insert all the requested informations to make a report. All fields are required.</string>
+    <string name="report_dialog_message">Please insert all the requested information to make a report. All fields are required.</string>
+    <string name="itinerary_earn">Average earnings: %.2f €</string>
+    <string name="no_requests_reservation">At the moment there are no reservation requests.</string>
+    <string name="avg_earn">Average earnings: %.2f €</string>
+    <string name="no_itineraries_history">At the moment you haven\'t taken part to an itinerary.</string>
+    <string name="participations">Participation</string>
+    <string name="my_itineraries">My itineraries</string>
+    <string name="no_itineraries">You are not participating at any itinerary.</string>
 </resources>

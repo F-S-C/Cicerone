@@ -3,12 +3,12 @@ package com.fsc.cicerone;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Objects;
 
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (activeFragment.equals(homeFragment)) {
-            new AlertDialog.Builder(this)
+            new MaterialAlertDialogBuilder(this)
                     .setTitle(getString(R.string.are_you_sure))
                     .setMessage(getString(R.string.sure_to_exit))
                     .setNegativeButton(android.R.string.no, null)

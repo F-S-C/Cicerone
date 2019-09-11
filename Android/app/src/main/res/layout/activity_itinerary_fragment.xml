@@ -38,10 +38,53 @@
 
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2.5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/partecipations"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:text="@string/participations" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/myitineraries"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:text="@string/my_itineraries" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/noItineraries"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/no_itineraries"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:textSize="18sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itinerary_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" >
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <Button
             android:id="@+id/newItinerary"
@@ -49,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="2.5dp"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             android:text="@string/new_itinerary" />
     </LinearLayout>
 

@@ -6,7 +6,10 @@ package app_connector;
 public final class ConnectorConstants {
 
     private ConnectorConstants() {
+        throw new IllegalStateException("Utility class");
     }
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private static final String SERVER_URL = "https://fscgroup.ddns.net/db_connector";
 
@@ -190,6 +193,11 @@ public final class ConnectorConstants {
     public static final String DELETE_RESERVATION = SERVER_URL + "/DeleteReservation.php";
 
     /**
+     * URL of the server-side connector for the reservations and itineraries details table.
+     */
+    public static final String REQUEST_RESERVATION_JOIN_ITINERARY = SERVER_URL + "/RequestItineraryJoinReservation.php";
+
+    /**
      * URL of the server-side connector for the report details table.
      */
     public static final String INSERT_REPORT = SERVER_URL + "/InsertReport.php";
@@ -198,6 +206,16 @@ public final class ConnectorConstants {
      * URL of the server-side connector for the report details table.
      */
     public static final String INSERT_REPORT_DETAILS = SERVER_URL + "/InsertReportDetails.php";
+
+    /**
+     * URL of the script that takes care of sending the e-mails.
+     */
+    public static final String EMAIL_SENDER = "https://fscgroup.ddns.net" + "/email_sender/sender.php";
+    
+    /** 
+     * URL of the server-side connector for updating a reservation.
+     */
+    public static final String UPDATE_RESERVATION = SERVER_URL + "/UpdateReservation.php";
 
 
 }

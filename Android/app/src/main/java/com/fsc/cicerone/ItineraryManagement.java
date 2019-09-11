@@ -1,10 +1,7 @@
 package com.fsc.cicerone;
 
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -43,9 +41,9 @@ public class ItineraryManagement extends AppCompatActivity {
     private TextView minP;
     private TextView maxP;
     private TextView repetitions;
-    private  TextView duration;
-    private  TextView fPrice;
-    private  TextView rPrice;
+    private TextView duration;
+    private TextView fPrice;
+    private TextView rPrice;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryManagement.class.getName();
 
@@ -71,11 +69,6 @@ public class ItineraryManagement extends AppCompatActivity {
         Button deleteItinerary = findViewById(R.id.deleteItinerary);
         Button updateItinerary = findViewById(R.id.editItinerary);
 
-         final Dialog deleteDialog = new Dialog(ItineraryManagement.this, android.R.style.Theme_Black_NoTitleBar);
-        Objects.requireNonNull(deleteDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
-        deleteDialog.setContentView(R.layout.activity_delete_itinerary);
-        deleteDialog.setCancelable(true);
-
         final Itinerary itinerary;
         final JSONObject code = new JSONObject();
         try {
@@ -90,21 +83,12 @@ public class ItineraryManagement extends AppCompatActivity {
             code.put("itinerary_code", String.valueOf(itinerary.getCode()));
             getDataFromServer(itinerary);
             getItineraryReviews(code);
-            deleteItinerary.setOnClickListener(v -> {
-                Button noButton = deleteDialog.findViewById(R.id.no_logout_button);
-                noButton.setOnClickListener(view -> deleteDialog.hide());
-
-                Button yesButton = deleteDialog.findViewById(R.id.yes_logout_button);
-                yesButton.setOnClickListener(view -> {
-                    deleteDialog.hide();
-                    deleteDialog.dismiss();
-                    deleteItineraryFromServer(code);
-
-
-                });
-
-                deleteDialog.show();
-            });
+            deleteItinerary.setOnClickListener(v -> new MaterialAlertDialogBuilder(ItineraryManagement.this).
+                    setTitle(getString(R.string.are_you_sure))
+                    .setMessage(getString(R.string.confirm_delete))
+                    .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteItineraryFromServer(code)))
+                    .setNegativeButton(getString(R.string.no), null)
+                    .show());
 
             updateItinerary.setOnClickListener(v -> {
                 Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
@@ -128,12 +112,9 @@ public class ItineraryManagement extends AppCompatActivity {
         }
 
 
-        
-
     }
 
-    public void getDataFromServer(Itinerary itinerary)
-    {
+    public void getDataFromServer(Itinerary itinerary) {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
         itineraryTitle.setText(itinerary.getTitle());
@@ -141,7 +122,7 @@ public class ItineraryManagement extends AppCompatActivity {
         Picasso.get().load(itinerary.getImageUrl()).into(image);
         author.setText(itinerary.getUsername());
         String dur = itinerary.getDuration();
-        duration.setText(dur.substring(0,5));
+        duration.setText(dur.substring(0, 5));
         location.setText(itinerary.getLocation());
         repetitions.setText(String.valueOf(itinerary.getRepetitions()));
         fPrice.setText(Float.toString(itinerary.getFullPrice()));
@@ -153,8 +134,7 @@ public class ItineraryManagement extends AppCompatActivity {
         rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
-    public void getItineraryReviews(JSONObject itineraryCode)
-    {
+    public void getItineraryReviews(JSONObject itineraryCode) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -163,17 +143,17 @@ public class ItineraryManagement extends AppCompatActivity {
 
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                if(jsonArray.length() > 0) {
-                    int n=0;
+                if (jsonArray.length() > 0) {
+                    int n = 0;
                     float sum = 0;
                     do {
-                        sum+= jsonArray.getJSONObject(n).getInt("feedback");
-                        n = n+1;
+                        sum += jsonArray.getJSONObject(n).getInt("feedback");
+                        n = n + 1;
                     }
-                    while(n < jsonArray.length());
-                    float total = sum/n;
+                    while (n < jsonArray.length());
+                    float total = sum / n;
                     review.setRating(total);
-                }else{
+                } else {
                     review.setRating(0);
                 }
             }
@@ -182,8 +162,7 @@ public class ItineraryManagement extends AppCompatActivity {
         connector.execute();
     }
 
-    public void deleteItineraryFromServer(JSONObject itCode)
-    {
+    public void deleteItineraryFromServer(JSONObject itCode) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -193,8 +172,7 @@ public class ItineraryManagement extends AppCompatActivity {
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
                 JSONObject object = jsonArray.getJSONObject(0);
-                if(object.getBoolean("result"))
-                {
+                if (object.getBoolean("result")) {
                     Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();

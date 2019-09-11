@@ -1,8 +1,5 @@
 package com.fsc.cicerone;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,10 +45,6 @@ public class WishlistFragment extends Fragment {
         numberItineraries = view.findViewById(R.id.numberOfItineraries);
         clearWishlist = view.findViewById(R.id.clearWishlist);
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
-        final Dialog deleteDialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar);
-        Objects.requireNonNull(deleteDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
-        deleteDialog.setContentView(R.layout.activity_delete_wishlist);
-        deleteDialog.setCancelable(true);
 
         final JSONObject parameters = currentLoggedUser.getCredentials();
         parameters.remove("password");
@@ -58,20 +53,12 @@ public class WishlistFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         requireData(view, parameters, recyclerView);
 
-        clearWishlist.setOnClickListener(v -> {
-            Button noButton = deleteDialog.findViewById(R.id.no_logout_button);
-            noButton.setOnClickListener(view1 -> deleteDialog.hide());
-
-            Button yesButton = deleteDialog.findViewById(R.id.yes_logout_button);
-            yesButton.setOnClickListener(view1 -> {
-                deleteDialog.hide();
-                deleteDialog.dismiss();
-                clearWish(view, parameters, recyclerView);
-
-
-            });
-            deleteDialog.show();
-        });
+        clearWishlist.setOnClickListener(v -> new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()))
+                .setTitle(getString(R.string.are_you_sure))
+                .setMessage(getString(R.string.confirm_delete_wishlist))
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> clearWish(view, parameters, recyclerView))
+                .setNegativeButton(getString(R.string.no), null)
+                .show());
 
         return view;
     }
@@ -88,9 +75,9 @@ public class WishlistFragment extends Fragment {
             public void onEndConnection(JSONArray jsonArray) {
                 progressBar.setVisibility(View.GONE);
                 adapter = new WishlistAdapter(getActivity(), jsonArray);
-                Log.e("length",String.valueOf(jsonArray.length()));
+                Log.e("length", String.valueOf(jsonArray.length()));
                 numberItineraries.setText(String.format(getString(R.string.wishlist_number), jsonArray.length()));
-                if(jsonArray.length() == 0)
+                if (jsonArray.length() == 0)
                     clearWishlist.setVisibility(View.GONE);
 
                 recyclerView.setAdapter(adapter);
@@ -100,8 +87,7 @@ public class WishlistFragment extends Fragment {
         connector.execute();
     }
 
-    private void clearWish (View view, JSONObject parameters, RecyclerView recyclerView)
-    {
+    private void clearWish(View view, JSONObject parameters, RecyclerView recyclerView) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.CLEAR_WISHLIST, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {

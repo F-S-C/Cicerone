@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
 /**
  * An <i>entity</i> class that stores the data of a user.
  */
+@SuppressWarnings("WeakerAccess")
 public class User {
 
     private String name;
@@ -38,6 +40,8 @@ public class User {
      */
     public User() {
         // Automatically set everything to a default value
+        documents = new HashSet<>();
+        languages = new HashSet<>();
     }
 
     /**
@@ -122,6 +126,9 @@ public class User {
         } catch (JSONException | ParseException e) {
             birthDate = null;
         }
+
+        documents = new HashSet<>();
+        languages = new HashSet<>();
     }
 
     /**
@@ -419,6 +426,7 @@ public class User {
 
     /**
      * A function that validates a username. Check that the username is correctly formatted.
+     *
      * @param usernameInput The username to check.
      * @return True if username is valid. False if isn't.
      */
@@ -428,6 +436,7 @@ public class User {
 
     /**
      * A function that validates a email. Check that the email is correctly formatted.
+     *
      * @param emailInput The username to check.
      * @return True if email is valid. False if isn't.
      */

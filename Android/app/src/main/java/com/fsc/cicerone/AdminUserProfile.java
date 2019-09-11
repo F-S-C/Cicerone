@@ -76,13 +76,13 @@ public class AdminUserProfile extends AppCompatActivity {
                         fragment.setArguments(bundle);
                         break;
                     case 1:
-                        supportActionBar.setTitle(getString(R.string.partecipation_itinerary));
-                        fragment = new InsertReviewFragment(); //TODO storico globetrotter
+                        supportActionBar.setTitle(getString(R.string.participation_itinerary));
+                        fragment = new GlobetrotterItineraryListFragment();
                         fragment.setArguments(bundle);
                         break;
                     case 2:
                         supportActionBar.setTitle(getString(R.string.created_itineraries));
-                        fragment = new ItineraryFragment(); //TODO storico cicerone
+                        fragment = new CiceroneItineraryListFragment();
                         fragment.setArguments(bundle);
                     default:
                         break;

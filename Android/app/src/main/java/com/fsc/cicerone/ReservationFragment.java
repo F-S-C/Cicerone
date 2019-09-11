@@ -1,12 +1,13 @@
 package com.fsc.cicerone;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,67 +26,69 @@ import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
- * Class that contains the elements of the TAB Review on the account details page.
+ * Class that contains the elements of the TAB Reservation on the account details page.
  */
-public class SelectedItineraryReviewFragment extends Fragment {
+public class ReservationFragment extends Fragment {
 
-    Adapter adapter;
+    ReservationAdapter adapter;
+    private Activity context;
 
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
+    //private static final String ERROR_TAG = "ERROR IN " + ReservationFragment.class.getName();
 
     /**
-     * Empty Constructor
+     * Empty constructor
      */
-    public SelectedItineraryReviewFragment() {
+    public ReservationFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_reservation_fragment, container, false);
+        context = Objects.requireNonNull(getActivity());
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
-        Bundle bundle = getArguments();
+
+        final JSONObject parameters = new JSONObject();
         try {
-            final JSONObject parameters = new JSONObject();
-            parameters.put("reviewed_itinerary", Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
-            // set up the RecyclerView
-            RecyclerView recyclerView = view.findViewById(R.id.review_list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(view, parameters, recyclerView);
+            parameters.put("cicerone", currentLoggedUser.getUsername());
         } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
+            Log.e("ERROR_RESERVATION_FRAG", e.getMessage());
         }
+        // set up the RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.reservation_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        requireData(view, parameters, recyclerView);
 
         return view;
     }
 
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        TextView message = view.findViewById(R.id.noReview);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
-                message.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 progressBar.setVisibility(View.GONE);
-                if (jsonArray.length() != 0) {
-                    adapter = new Adapter(getActivity(), jsonArray, 2);
+                if(jsonArray.length()>0) {
+                    adapter = new ReservationAdapter(getActivity(), jsonArray);
                     recyclerView.setAdapter(adapter);
                 }
                 else{
-                    message.setVisibility(View.VISIBLE);
+                    Toast.makeText(context , ReservationFragment.this.getString(R.string.no_requests_reservation), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         connector.setObjectToSend(parameters);
         connector.execute();
     }
+
+
 
 }
