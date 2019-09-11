@@ -28,8 +28,54 @@ public class Itinerary {
     private float fullPrice;
     private float reducedPrice;
     private String imageUrl;
-    SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    private final SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
+    /**
+     *
+     * @param title The title of the itinerary.
+     * @param description The description of the itinerary.
+     * @param beginningDate  The beginning date of the itinerary.
+     * @param endingDate  The ending date of the itinerary.
+     * @param reducedPrice The reservation date of the itinerary.
+     * @param location The location of the itinerary.
+     * @param duration The duration of the itinerary.
+     * @param repetitions The repetitions per day of the itinerayr.
+     * @param minParticipants The mininum participanrs of the itinerary.
+     * @param maxParticipants The maximum participants of the itinerary.
+     * @param fullPrice The full price of the itinerary per globetrotter.
+     * @param reducedPrice The reduced price of the itinerary per globetrotter.
+     * @param imageUrl The image url of the itinerary.
+     * @return
+     */
+    public Itinerary(String username, String title, String description, String beginningDate, String endingDate, String reservationDate, int minParticipants, int maxParticipants, String location, int repetitions, String duration, float fullPrice, float reducedPrice, String imageUrl) {
+        this.itineraryCode = -1;
+        this.username = username;
+        this.title = title;
+        this.description = description;
+        try {
+            this.beginningDate = in.parse(beginningDate);
+        } catch (ParseException e) {
+            this.beginningDate = new Date();
+        }
+        try {
+            this.endingDate = in.parse(endingDate);
+        } catch (ParseException e) {
+            this.endingDate = new Date();
+        }
+        try {
+            this.reservationDate = in.parse(reservationDate);
+        } catch (ParseException e) {
+            this.reservationDate = new Date();
+        }
+        this.minParticipants = minParticipants;
+        this.maxParticipants = maxParticipants;
+        this.location = location;
+        this.repetitions = repetitions;
+        this.duration = duration;
+        this.fullPrice = fullPrice;
+        this.reducedPrice = reducedPrice;
+        this.imageUrl = imageUrl;
+    }
 
     /**
      * Default empty constructor.
