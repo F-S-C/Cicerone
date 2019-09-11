@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ItineraryManagement" />
-        <activity android:name=".ItineraryDetails" />
+        <activity android:name=".ItineraryDetails" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ItineraryCreation" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />

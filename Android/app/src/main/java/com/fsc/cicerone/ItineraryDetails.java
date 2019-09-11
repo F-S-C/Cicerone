@@ -13,7 +13,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
@@ -37,7 +39,7 @@ public class ItineraryDetails extends AppCompatActivity {
     private Button requestReservation;
     private Button intoWishlist;
     private Button removeFromWishlist;
-    private TextView itineraryTitle;
+    private TextView itineraryTitle; // TODO: Remove from class diagram
     private ImageView image;
     private TextView description;
     private TextView bDate;
@@ -67,7 +69,6 @@ public class ItineraryDetails extends AppCompatActivity {
         requestReservation = findViewById(R.id.requestReservation);
         intoWishlist = findViewById(R.id.intoWishlist);
         removeFromWishlist = findViewById(R.id.removeFromWishlist);
-        itineraryTitle = findViewById(R.id.title);
         image = findViewById(R.id.image);
         description = findViewById(R.id.description);
         bDate = findViewById(R.id.beginningDate);
@@ -88,10 +89,18 @@ public class ItineraryDetails extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
+
 
         try {
             String s = Objects.requireNonNull(bundle).getString("itinerary");
             itinerary = new Itinerary(new JSONObject(s));
+
+            supportActionBar.setTitle(itinerary.getTitle());
 
             object.put("itinerary_in_wishlist", itinerary.getCode());
             object.put("username", currentLoggedUser.getUsername());
@@ -204,7 +213,6 @@ public class ItineraryDetails extends AppCompatActivity {
     public void getDataFromServer(Itinerary itinerary) {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
-        itineraryTitle.setText(itinerary.getTitle());
         description.setText(itinerary.getDescription());
         Picasso.get().load(itinerary.getImageUrl()).into(image);
         author.setText(itinerary.getUsername());
@@ -344,6 +352,10 @@ public class ItineraryDetails extends AppCompatActivity {
         view.getContext().startActivity(i);
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
 
