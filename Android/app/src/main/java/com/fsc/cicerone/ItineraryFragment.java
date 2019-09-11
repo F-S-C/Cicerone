@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,24 +66,21 @@ public class ItineraryFragment extends Fragment {
         message = view.findViewById(R.id.noItineraries);
 
 
-
         final JSONObject parameters = currentLoggedUser.getCredentials();
         parameters.remove("password");
-        if(currentLoggedUser.getUserType() == UserType.CICERONE)
-        {
+        if (currentLoggedUser.getUserType() == UserType.CICERONE) {
             participations.setVisibility(View.VISIBLE);
             myItineraries.setVisibility(View.VISIBLE);
 
             // set up the RecyclerView for Cicerone's itineraries
-            madeItineraries.setLayoutManager(new LinearLayoutManager(getActivity()));
-            madeItineraries.addItemDecoration(new DividerItemDecoration(madeItineraries.getContext(), DividerItemDecoration.VERTICAL));
+            madeItineraries.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
 
 
         // Set up the RecyclerView for Globetrotter's participations
         participationList.setLayoutManager(new LinearLayoutManager(getActivity()));
         participationList.addItemDecoration(new DividerItemDecoration(participationList.getContext(), DividerItemDecoration.VERTICAL));
-        getParticipations(view,parameters,participationList);
+        getParticipations(view, parameters, participationList);
 
 
         myItineraries.setOnClickListener(v -> {
@@ -92,7 +90,7 @@ public class ItineraryFragment extends Fragment {
             //enable button (Outlined Style)
             myItineraries.setBackgroundColor(ContextCompat.getColor(context, myItineraries.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             myItineraries.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getMyItineraries(v,parameters,madeItineraries);
+            getMyItineraries(v, parameters, madeItineraries);
             message.setVisibility(View.GONE);
             newItinerary.setVisibility(View.VISIBLE);
 
@@ -105,9 +103,8 @@ public class ItineraryFragment extends Fragment {
             //enable button (Outlined Style)
             participations.setBackgroundColor(ContextCompat.getColor(context, participationList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             participations.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getParticipations(v,parameters,madeItineraries);
+            getParticipations(v, parameters, madeItineraries);
             newItinerary.setVisibility(View.GONE);
-
 
 
         });
@@ -131,6 +128,10 @@ public class ItineraryFragment extends Fragment {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 //progressBar.setVisibility(View.GONE);
+                recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                while (recyclerView.getItemDecorationCount() > 0) {
+                    recyclerView.removeItemDecorationAt(0);
+                }
                 adapter = new Adapter(getActivity(), jsonArray, 1);
                 recyclerView.setAdapter(adapter);
             }
@@ -150,9 +151,11 @@ public class ItineraryFragment extends Fragment {
             @Override
             public void onEndConnection(JSONArray jsonArray) {
                 //progressBar.setVisibility(View.GONE);
-                if(jsonArray.length() == 0)
+                if (jsonArray.length() == 0)
                     message.setVisibility(View.VISIBLE);
-                adapter2 = new ReservationAdapter(getActivity(), jsonArray,R.layout.participation_list);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.addItemDecoration(new DividerItemDecoration(participationList.getContext(), DividerItemDecoration.VERTICAL));
+                adapter2 = new ReservationAdapter(getActivity(), jsonArray, R.layout.participation_list);
                 recyclerView.setAdapter(adapter2);
             }
         });

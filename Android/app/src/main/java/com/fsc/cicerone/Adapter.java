@@ -164,7 +164,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                     Date date = inputFormat.parse(mData.getJSONObject(position).getString("beginning_date"));
                     holder.beginning.setText(outputFormat.format(date));
                     date = inputFormat.parse(mData.getJSONObject(position).getString("ending_date"));
-                    holder.ending.setText(outputFormat.format(date));
+                    holder.priceBadge.setText(String.format(context.getString(R.string.price_value),mData.getJSONObject(position).getDouble("full_price")));
 
                     holder.itineraryTitle.setText(title);
                     holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
@@ -240,6 +240,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         TextView reviewerUsername;
         TextView reviewDescription;
         RatingBar ratingBar;
+        TextView priceBadge; // TODO: Add to Class Diagram
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -256,6 +257,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                     itineraryNumber = itemView.findViewById(R.id.itinerary_number);
                     location = itemView.findViewById(R.id.location);
                     beginning = itemView.findViewById(R.id.beginning);
+                    priceBadge = itemView.findViewById(R.id.itinerary_price_badge);
 //                    ending = itemView.findViewById(R.id.ending);
                     break;
 
