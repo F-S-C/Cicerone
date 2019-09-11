@@ -3,9 +3,9 @@
 
 namespace email_sender;
 
-require './PHPMailer/src/Exception.php';
-require './PHPMailer/src/PHPMailer.php';
-require './PHPMailer/src/SMTP.php';
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -31,7 +31,7 @@ class Sender
     protected const EMAIL_FILENAME = "./mail.php";
 
     /** @var string The SMTP host. */
-    protected const SMTP_HOST = 'smtp.gmail.com';
+    protected const SMTP_HOST = "smtp.gmail.com";
 
     /** @var int The SMTP port. */
     protected const SMTP_PORT = 587;
@@ -48,7 +48,7 @@ class Sender
     /** @var string The username of the recipient. */
     private $username = null;
 
-    /** @var string The itinerary code */
+    /** @var int The itinerary code */
     private $itinerary_code = null;
 
     /** @var string The recipient e-mail. */
@@ -85,10 +85,10 @@ class Sender
 
     /**
      * Function that requires a page and converts it into a string passing a list of variables.
-     * @param $variablesToMakeLocal Array of variables to be make local on the email page.
+     * @param $variablesToMakeLocal array Array of variables to be make local on the email page.
      * @return bool|false|string The e-mail page if successful. False otherwise.
      */
-    public function getMailPage($variablesToMakeLocal) {
+    private function getMailPage($variablesToMakeLocal) {
         extract($variablesToMakeLocal);
         if (is_file(self::EMAIL_FILENAME)) {
             ob_start();
@@ -102,7 +102,7 @@ class Sender
      * Requires the user and itinerary data from the database.
      * @return array Array of string to be inserted in the e-mail page.
      */
-    public function getDataFromDB() {
+    private function getDataFromDB() {
         $link = mysqli_connect(self::DB_SERVER_NAME, self::DB_USERNAME, self::DB_P, self::DB_NAME);
         if($link === false){
             print '{"result":false,"error":"Could not connect.  ' . mysqli_connect_error() . '"}';
@@ -146,7 +146,7 @@ class Sender
     /*
      * Create the PHPMailer instance and send the e-mail.
      */
-    public function sendEmail(){
+    private function sendEmail(){
         $mail = new PHPMailer;
         $mail->isSMTP();                                     // Set mailer to use SMTP
         $mail->Host = self::SMTP_HOST;                      // Specify main and backup server
