@@ -83,6 +83,11 @@ class Sender
         //Do nothing
     }
 
+    /**
+     * Function that requires a page and converts it into a string passing a list of variables.
+     * @param $variablesToMakeLocal Array of variables to be make local on the email page.
+     * @return bool|false|string The e-mail page if successful. False otherwise.
+     */
     public function getMailPage($variablesToMakeLocal) {
         extract($variablesToMakeLocal);
         if (is_file(self::EMAIL_FILENAME)) {
@@ -93,6 +98,10 @@ class Sender
         return false;
     }
 
+    /**
+     * Requires the user and itinerary data from the database.
+     * @return array Array of string to be inserted in the e-mail page.
+     */
     public function getDataFromDB() {
         $link = mysqli_connect(self::DB_SERVER_NAME, self::DB_USERNAME, self::DB_P, self::DB_NAME);
         if($link === false){
@@ -134,6 +143,9 @@ class Sender
         return array_merge($user, $itinerary);
     }
 
+    /*
+     * Create the PHPMailer instance and send the e-mail.
+     */
     public function sendEmail(){
         $mail = new PHPMailer;
         $mail->isSMTP();                                     // Set mailer to use SMTP
