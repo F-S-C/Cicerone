@@ -162,21 +162,22 @@
 
                     <Button
                         android:id="@+id/take_charge_report"
-                        android:layout_width="140dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/take_charge" />
 
                     <Space
-                        android:layout_width="85dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
 
                     <Button
                         android:id="@+id/close_report"
-                        android:layout_width="140dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/close_report" />
+
                 </LinearLayout>
 
             </LinearLayout>
