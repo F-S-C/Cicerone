@@ -318,7 +318,6 @@ public abstract class AccountManager {
 
                         @Override
                         public void onEndConnection(List<Reservation> list) {
-                            // TODO: Use Reservation object
                             int count = 0;
                             float sum = 0;
                             for (Reservation reservation : list) {
