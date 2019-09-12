@@ -1,4 +1,5 @@
 package com.fsc.cicerone;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -63,7 +65,8 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void getReportFromServer(JSONObject params){
+    private void getReportFromServer(JSONObject params) {
+        // TODO: Add report class
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REPORT_FRAGMENT, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -114,59 +117,61 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void takeCharge ( JSONObject params) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REPORT_DETAILS, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+    public void takeCharge(JSONObject params) {
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_REPORT_DETAILS,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                Log.e("p", object.toString());
-                if (object.getBoolean("result")) {
-                    Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show();
-                    getReportFromServer(params);
-                }
-            }
-        });
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        Log.e("p", result.toJSONObject().toString());
+                        if (result.getResult()) {
+                            Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show();
+                            getReportFromServer(params);
+                        }
+                    }
+                });
         try {
             params.put("object", reportTitle.getText().toString());
             params.put("report_body", bodyText.getText().toString());
-            params.put("state",ReportStatus.getInt(ReportStatus.PENDING));
+            params.put("state", ReportStatus.getInt(ReportStatus.PENDING));
             connector.setObjectToSend(params);
             connector.execute();
-        }catch (JSONException e){
-            Log.e(ERROR_TAG,e.toString());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.toString());
         }
     }
 
-    public void close ( JSONObject params) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REPORT_DETAILS, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+    public void close(JSONObject params) {
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_REPORT_DETAILS,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                Log.e("p", object.toString());
-                if (object.getBoolean("result")) {
-                    Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();
-                    getReportFromServer(params);
-                }
-            }
-        });
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                        Log.e("p", result.toJSONObject().toString());
+                        if (result.getResult()) {
+                            Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();
+                            getReportFromServer(params);
+                        }
+                    }
+                });
         try {
             params.put("object", reportTitle.getText().toString());
             params.put("report_body", bodyText.getText().toString());
-            params.put("state",ReportStatus.getInt(ReportStatus.CLOSED));
+            params.put("state", ReportStatus.getInt(ReportStatus.CLOSED));
             connector.setObjectToSend(params);
             connector.execute();
-        }catch (JSONException e){
-            Log.e(ERROR_TAG,e.toString());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.toString());
         }
     }
 }

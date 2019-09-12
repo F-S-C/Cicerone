@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import app_connector.ConnectorConstants;
+
 /**
  * A document as represented in Cicerone. Each document is identified by a number.
  */
@@ -50,6 +52,24 @@ public class Document extends BusinessEntity {
             this.expiryDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(expiryDate);
         } catch (ParseException e) {
             this.expiryDate = null;
+        }
+    }
+
+    public Document(JSONObject jsonObject) {
+        try {
+            number = jsonObject.getString("number");
+        } catch (JSONException e) {
+            number = "";
+        }
+        try {
+            type = jsonObject.getString("document_type");
+        } catch (JSONException e) {
+            type = "";
+        }
+        try {
+            expiryDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("expiry_date"));
+        } catch (ParseException | JSONException e) {
+            expiryDate = new Date();
         }
     }
 
@@ -125,6 +145,7 @@ public class Document extends BusinessEntity {
 
     /**
      * Generate an hash code for the object.
+     *
      * @return The hash code of the object.
      */
     @Override
@@ -134,6 +155,7 @@ public class Document extends BusinessEntity {
 
     /**
      * Convert the document to a JSON Object
+     *
      * @return A JSON Object containing the data that were stored in the object.
      */
     public JSONObject toJSONObject() {
@@ -142,7 +164,7 @@ public class Document extends BusinessEntity {
             doc.put("document_number", this.number);
             doc.put("document_type", this.type);
             doc.put("expiry_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.expiryDate));
-        }catch (JSONException e){
+        } catch (JSONException e) {
             doc = null;
         }
         return doc;

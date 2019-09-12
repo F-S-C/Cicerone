@@ -98,6 +98,66 @@ public class Reservation extends BusinessEntity {
         return result;
     }
 
+    public Reservation(JSONObject jsonObject) {
+        final String ERROR_TAG = "ERR_CREATE_RESERVATION";
+
+        User tempClient;
+        try {
+            tempClient = new User(jsonObject.getJSONObject("username"));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempClient = new User();
+        }
+        this.client = tempClient;
+
+        Itinerary tempItinerary;
+        try {
+            tempItinerary = new Itinerary(jsonObject.getJSONObject("booked_itinerary"));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempItinerary = new Itinerary();
+        }
+        this.itinerary = tempItinerary;
+
+        try {
+            this.numberOfChildren = jsonObject.getInt("number_of_children");
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            this.numberOfChildren = 0;
+        }
+
+        try {
+            this.numberOfAdults = jsonObject.getInt("number_of_adults");
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            this.numberOfAdults = 0;
+        }
+
+        try {
+            this.requestedDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("requested_date"));
+        } catch (JSONException | ParseException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            this.requestedDate = null;
+        }
+
+        try {
+            this.forwardingDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("forwading_date"));
+        } catch (JSONException | ParseException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            this.forwardingDate = null;
+        }
+
+        try {
+            if (jsonObject.has("confirm_date") && !jsonObject.getString("confirm_date").equals("0000-00-00"))
+                this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("confirm_date"));
+            else
+                this.confirmationDate = null;
+        } catch (JSONException | ParseException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            this.confirmationDate = null;
+        }
+    }
+
     private Reservation(Builder builder) {
         this.client = builder.client;
         this.itinerary = builder.itinerary;
@@ -121,63 +181,6 @@ public class Reservation extends BusinessEntity {
         public Builder(User client, Itinerary itinerary) {
             this.client = client;
             this.itinerary = itinerary;
-        }
-
-        public Builder(JSONObject jsonObject) {
-            final String ERROR_TAG = "ERR_CREATE_RESERVATION";
-
-            User tempClient;
-            try {
-                tempClient = new User(jsonObject.getJSONObject("username"));
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                tempClient = new User();
-            }
-            this.client = tempClient;
-
-            Itinerary tempItinerary;
-            try {
-                tempItinerary = new Itinerary(jsonObject.getJSONObject("booked_itinerary"));
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                tempItinerary = new Itinerary();
-            }
-            this.itinerary = tempItinerary;
-
-            try {
-                this.numberOfChildren = jsonObject.getInt("number_of_children");
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                this.numberOfChildren = 0;
-            }
-
-            try {
-                this.numberOfAdults = jsonObject.getInt("number_of_adults");
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                this.numberOfAdults = 0;
-            }
-
-            try {
-                this.requestedDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("requested_date"));
-            } catch (JSONException | ParseException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                this.requestedDate = null;
-            }
-
-            try {
-                this.forwardingDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("forwading_date"));
-            } catch (JSONException | ParseException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                this.forwardingDate = null;
-            }
-
-            try {
-                this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("confirm_date"));
-            } catch (JSONException | ParseException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                this.confirmationDate = null;
-            }
         }
 
         public Builder numberOfAdults(int numberOfAdults) {

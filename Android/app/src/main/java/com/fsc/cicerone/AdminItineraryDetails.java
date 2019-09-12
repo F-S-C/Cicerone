@@ -106,6 +106,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
     }
 
     public void getItineraryReviews(JSONObject itineraryCode) {
+        // TODO: Add review class
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {

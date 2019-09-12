@@ -317,20 +317,14 @@ public abstract class AccountManager {
                         }
 
                         @Override
-                        public void onEndConnection(List<Reservation> jsonArray) {
+                        public void onEndConnection(List<Reservation> list) {
                             // TODO: Use Reservation object
                             int count = 0;
                             float sum = 0;
-                            for (int i = 0; i < jsonArray.size(); i++) {
-                                if (jsonArray.get(i).isConfirmed()) {
-                                    try {
-                                        if (!jsonArray.get(i).getConfirmationDate().equals(new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse("0000-00-00"))) {
-                                            count++;
-                                            sum += jsonArray.get(i).getTotal();
-                                        }
-                                    } catch (ParseException e) {
-                                        Log.e(ERROR_TAG, e.getMessage());
-                                    }
+                            for (Reservation reservation : list) {
+                                if (reservation.isConfirmed()) {
+                                    count++;
+                                    sum += reservation.getTotal();
                                 }
                             }
                             t.setText(c.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));

@@ -1,7 +1,6 @@
 package com.fsc.cicerone.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.Reservation;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,21 +31,15 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
      * Constructor.
      *
      * @param context   The parent Context.
-     * @param jsonArray The array of JSON Objects got from server.
+     * @param list The array of JSON Objects got from server.
      */
-    public AdminItineraryGlobetrotterAdapter(Context context, JSONArray jsonArray) {
+    public AdminItineraryGlobetrotterAdapter(Context context, List<Reservation> list) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = new ArrayList<>(jsonArray.length());
-        for (int i = 0; i < jsonArray.length(); i++) {
-            try {
-                Reservation toAdd = new Reservation.Builder(jsonArray.getJSONObject(i)).build();
-
-                // The reservation must be shown if and only if it was confirmed.
-                if (toAdd.isConfirmed()) {
-                    this.mData.add(toAdd);
-                }
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
+        this.mData = list;
+        for(Reservation reservation : this.mData) {
+            // The reservation must be shown if and only if it was confirmed.
+            if (!reservation.isConfirmed()) {
+                this.mData.remove(reservation);
             }
         }
     }

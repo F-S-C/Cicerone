@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -59,13 +60,7 @@ public class ChangePassword extends AppCompatActivity {
             }
         });
 
-        newPassword.setOnFocusChangeListener(
-            new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean hasFocus) {
-                    verifyFields();
-                }
-            });
+        newPassword.setOnFocusChangeListener((view, hasFocus) -> verifyFields());
 
         newPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -84,21 +79,9 @@ public class ChangePassword extends AppCompatActivity {
             }
         });
 
-        newPassword.setOnFocusChangeListener(
-                new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View view, boolean hasFocus) {
-                        verifyFields();
-                    }
-                });
+        newPassword.setOnFocusChangeListener((view, hasFocus) -> verifyFields());
 
-        verifyNewPassword.setOnFocusChangeListener(
-                new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View view, boolean hasFocus) {
-                        verifyFields();
-                    }
-                });
+        verifyNewPassword.setOnFocusChangeListener((view, hasFocus) -> verifyFields());
 
         verifyNewPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -117,14 +100,14 @@ public class ChangePassword extends AppCompatActivity {
             }
         });
 
-        changeP.setOnClickListener(view ->{
-            if(oldPassword.getText().toString().equals(newPassword.getText().toString())){
+        changeP.setOnClickListener(view -> {
+            if (oldPassword.getText().toString().equals(newPassword.getText().toString())) {
                 Toast.makeText(getApplicationContext(), getString(R.string.oldpw_equals_new_err), Toast.LENGTH_LONG).show();
                 changeP.setEnabled(false);
-            }else{
-                if(oldPassword.getText().toString().equals(AccountManager.getCurrentLoggedUser().getPassword())) {
+            } else {
+                if (oldPassword.getText().toString().equals(AccountManager.getCurrentLoggedUser().getPassword())) {
                     changePasswordOnServer();
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.oldpw_mism_error), Toast.LENGTH_SHORT).show();
                     changeP.setEnabled(false);
                 }
@@ -132,51 +115,52 @@ public class ChangePassword extends AppCompatActivity {
         });
     }
 
-    private void changePasswordOnServer(){
+    private void changePasswordOnServer() {
         User user = AccountManager.getCurrentLoggedUser();
         JSONObject params = new JSONObject();
         try {
             params.put("username", user.getUsername());
             params.put("password", newPassword.getText().toString());
-            SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    // Do nothing
-                }
+            BooleanConnector connector = new BooleanConnector(
+                    ConnectorConstants.UPDATE_REGISTERED_USER,
+                    new BooleanConnector.CallbackInterface() {
+                        @Override
+                        public void onStartConnection() {
+                            // Do nothing
+                        }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    JSONObject object = jsonArray.getJSONObject(0);
-                    if (object.getBoolean("result")) {
-                        user.setPassword(newPassword.getText().toString());
-                        Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
-                        onBackPressed();
-                    }else{
-                        Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            connector.setObjectToSend(params);
+                        @Override
+                        public void onEndConnection(BooleanConnector.BooleanResult result) {
+                            if (result.getResult()) {
+                                user.setPassword(newPassword.getText().toString());
+                                Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
+                                onBackPressed();
+                            } else {
+                                Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    },
+                    params);
             connector.execute();
-        }catch(JSONException e){
-            Log.e(ERROR_TAG,e.toString());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.toString());
         }
     }
 
-    private void verifyFields(){
-        if(oldPassword.getText().toString().equals("")) {
+    private void verifyFields() {
+        if (oldPassword.getText().toString().equals("")) {
             oldPassword.setError(getString(R.string.error_fields_empty));
             changeP.setEnabled(false);
-        }else{
+        } else {
             oldPassword.setError(null);
-            if(newPassword.getText().toString().equals("")){
+            if (newPassword.getText().toString().equals("")) {
                 newPassword.setError(getString(R.string.error_fields_empty));
-            }else{
+            } else {
                 newPassword.setError(null);
-                if(newPassword.getText().toString().equals(verifyNewPassword.getText().toString())){
+                if (newPassword.getText().toString().equals(verifyNewPassword.getText().toString())) {
                     verifyNewPassword.setError(null);
                     changeP.setEnabled(true);
-                }else{
+                } else {
                     verifyNewPassword.setError(getString(R.string.notequals));
                     changeP.setEnabled(false);
                 }

@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.WishlistAdapter;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Itinerary;
 
 import org.json.JSONArray;
 
+import java.util.List;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -57,25 +60,27 @@ public class HomeFragment extends Fragment {
 
     private void requireData(View view, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        GetDataConnector connector = new GetDataConnector(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                progressBar.setVisibility(View.VISIBLE);
-            }
+        GetDataConnector<Itinerary> connector = new GetDataConnector<>(
+                ConnectorConstants.REQUEST_ACTIVE_ITINERARY,
+                BusinessEntityBuilder.getFactory(Itinerary.class),
+                new DatabaseConnector.CallbackInterface<Itinerary>() {
+                    @Override
+                    public void onStartConnection() {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) {
-                progressBar.setVisibility(View.GONE);
-                if (jsonArray.length() > 0) {
-                    adapter = new WishlistAdapter(getActivity(), jsonArray);
-                    recyclerView.setAdapter(adapter);
-                }
-                else{
-                    Toast.makeText(context , HomeFragment.this.getString(R.string.no_active_itineraries), Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onEndConnection(List<Itinerary> list) {
+                        progressBar.setVisibility(View.GONE);
+                        if (list.size() > 0) {
+                            adapter = new WishlistAdapter(getActivity(), list);
+                            recyclerView.setAdapter(adapter);
+                        } else {
+                            Toast.makeText(context, HomeFragment.this.getString(R.string.no_active_itineraries), Toast.LENGTH_SHORT).show();
 
-                }
-            }
-        });
+                        }
+                    }
+                });
         connector.execute();
     }
 

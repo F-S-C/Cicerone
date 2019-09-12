@@ -13,12 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.AdminItineraryAdapter;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -64,14 +67,17 @@ public class CiceroneItineraryListFragment extends Fragment {
     }
 
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_ITINERARY,
+                BusinessEntityBuilder.getFactory(Itinerary.class),
+                new DatabaseConnector.CallbackInterface<Itinerary>() {
             @Override
             public void onStartConnection() {
 
             }
 
             @Override
-            public void onEndConnection(JSONArray jsonArray) {
+            public void onEndConnection(List<Itinerary> jsonArray) {
                 adapter = new AdminItineraryAdapter(getActivity(), jsonArray);
                 recyclerView.setAdapter(adapter);
             }
