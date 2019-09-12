@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.Adapter;
+import com.fsc.cicerone.model.UserType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,7 +65,7 @@ public class ReportFragment extends Fragment {
             final JSONObject parameters = new JSONObject(preferences.getString("session","")); //Connection params
             parameters.remove("password");
             // set up the RecyclerView
-            if(AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
+            if(AccountManager.getCurrentLoggedUser().getUserType()== UserType.ADMIN){
                 parameters.remove("username");
             }
             RecyclerView recyclerView = view.findViewById(R.id.report_list);

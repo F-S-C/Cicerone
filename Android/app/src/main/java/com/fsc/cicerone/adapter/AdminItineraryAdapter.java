@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.Itinerary;
+import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.R;
 
 import org.json.JSONArray;

@@ -1,6 +1,8 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.model;
 
 import android.util.Patterns;
+
+import com.fsc.cicerone.Language;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +19,7 @@ import java.util.regex.Pattern;
  * An <i>entity</i> class that stores the data of a user.
  */
 @SuppressWarnings("WeakerAccess")
-public class User {
+public class User extends BusinessEntity {
 
     private String name;
     private String surname;

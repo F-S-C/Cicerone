@@ -21,6 +21,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.fsc.cicerone.model.Document;
+import com.fsc.cicerone.model.Sex;
+import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserType;
 import com.hootsuite.nachos.NachoTextView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

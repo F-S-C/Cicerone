@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.Adapter;
 import com.fsc.cicerone.adapter.ReservationAdapter;
+import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

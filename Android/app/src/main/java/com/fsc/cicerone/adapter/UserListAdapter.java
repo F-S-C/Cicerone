@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.AdminUserProfile;
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.User;
-import com.fsc.cicerone.UserType;
+import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserType;
 
 import org.json.JSONArray;
 import org.json.JSONException;

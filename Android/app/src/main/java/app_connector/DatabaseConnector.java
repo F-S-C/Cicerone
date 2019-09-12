@@ -3,8 +3,15 @@ package app_connector;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.fsc.cicerone.model.BusinessEntity;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -12,12 +19,12 @@ import org.json.JSONException;
  * This class gives an interface to communicate with a database. It needs the URL of the server-side
  * script that generates and handles the data.
  */
-public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
+public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncTask<Void, Void, String> {
 
     /**
      * An interface to use before and after the connection.
      */
-    public interface CallbackInterface {
+    public interface CallbackInterface<T> {
         /**
          * Function that will be called before the start of the connection.
          */
@@ -26,27 +33,28 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
         /**
          * Function that will be called when the connection has ended.
          *
-         * @param jsonArray This array contains the results of the connection.
-         * @throws JSONException If there are errors in the conversion of the results to JSON,
-         * an exception is thrown.
+         * @param list This array contains the results of the connection.
          */
-        void onEndConnection(JSONArray jsonArray) throws JSONException;
+        void onEndConnection(List<T> list);
     }
 
     final String fileUrl; // The URL of the server-side script
-    private CallbackInterface callback; // A reference to a CallbackInterface
+    private CallbackInterface<T> callback; // A reference to a CallbackInterface
+
+    private BusinessEntityBuilder<T> builder;
 
     /**
      * Constructor.
      *
      * @param url The url of the server-side script.
      */
-    DatabaseConnector(String url) {
+    DatabaseConnector(String url, BusinessEntityBuilder<T> builder) {
         super();
         fileUrl = url;
-        callback = new CallbackInterface() {
+        this.builder = builder;
+        callback = new CallbackInterface<T>() {
             @Override
-            public void onEndConnection(JSONArray jsonArray) {
+            public void onEndConnection(List<T> jsonArray) {
                 // Do nothing by default
             }
 
@@ -64,9 +72,10 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
      * @param callback A reference to CallbackInterface that will be used before and after the
      *                 connection.
      */
-    DatabaseConnector(String url, CallbackInterface callback) {
+    DatabaseConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
         super();
         fileUrl = url;
+        this.builder = builder;
         this.callback = callback;
     }
 
@@ -92,8 +101,21 @@ public abstract class DatabaseConnector extends AsyncTask<Void, Void, String> {
                 s = s.trim(); // removing excess blank characters
 
                 // adapting the string to be a JSON Array by adding the brackets where needed
-                callback.onEndConnection(new JSONArray((s.startsWith("[") ? "" : "[") + s + (s.endsWith("]") ? "" : "]")));
-            } catch (JSONException e) {
+                JSONArray jsonArray = new JSONArray((s.startsWith("[") ? "" : "[") + s + (s.endsWith("]") ? "" : "]"));
+                ArrayList<T> array = new ArrayList<>(jsonArray.length());
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    try {
+                        T object = builder.fromJSONObject(jsonArray.getJSONObject(i));
+
+                        array.add(object);
+                    } catch (JSONException e) {
+                        Log.e("ADD_ELEMENT_EXCEPTION", e.getMessage());
+                    }
+                }
+
+
+                callback.onEndConnection(array);
+            } catch (JSONException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
                 Log.e("EXCEPTION", e.toString());
             }
         }

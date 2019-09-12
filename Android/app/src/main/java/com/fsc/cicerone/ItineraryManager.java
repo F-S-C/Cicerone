@@ -1,5 +1,7 @@
 package com.fsc.cicerone;
 
+import com.fsc.cicerone.model.Itinerary;
+
 import org.json.JSONArray;
 
 import app_connector.ConnectorConstants;

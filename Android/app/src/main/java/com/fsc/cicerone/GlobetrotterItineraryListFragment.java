@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.AdminItineraryGlobetrotterAdapter;
+import com.fsc.cicerone.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;

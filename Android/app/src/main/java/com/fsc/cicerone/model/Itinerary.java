@@ -1,4 +1,6 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.model;
+
+import com.fsc.cicerone.model.BusinessEntity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +13,7 @@ import java.util.Locale;
 /**
  * An <i>entity</i> class that stores the data of an itinerary.
  */
-public class Itinerary {
+public class Itinerary extends BusinessEntity {
 
     private int itineraryCode;
     private String username;

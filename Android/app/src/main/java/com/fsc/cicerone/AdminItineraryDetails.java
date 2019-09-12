@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.model.Itinerary;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;

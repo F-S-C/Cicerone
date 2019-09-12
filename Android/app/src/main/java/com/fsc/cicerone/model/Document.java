@@ -1,4 +1,4 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * A document as represented in Cicerone. Each document is identified by a number.
  */
-public class Document {
+public class Document extends BusinessEntity {
     private String number;
     private String type;
     private Date expiryDate;
@@ -136,7 +136,7 @@ public class Document {
      * Convert the document to a JSON Object
      * @return A JSON Object containing the data that were stored in the object.
      */
-    public JSONObject getJSONObject() {
+    public JSONObject toJSONObject() {
         JSONObject doc = new JSONObject();
         try {
             doc.put("document_number", this.number);

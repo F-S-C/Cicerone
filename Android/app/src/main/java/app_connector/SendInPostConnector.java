@@ -2,6 +2,9 @@ package app_connector;
 
 import android.util.Log;
 
+import com.fsc.cicerone.model.BusinessEntity;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,7 +30,7 @@ import javax.net.ssl.HttpsURLConnection;
  * This connector sends data using POST to a server-side script that will be used in order to
  * connect to a database.
  */
-public class SendInPostConnector extends DatabaseConnector {
+public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConnector<T> {
 
     private JSONObject objectToSend; // The object that will be sent
 
@@ -36,8 +39,8 @@ public class SendInPostConnector extends DatabaseConnector {
      *
      * @param url The url of the server-side script.
      */
-    public SendInPostConnector(String url) {
-        super(url);
+    public SendInPostConnector(String url, BusinessEntityBuilder<T> builder) {
+        super(url, builder);
         objectToSend = new JSONObject();
     }
 
@@ -48,8 +51,8 @@ public class SendInPostConnector extends DatabaseConnector {
      * @param callback A reference to CallbackInterface that will be used before and after the
      *                 connection.
      */
-    public SendInPostConnector(String url, CallbackInterface callback) {
-        super(url, callback);
+    public SendInPostConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
+        super(url, builder, callback);
         objectToSend = new JSONObject();
     }
 
@@ -61,8 +64,8 @@ public class SendInPostConnector extends DatabaseConnector {
      *                     connection.
      * @param objectToSend A JSON Object containing the data that will be sent.
      */
-    public SendInPostConnector(String url, CallbackInterface callback, JSONObject objectToSend) {
-        super(url, callback);
+    public SendInPostConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback, JSONObject objectToSend) {
+        super(url, builder, callback);
         this.objectToSend = objectToSend;
     }
 

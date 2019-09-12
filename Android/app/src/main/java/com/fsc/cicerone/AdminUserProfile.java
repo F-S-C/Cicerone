@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;

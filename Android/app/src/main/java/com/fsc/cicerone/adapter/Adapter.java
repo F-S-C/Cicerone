@@ -18,13 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.AccountManager;
 import com.fsc.cicerone.AdminReportDetailsActivity;
-import com.fsc.cicerone.Itinerary;
+import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.ItineraryManagement;
 import com.fsc.cicerone.ProfileActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.ReportDetailsActivity;
 import com.fsc.cicerone.ReportStatus;
-import com.fsc.cicerone.UserType;
+import com.fsc.cicerone.model.UserType;
 
 import org.json.JSONArray;
 import org.json.JSONException;

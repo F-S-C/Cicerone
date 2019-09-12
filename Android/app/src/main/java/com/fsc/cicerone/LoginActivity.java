@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.fsc.cicerone.model.UserType;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

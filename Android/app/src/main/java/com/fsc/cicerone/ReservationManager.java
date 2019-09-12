@@ -1,11 +1,12 @@
 package com.fsc.cicerone;
 
 import android.util.Log;
-import android.widget.Toast;
+
+import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.Reservation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Date;
 

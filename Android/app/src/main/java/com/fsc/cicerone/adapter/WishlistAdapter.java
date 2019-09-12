@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.AccountManager;
 import com.fsc.cicerone.AdminItineraryDetails;
-import com.fsc.cicerone.Itinerary;
+import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.ItineraryDetails;
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.UserType;
+import com.fsc.cicerone.model.UserType;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.Reservation;
+import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.ReservationManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 

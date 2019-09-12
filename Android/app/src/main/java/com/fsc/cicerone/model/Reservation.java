@@ -1,4 +1,4 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.model;
 
 import android.util.Log;
 
@@ -12,7 +12,7 @@ import java.util.Locale;
 
 import app_connector.ConnectorConstants;
 
-public class Reservation {
+public class Reservation extends BusinessEntity {
 
     private final User client;
     private final Itinerary itinerary;

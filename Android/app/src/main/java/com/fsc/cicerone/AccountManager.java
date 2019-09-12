@@ -4,6 +4,10 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.fsc.cicerone.model.Document;
+import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.User;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -238,7 +242,7 @@ public abstract class AccountManager {
      * @param result   A function to be executed after the insert attempt.
      */
     public static void insertUserDocument(String username, Document document, BooleanRunnable result) {
-        JSONObject doc = document.getJSONObject();
+        JSONObject doc = document.toJSONObject();
         try {
             doc.put("username", username);
             Log.i("DOCUMENT", doc.toString());
