@@ -52,7 +52,7 @@
 
                         <RatingBar
                             android:id="@+id/it_feedback"
-                            style="@android:style/Widget.Material.Light.RatingBar.Indicator"
+                            style="@android:style/Widget.Material.RatingBar.Indicator"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:isIndicator="true"
