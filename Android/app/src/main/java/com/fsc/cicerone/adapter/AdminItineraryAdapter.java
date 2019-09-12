@@ -1,7 +1,6 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fsc.cicerone.Itinerary;
+import com.fsc.cicerone.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,7 +42,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
      * @param context   The parent Context.
      * @param jsonArray The array of JSON Objects got from server.
      */
-    AdminItineraryAdapter(Context context, JSONArray jsonArray) {
+    public AdminItineraryAdapter(Context context, JSONArray jsonArray) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = jsonArray;
         this.context = context;

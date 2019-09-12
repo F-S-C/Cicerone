@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fsc.cicerone.adapter.Adapter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

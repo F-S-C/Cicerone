@@ -1,4 +1,4 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.fsc.cicerone.AccountManager;
+import com.fsc.cicerone.AdminReportDetailsActivity;
+import com.fsc.cicerone.Itinerary;
+import com.fsc.cicerone.ItineraryManagement;
+import com.fsc.cicerone.ProfileActivity;
+import com.fsc.cicerone.R;
+import com.fsc.cicerone.ReportDetailsActivity;
+import com.fsc.cicerone.ReportStatus;
+import com.fsc.cicerone.UserType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +82,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
      * @param jsonArray  The array of JSON Objects got from server.
      * @param typeNumber The code that indicates the type of style to use.
      */
-    Adapter(Context context, JSONArray jsonArray, int typeNumber) {
+    public Adapter(Context context, JSONArray jsonArray, int typeNumber) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = jsonArray;
         this.type = ViewType.getValue(typeNumber);
@@ -136,7 +146,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                 }
                 holder.itemView.setOnClickListener(v -> {
                     Intent i;
-                    if (AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
+                    if (AccountManager.getCurrentLoggedUser().getUserType()== UserType.ADMIN){
                         i = new Intent ().setClass(v.getContext(), AdminReportDetailsActivity.class); //TODO IF-38
                     }
                     else {

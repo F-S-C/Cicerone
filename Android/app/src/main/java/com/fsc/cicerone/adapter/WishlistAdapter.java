@@ -1,4 +1,4 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import com.fsc.cicerone.AccountManager;
+import com.fsc.cicerone.AdminItineraryDetails;
+import com.fsc.cicerone.Itinerary;
+import com.fsc.cicerone.ItineraryDetails;
+import com.fsc.cicerone.R;
+import com.fsc.cicerone.UserType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +48,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
      * @param context    The parent Context.
      * @param jsonArray  The array of JSON Objects got from server.
      */
-    WishlistAdapter(Context context, JSONArray jsonArray) {
+    public WishlistAdapter(Context context, JSONArray jsonArray) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = jsonArray;
         this.context = context;
@@ -85,7 +91,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
                 holder.itemView.setOnClickListener(v -> {
                     Intent i;
-                    if(AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
+                    if(AccountManager.getCurrentLoggedUser().getUserType()== UserType.ADMIN){
                         i = new Intent().setClass(v.getContext(), AdminItineraryDetails.class);
                     }
                     else{
