@@ -74,17 +74,23 @@
 
                         <RatingBar
                             android:id="@+id/avg_feedback"
+                            style="@android:style/Widget.Material.RatingBar.Indicator"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:isIndicator="true"
+                            android:maxWidth="45dip"
+                            android:maxHeight="45dip"
+                            android:minWidth="40dip"
+                            android:minHeight="40dip"
                             android:numStars="5"
                             android:textAlignment="center" />
+
                     </LinearLayout>
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="13dp" />
+                    android:layout_height="16dp" />
 
                 <TextView
                     android:id="@+id/name_profile"
@@ -92,7 +98,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorWhite" />
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/surname_profile"
@@ -100,7 +107,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/surname"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorWhite" />
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/email_profile"
@@ -108,7 +116,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/email"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorWhite" />
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
