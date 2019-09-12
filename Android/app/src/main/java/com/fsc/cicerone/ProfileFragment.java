@@ -33,6 +33,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,14 +60,14 @@ import app_connector.SendInPostConnector;
 public class ProfileFragment extends Fragment {
 
     private static final String ERROR_TAG = "ERROR IN " + ProfileFragment.class.getName();
-    private EditText name;
-    private EditText surname;
-    private EditText email;
-    private EditText cellphone;
-    private EditText birthDate;
-    private EditText documentNumber;
-    private EditText documentType;
-    private EditText documentExpiryDate;
+    private TextInputEditText name;
+    private TextInputEditText surname;
+    private TextInputEditText email;
+    private TextInputEditText cellphone;
+    private TextInputEditText birthDate;
+    private TextInputEditText documentNumber;
+    private TextInputEditText documentType;
+    private TextInputEditText documentExpiryDate;
     private Dialog switchToCiceroneDialog; // TODO: Remove this field
     private Button switchButton;
     private Button modifyButton;
@@ -95,7 +96,7 @@ public class ProfileFragment extends Fragment {
 
         preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         name = view.findViewById(R.id.name);
-        surname = view.findViewById(R.id.surname_textbox);
+        surname = view.findViewById(R.id.surname);
         email = view.findViewById(R.id.email);
         cellphone = view.findViewById(R.id.cellphone);
         birthDate = view.findViewById(R.id.registrationBirthDate);
