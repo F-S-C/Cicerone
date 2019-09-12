@@ -83,6 +83,14 @@ public class InsertReviewFragment extends Fragment {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_FOR_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
+                submitReview.setVisibility(View.GONE);
+                updateReview.setVisibility(View.GONE);
+                message.setVisibility(View.GONE);
+                deleteReview.setVisibility(View.GONE);
+                descriptionReview.setVisibility(View.GONE);
+                feedbackReview.setVisibility(View.GONE);
+                messageDescription.setVisibility(View.GONE);
+                messageFeedback.setVisibility(View.GONE);
             }
 
             @Override
@@ -90,7 +98,10 @@ public class InsertReviewFragment extends Fragment {
 
                 if(jsonArray.getJSONObject(0).getBoolean("result"))
                 {
-                    message.setVisibility(View.GONE);
+                    descriptionReview.setVisibility(View.VISIBLE);
+                    feedbackReview.setVisibility(View.VISIBLE);
+                    messageDescription.setVisibility(View.VISIBLE);
+                    messageFeedback.setVisibility(View.VISIBLE);
                     checkReview(parameters);
 
                     submitReview.setOnClickListener(v -> {
@@ -133,13 +144,7 @@ public class InsertReviewFragment extends Fragment {
                 }
                 else
                 {
-                    feedbackReview.setVisibility(View.GONE);
-                    descriptionReview.setVisibility(View.GONE);
-                    submitReview.setVisibility(View.GONE);
-                    deleteReview.setVisibility(View.GONE);
-                    updateReview.setVisibility(View.GONE);
-                    messageFeedback.setVisibility(View.GONE);
-                    messageDescription.setVisibility(View.GONE);
+                    message.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -151,8 +156,7 @@ public class InsertReviewFragment extends Fragment {
     private void checkReview (JSONObject parameters) {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
-            public void onStartConnection() {
-            }
+            public void onStartConnection() {}
 
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
@@ -161,7 +165,6 @@ public class InsertReviewFragment extends Fragment {
                 if( jsonArray.length() > 0)
                 {
                     result = jsonArray.getJSONObject(0);
-                    submitReview.setVisibility(View.GONE);
                     updateReview.setVisibility(View.VISIBLE);
                     deleteReview.setVisibility(View.VISIBLE);
                     descriptionReview.setText(result.getString("description"));
@@ -172,8 +175,6 @@ public class InsertReviewFragment extends Fragment {
                     feedbackReview.setRating(0);
                     descriptionReview.setText("");
                     submitReview.setVisibility(View.VISIBLE);
-                    updateReview.setVisibility(View.GONE);
-                    deleteReview.setVisibility(View.GONE);
                 }
             }
         });

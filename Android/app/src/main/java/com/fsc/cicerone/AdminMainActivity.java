@@ -135,7 +135,7 @@ public class AdminMainActivity extends AppCompatActivity {
             navView.setSelectedItemId(R.id.navigation_itineraries_active_admin);
         }
     }
-    
+
     @Override
     public boolean onSupportNavigateUp() { //TODO: Add to class diagram
         onBackPressed();
