@@ -81,6 +81,14 @@ public class InsertItineraryReviewFragment extends Fragment {
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
+                submitReview.setVisibility(View.GONE);
+                updateReview.setVisibility(View.GONE);
+                message.setVisibility(View.GONE);
+                deleteReview.setVisibility(View.GONE);
+                descriptionReview.setVisibility(View.GONE);
+                feedbackReview.setVisibility(View.GONE);
+                messageDescription.setVisibility(View.GONE);
+                messageFeedback.setVisibility(View.GONE);
             }
 
             @Override
@@ -89,7 +97,10 @@ public class InsertItineraryReviewFragment extends Fragment {
 
                 if(jsonArray.length()>0)
                 {
-                    message.setVisibility(View.GONE);
+                    descriptionReview.setVisibility(View.VISIBLE);
+                    feedbackReview.setVisibility(View.VISIBLE);
+                    messageDescription.setVisibility(View.VISIBLE);
+                    messageFeedback.setVisibility(View.VISIBLE);
                     parameters.put("reviewed_itinerary", parameters.getString("booked_itinerary"));
                     checkReview(parameters);
 
@@ -144,13 +155,7 @@ public class InsertItineraryReviewFragment extends Fragment {
                 }
                 else
                 {
-                    feedbackReview.setVisibility(View.GONE);
-                    descriptionReview.setVisibility(View.GONE);
-                    submitReview.setVisibility(View.GONE);
-                    deleteReview.setVisibility(View.GONE);
-                    updateReview.setVisibility(View.GONE);
-                    messageFeedback.setVisibility(View.GONE);
-                    messageDescription.setVisibility(View.GONE);
+                    message.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -167,11 +172,9 @@ public class InsertItineraryReviewFragment extends Fragment {
 
             @Override
             public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                message.setVisibility(View.GONE);
                 if( jsonArray.length() > 0)
                 {
                     result = jsonArray.getJSONObject(0);
-                    submitReview.setVisibility(View.GONE);
                     updateReview.setVisibility(View.VISIBLE);
                     deleteReview.setVisibility(View.VISIBLE);
                     descriptionReview.setText(result.getString("description"));
@@ -182,8 +185,6 @@ public class InsertItineraryReviewFragment extends Fragment {
                     feedbackReview.setRating(0);
                     descriptionReview.setText("");
                     submitReview.setVisibility(View.VISIBLE);
-                    updateReview.setVisibility(View.GONE);
-                    deleteReview.setVisibility(View.GONE);
                 }
             }
         });
