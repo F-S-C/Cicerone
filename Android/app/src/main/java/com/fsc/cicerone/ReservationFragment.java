@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -69,9 +69,11 @@ public class ReservationFragment extends Fragment {
 
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
+        TextView message = view.findViewById(R.id.noReservation);
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
+                message.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
             }
 
@@ -83,7 +85,7 @@ public class ReservationFragment extends Fragment {
                     recyclerView.setAdapter(adapter);
                 }
                 else{
-                    Toast.makeText(context , ReservationFragment.this.getString(R.string.no_requests_reservation), Toast.LENGTH_SHORT).show();
+                    message.setVisibility(View.GONE);
                 }
             }
         });
