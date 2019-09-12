@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Sex;
 import com.fsc.cicerone.model.User;
@@ -53,6 +54,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -263,26 +265,24 @@ public class ProfileFragment extends Fragment {
         try {
             JSONObject parameters = new JSONObject();
             parameters.put("username", currentLoggedUser.getUsername());
-            SendInPostConnector userDocumentConnector = new SendInPostConnector(ConnectorConstants.REQUEST_DOCUMENT, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
+            SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
+                    ConnectorConstants.REQUEST_DOCUMENT,
+                    BusinessEntityBuilder.getFactory(Document.class),
+                    new DatabaseConnector.CallbackInterface<Document>() {
+                        @Override
+                        public void onStartConnection() {
+                            //Do nothing
+                        }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    JSONObject data = jsonArray.getJSONObject(0);
-                    documentNumber.setText(data.getString("document_number"));
-                    documentType.setText(data.getString("document_type"));
-                    try {
-                        Date docExpiryDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(data.getString("expiry_date"));
-                        documentExpiryDate.setText(outputFormat.format(docExpiryDate));
-                    } catch (ParseException e) {
-                        Log.e(ERROR_TAG, e.toString());
-                    }
-                }
-            });
-            userDocumentConnector.setObjectToSend(parameters);
+                        @Override
+                        public void onEndConnection(List<Document> list) throws JSONException {
+                            Document data = list.get(0);
+                            documentNumber.setText(data.getNumber());
+                            documentType.setText(data.getType());
+                            documentExpiryDate.setText(outputFormat.format(data.getExpiryDate()));
+                        }
+                    },
+                    parameters);
             userDocumentConnector.execute();
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
@@ -291,27 +291,27 @@ public class ProfileFragment extends Fragment {
 
     private void switchToCicerone(JSONObject parameters) {
 
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                //Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_REGISTERED_USER,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        //Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject userData = jsonArray.getJSONObject(0);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (result.getResult()) {
+                            Toast.makeText(getActivity(), getString(R.string.operation_completed), Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(getActivity(), SplashActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                        } else {
+                            Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
+                        }
 
-                if (userData.getBoolean("result")) {
-                    Toast.makeText(getActivity(), getString(R.string.operation_completed), Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getActivity(), SplashActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
+                    }
+                });
         connector.setObjectToSend(parameters);
         connector.execute();
 
@@ -355,49 +355,53 @@ public class ProfileFragment extends Fragment {
             userData.put("sex", sexSelected);
             userData.put("birth_date", itDateToServerDate(birthDate.getText().toString()));
 
-            SendInPostConnector updateRegisteredUser = new SendInPostConnector(ConnectorConstants.UPDATE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
+            BooleanConnector updateRegisteredUser = new BooleanConnector(
+                    ConnectorConstants.UPDATE_REGISTERED_USER,
+                    new BooleanConnector.CallbackInterface() {
+                        @Override
+                        public void onStartConnection() {
+                            //Do nothing
+                        }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    if (!jsonArray.getJSONObject(0).getBoolean("result"))
-                        Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
-                    user.setName(name.getText().toString());
-                    user.setSurname(surname.getText().toString());
-                    user.setEmail(email.getText().toString());
-                    user.setCellphone(cellphone.getText().toString());
-                    user.setBirthDate(strToDate(birthDate.getText().toString()));
-                    user.setSex(Sex.getValue(sexList.getSelectedItem().toString().toLowerCase()));
-                }
-            });
-            updateRegisteredUser.setObjectToSend(userData);
+                        @Override
+                        public void onEndConnection(BooleanConnector.BooleanResult result) {
+                            if (!result.getResult())
+                                Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                            user.setName(name.getText().toString());
+                            user.setSurname(surname.getText().toString());
+                            user.setEmail(email.getText().toString());
+                            user.setCellphone(cellphone.getText().toString());
+                            user.setBirthDate(strToDate(birthDate.getText().toString()));
+                            user.setSex(Sex.getValue(sexList.getSelectedItem().toString().toLowerCase()));
+                        }
+                    },
+                    userData);
             updateRegisteredUser.execute();
 
             documentData.put("username", user.getUsername());
             documentData.put("expiry_date", itDateToServerDate(documentExpiryDate.getText().toString()));
             documentData.put("document_type", documentType.getText());
             documentData.put("document_number", documentNumber.getText());
-            SendInPostConnector updateDocument = new SendInPostConnector(ConnectorConstants.UPDATE_DOCUMENT, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
+            BooleanConnector updateDocument = new BooleanConnector(
+                    ConnectorConstants.UPDATE_DOCUMENT,
+                    new BooleanConnector.CallbackInterface() {
+                        @Override
+                        public void onStartConnection() {
+                            //Do nothing
+                        }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    if (!jsonArray.getJSONObject(0).getBoolean("result"))
-                        Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
-                    Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
-                    user.setCurrentDocument(newUserDoc);
-                    Intent i = new Intent(getActivity(), SplashActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
-                }
-            });
-            updateDocument.setObjectToSend(documentData);
+                        @Override
+                        public void onEndConnection(BooleanConnector.BooleanResult result) {
+                            if (!result.getResult())
+                                Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
+                            Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
+                            user.setCurrentDocument(newUserDoc);
+                            Intent i = new Intent(getActivity(), SplashActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                        }
+                    },
+                    documentData);
             updateDocument.execute();
             Toast.makeText(getActivity(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {

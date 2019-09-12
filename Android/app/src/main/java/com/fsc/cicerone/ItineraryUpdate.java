@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -385,17 +386,18 @@ public class ItineraryUpdate extends AppCompatActivity {
 
 
     private void submitNewData(JSONObject params) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_ITINERARY, new DatabaseConnector.CallbackInterface() {
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_ITINERARY,
+                new BooleanConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 // Do nothing
             }
 
             @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                Log.e("p", object.toString());
-                if (object.getBoolean("result")) {
+            public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                Log.e("p", result.toJSONObject().toString());
+                if (result.getResult()) {
                     Intent i = new Intent(ItineraryUpdate.this,MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();

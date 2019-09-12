@@ -76,7 +76,11 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
 
     @Override
     protected void executeAfterConnection(String s) {
-        this.callback.onEndConnection(new BooleanResult(s));
+        try {
+            this.callback.onEndConnection(new BooleanResult(s));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.getMessage());
+        }
     }
 
     public static class BooleanResult extends BusinessEntity {

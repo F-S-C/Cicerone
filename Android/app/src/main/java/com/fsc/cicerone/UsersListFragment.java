@@ -14,9 +14,12 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.fsc.cicerone.adapter.UserListAdapter;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.User;
 
 import org.json.JSONArray;
 
+import java.util.List;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -43,16 +46,19 @@ public class UsersListFragment extends Fragment {
 
     private void requireData(View view, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        GetDataConnector connector = new GetDataConnector(ConnectorConstants.REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
+        GetDataConnector<User> connector = new GetDataConnector<>(
+                ConnectorConstants.REGISTERED_USER,
+                BusinessEntityBuilder.getFactory(User.class),
+                new DatabaseConnector.CallbackInterface<User>() {
             @Override
             public void onStartConnection() {
                 progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onEndConnection(JSONArray jsonArray) {
+            public void onEndConnection(List<User> list) {
                 progressBar.setVisibility(View.GONE);
-                adapter = new UserListAdapter(view.getContext(), jsonArray);
+                adapter = new UserListAdapter(view.getContext(), list);
                 recyclerView.setAdapter(adapter);
             }
         });

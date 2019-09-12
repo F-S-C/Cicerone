@@ -10,12 +10,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.model.ReportStatus;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -62,7 +65,8 @@ public class ReportDetailsActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private void getReportFromServer(JSONObject params){
+    private void getReportFromServer(JSONObject params) {
+        // TODO: Add report class
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REPORT_FRAGMENT, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -103,26 +107,30 @@ public class ReportDetailsActivity extends AppCompatActivity {
         connector.execute();
     }
 
-    private void deleteReport(JSONObject params){
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REPORT_DETAILS, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+    private void deleteReport(JSONObject params) {
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_REPORT_DETAILS,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray){
-                Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
-                params.remove("state");
-                getReportFromServer(params);
-            }
-        });
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (result.getResult()) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
+                            params.remove("state");
+                            getReportFromServer(params);
+                        }
+                    }
+                });
         try {
             connector.setObjectToSend(params);
             params.put("state", ReportStatus.getInt(ReportStatus.CLOSED));
             connector.execute();
-        }catch(JSONException e){
-            Log.e(ERROR_TAG,e.toString());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.toString());
         }
     }
 }

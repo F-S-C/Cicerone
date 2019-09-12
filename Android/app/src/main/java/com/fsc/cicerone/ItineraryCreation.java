@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -295,7 +296,7 @@ public class ItineraryCreation extends AppCompatActivity {
                     Float.parseFloat(fullPrice.getText().toString()),
                     Float.parseFloat(reducedPrice.getText().toString()),
                     URL
-                    );
+            );
 
 
         } else {
@@ -379,25 +380,26 @@ public class ItineraryCreation extends AppCompatActivity {
     }
 
     private void submit(JSONObject params) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_ITINERARY, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.INSERT_ITINERARY,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                if (object.getBoolean("result")) {
-                    Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
-                }
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (result.getResult()) {
+                            Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                        }
 
-            }
-        });
-        connector.setObjectToSend(params);
+                    }
+                },
+                params);
         connector.execute();
     }
 

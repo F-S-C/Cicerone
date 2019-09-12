@@ -66,6 +66,7 @@ public class SelectedUserReviewFragment extends Fragment {
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
+        // TODO: Add review class
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {

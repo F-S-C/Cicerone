@@ -76,7 +76,17 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
         super();
         fileUrl = url;
         this.builder = builder;
-        this.callback = callback;
+        this.callback = callback != null? callback : new CallbackInterface<T>() {
+            @Override
+            public void onStartConnection() {
+                // Do nothing
+            }
+
+            @Override
+            public void onEndConnection(List<T> list) {
+                // Do nothing
+            }
+        };
     }
 
     /**

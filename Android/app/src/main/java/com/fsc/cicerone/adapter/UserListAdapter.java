@@ -21,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -33,7 +35,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     private static final String ERROR_TAG = "ERROR IN " + UserListAdapter.class.getName();
 
     private final Context context;
-    private JSONArray mData;
+    private List<User> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener = null;
 
@@ -41,11 +43,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
      * Constructor.
      *
      * @param context    The parent Context.
-     * @param jsonArray  The array of JSON Objects got from server.
+     * @param list  The array of JSON Objects got from server.
      */
-    public UserListAdapter(Context context, JSONArray jsonArray) {
+    public UserListAdapter(Context context, List<User> list) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = jsonArray;
+        this.mData = list;
         this.context = context;
     }
 
@@ -60,39 +62,31 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User[] userList = new User[mData.length()];
-
-
-        try {
-            userList[position] = new User(mData.getJSONObject(position));
-            String usernameStr = userList[position].getUsername();
-            UserType type = userList[position].getUserType();
-            String typeName;
-            holder.usr.setText(usernameStr);
-            switch (type){
-                case GLOBETROTTER:
-                    typeName = context.getString(R.string.user_type_globetrotter);
-                    break;
-                case CICERONE:
-                    typeName = context.getString(R.string.user_type_cicerone);
-                    break;
-                case ADMIN:
-                    typeName = context.getString(R.string.user_type_admin);
-                    break;
-                default:
-                    typeName = "";
-                    break;
-            }
-            holder.usrType.setText(typeName);
-            setAvgRating(usernameStr, holder);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
+        String usernameStr = mData.get(position).getUsername();
+        UserType type = mData.get(position).getUserType();
+        String typeName;
+        holder.usr.setText(usernameStr);
+        switch (type){
+            case GLOBETROTTER:
+                typeName = context.getString(R.string.user_type_globetrotter);
+                break;
+            case CICERONE:
+                typeName = context.getString(R.string.user_type_cicerone);
+                break;
+            case ADMIN:
+                typeName = context.getString(R.string.user_type_admin);
+                break;
+            default:
+                typeName = "";
+                break;
         }
+        holder.usrType.setText(typeName);
+        setAvgRating(usernameStr, holder);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             i = new Intent().setClass(v.getContext(), AdminUserProfile.class);
-            i.putExtra("user",userList[position].toJSONObject().toString());
+            i.putExtra("user", mData.get(position).toJSONObject().toString());
             v.getContext().startActivity(i);
         });
 
@@ -140,6 +134,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     private void setAvgRating(String usr, ViewHolder holder) {
+        // TODO: Add review class
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {

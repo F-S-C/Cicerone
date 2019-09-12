@@ -23,7 +23,7 @@ import com.fsc.cicerone.ItineraryManagement;
 import com.fsc.cicerone.ProfileActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.ReportDetailsActivity;
-import com.fsc.cicerone.ReportStatus;
+import com.fsc.cicerone.model.ReportStatus;
 import com.fsc.cicerone.model.UserType;
 
 import org.json.JSONArray;

@@ -10,6 +10,7 @@ import org.json.JSONException;
 
 import java.util.Date;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -20,7 +21,7 @@ public abstract class ReservationManager {
         void run(JSONArray jsonArray) throws JSONException;
     }
 
-    private ReservationManager(){
+    private ReservationManager() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -39,18 +40,21 @@ public abstract class ReservationManager {
                 .forwardingDate(forwardingDate)
                 .build();
 
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_RESERVATION, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.INSERT_RESERVATION,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                if (!jsonArray.getJSONObject(0).getBoolean("result"))
-                    Log.e("INSERT_RESERVATION_ERR", jsonArray.getJSONObject(0).getString("error"));
-            }
-        }, reservation.toJSONObject());
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                        if (!result.getResult())
+                            Log.e("INSERT_RESERVATION_ERR", result.getMessage());
+                    }
+                },
+                reservation.toJSONObject());
         connector.execute();
 
         return reservation;
@@ -58,9 +62,9 @@ public abstract class ReservationManager {
 
     public static void confirmReservation(Reservation reservation) {
         reservation.setConfirmationDate(new Date());
-        AccountManager.sendEmailWithContacts(reservation.getItinerary(),reservation.getClient(), (result) -> {
-            if(result) {
-                SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_RESERVATION);
+        AccountManager.sendEmailWithContacts(reservation.getItinerary(), reservation.getClient(), (result) -> {
+            if (result) {
+                BooleanConnector connector = new BooleanConnector(ConnectorConstants.UPDATE_RESERVATION);
                 connector.setObjectToSend(reservation.toJSONObject());
                 connector.execute();
             }
@@ -74,19 +78,21 @@ public abstract class ReservationManager {
         // Garbage collector has to destroy 'reservation'.
     }
 
-    private static void deleteReservationFromServer(Reservation reservation, RunnableUsingJSONArray callback){
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_RESERVATION, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+    private static void deleteReservationFromServer(Reservation reservation, RunnableUsingJSONArray callback) {
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.DELETE_RESERVATION,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                callback.run(jsonArray);
-            }
-        });
-        connector.setObjectToSend(reservation.toJSONObject());
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                        callback.run(new JSONArray("[" + result.toJSONObject().toString() + "]"));
+                    }
+                },
+                reservation.toJSONObject());
         connector.execute();
     }
 }

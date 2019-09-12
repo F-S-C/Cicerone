@@ -1,4 +1,6 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.model;
+
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +11,7 @@ import java.util.Objects;
  * A language as represented in the system Cicerone. A language is composed by a code and a name
  * and it's identified by its code.
  */
-public class Language {
+public class Language extends BusinessEntity {
     private String code;
     private String name;
 
@@ -46,6 +48,22 @@ public class Language {
         } catch (JSONException e) {
             this.name = "";
         }
+    }
+
+    @Override
+    public JSONObject toJSONObject() {
+        JSONObject toReturn = new JSONObject();
+        try {
+            toReturn.put("language_code", this.code);
+        } catch (JSONException e) {
+            Log.e("ERROR", e.getMessage());
+        }
+        try {
+            toReturn.put("language_name", this.name);
+        } catch (JSONException e) {
+            Log.e("ERROR", e.getMessage());
+        }
+        return toReturn;
     }
 
     /**

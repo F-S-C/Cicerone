@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -136,6 +137,7 @@ public class ItineraryManagement extends AppCompatActivity {
     }
 
     public void getItineraryReviews(JSONObject itineraryCode) {
+        //TODO: Add review class
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -164,16 +166,17 @@ public class ItineraryManagement extends AppCompatActivity {
     }
 
     public void deleteItineraryFromServer(JSONObject itCode) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_ITINERARY, new DatabaseConnector.CallbackInterface() {
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.DELETE_ITINERARY,
+                new BooleanConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
                 // Do nothing
             }
 
             @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                if (object.getBoolean("result")) {
+            public void onEndConnection(BooleanConnector.BooleanResult result) {
+                if (result.getResult()) {
                     Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();

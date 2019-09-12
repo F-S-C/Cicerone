@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -134,51 +135,54 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     public void addToWishlist(JSONObject params) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_WISHLIST, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.INSERT_WISHLIST,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                Log.e("p", object.toString());
-                if (object.getBoolean("result")) {
-                    Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                    checkWishlist(params);
-                }
-            }
-        });
-        connector.setObjectToSend(params);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        Log.e("p", result.toJSONObject().toString());
+                        if (result.getResult()) {
+                            Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                            checkWishlist(params);
+                        }
+                    }
+                },
+                params);
         connector.execute();
     }
 
     public void deleteFromWishlist(JSONObject params) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_WISHLIST, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.DELETE_WISHLIST,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                if (object.getBoolean("result")) {
-                    //Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
-                    //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show();
-                    //startActivity(i);
-                    checkWishlist(params);
-                }
-            }
-        });
-        connector.setObjectToSend(params);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (result.getResult()) {
+                            //Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
+                            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show();
+                            //startActivity(i);
+                            checkWishlist(params);
+                        }
+                    }
+                },
+                params);
         connector.execute();
     }
 
 
     public void checkWishlist(JSONObject object) {
+        // TODO: Add wishlist class
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.SEARCH_WISHLIST, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -196,8 +200,8 @@ public class ItineraryDetails extends AppCompatActivity {
                     removeFromWishlist.setVisibility(View.GONE);
                 }
             }
-        });
-        connector.setObjectToSend(object);
+        },
+                object);
         connector.execute();
 
     }
@@ -224,6 +228,7 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     public void getItineraryReviews(JSONObject itineraryCode) {
+        // TODO: Add review class
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -268,8 +273,8 @@ public class ItineraryDetails extends AppCompatActivity {
                     requestReservation.setOnClickListener(v -> askForReservation(v));
                 }
             }
-        });
-        connector.setObjectToSend(reservation);
+        },
+                reservation);
         connector.execute();
     }
 

@@ -42,44 +42,29 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     /**
      * Constructor.
      *
-     * @param context   The parent Context.
-     * @param jsonArray The array of JSON Objects got from server.
+     * @param context The parent Context.
+     * @param list    The array of JSON Objects got from server.
      */
-    public ReservationAdapter(Context context, JSONArray jsonArray) {
+    public ReservationAdapter(Context context, List<Reservation> list) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        this.mData = new ArrayList<>(jsonArray.length());
-        for (int i = 0; i < jsonArray.length(); i++) {
-            try {
-                Reservation toAdd = new Reservation.Builder(jsonArray.getJSONObject(i)).build();
-
-                // The reservation must be shown if and only if it was not yet confirmed.
-                if (!toAdd.isConfirmed()) {
-                    this.mData.add(toAdd);
-                }
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
+        this.mData = list;
+        for (Reservation reservation : this.mData) {
+            if (reservation.isConfirmed()) {
+                this.mData.remove(reservation);
             }
         }
     }
 
 
-
-    public ReservationAdapter(Context context, JSONArray jsonArray,int layout) {
+    public ReservationAdapter(Context context, List<Reservation> list, int layout) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.layout = layout;
-        this.mData = new ArrayList<>(jsonArray.length());
-        for (int i = 0; i < jsonArray.length(); i++) {
-            try {
-                Reservation toAdd = new Reservation.Builder(jsonArray.getJSONObject(i)).build();
-
-                // The reservation must be shown if and only if it was not yet confirmed.
-                if (!toAdd.isConfirmed()) {
-                    this.mData.add(toAdd);
-                }
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
+        this.mData = list;
+        for (Reservation reservation : this.mData) {
+            if (reservation.isConfirmed()) {
+                this.mData.remove(reservation);
             }
         }
     }
@@ -105,8 +90,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         holder.numberChildren.setText(String.valueOf(mData.get(position).getNumberOfChildren()));
         holder.numberAdults.setText(String.valueOf(mData.get(position).getNumberOfAdults()));
 
-        if(holder.confirmReservation != null)
-        {
+        if (holder.confirmReservation != null) {
             holder.confirmReservation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
                     .setTitle(context.getString(R.string.are_you_sure))
                     .setPositiveButton(context.getString(R.string.yes), (dialog, which) -> {
@@ -117,8 +101,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                     .show());
         }
 
-        if(holder.declineReservation != null)
-        {
+        if (holder.declineReservation != null) {
             holder.declineReservation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
                     .setTitle(context.getString(R.string.are_you_sure))
                     .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
@@ -129,8 +112,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                     .show());
         }
 
-        if(holder.removeParticipation != null)
-        {
+        if (holder.removeParticipation != null) {
             holder.removeParticipation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
                     .setTitle(context.getString(R.string.are_you_sure))
                     .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
@@ -143,8 +125,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
 
         holder.itemView.setOnClickListener(v -> {
-            if(layout == R.layout.reservation_list)
-            {
+            if (layout == R.layout.reservation_list) {
                 if (previouslyClickedHolder != null) {
                     previouslyClickedHolder.confirmReservation.setVisibility(View.GONE);
                     previouslyClickedHolder.declineReservation.setVisibility(View.GONE);
@@ -153,9 +134,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                     holder.confirmReservation.setVisibility(View.VISIBLE);
                     holder.declineReservation.setVisibility(View.VISIBLE);
                 }
-            }
-            else if(layout == R.layout.participation_list)
-            {
+            } else if (layout == R.layout.participation_list) {
                 if (previouslyClickedHolder != null)
                     previouslyClickedHolder.removeParticipation.setVisibility(View.GONE);
 
@@ -198,15 +177,12 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         ViewHolder(View itemView) {
             super(itemView);
-            if(layout == R.layout.reservation_list)
-            {
+            if (layout == R.layout.reservation_list) {
                 confirmReservation = itemView.findViewById(R.id.reservation_confirm);
                 confirmReservation.setVisibility(View.GONE);
                 declineReservation = itemView.findViewById(R.id.reservation_decline);
                 declineReservation.setVisibility(View.GONE);
-            }
-            else
-            {
+            } else {
                 removeParticipation = itemView.findViewById(R.id.removeParticipation);
                 removeParticipation.setVisibility(View.GONE);
             }

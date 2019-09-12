@@ -2,8 +2,6 @@ package com.fsc.cicerone.model;
 
 import android.util.Patterns;
 
-import com.fsc.cicerone.Language;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

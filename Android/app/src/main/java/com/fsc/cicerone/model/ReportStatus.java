@@ -1,4 +1,4 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.model;
 
 /**
  * Enum class that specifies the states that a Report can take.
