@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -104,7 +103,7 @@ public class AdminDetailsUserFragment extends Fragment {
         data = "Sex: " + user.getSex().toString();
         sex.setText(data);
 
-       requestUserDocument(parameters);
+        requestUserDocument(parameters);
         removeUser.setOnClickListener(v -> deleteAccount(parameters));
 
         return view;
@@ -136,11 +135,9 @@ public class AdminDetailsUserFragment extends Fragment {
                         Log.e(ERROR_TAG, e.toString());
                     }}
                     else{
-                        documentNumber.setVisibility(View.GONE);
+                        data = "Document: " + AdminDetailsUserFragment.this.getString(R.string.doc_not_found);
                         documentType.setVisibility(View.GONE);
                         documentExpiryDate.setVisibility(View.GONE);
-                        Toast.makeText(context , AdminDetailsUserFragment.this.getString(R.string.doc_not_found), Toast.LENGTH_SHORT).show();
-
                     }
                 }
             });

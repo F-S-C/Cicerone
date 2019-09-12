@@ -54,7 +54,6 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_report_fragment, container, false);
-
         Button insertReport = view.findViewById(R.id.newReport);
 
 
