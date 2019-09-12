@@ -1,0 +1,116 @@
+package app_connector;
+
+import android.util.Log;
+
+import com.fsc.cicerone.model.BusinessEntity;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
+public class BooleanConnector extends SendInPostConnector<BooleanConnector.BooleanResult> {
+
+
+    public interface CallbackInterface {
+        /**
+         * Function that will be called before the start of the connection.
+         */
+        void onStartConnection();
+
+        /**
+         * Function that will be called when the connection has ended.
+         *
+         * @param result The response of the connection.
+         */
+        void onEndConnection(BooleanResult result) throws JSONException;
+    }
+
+    private CallbackInterface callback;
+
+    public BooleanConnector(String url) {
+        super(url, null);
+        this.callback = new CallbackInterface() {
+            @Override
+            public void onStartConnection() {
+                // Do nothing
+            }
+
+            @Override
+            public void onEndConnection(BooleanResult result) {
+                // Do nothing
+            }
+        };
+    }
+
+    public BooleanConnector(String url, CallbackInterface callback) {
+        super(url, null, new DatabaseConnector.CallbackInterface<BooleanResult>() {
+            @Override
+            public void onStartConnection() {
+                callback.onStartConnection();
+            }
+
+            @Override
+            public void onEndConnection(List<BooleanResult> list) {
+                // Do nothing
+            }
+        });
+        this.callback = callback;
+    }
+
+    public BooleanConnector(String url, CallbackInterface callback, JSONObject objectToSend) {
+        super(url, null, new DatabaseConnector.CallbackInterface<BooleanResult>() {
+            @Override
+            public void onStartConnection() {
+                callback.onStartConnection();
+            }
+
+            @Override
+            public void onEndConnection(List<BooleanResult> list) {
+                // Do nothing
+            }
+        }, objectToSend);
+        this.callback = callback;
+    }
+
+    @Override
+    protected void executeAfterConnection(String s) {
+        this.callback.onEndConnection(new BooleanResult(s));
+    }
+
+    public static class BooleanResult extends BusinessEntity {
+        private boolean result;
+        private String message;
+
+        BooleanResult(String json) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                result = jsonObject.getBoolean("result");
+                message = jsonObject.getString(result ? "message" : "error");
+            } catch (JSONException e) {
+                Log.e("ERROR", e.getMessage());
+            }
+        }
+
+        public boolean getResult() {
+            return result;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject toReturn = new JSONObject();
+            try {
+                toReturn.put("result", result);
+                toReturn.put(result ? "message" : "error", message);
+            } catch (JSONException e) {
+                Log.e("ERROR", e.getMessage());
+            }
+            return toReturn;
+        }
+    }
+}

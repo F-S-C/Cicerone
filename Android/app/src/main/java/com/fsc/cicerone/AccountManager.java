@@ -4,14 +4,21 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
+
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -78,37 +85,46 @@ public abstract class AccountManager {
      * @param onEnd   A function to be executed after the login attempt.
      */
     public static void attemptLogin(JSONObject user, Runnable onStart, RunnableUsingJson onEnd) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.LOGIN_CONNECTOR, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                onStart.run();
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.LOGIN_CONNECTOR,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        onStart.run();
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject result = jsonArray.getJSONObject(0);
-                boolean success = result.getBoolean("result");
-                if (success) {
-                    SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-                        @Override
-                        public void onStartConnection() {
-                            // Do nothing
-                        }
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                        if (result.getResult()) {
+                            SendInPostConnector<User> connector = new SendInPostConnector<>(
+                                    ConnectorConstants.REGISTERED_USER,
+                                    BusinessEntityBuilder.getFactory(User.class),
+                                    new DatabaseConnector.CallbackInterface<User>() {
+                                        @Override
+                                        public void onStartConnection() {
+                                            // Do nothing
+                                        }
 
-                        @Override
-                        public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                            JSONObject result = jsonArray.getJSONObject(0);
-                            result.put("password", user.getString("password"));
-                            currentLoggedUser = new User(result);
-                            onEnd.run(result, true);
+                                        @Override
+                                        public void onEndConnection(List<User> jsonArray) throws JSONException {
+                                            User result = jsonArray.get(0);
+                                            try {
+                                                result.setPassword(user.getString("password"));
+                                            } catch (JSONException e) {
+                                                Log.e(ERROR_TAG, e.getMessage());
+                                            }
+                                            currentLoggedUser = result;
+                                            onEnd.run(result.toJSONObject(), true);
+                                        }
+                                    },
+                                    user);
+                            connector.execute();
+                        } else {
+                            onEnd.run(result.toJSONObject(), false);
                         }
-                    }, user);
-                    connector.execute();
-                } else {
-                    onEnd.run(result, false);
-                }
-            }
-        }, user);
+                    }
+                },
+                user);
 
         connector.execute();
     }
@@ -127,20 +143,22 @@ public abstract class AccountManager {
         if (!isLogged())
             return;
 
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.DELETE_REGISTERED_USER,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject result = jsonArray.getJSONObject(0);
-                if (!result.getBoolean("result")) {
-                    Log.e("DELETE_USER_ERROR", result.getString("error"));
-                }
-            }
-        }, currentLoggedUser.getCredentials());
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (!result.getResult()) {
+                            Log.e("DELETE_USER_ERROR", result.getMessage());
+                        }
+                    }
+                },
+                currentLoggedUser.getCredentials());
         connector.execute();
 
         logout();
@@ -165,17 +183,21 @@ public abstract class AccountManager {
         try {
             JSONObject obj = new JSONObject();
             obj.put("username", user);
-            SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
+            SendInPostConnector<User> connector = new SendInPostConnector<>(
+                    ConnectorConstants.REGISTERED_USER,
+                    BusinessEntityBuilder.getFactory(User.class),
+                    new DatabaseConnector.CallbackInterface<User>() {
+                        @Override
+                        public void onStartConnection() {
+                            //Do nothing
+                        }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    result.accept(jsonArray.length() > 0);
-                }
-            }, obj);
+                        @Override
+                        public void onEndConnection(List<User> jsonArray) throws JSONException {
+                            result.accept(jsonArray.size() > 0);
+                        }
+                    },
+                    obj);
             connector.execute();
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
@@ -192,17 +214,21 @@ public abstract class AccountManager {
         try {
             JSONObject obj = new JSONObject();
             obj.put("email", email);
-            SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
+            SendInPostConnector<User> connector = new SendInPostConnector<>(
+                    ConnectorConstants.REGISTERED_USER,
+                    BusinessEntityBuilder.getFactory(User.class),
+                    new DatabaseConnector.CallbackInterface<User>() {
+                        @Override
+                        public void onStartConnection() {
+                            //Do nothing
+                        }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    result.accept(jsonArray.length() > 0);
-                }
-            }, obj);
+                        @Override
+                        public void onEndConnection(List<User> jsonArray) throws JSONException {
+                            result.accept(jsonArray.size() > 0);
+                        }
+                    },
+                    obj);
             connector.execute();
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
@@ -217,20 +243,22 @@ public abstract class AccountManager {
      */
     public static void insertUser(User user, BooleanRunnable result) {
         Log.i("USERDATA", user.toJSONObject().toString());
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_USER, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                //Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.INSERT_USER,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        //Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                result.accept(jsonArray.getJSONObject(0).getBoolean("result"));
-                if (!jsonArray.getJSONObject(0).getBoolean("result"))
-                    Log.e("ERROR INSERT USER", jsonArray.getJSONObject(0).getString("error"));
-            }
-        });
-        connector.setObjectToSend(user.toJSONObject());
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result1) throws JSONException {
+                        result.accept(result1.getResult());
+                        if (!result1.getResult())
+                            Log.e("ERROR INSERT USER", result1.getMessage());
+                    }
+                },
+                user.toJSONObject());
         connector.execute();
     }
 
@@ -246,20 +274,22 @@ public abstract class AccountManager {
         try {
             doc.put("username", username);
             Log.i("DOCUMENT", doc.toString());
-            SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_DOCUMENT, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
+            BooleanConnector connector = new BooleanConnector(
+                    ConnectorConstants.INSERT_DOCUMENT,
+                    new BooleanConnector.CallbackInterface() {
+                        @Override
+                        public void onStartConnection() {
+                            //Do nothing
+                        }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    result.accept(jsonArray.getJSONObject(0).getBoolean("result"));
-                    if (!jsonArray.getJSONObject(0).getBoolean("result"))
-                        Log.e("ERROR INSERT DOCUMENT", jsonArray.getJSONObject(0).getString("error"));
-                }
-            });
-            connector.setObjectToSend(doc);
+                        @Override
+                        public void onEndConnection(BooleanConnector.BooleanResult result1) throws JSONException {
+                            result.accept(result1.getResult());
+                            if (!result1.getResult())
+                                Log.e("ERROR INSERT DOCUMENT", result1.getMessage());
+                        }
+                    },
+                    doc);
             connector.execute();
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
@@ -277,59 +307,70 @@ public abstract class AccountManager {
         JSONObject user = new JSONObject();
         try {
             user.put("cicerone", username);
-            SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
-
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    // TODO: Use Reservation object
-                    int count = 0;
-                    float sum = 0;
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        if (!jsonArray.getJSONObject(i).isNull("confirm_date")) {
-                            if (!jsonArray.getJSONObject(i).getString("confirm_date").equals("0000-00-00")) {
-                                count++;
-                                sum += Float.valueOf(jsonArray.getJSONObject(i).getString("total"));
-                            }
+            SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
+                    ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
+                    BusinessEntityBuilder.getFactory(Reservation.class),
+                    new DatabaseConnector.CallbackInterface<Reservation>() {
+                        @Override
+                        public void onStartConnection() {
+                            //Do nothing
                         }
-                    }
-                    t.setText(c.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
-                }
-            }, user);
+
+                        @Override
+                        public void onEndConnection(List<Reservation> jsonArray) {
+                            // TODO: Use Reservation object
+                            int count = 0;
+                            float sum = 0;
+                            for (int i = 0; i < jsonArray.size(); i++) {
+                                if (jsonArray.get(i).isConfirmed()) {
+                                    try {
+                                        if (!jsonArray.get(i).getConfirmationDate().equals(new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse("0000-00-00"))) {
+                                            count++;
+                                            sum += jsonArray.get(i).getTotal();
+                                        }
+                                    } catch (ParseException e) {
+                                        Log.e(ERROR_TAG, e.getMessage());
+                                    }
+                                }
+                            }
+                            t.setText(c.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
+                        }
+                    },
+                    user);
             connector.execute();
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
         }
     }
 
-    public static void sendEmailWithContacts(Itinerary itinerary, User deliveryToUser, BooleanRunnable result){
+    public static void sendEmailWithContacts(Itinerary itinerary, User deliveryToUser, BooleanRunnable result) {
         JSONObject data = new JSONObject();
         try {
             data.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-            data.put("itinerary_code",itinerary.getCode());
-            data.put("recipient_email",deliveryToUser.getEmail());
-            SendInPostConnector sendEmailConnector = new SendInPostConnector(ConnectorConstants.EMAIL_SENDER, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
+            data.put("itinerary_code", itinerary.getCode());
+            data.put("recipient_email", deliveryToUser.getEmail());
+            BooleanConnector sendEmailConnector = new BooleanConnector(
+                    ConnectorConstants.EMAIL_SENDER,
+                    new BooleanConnector.CallbackInterface() {
+                        @Override
+                        public void onStartConnection() {
+                            //Do nothing
+                        }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    result.accept(jsonArray.getJSONObject(0).getBoolean("result"));
-                    if(jsonArray.getJSONObject(0).getBoolean("result")){
-                        Log.i("SEND OK","true");
-                    }else{
-                        Log.e("SEND ERROR", jsonArray.getJSONObject(0).getString("error"));
-                    }
-                }
-            }, data);
+                        @Override
+                        public void onEndConnection(BooleanConnector.BooleanResult result1) throws JSONException {
+                            result.accept(result1.getResult());
+                            if (result1.getResult()) {
+                                Log.i("SEND OK", "true");
+                            } else {
+                                Log.e("SEND ERROR", result1.getMessage());
+                            }
+                        }
+                    },
+                    data);
             sendEmailConnector.execute();
-        }catch(JSONException e){
-            Log.e(ERROR_TAG,e.toString());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.toString());
         }
     }
 }

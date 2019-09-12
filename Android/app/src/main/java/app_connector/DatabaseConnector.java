@@ -35,7 +35,7 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
          *
          * @param list This array contains the results of the connection.
          */
-        void onEndConnection(List<T> list);
+        void onEndConnection(List<T> list) throws JSONException;
     }
 
     final String fileUrl; // The URL of the server-side script
@@ -97,27 +97,32 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if (s != null) {
-            try {
-                s = s.trim(); // removing excess blank characters
 
-                // adapting the string to be a JSON Array by adding the brackets where needed
-                JSONArray jsonArray = new JSONArray((s.startsWith("[") ? "" : "[") + s + (s.endsWith("]") ? "" : "]"));
-                ArrayList<T> array = new ArrayList<>(jsonArray.length());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    try {
-                        T object = builder.fromJSONObject(jsonArray.getJSONObject(i));
+            s = s.trim(); // removing excess blank characters
 
-                        array.add(object);
-                    } catch (JSONException e) {
-                        Log.e("ADD_ELEMENT_EXCEPTION", e.getMessage());
-                    }
+            executeAfterConnection(s);
+        }
+    }
+
+    protected void executeAfterConnection(String s) {
+        try {
+            // adapting the string to be a JSON Array by adding the brackets where needed
+            JSONArray jsonArray = new JSONArray((s.startsWith("[") ? "" : "[") + s + (s.endsWith("]") ? "" : "]"));
+            ArrayList<T> array = new ArrayList<>(jsonArray.length());
+            for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    T object = builder.fromJSONObject(jsonArray.getJSONObject(i));
+
+                    array.add(object);
+                } catch (JSONException e) {
+                    Log.e("ADD_ELEMENT_EXCEPTION", e.getMessage());
                 }
-
-
-                callback.onEndConnection(array);
-            } catch (JSONException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                Log.e("EXCEPTION", e.toString());
             }
+
+
+            callback.onEndConnection(array);
+        } catch (JSONException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            Log.e("EXCEPTION", e.toString());
         }
     }
 
