@@ -9,5 +9,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cicerone_itinerary_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/no_created_itinerary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="25dp"
+        android:text="@string/no_created_itinerary"
+        android:textAlignment="center"
+        android:textSize="18sp" />
 </RelativeLayout>

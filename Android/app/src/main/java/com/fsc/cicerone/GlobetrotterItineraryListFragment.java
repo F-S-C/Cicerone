@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -65,9 +65,10 @@ public class GlobetrotterItineraryListFragment extends Fragment {
     }
 
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
+        TextView message = view.findViewById(R.id.no_itinerary_history);
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
-            public void onStartConnection() { }
+            public void onStartConnection() { message.setVisibility(View.GONE);}
 
             @Override
             public void onEndConnection(JSONArray jsonArray) {
@@ -76,7 +77,7 @@ public class GlobetrotterItineraryListFragment extends Fragment {
                     recyclerView.setAdapter(adapter);
                 }
                 else{
-                    Toast.makeText(context , GlobetrotterItineraryListFragment.this.getString(R.string.no_itineraries_history), Toast.LENGTH_SHORT).show();
+                    message.setVisibility(View.VISIBLE);
                 }
             }
         });
