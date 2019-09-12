@@ -1,4 +1,4 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fsc.cicerone.R;
+import com.fsc.cicerone.Reservation;
+import com.fsc.cicerone.ReservationManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
@@ -42,7 +45,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
      * @param context   The parent Context.
      * @param jsonArray The array of JSON Objects got from server.
      */
-    ReservationAdapter(Context context, JSONArray jsonArray) {
+    public ReservationAdapter(Context context, JSONArray jsonArray) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mData = new ArrayList<>(jsonArray.length());
@@ -62,7 +65,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
 
 
-    ReservationAdapter(Context context, JSONArray jsonArray,int layout) {
+    public ReservationAdapter(Context context, JSONArray jsonArray,int layout) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.layout = layout;

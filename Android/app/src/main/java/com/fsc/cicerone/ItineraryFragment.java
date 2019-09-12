@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fsc.cicerone.adapter.Adapter;
+import com.fsc.cicerone.adapter.ReservationAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 

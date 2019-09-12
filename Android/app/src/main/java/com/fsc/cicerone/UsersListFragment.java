@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.fsc.cicerone.adapter.UserListAdapter;
+
 import org.json.JSONArray;
 
 import java.util.Objects;

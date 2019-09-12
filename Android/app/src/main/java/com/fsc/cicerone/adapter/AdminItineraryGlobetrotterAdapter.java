@@ -1,4 +1,4 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.fsc.cicerone.R;
+import com.fsc.cicerone.Reservation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +38,7 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
      * @param context   The parent Context.
      * @param jsonArray The array of JSON Objects got from server.
      */
-    AdminItineraryGlobetrotterAdapter(Context context, JSONArray jsonArray) {
+    public AdminItineraryGlobetrotterAdapter(Context context, JSONArray jsonArray) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = new ArrayList<>(jsonArray.length());
         for (int i = 0; i < jsonArray.length(); i++) {

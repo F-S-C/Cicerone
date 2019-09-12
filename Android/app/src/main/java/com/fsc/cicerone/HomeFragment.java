@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fsc.cicerone.adapter.WishlistAdapter;
+
 import org.json.JSONArray;
 
 import java.util.Objects;
