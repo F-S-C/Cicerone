@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.ReservationAdapter;
-import com.fsc.cicerone.adapter.WishlistAdapter;
+import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
@@ -140,7 +140,7 @@ public class ItineraryFragment extends Fragment {
                     @Override
                     public void onEndConnection(List<Itinerary> jsonArray) {
                         //progressBar.setVisibility(View.GONE);
-                        adapter = new WishlistAdapter(getActivity(), jsonArray);
+                        adapter = new ItineraryAdapter(getActivity(), jsonArray);
                         recyclerView.setAdapter(adapter);
                     }
                 },

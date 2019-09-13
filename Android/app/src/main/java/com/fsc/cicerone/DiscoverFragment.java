@@ -25,11 +25,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.fsc.cicerone.adapter.WishlistAdapter;
+import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -198,7 +197,7 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void onEndConnection(List<Itinerary> list) {
                 swipeRefreshLayout.setRefreshing(false);
-                WishlistAdapter adapter = new WishlistAdapter(getActivity(), list);
+                ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), list);
 
                 recyclerView.setAdapter(adapter);
             }

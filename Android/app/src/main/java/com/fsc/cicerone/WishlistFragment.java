@@ -17,15 +17,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.adapter.WishlistAdapter;
+import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.Wishlist;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -39,7 +37,7 @@ import app_connector.SendInPostConnector;
 
 public class WishlistFragment extends Fragment {
 
-    private WishlistAdapter adapter;
+    private ItineraryAdapter adapter;
     private TextView numberItineraries;
     private Button clearWishlist;
 
@@ -91,7 +89,7 @@ public class WishlistFragment extends Fragment {
                         for (Wishlist item : list){
                             itineraryList.add(item.getItinerary());
                         }
-                        adapter = new WishlistAdapter(getActivity(), itineraryList);
+                        adapter = new ItineraryAdapter(getActivity(), itineraryList);
 
                         Log.e("length", String.valueOf(list.size()));
                         numberItineraries.setText(String.format(getString(R.string.wishlist_number), list.size()));

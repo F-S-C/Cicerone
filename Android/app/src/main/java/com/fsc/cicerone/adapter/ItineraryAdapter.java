@@ -25,9 +25,9 @@ import java.util.Locale;
 /**
  * The ReviewAdapter of the Recycler View for the styles present in the app.
  */
-public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
+public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.ViewHolder> {
 
-    private static final String ERROR_TAG = "ERROR IN " + WishlistAdapter.class.getName();
+    private static final String ERROR_TAG = "ERROR IN " + ItineraryAdapter.class.getName();
 
     private final Context context;
     private List<Itinerary> mData;
@@ -41,7 +41,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
      * @param context   The parent Context.
      * @param list The array of Itineraries objects in the wishlist.
      */
-    public WishlistAdapter(Context context, List<Itinerary> list) {
+    public ItineraryAdapter(Context context, List<Itinerary> list) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
         this.context = context;

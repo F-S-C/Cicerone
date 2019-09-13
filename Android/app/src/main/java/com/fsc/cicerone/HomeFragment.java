@@ -16,11 +16,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.adapter.WishlistAdapter;
+import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
-
-import org.json.JSONArray;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +32,7 @@ import app_connector.GetDataConnector;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-    private WishlistAdapter adapter;
+    private ItineraryAdapter adapter;
     private Activity context;
 
     //private static final String ERROR_TAG = "ERROR IN " + HomeFragment.class.getName();
@@ -73,7 +71,7 @@ public class HomeFragment extends Fragment {
                     public void onEndConnection(List<Itinerary> list) {
                         progressBar.setVisibility(View.GONE);
                         if (list.size() > 0) {
-                            adapter = new WishlistAdapter(getActivity(), list);
+                            adapter = new ItineraryAdapter(getActivity(), list);
                             recyclerView.setAdapter(adapter);
                         } else {
                             Toast.makeText(context, HomeFragment.this.getString(R.string.no_active_itineraries), Toast.LENGTH_SHORT).show();
