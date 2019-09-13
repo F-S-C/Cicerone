@@ -31,54 +31,6 @@ public class Itinerary extends BusinessEntity {
     private final SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
     /**
-     *
-     * @param title The title of the itinerary.
-     * @param description The description of the itinerary.
-     * @param beginningDate  The beginning date of the itinerary.
-     * @param endingDate  The ending date of the itinerary.
-     * @param reducedPrice The reservation date of the itinerary.
-     * @param location The location of the itinerary.
-     * @param duration The duration of the itinerary.
-     * @param repetitions The repetitions per day of the itinerayr.
-     * @param minParticipants The mininum participanrs of the itinerary.
-     * @param maxParticipants The maximum participants of the itinerary.
-     * @param fullPrice The full price of the itinerary per globetrotter.
-     * @param reducedPrice The reduced price of the itinerary per globetrotter.
-     * @param imageUrl The image url of the itinerary.
-     * @return
-     */
-    public Itinerary(String cicerone, String title, String description, String beginningDate, String endingDate, String reservationDate, int minParticipants, int maxParticipants, String location, int repetitions, String duration, float fullPrice, float reducedPrice, String imageUrl) {
-        this.itineraryCode = -1;
-        this.cicerone = new User();
-        this.cicerone.setUsername(cicerone);
-        this.title = title;
-        this.description = description;
-        try {
-            this.beginningDate = in.parse(beginningDate);
-        } catch (ParseException e) {
-            this.beginningDate = new Date();
-        }
-        try {
-            this.endingDate = in.parse(endingDate);
-        } catch (ParseException e) {
-            this.endingDate = new Date();
-        }
-        try {
-            this.reservationDate = in.parse(reservationDate);
-        } catch (ParseException e) {
-            this.reservationDate = new Date();
-        }
-        this.minParticipants = minParticipants;
-        this.maxParticipants = maxParticipants;
-        this.location = location;
-        this.repetitions = repetitions;
-        this.duration = duration;
-        this.fullPrice = fullPrice;
-        this.reducedPrice = reducedPrice;
-        this.imageUrl = imageUrl;
-    }
-
-    /**
      * Default empty constructor.
      */
     public Itinerary() {
@@ -522,5 +474,112 @@ public class Itinerary extends BusinessEntity {
         return result;
     }
 
+    private Itinerary(Builder builder) {
+        itineraryCode = 0;
+        cicerone = builder.cicerone;
+        title = builder.title;
+        description = builder.description;
+        beginningDate = builder.beginningDate;
+        endingDate = builder.endingDate;
+        reservationDate = builder.reservationDate;
+        minParticipants = builder.minParticipants;
+        maxParticipants = builder.maxParticipants;
+        location = builder.location;
+        repetitions = builder.repetitions;
+        duration = builder.duration;
+        fullPrice = builder.fullPrice;
+        reducedPrice = builder.reducedPrice;
+        imageUrl = builder.imageUrl;
+    }
+
+    public static class Builder {
+        private User cicerone;
+        private String title;
+        private String description;
+        private Date beginningDate;
+        private Date endingDate;
+        private Date reservationDate;
+        private int minParticipants;
+        private int maxParticipants;
+        private String location;
+        private int repetitions;
+        private String duration;
+        private float fullPrice;
+        private float reducedPrice;
+        private String imageUrl;
+
+        public Builder(User cicerone) {
+            this.cicerone = cicerone;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder beginningDate(Date beginningDate) {
+            this.beginningDate = beginningDate;
+            return this;
+        }
+
+        public Builder endingDate(Date endingDate) {
+            this.endingDate = endingDate;
+            return this;
+        }
+
+        public Builder reservationDate(Date reservationDate) {
+            this.reservationDate = reservationDate;
+            return this;
+        }
+
+        public Builder minParticipants(int minParticipants) {
+            this.minParticipants = minParticipants;
+            return this;
+        }
+
+        public Builder maxParticipants(int maxParticipants) {
+            this.maxParticipants = maxParticipants;
+            return this;
+        }
+
+        public Builder location(String location) {
+            this.location = location;
+            return this;
+        }
+
+        public Builder repetitions(int repetitions) {
+            this.repetitions = repetitions;
+            return this;
+        }
+
+        public Builder duration(String duration) {
+            this.duration = duration;
+            return this;
+        }
+
+        public Builder fullPrice(float fullPrice) {
+            this.fullPrice = fullPrice;
+            return this;
+        }
+
+        public Builder reducedPrice(float reducedPrice) {
+            this.reducedPrice = reducedPrice;
+            return this;
+        }
+
+        public Builder imageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        public Itinerary build() {
+            return new Itinerary(this);
+        }
+    }
 
 }

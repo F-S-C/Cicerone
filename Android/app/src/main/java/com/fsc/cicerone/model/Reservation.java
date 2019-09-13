@@ -148,7 +148,7 @@ public class Reservation extends BusinessEntity {
         }
 
         try {
-            if (jsonObject.has("confirm_date") && !jsonObject.getString("confirm_date").equals("0000-00-00"))
+            if (jsonObject.has("confirm_date") && jsonObject.get("confirm_date") != null && !jsonObject.getString("confirm_date").equals("0000-00-00"))
                 this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("confirm_date"));
             else
                 this.confirmationDate = null;

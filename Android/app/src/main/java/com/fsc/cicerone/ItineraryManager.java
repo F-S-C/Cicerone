@@ -6,6 +6,11 @@ import com.fsc.cicerone.model.Itinerary;
 
 import org.json.JSONArray;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -33,8 +38,59 @@ public abstract class ItineraryManager {
      * @param url         The image url of the itinerary.
      * @return
      */
+    /**
+     * Create and upload a new itinerary to the server.
+     *
+     * @param title       The title of the new itinerary.
+     * @param description The description of the itinerary.
+     * @param bDate       The beginning date of the itinerary (format "yyyy-MM-dd").
+     * @param eDate       The ending date of the itinerary (format "yyyy-MM-dd").
+     * @param rDate       The reservation's ending date of the itinerary (format "yyyy-MM-dd").
+     * @param location    The location of the itinerary.
+     * @param duration    The duration of the itinerary.
+     * @param repetitions The number of repetitions per day if the itinerary.
+     * @param minP        The minimum number of participants.
+     * @param maxP        The maximum number of participants.
+     * @param fPrice      The full price of the itinerary.
+     * @param rPrice      The reduced price of the itinerary.
+     * @param url         The URL of the image of the itinerary.
+     * @return The new itinerary.
+     */
     public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url) {
-        Itinerary itinerary = new Itinerary(AccountManager.getCurrentLoggedUser().getUsername(), title, description, bDate, eDate, rDate, minP, maxP, location, repetitions, duration, fPrice, rPrice, url);
+        SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Date beginningDate, endingDate, reservationDate;
+        try {
+            beginningDate = in.parse(bDate);
+        } catch (ParseException e) {
+            beginningDate = new Date();
+        }
+        try {
+            endingDate = in.parse(bDate);
+        } catch (ParseException e) {
+            endingDate = new Date();
+        }
+        try {
+            reservationDate = in.parse(bDate);
+        } catch (ParseException e) {
+            reservationDate = new Date();
+        }
+
+        Itinerary itinerary = new Itinerary.Builder(AccountManager.getCurrentLoggedUser())
+                .title(title)
+                .description(description)
+                .beginningDate(beginningDate)
+                .endingDate(endingDate)
+                .reservationDate(reservationDate)
+                .minParticipants(minP)
+                .maxParticipants(maxP)
+                .location(location)
+                .repetitions(repetitions)
+                .duration(duration)
+                .fullPrice(fPrice)
+                .reducedPrice(rPrice)
+                .imageUrl(url)
+                .build();
+
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.INSERT_ITINERARY,
                 new BooleanConnector.CallbackInterface() {
