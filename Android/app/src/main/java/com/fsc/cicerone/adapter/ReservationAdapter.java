@@ -74,8 +74,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             try {
                 Reservation toAdd = new Reservation.Builder(jsonArray.getJSONObject(i)).build();
 
-                // The reservation must be shown if and only if it was not yet confirmed.
-                if (!toAdd.isConfirmed()) {
+                // The reservation must be shown if and only if it was confirmed.
+                if (toAdd.isConfirmed()) {
                     this.mData.add(toAdd);
                 }
             } catch (JSONException e) {
