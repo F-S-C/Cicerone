@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.AdminUserProfile;
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 
 import org.json.JSONArray;
@@ -42,8 +44,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     /**
      * Constructor.
      *
-     * @param context    The parent Context.
-     * @param list  The array of JSON Objects got from server.
+     * @param context The parent Context.
+     * @param list    The array of JSON Objects got from server.
      */
     public UserListAdapter(Context context, List<User> list) {
         this.mInflater = LayoutInflater.from(context);
@@ -66,7 +68,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         UserType type = mData.get(position).getUserType();
         String typeName;
         holder.usr.setText(usernameStr);
-        switch (type){
+        switch (type) {
             case GLOBETROTTER:
                 typeName = context.getString(R.string.user_type_globetrotter);
                 break;
@@ -134,25 +136,24 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     private void setAvgRating(String usr, ViewHolder holder) {
-        // TODO: Add review class
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                //
-            }
+        SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_USER_REVIEW,
+                BusinessEntityBuilder.getFactory(UserReview.class),
+                new DatabaseConnector.CallbackInterface<UserReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        //
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                int i;
-                int sum = 0;
-                JSONObject result;
-                for (i = 0; i < jsonArray.length(); i++) {
-                    result = jsonArray.getJSONObject(i);
-                    sum += result.getInt("feedback");
-                }
-                holder.avgRating.setRating((i > 0) ? ((float) sum / i) : 0);
-            }
-        });
+                    @Override
+                    public void onEndConnection(List<UserReview> jsonArray) {
+                        int sum = 0;
+                        for (UserReview review : jsonArray) {
+                            sum += review.getFeedback();
+                        }
+                        holder.avgRating.setRating((jsonArray.size() > 0) ? ((float) sum / jsonArray.size()) : 0);
+                    }
+                });
         try {
             JSONObject params = new JSONObject();
             params.put("reviewed_user", usr);
