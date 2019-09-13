@@ -54,6 +54,8 @@ class RequestItineraryReview extends JsonConnector
 
         $to_return = $this->execute_query($query, $data, $types);
         foreach ($to_return as &$row) {
+            $parameters = array($row["username"]);
+            $row["username"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
             $parameters = array($row["reviewed_itinerary"]);
             $row["reviewed_itinerary"] = $this->execute_query("SELECT * FROM itinerary WHERE itinerary_code = ?", $parameters, "i")[0];
         }

@@ -53,6 +53,8 @@ class RequestUserReview extends JsonConnector
 
         $to_return = $this->execute_query($query, $data, $types);
         foreach ($to_return as &$row) {
+            $parameters = array($row["username"]);
+            $row["username"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
             $parameters = array($row["reviewed_user"]);
             $row["reviewed_user"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
         }
