@@ -58,7 +58,7 @@ public class ItineraryReviewFragment extends AppCompatActivity {
                 bundle.putString("itinerary", itinerary.toJSONObject().toString());
                 title.setText(itinerary.getTitle());
                 rating.setRating(bundle.getFloat("rating"));
-                author.setText(itinerary.getUsername());
+                author.setText(itinerary.getCicerone().getUsername());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

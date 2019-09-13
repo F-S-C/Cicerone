@@ -24,7 +24,6 @@ import com.fsc.cicerone.model.Wishlist;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -219,7 +218,7 @@ public class ItineraryDetails extends AppCompatActivity {
         itineraryTitle.setText(itinerary.getTitle());
         description.setText(itinerary.getDescription());
         Picasso.get().load(itinerary.getImageUrl()).into(image);
-        author.setText(itinerary.getUsername());
+        author.setText(itinerary.getCicerone().getUsername());
         String dur = itinerary.getDuration();
         duration.setText(dur.substring(0, 5));
         location.setText(itinerary.getLocation());

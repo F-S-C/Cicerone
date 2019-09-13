@@ -2,6 +2,7 @@ package com.fsc.cicerone.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fsc.cicerone.AccountManager;
 import com.fsc.cicerone.AdminItineraryDetails;
 import com.fsc.cicerone.ItineraryDetails;
+import com.fsc.cicerone.ItineraryManagement;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.UserType;
@@ -21,6 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * The ReviewAdapter of the Recycler View for the styles present in the app.
@@ -38,8 +41,8 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     /**
      * Constructor.
      *
-     * @param context   The parent Context.
-     * @param list The array of Itineraries objects in the wishlist.
+     * @param context The parent Context.
+     * @param list    The array of Itineraries objects in the wishlist.
      */
     public ItineraryAdapter(Context context, List<Itinerary> list) {
         this.mInflater = LayoutInflater.from(context);
@@ -72,15 +75,19 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
-            if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                i = new Intent().setClass(v.getContext(), AdminItineraryDetails.class);
+            Log.e("TESING", mData.get(position).getCicerone().toJSONObject().toString() + " " + String.valueOf(mData.get(position).getCicerone().equals(AccountManager.getCurrentLoggedUser())));
+            if (mData.get(position).getCicerone().equals(AccountManager.getCurrentLoggedUser())) {
+                i = new Intent().setClass(v.getContext(), ItineraryManagement.class);
             } else {
-                i = new Intent().setClass(v.getContext(), ItineraryDetails.class);
+                if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
+                    i = new Intent().setClass(v.getContext(), AdminItineraryDetails.class);
+                } else {
+                    i = new Intent().setClass(v.getContext(), ItineraryDetails.class);
+                }
             }
             i.putExtra("itinerary", mData.get(position).toJSONObject().toString());
             v.getContext().startActivity(i);
         });
-
     }
 
     /**

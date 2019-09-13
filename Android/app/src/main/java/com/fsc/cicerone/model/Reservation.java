@@ -79,7 +79,7 @@ public class Reservation extends BusinessEntity {
         try {
             result.put("username", this.client.getUsername());
             result.put("booked_itinerary", this.itinerary.getCode());
-            result.put("cicerone", this.itinerary.getUsername());
+            result.put("cicerone", this.itinerary.getCicerone());
             result.put("number_of_children", this.numberOfChildren);
             result.put("number_of_adults", this.numberOfAdults);
             result.put("total", this.total);
@@ -87,7 +87,7 @@ public class Reservation extends BusinessEntity {
                 result.put("requested_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.requestedDate));
             }
             if (this.forwardingDate != null) {
-                result.put("forwading_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.forwardingDate));
+                result.put("forwarding_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.forwardingDate));
             }
             if (this.confirmationDate != null) {
                 result.put("confirm_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.confirmationDate));

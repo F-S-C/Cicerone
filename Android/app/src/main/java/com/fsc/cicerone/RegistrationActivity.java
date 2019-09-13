@@ -26,6 +26,7 @@ import com.fsc.cicerone.model.Sex;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.hootsuite.nachos.NachoTextView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -104,19 +105,19 @@ public class RegistrationActivity extends AppCompatActivity {
         birthDate.setOnClickListener(view -> {
             hideKeyboard(this);
             new DatePickerDialog(this, birthDateSelect, birthCalendar
-                .get(Calendar.YEAR), birthCalendar.get(Calendar.MONTH),
-                birthCalendar.get(Calendar.DAY_OF_MONTH)).show();
-    });
+                    .get(Calendar.YEAR), birthCalendar.get(Calendar.MONTH),
+                    birthCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        });
 
         expDate.setOnClickListener(view -> {
             hideKeyboard(this);
             new DatePickerDialog(this, expDateSelect, expCalendar
-                .get(Calendar.YEAR), expCalendar.get(Calendar.MONTH),
-                expCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    .get(Calendar.YEAR), expCalendar.get(Calendar.MONTH),
+                    expCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
 
         next.setOnClickListener(view -> {
-            if (checkConnection()){
+            if (checkConnection()) {
                 if (validateFirstPageData()) {
                     next.setText(R.string.loading);
                     next.setEnabled(false);
@@ -141,7 +142,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         }
                     });
                 }
-            }else{
+            } else {
                 Toast.makeText(this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
             }
         });
@@ -149,7 +150,8 @@ public class RegistrationActivity extends AppCompatActivity {
         username.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start,
@@ -159,9 +161,9 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                if(User.validateUsername(username.getText().toString().trim())){
+                if (User.validateUsername(username.getText().toString().trim())) {
                     username.setError(null);
-                }else{
+                } else {
                     username.setError(getString(R.string.username_error));
                 }
             }
@@ -170,25 +172,27 @@ public class RegistrationActivity extends AppCompatActivity {
         email.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {}
+                                          int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                if(User.validateEmail(email.getText().toString().trim())){
+                if (User.validateEmail(email.getText().toString().trim())) {
                     email.setError(null);
-                }else{
+                } else {
                     email.setError(getString(R.string.email_not_valid));
                 }
             }
         });
 
         signup.setOnClickListener(view -> {
-            if(checkConnection()) {
+            if (checkConnection()) {
                 if (validateSecondPageData()) {
                     signup.setText(R.string.loading);
                     signup.setEnabled(false);
@@ -216,20 +220,26 @@ public class RegistrationActivity extends AppCompatActivity {
                         }
                     });
                 }
-            }else{
-                Toast.makeText(this, getString(R.string.connection_error),Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, getString(R.string.connection_error), Toast.LENGTH_LONG).show();
             }
         });
 
     }
 
-    private boolean specialCharactersNoSpace(String text){return !LETTERS_NUMBERS.matcher(text).matches();}
+    private boolean specialCharactersNoSpace(String text) {
+        return !LETTERS_NUMBERS.matcher(text).matches();
+    }
 
-    private boolean specialCharactersSpace(String text){return !LETTERS_AND_SPACES.matcher(text).matches();}
+    private boolean specialCharactersSpace(String text) {
+        return !LETTERS_AND_SPACES.matcher(text).matches();
+    }
 
-    private boolean onlyNumbersNoSpace(String text){return CONTROL_PHONE_NUMBER.matcher(text).matches();}
+    private boolean onlyNumbersNoSpace(String text) {
+        return CONTROL_PHONE_NUMBER.matcher(text).matches();
+    }
 
-    private boolean validateFirstPageData(){
+    private boolean validateFirstPageData() {
         name.setError(null);
         surname.setError(null);
         birthDate.setError(null);
@@ -238,68 +248,68 @@ public class RegistrationActivity extends AppCompatActivity {
         password.setError(null);
 
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR)-18);
+        cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 18);
         Date majDate = cal.getTime();
 
-        if(!User.validateUsername(username.getText().toString().trim())){
+        if (!User.validateUsername(username.getText().toString().trim())) {
             username.setError(getString(R.string.username_error));
             return false;
-        }else if(!User.validateEmail(email.getText().toString().trim())){
+        } else if (!User.validateEmail(email.getText().toString().trim())) {
             email.setError(getString(R.string.email_not_valid));
             return false;
-        }else if(name.getText().toString().trim().isEmpty() || specialCharactersSpace(name.getText().toString().trim())){
+        } else if (name.getText().toString().trim().isEmpty() || specialCharactersSpace(name.getText().toString().trim())) {
             name.setError(getString(R.string.not_valid_input));
             return false;
-        }else if(surname.getText().toString().trim().isEmpty() || specialCharactersSpace(surname.getText().toString().trim())){
+        } else if (surname.getText().toString().trim().isEmpty() || specialCharactersSpace(surname.getText().toString().trim())) {
             surname.setError(getString(R.string.not_valid_input));
             return false;
-        }else if(birthDate.getText().toString().trim().isEmpty()){
+        } else if (birthDate.getText().toString().trim().isEmpty()) {
             birthDate.setError(getString(R.string.error_fields_empty));
-            Toast.makeText(this, getString(R.string.error_fields_empty),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
             return false;
-        }else if(majDate.compareTo(strToDate(birthDate.getText().toString())) < 1) {
+        } else if (majDate.compareTo(strToDate(birthDate.getText().toString())) < 1) {
             birthDate.setError(getString(R.string.major_date_required));
-            Toast.makeText(this, getString(R.string.major_date_required),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.major_date_required), Toast.LENGTH_SHORT).show();
             return false;
-        }else if(fiscalCode.getText().toString().trim().isEmpty() || specialCharactersNoSpace(fiscalCode.getText().toString().trim())){
+        } else if (fiscalCode.getText().toString().trim().isEmpty() || specialCharactersNoSpace(fiscalCode.getText().toString().trim())) {
             fiscalCode.setError(getString(R.string.not_valid_input));
             return false;
-        }else if(cellphone.getText().toString().trim().isEmpty() || !onlyNumbersNoSpace(cellphone.getText().toString().trim())){
+        } else if (cellphone.getText().toString().trim().isEmpty() || !onlyNumbersNoSpace(cellphone.getText().toString().trim())) {
             cellphone.setError(getString(R.string.not_valid_input));
             return false;
-        }else if(password.getText().toString().trim().isEmpty()){
+        } else if (password.getText().toString().trim().isEmpty()) {
             password.setError(getString(R.string.error_fields_empty));
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
 
-    private boolean validateSecondPageData(){
+    private boolean validateSecondPageData() {
         docNumber.setError(null);
         docType.setError(null);
         expDate.setError(null);
         nachoTextView.setError(null);
 
-        if(docNumber.getText().toString().trim().isEmpty() || specialCharactersNoSpace(docNumber.getText().toString().trim())){
+        if (docNumber.getText().toString().trim().isEmpty() || specialCharactersNoSpace(docNumber.getText().toString().trim())) {
             docNumber.setError(getString(R.string.document_not_valid));
             return false;
-        }else if(docType.getText().toString().trim().isEmpty()){
+        } else if (docType.getText().toString().trim().isEmpty()) {
             docType.setError(getString(R.string.error_fields_empty));
             return false;
-        }else if(expDate.getText().toString().trim().isEmpty()){
+        } else if (expDate.getText().toString().trim().isEmpty()) {
             expDate.setError(getString(R.string.error_fields_empty));
-            Toast.makeText(this, getString(R.string.error_fields_empty),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
             return false;
-        }else if(Calendar.getInstance().getTime().compareTo(strToDate(expDate.getText().toString())) > 0){
+        } else if (Calendar.getInstance().getTime().compareTo(strToDate(expDate.getText().toString())) > 0) {
             expDate.setError(getString(R.string.date_invalid));
-            Toast.makeText(this, getString(R.string.date_invalid),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.date_invalid), Toast.LENGTH_SHORT).show();
             return false;
-        }else if(nachoTextView.getChipValues().size() < 1) {
+        } else if (nachoTextView.getChipValues().size() < 1) {
             nachoTextView.setError(getString(R.string.error_fields_empty));
             return false;
-        }else{
+        } else {
             docNumber.setError(null);
             docType.setError(null);
             nachoTextView.setError(null);
@@ -317,7 +327,7 @@ public class RegistrationActivity extends AppCompatActivity {
         spinner.setAdapter(dataAdapter);
     }
 
-    private User setNewUser(){
+    private User setNewUser() {
         User user = new User();
         user.setUsername(username.getText().toString().trim().toLowerCase());
         user.setPassword(password.getText().toString());
@@ -332,13 +342,13 @@ public class RegistrationActivity extends AppCompatActivity {
         return user;
     }
 
-    private Date strToDate(String text){
+    private Date strToDate(String text) {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         try {
             date = format.parse(text);
         } catch (ParseException e) {
-            Log.e(ERROR_TAG,e.toString());
+            Log.e(ERROR_TAG, e.toString());
         }
         return date;
     }
@@ -358,8 +368,8 @@ public class RegistrationActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private boolean checkConnection(){
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+    private boolean checkConnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
     }

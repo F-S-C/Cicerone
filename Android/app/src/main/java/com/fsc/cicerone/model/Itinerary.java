@@ -1,7 +1,5 @@
 package com.fsc.cicerone.model;
 
-import com.fsc.cicerone.model.BusinessEntity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +14,7 @@ import java.util.Locale;
 public class Itinerary extends BusinessEntity {
 
     private int itineraryCode;
-    private String username;
+    private User cicerone;
     private String title;
     private String description;
     private Date beginningDate;
@@ -49,9 +47,10 @@ public class Itinerary extends BusinessEntity {
      * @param imageUrl The image url of the itinerary.
      * @return
      */
-    public Itinerary(String username, String title, String description, String beginningDate, String endingDate, String reservationDate, int minParticipants, int maxParticipants, String location, int repetitions, String duration, float fullPrice, float reducedPrice, String imageUrl) {
+    public Itinerary(String cicerone, String title, String description, String beginningDate, String endingDate, String reservationDate, int minParticipants, int maxParticipants, String location, int repetitions, String duration, float fullPrice, float reducedPrice, String imageUrl) {
         this.itineraryCode = -1;
-        this.username = username;
+        this.cicerone = new User();
+        this.cicerone.setUsername(cicerone);
         this.title = title;
         this.description = description;
         try {
@@ -120,9 +119,9 @@ public class Itinerary extends BusinessEntity {
         }
 
         try {
-            username = itinerary.getString("username");
+            cicerone = new User(itinerary.getJSONObject("username"));
         } catch (JSONException e) {
-            username = null;
+            cicerone = null;
         }
 
         try {
@@ -226,17 +225,17 @@ public class Itinerary extends BusinessEntity {
      *
      * @return The itinerary's author.
      */
-    public String getUsername() {
-        return username;
+    public User getCicerone() {
+        return cicerone;
     }
 
     /**
      * Set the itinerary's author.
      *
-     * @param username The new itinerary's author.
+     * @param cicerone The new itinerary's author.
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setCicerone(User cicerone) {
+        this.cicerone = cicerone;
     }
 
     /**
@@ -504,7 +503,7 @@ public class Itinerary extends BusinessEntity {
         try {
             result.put("itinerary_code", this.itineraryCode);
             result.put("title", this.title);
-            result.put("username", this.username);
+            result.put("username", this.cicerone.toJSONObject());
             result.put("description", this.description);
             result.put("beginning_date", in.format(this.beginningDate));
             result.put("ending_date", in.format(this.endingDate));

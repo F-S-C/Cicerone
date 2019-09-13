@@ -124,7 +124,7 @@ public class ItineraryManagement extends AppCompatActivity {
         itineraryTitle.setText(itinerary.getTitle());
         description.setText(itinerary.getDescription());
         Picasso.get().load(itinerary.getImageUrl()).into(image);
-        author.setText(itinerary.getUsername());
+        author.setText(itinerary.getCicerone().getUsername());
         String dur = itinerary.getDuration();
         duration.setText(dur.substring(0, 5));
         location.setText(itinerary.getLocation());

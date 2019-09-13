@@ -57,7 +57,7 @@ class RequestReport extends JsonConnector
         if (isset($this->report_code)) {
             array_push($conditions, "report_code = ?");
             array_push($data, $this->report_code);
-            $types .= "i";
+            $Itypes .= "i";
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 

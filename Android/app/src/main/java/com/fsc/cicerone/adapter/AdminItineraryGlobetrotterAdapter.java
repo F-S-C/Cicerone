@@ -30,13 +30,13 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     /**
      * Constructor.
      *
-     * @param context   The parent Context.
-     * @param list The array of JSON Objects got from server.
+     * @param context The parent Context.
+     * @param list    The array of JSON Objects got from server.
      */
     public AdminItineraryGlobetrotterAdapter(Context context, List<Reservation> list) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
-        for(Reservation reservation : this.mData) {
+        for (Reservation reservation : this.mData) {
             // The reservation must be shown if and only if it was confirmed.
             if (!reservation.isConfirmed()) {
                 this.mData.remove(reservation);
@@ -56,14 +56,12 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-            DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-            holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
-            holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
-            holder.location.setText(mData.get(position).getItinerary().getLocation());
-            holder.itineraryCicerone.setText(mData.get(position).getItinerary().getUsername());
-
-    }//END onBindViewHolder
+        DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
+        holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
+        holder.location.setText(mData.get(position).getItinerary().getLocation());
+        holder.itineraryCicerone.setText(mData.get(position).getItinerary().getCicerone().getUsername());
+    }
 
     /**
      * Return the length of the JSON array passed into the ReviewAdapter.
