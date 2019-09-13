@@ -10,12 +10,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -68,47 +70,49 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     }
 
     private void getReportFromServer(JSONObject params) {
-        // TODO: Add report class
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REPORT_FRAGMENT, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                takeChargeReport.setEnabled(false);
-                closeReport.setEnabled(false);
-            }
+        SendInPostConnector<Report> connector = new SendInPostConnector<>(
+                ConnectorConstants.REPORT_FRAGMENT,
+                BusinessEntityBuilder.getFactory(Report.class),
+                new DatabaseConnector.CallbackInterface<Report>() {
+                    @Override
+                    public void onStartConnection() {
+                        takeChargeReport.setEnabled(false);
+                        closeReport.setEnabled(false);
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject result = jsonArray.getJSONObject(0);
-                String code = "Nr. " + result.getString("report_code");
-                String statusText = "Status: ";
-                reportTitle.setText(result.getString("object"));
-                reportCode.setText(code);
-                switch (Objects.requireNonNull(ReportStatus.getValue(result.getInt("state")))) {
-                    case OPEN:
-                        statusText += getString(R.string.open);
-                        takeChargeReport.setEnabled(true);
-                        closeReport.setEnabled(true);
-                        break;
-                    case CLOSED:
-                        statusText += getString(R.string.closed);
-                        break;
-                    case PENDING:
-                        statusText += getString(R.string.pending);
-                        closeReport.setEnabled(true);
-                        break;
-                    case CANCELED:
-                        statusText += getString(R.string.canceled);
-                        break;
-                    default:
-                        break;
-                }
-                status.setText(statusText);
-                reportedUser.setText(result.getString("reported_user"));
-                reporterUser.setText(result.getString("username"));
-                bodyText.setText(result.getString("report_body"));
-            }
-        });
-        connector.setObjectToSend(params);
+                    @Override
+                    public void onEndConnection(List<Report> list) {
+                        Report result = list.get(0);
+                        String code = "Nr. " + result.getCode();
+                        String statusText = "Status: ";
+                        reportTitle.setText(result.getObject());
+                        reportCode.setText(code);
+                        switch (result.getStatus()) {
+                            case OPEN:
+                                statusText += getString(R.string.open);
+                                takeChargeReport.setEnabled(true);
+                                closeReport.setEnabled(true);
+                                break;
+                            case CLOSED:
+                                statusText += getString(R.string.closed);
+                                break;
+                            case PENDING:
+                                statusText += getString(R.string.pending);
+                                closeReport.setEnabled(true);
+                                break;
+                            case CANCELED:
+                                statusText += getString(R.string.canceled);
+                                break;
+                            default:
+                                break;
+                        }
+                        status.setText(statusText);
+                        reportedUser.setText(result.getReportedUser().getUsername());
+                        reporterUser.setText(result.getAuthor().getUsername());
+                        bodyText.setText(result.getBody());
+                    }
+                },
+                params);
         connector.execute();
     }
 
@@ -158,7 +162,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
                         Log.e("p", result.toJSONObject().toString());
                         if (result.getResult()) {
                             Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();

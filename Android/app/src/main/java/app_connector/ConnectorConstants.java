@@ -4,7 +4,7 @@ package app_connector;
  * Connector Constants for Cicerone's connector.
  */
 public final class ConnectorConstants {
-
+    //TODO: Check all constants and remove duplicates.
     private ConnectorConstants() {
         throw new IllegalStateException("Utility class");
     }

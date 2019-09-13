@@ -39,7 +39,7 @@ class RequestReport extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT * FROM report";
+        $query = "SELECT report.username, report.reported_user, report_details.* FROM report INNER JOIN report_details ON report.report_code = report_details.report_code";
 
         $conditions = array();
         $data = array();
@@ -62,18 +62,14 @@ class RequestReport extends JsonConnector
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
 
-        if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->reported_user) || isset($this->username)) {
-                $statement->bind_param($types, ...$data);
-            }
-            if ($statement->execute()) {
-                $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-            } else {
-                throw new mysqli_sql_exception($statement->error);
-            }
-        } else {
-            throw new mysqli_sql_exception($this->connection->error);
+        $to_return = $this->execute_query($query, $data, $types);
+        foreach ($to_return as &$row){
+            $parameters = array($row["username"]);
+            $row["username"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
+            $parameters = array($row["reported_user"]);
+            $row["reported_user"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
         }
+
         return $to_return;
     }
 }

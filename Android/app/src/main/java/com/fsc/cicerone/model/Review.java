@@ -31,7 +31,7 @@ public abstract class Review extends BusinessEntity {
             description=jsonObject.getString("description");
         } catch (JSONException e) {
             Log.e("REVIEW_ERROR", e.getMessage());
-            description = "<i>Error loading description</i>";
+            description = "Error loading description";
         }
     }
 
