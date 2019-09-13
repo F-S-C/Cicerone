@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.Wishlist;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
@@ -28,6 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -182,25 +185,26 @@ public class ItineraryDetails extends AppCompatActivity {
 
 
     public void checkWishlist(JSONObject object) {
-        // TODO: Add wishlist class
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.SEARCH_WISHLIST, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
+                ConnectorConstants.SEARCH_WISHLIST,
+                BusinessEntityBuilder.getFactory(Wishlist.class),
+                new DatabaseConnector.CallbackInterface<Wishlist>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) {
-
-                if (jsonArray.length() > 0) {
-                    intoWishlist.setVisibility(View.GONE);
-                    removeFromWishlist.setVisibility(View.VISIBLE);
-                } else {
-                    intoWishlist.setVisibility(View.VISIBLE);
-                    removeFromWishlist.setVisibility(View.GONE);
-                }
-            }
-        },
+                    @Override
+                    public void onEndConnection(List<Wishlist> jsonArray) {
+                        if (jsonArray.size() > 0) {
+                            intoWishlist.setVisibility(View.GONE);
+                            removeFromWishlist.setVisibility(View.VISIBLE);
+                        } else {
+                            intoWishlist.setVisibility(View.VISIBLE);
+                            removeFromWishlist.setVisibility(View.GONE);
+                        }
+                    }
+                },
                 object);
         connector.execute();
 

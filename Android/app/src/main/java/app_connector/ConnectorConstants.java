@@ -90,12 +90,12 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the wishlist table.
      */
-    public static final String REQUEST_WISHLIST = SERVER_URL + "/RequestWishlistJoinItinerary.php";
+    public static final String REQUEST_WISHLIST = SERVER_URL + "/RequestWishlist.php";
 
     /**
      * URL of the server-side connector for the wishlist table.
      */
-    public static final String SEARCH_WISHLIST = SERVER_URL + "/RequestWishlist.php";
+    public static final String SEARCH_WISHLIST = SERVER_URL + "/RequestWishlist.php"; //TODO: remove from class?
 
     /**
      * URL of the server-side connector for the user_review table.
@@ -211,8 +211,8 @@ public final class ConnectorConstants {
      * URL of the script that takes care of sending the e-mails.
      */
     public static final String EMAIL_SENDER = "https://fscgroup.ddns.net" + "/email_sender/sender.php";
-    
-    /** 
+
+    /**
      * URL of the server-side connector for updating a reservation.
      */
     public static final String UPDATE_RESERVATION = SERVER_URL + "/UpdateReservation.php";

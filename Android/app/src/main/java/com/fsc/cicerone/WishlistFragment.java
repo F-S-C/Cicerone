@@ -18,13 +18,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.WishlistAdapter;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.Wishlist;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -69,22 +74,28 @@ public class WishlistFragment extends Fragment {
 
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        // TODO: Add wishlist class
-        SendInPostConnector connector = new SendInPostConnector(
-                ConnectorConstants.REQUEST_WISHLIST,
-                new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_WISHLIST, //TODO: Check
+                BusinessEntityBuilder.getFactory(Wishlist.class),
+                new DatabaseConnector.CallbackInterface<Wishlist>() {
                     @Override
                     public void onStartConnection() {
                         progressBar.setVisibility(View.VISIBLE);
                     }
 
                     @Override
-                    public void onEndConnection(JSONArray jsonArray) {
+                    public void onEndConnection(List<Wishlist> list) {
                         progressBar.setVisibility(View.GONE);
-                        adapter = new WishlistAdapter(getActivity(), jsonArray);
-                        Log.e("length", String.valueOf(jsonArray.length()));
-                        numberItineraries.setText(String.format(getString(R.string.wishlist_number), jsonArray.length()));
-                        if (jsonArray.length() == 0)
+
+                        List<Itinerary> itineraryList = new ArrayList<>(list.size());
+                        for (Wishlist item : list){
+                            itineraryList.add(item.getItinerary());
+                        }
+                        adapter = new WishlistAdapter(getActivity(), itineraryList);
+
+                        Log.e("length", String.valueOf(list.size()));
+                        numberItineraries.setText(String.format(getString(R.string.wishlist_number), list.size()));
+                        if (list.size() == 0)
                             clearWishlist.setVisibility(View.GONE);
 
                         recyclerView.setAdapter(adapter);

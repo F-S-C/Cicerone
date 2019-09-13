@@ -2,12 +2,10 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
 
 /**
- * Get all the informations about a user.
+ * Get all the information about a user.
  * @package db_connector
  */
 class RequestRegisteredUser extends JsonConnector
@@ -50,18 +48,8 @@ class RequestRegisteredUser extends JsonConnector
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
-        if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->username) || isset($this->email)) {
-                $statement->bind_param($types, ...$data);
-            }
-            if ($statement->execute()) {
-                $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-            } else {
-                throw new mysqli_sql_exception($statement->error);
-            }
-        } else {
-            throw new mysqli_sql_exception($this->connection->error);
-        }
+        $to_return = $this->execute_query($query, $data, $types);
+
         return $to_return;
     }
 }

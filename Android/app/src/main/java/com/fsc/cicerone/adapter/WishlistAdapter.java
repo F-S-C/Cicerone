@@ -39,11 +39,11 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
      * Constructor.
      *
      * @param context   The parent Context.
-     * @param jsonArray The array of JSON Objects got from server.
+     * @param list The array of Itineraries objects in the wishlist.
      */
-    public WishlistAdapter(Context context, List<Itinerary> jsonArray) {
+    public WishlistAdapter(Context context, List<Itinerary> list) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = jsonArray;
+        this.mData = list;
         this.context = context;
     }
 
