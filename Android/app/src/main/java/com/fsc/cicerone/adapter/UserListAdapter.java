@@ -30,7 +30,7 @@ import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
- * The Adapter of the Recycler View for the styles present in the app.
+ * The ReviewAdapter of the Recycler View for the styles present in the app.
  */
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
@@ -95,13 +95,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }//END onBindViewHolder
 
     /**
-     * Return the length of the JSON array passed into the Adapter.
+     * Return the length of the JSON array passed into the ReviewAdapter.
      *
      * @return Length of JSON array.
      */
     @Override
     public int getItemCount() {
-        return mData.length();
+        return mData.size();
     }
 
     /**

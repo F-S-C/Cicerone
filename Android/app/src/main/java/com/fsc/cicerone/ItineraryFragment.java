@@ -16,15 +16,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.adapter.Adapter;
 import com.fsc.cicerone.adapter.ReservationAdapter;
+import com.fsc.cicerone.adapter.WishlistAdapter;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -40,7 +39,7 @@ import app_connector.SendInPostConnector;
 public class ItineraryFragment extends Fragment {
 
     private Activity context;
-    Adapter adapter;
+    RecyclerView.Adapter adapter; //TODO: Edit class diagram
     ReservationAdapter adapter2;
     Button newItinerary;
     Button participations;
@@ -127,21 +126,21 @@ public class ItineraryFragment extends Fragment {
     }
 
     private void getMyItineraries(View view, JSONObject parameters, RecyclerView recyclerView) {
+        //TODO: Test and check if the new adapter works as expected.
         //RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_ITINERARY,
                 BusinessEntityBuilder.getFactory(Itinerary.class),
-                new DatabaseConnector.CallbackInterface() { //TODO: COMPLETE THE REFACTORING
+                new DatabaseConnector.CallbackInterface<Itinerary>() {
                     @Override
                     public void onStartConnection() {
                         //progressBar.setVisibility(View.VISIBLE);
                     }
 
                     @Override
-                    public void onEndConnection(JSONArray jsonArray) {
+                    public void onEndConnection(List<Itinerary> jsonArray) {
                         //progressBar.setVisibility(View.GONE);
-                        // TODO: To complete this, the Adapter must be modified.
-                        adapter = new Adapter(getActivity(), jsonArray, 1);
+                        adapter = new WishlistAdapter(getActivity(), jsonArray);
                         recyclerView.setAdapter(adapter);
                     }
                 },

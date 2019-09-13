@@ -77,7 +77,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
     }
 
     /**
-     * Return the length of the JSON array passed into the Adapter.
+     * Return the length of the JSON array passed into the ReviewAdapter.
      *
      * @return Length of JSON array.
      */

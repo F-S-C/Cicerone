@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * The Adapter of the Recycler View for the styles present in the app.
+ * The ReviewAdapter of the Recycler View for the styles present in the app.
  */
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
 
@@ -84,7 +84,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     }
 
     /**
-     * Return the length of the JSON array passed into the Adapter.
+     * Return the length of the JSON array passed into the ReviewAdapter.
      *
      * @return Length of JSON array.
      */

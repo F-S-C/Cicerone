@@ -18,12 +18,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.adapter.Adapter;
+import com.fsc.cicerone.adapter.ReportAdapter;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,7 +38,7 @@ import app_connector.SendInPostConnector;
  */
 public class ReportFragment extends Fragment {
 
-    Adapter adapter;
+    RecyclerView.Adapter adapter;
     Fragment fragment = null;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -106,7 +105,7 @@ public class ReportFragment extends Fragment {
                     @Override
                     public void onEndConnection(List<Report> list) {
                         progressBar.setVisibility(View.GONE);
-                        adapter = new Adapter(getActivity(), list, 0); // TODO: Copmlete refactoring (Adapter class)
+                        adapter = new ReportAdapter(getActivity(), list);
                         recyclerView.setAdapter(adapter);
                     }
                 },

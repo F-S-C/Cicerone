@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.adapter.Adapter;
+import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.ItineraryReview;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +33,7 @@ import app_connector.SendInPostConnector;
  */
 public class SelectedItineraryReviewFragment extends Fragment {
 
-    Adapter adapter;
+    RecyclerView.Adapter adapter;
 
     private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
 
@@ -83,7 +82,7 @@ public class SelectedItineraryReviewFragment extends Fragment {
                     public void onEndConnection(List<ItineraryReview> list) {
                         progressBar.setVisibility(View.GONE);
                         if (list.size() != 0) {
-                            adapter = new Adapter(getActivity(), list, 2); // TODO: Complete refactoring (class Adapter)
+                            adapter = new ReviewAdapter(getActivity(), list);
                             recyclerView.setAdapter(adapter);
                         } else {
                             message.setVisibility(View.VISIBLE);
