@@ -10,14 +10,16 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.ItineraryReview;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -106,38 +108,37 @@ public class AdminItineraryDetails extends AppCompatActivity {
     }
 
     public void getItineraryReviews(JSONObject itineraryCode) {
-        // TODO: Add review class
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                if (jsonArray.length() > 0) {
-                    int n = 0;
-                    float sum = 0;
-                    do {
-                        sum += jsonArray.getJSONObject(n).getInt("feedback");
-                        n = n + 1;
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.ITINERARY_REVIEW,
+                BusinessEntityBuilder.getFactory(ItineraryReview.class),
+                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
                     }
-                    while (n < jsonArray.length());
-                    float total = sum / n;
-                    review.setRating(total);
-                } else {
-                    review.setRating(0);
-                }
-            }
-        });
-        connector.setObjectToSend(itineraryCode);
+
+                    @Override
+                    public void onEndConnection(List<ItineraryReview> list) {
+                        if (list.size() > 0) {
+                            int sum = 0;
+                            for (ItineraryReview review : list) {
+                                sum += review.getFeedback();
+                            }
+                            float total = sum / list.size();
+                            review.setRating(total);
+                        } else {
+                            review.setRating(0);
+                        }
+                    }
+                },
+                itineraryCode);
         connector.execute();
     }
 
     public void goToAuthor(View view) {
-        Intent i = new Intent().setClass(view.getContext(),AdminMainActivity.class);//TODO if-41
+        Intent i = new Intent().setClass(view.getContext(), AdminMainActivity.class);//TODO if-41
         Bundle bundle = new Bundle();
-        bundle.putString("reviewed_user",author.getText().toString());
+        bundle.putString("reviewed_user", author.getText().toString());
         i.putExtras(bundle);
         view.getContext().startActivity(i);
     }

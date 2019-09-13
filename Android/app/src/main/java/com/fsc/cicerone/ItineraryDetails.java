@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.ItineraryReview;
+import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.Wishlist;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -232,24 +234,23 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     public void getItineraryReviews(JSONObject itineraryCode) {
-        // TODO: Add review class
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.ITINERARY_REVIEW,
+                BusinessEntityBuilder.getFactory(ItineraryReview.class),
+                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
             @Override
             public void onStartConnection() {
                 // Do nothing
             }
 
             @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                if (jsonArray.length() > 0) {
-                    int n = 0;
-                    float sum = 0;
-                    do {
-                        sum += jsonArray.getJSONObject(n).getInt("feedback");
-                        n = n + 1;
+            public void onEndConnection(List<ItineraryReview> list) {
+                if (list.size() > 0) {
+                    int sum = 0;
+                    for(ItineraryReview review : list){
+                        sum += review.getFeedback();
                     }
-                    while (n < jsonArray.length());
-                    float total = sum / n;
+                    float total = sum / list.size();
                     review.setRating(total);
                 } else {
                     review.setRating(0);
@@ -261,23 +262,26 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     public void isReservated(JSONObject reservation) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_RESERVATION,
+                BusinessEntityBuilder.getFactory(Reservation.class),
+                new DatabaseConnector.CallbackInterface<Reservation>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) {
-                if (jsonArray.length() > 0) {
-                    requestReservation.setText(getString(R.string.remove_reservation));
-                    requestReservation.setOnClickListener(v -> removeReservation(v));
-                } else {
-                    requestReservation.setText(getString(R.string.request_reservation));
-                    requestReservation.setOnClickListener(v -> askForReservation(v));
-                }
-            }
-        },
+                    @Override
+                    public void onEndConnection(List<Reservation> list) {
+                        if (list.size() > 0) {
+                            requestReservation.setText(getString(R.string.remove_reservation));
+                            requestReservation.setOnClickListener(v -> removeReservation(v));
+                        } else {
+                            requestReservation.setText(getString(R.string.request_reservation));
+                            requestReservation.setOnClickListener(v -> askForReservation(v));
+                        }
+                    }
+                },
                 reservation);
         connector.execute();
     }

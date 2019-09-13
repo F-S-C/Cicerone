@@ -15,10 +15,10 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.ItineraryReview;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,7 +33,7 @@ import app_connector.SendInPostConnector;
 public class InsertItineraryReviewFragment extends Fragment {
 
     private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
-    private JSONObject result;
+    private ItineraryReview result; //TODO: Edit class diagram
     private Button submitReview;
     private Button updateReview;
     private Button deleteReview;
@@ -167,32 +167,34 @@ public class InsertItineraryReviewFragment extends Fragment {
     }
 
     private void checkReview(JSONObject parameters) {
-        // TODO: Add review class
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-            }
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_ITINERARY_REVIEW,
+                BusinessEntityBuilder.getFactory(ItineraryReview.class),
+                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
+                    @Override
+                    public void onStartConnection() {
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                message.setVisibility(View.GONE);
-                if (jsonArray.length() > 0) {
-                    result = jsonArray.getJSONObject(0);
-                    submitReview.setVisibility(View.GONE);
-                    updateReview.setVisibility(View.VISIBLE);
-                    deleteReview.setVisibility(View.VISIBLE);
-                    descriptionReview.setText(result.getString("description"));
-                    feedbackReview.setRating(Float.parseFloat(result.getString("feedback")));
-                } else {
-                    feedbackReview.setRating(0);
-                    descriptionReview.setText("");
-                    submitReview.setVisibility(View.VISIBLE);
-                    updateReview.setVisibility(View.GONE);
-                    deleteReview.setVisibility(View.GONE);
-                }
-            }
-        });
-        connector.setObjectToSend(parameters);
+                    @Override
+                    public void onEndConnection(List<ItineraryReview> list) {
+                        message.setVisibility(View.GONE);
+                        if (list.size() > 0) {
+                            result = list.get(0);
+                            submitReview.setVisibility(View.GONE);
+                            updateReview.setVisibility(View.VISIBLE);
+                            deleteReview.setVisibility(View.VISIBLE);
+                            descriptionReview.setText(result.getDescription());
+                            feedbackReview.setRating(result.getFeedback());
+                        } else {
+                            feedbackReview.setRating(0);
+                            descriptionReview.setText("");
+                            submitReview.setVisibility(View.VISIBLE);
+                            updateReview.setVisibility(View.GONE);
+                            deleteReview.setVisibility(View.GONE);
+                        }
+                    }
+                },
+                parameters);
         connector.execute();
     }
 

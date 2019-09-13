@@ -13,15 +13,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.ItineraryReview;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -137,31 +139,30 @@ public class ItineraryManagement extends AppCompatActivity {
     }
 
     public void getItineraryReviews(JSONObject itineraryCode) {
-        //TODO: Add review class
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                if (jsonArray.length() > 0) {
-                    int n = 0;
-                    float sum = 0;
-                    do {
-                        sum += jsonArray.getJSONObject(n).getInt("feedback");
-                        n = n + 1;
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.ITINERARY_REVIEW,
+                BusinessEntityBuilder.getFactory(ItineraryReview.class),
+                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
                     }
-                    while (n < jsonArray.length());
-                    float total = sum / n;
-                    review.setRating(total);
-                } else {
-                    review.setRating(0);
-                }
-            }
-        });
-        connector.setObjectToSend(itineraryCode);
+
+                    @Override
+                    public void onEndConnection(List<ItineraryReview> list) {
+                        if (list.size() > 0) {
+                            int sum = 0;
+                            for (ItineraryReview review : list) {
+                                sum += review.getFeedback();
+                            }
+                            float total = sum / list.size();
+                            review.setRating(total);
+                        } else {
+                            review.setRating(0);
+                        }
+                    }
+                },
+                itineraryCode);
         connector.execute();
     }
 
@@ -169,22 +170,22 @@ public class ItineraryManagement extends AppCompatActivity {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.DELETE_ITINERARY,
                 new BooleanConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(BooleanConnector.BooleanResult result) {
-                if (result.getResult()) {
-                    Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();
-                    startActivity(i);
-                }
-            }
-        });
-        connector.setObjectToSend(itCode);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (result.getResult()) {
+                            Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();
+                            startActivity(i);
+                        }
+                    }
+                },
+                itCode);
         connector.execute();
     }
 }

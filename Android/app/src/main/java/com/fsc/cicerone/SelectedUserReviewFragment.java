@@ -15,11 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.Adapter;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.UserReview;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -66,28 +69,29 @@ public class SelectedUserReviewFragment extends Fragment {
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
-        // TODO: Add review class
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                message.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-            }
+        SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_USER_REVIEW,
+                BusinessEntityBuilder.getFactory(UserReview.class),
+                new DatabaseConnector.CallbackInterface<UserReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        message.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) {
-                progressBar.setVisibility(View.GONE);
-                if (jsonArray.length() != 0) {
-                    adapter = new Adapter(getActivity(), jsonArray, 2);
-                    recyclerView.setAdapter(adapter);
-                }
-                else{
-                    message.setVisibility(View.VISIBLE);
-                }
+                    @Override
+                    public void onEndConnection(List<UserReview> list) {
+                        progressBar.setVisibility(View.GONE);
+                        if (list.size() != 0) {
+                            adapter = new Adapter(getActivity(), list, 2); // TODO: Complete refactoring (class Adapter)
+                            recyclerView.setAdapter(adapter);
+                        } else {
+                            message.setVisibility(View.VISIBLE);
+                        }
 
-            }
-        });
-        connector.setObjectToSend(parameters);
+                    }
+                },
+                parameters);
         connector.execute();
     }
 

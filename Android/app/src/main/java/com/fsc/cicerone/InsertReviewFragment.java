@@ -14,12 +14,15 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserReview;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -30,7 +33,7 @@ import app_connector.SendInPostConnector;
 public class InsertReviewFragment extends Fragment {
 
     //private static final String ERROR_TAG = "ERROR IN " + InsertReviewFragment.class.getName();
-    private JSONObject result;
+    private UserReview result; // TODO: Edit class diagram
     private Button submitReview;
     private Button updateReview;
     private Button deleteReview;
@@ -151,32 +154,34 @@ public class InsertReviewFragment extends Fragment {
     }
 
     private void checkReview(JSONObject parameters) {
-        // TODO: Add review class
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-            }
+        SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_USER_REVIEW,
+                BusinessEntityBuilder.getFactory(UserReview.class),
+                new DatabaseConnector.CallbackInterface<UserReview>() {
+                    @Override
+                    public void onStartConnection() {
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                Log.e("lunghezza", String.valueOf(jsonArray.length()));
-                message.setVisibility(View.GONE);
-                if (jsonArray.length() > 0) {
-                    result = jsonArray.getJSONObject(0);
-                    submitReview.setVisibility(View.GONE);
-                    updateReview.setVisibility(View.VISIBLE);
-                    deleteReview.setVisibility(View.VISIBLE);
-                    descriptionReview.setText(result.getString("description"));
-                    feedbackReview.setRating(Float.parseFloat(result.getString("feedback")));
-                } else {
-                    feedbackReview.setRating(0);
-                    descriptionReview.setText("");
-                    submitReview.setVisibility(View.VISIBLE);
-                    updateReview.setVisibility(View.GONE);
-                    deleteReview.setVisibility(View.GONE);
-                }
-            }
-        }, parameters);
+                    @Override
+                    public void onEndConnection(List<UserReview> list) {
+                        message.setVisibility(View.GONE);
+                        if (list.size() > 0) {
+                            result = list.get(0);
+                            submitReview.setVisibility(View.GONE);
+                            updateReview.setVisibility(View.VISIBLE);
+                            deleteReview.setVisibility(View.VISIBLE);
+                            descriptionReview.setText(result.getDescription());
+                            feedbackReview.setRating(result.getFeedback());
+                        } else {
+                            feedbackReview.setRating(0);
+                            descriptionReview.setText("");
+                            submitReview.setVisibility(View.VISIBLE);
+                            updateReview.setVisibility(View.GONE);
+                            deleteReview.setVisibility(View.GONE);
+                        }
+                    }
+                },
+                parameters);
         connector.execute();
     }
 

@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
 
@@ -137,26 +138,25 @@ public class ProfileActivity extends AppCompatActivity {
                 parameters);
         connector.execute();
 
-        //TODO: Add review class
-        SendInPostConnector connectorReview = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                //
-            }
+        SendInPostConnector<UserReview> connectorReview = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_USER_REVIEW,
+                BusinessEntityBuilder.getFactory(UserReview.class),
+                new DatabaseConnector.CallbackInterface<UserReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        //
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                int i;
-                int sum = 0;
-                JSONObject result;
-                for (i = 0; i < jsonArray.length(); i++) {
-                    result = jsonArray.getJSONObject(i);
-                    sum += result.getInt("feedback");
-                }
-                RatingBar star = findViewById(R.id.avg_feedback);
-                star.setRating((i > 0) ? ((float) sum / i) : 0);
-            }
-        });
+                    @Override
+                    public void onEndConnection(List<UserReview> jsonArray) {
+                        int sum = 0;
+                        for (UserReview review : jsonArray) {
+                            sum += review.getFeedback();
+                        }
+                        RatingBar star = findViewById(R.id.avg_feedback);
+                        star.setRating((jsonArray.size() > 0) ? ((float) sum / jsonArray.size()) : 0);
+                    }
+                });
         try {
             JSONObject newParameter = new JSONObject();
             newParameter.put("reviewed_user", parameters.getString("username"));
