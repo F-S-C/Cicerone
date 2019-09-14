@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -110,16 +109,14 @@ public class ItineraryDetails extends AppCompatActivity {
             object2.put("username", currentLoggedUser.getUsername());
             object2.put("booked_itinerary", itinerary.getCode());
 
-            review.setOnTouchListener((v, event) -> {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewFragment.class);
-                    i.putExtra("itinerary", itinerary.toJSONObject().toString());
-                    i.putExtra("rating", review.getRating());
-                    i.putExtra("reviewed_itinerary", itinerary.getCode());
-                    startActivity(i);
-                }
-                return true;
+            review.setOnClickListener(v -> {
+                Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewFragment.class);
+                i.putExtra("itinerary", itinerary.toJSONObject().toString());
+                i.putExtra("rating", review.getRating());
+                i.putExtra("reviewed_itinerary", itinerary.getCode());
+                startActivity(i);
             });
+
             isReservated(object2);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -237,25 +234,25 @@ public class ItineraryDetails extends AppCompatActivity {
                 ConnectorConstants.ITINERARY_REVIEW,
                 BusinessEntityBuilder.getFactory(ItineraryReview.class),
                 new DatabaseConnector.CallbackInterface<ItineraryReview>() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(List<ItineraryReview> list) {
-                if (list.size() > 0) {
-                    int sum = 0;
-                    for(ItineraryReview review : list){
-                        sum += review.getFeedback();
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
                     }
-                    float total = sum / list.size();
-                    review.setRating(total);
-                } else {
-                    review.setRating(0);
-                }
-            }
-        });
+
+                    @Override
+                    public void onEndConnection(List<ItineraryReview> list) {
+                        if (list.size() > 0) {
+                            int sum = 0;
+                            for (ItineraryReview review : list) {
+                                sum += review.getFeedback();
+                            }
+                            float total = sum / list.size();
+                            review.setRating(total);
+                        } else {
+                            review.setRating(0);
+                        }
+                    }
+                });
         connector.setObjectToSend(itineraryCode);
         connector.execute();
     }

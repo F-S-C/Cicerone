@@ -17,7 +17,6 @@ import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onEndConnection(List<User> list) throws JSONException {
+                    public void onEndConnection(List<User> list) {
                         User result = list.get(0);
                         TextView name = findViewById(R.id.name_profile);
                         name.setText(result.getName());

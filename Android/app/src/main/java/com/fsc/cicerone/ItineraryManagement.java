@@ -4,7 +4,6 @@ package com.fsc.cicerone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -100,15 +99,12 @@ public class ItineraryManagement extends AppCompatActivity {
                 v.getContext().startActivity(i);
             });
 
-            review.setOnTouchListener((v, event) -> {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Intent i = new Intent().setClass(ItineraryManagement.this, ItineraryReviewFragment.class);
-                    i.putExtra("itinerary", itinerary.toJSONObject().toString());
-                    i.putExtra("rating", review.getRating());
-                    i.putExtra("reviewed_itinerary", itinerary.getCode());
-                    startActivity(i);
-                }
-                return true;
+            review.setOnClickListener(v -> {
+                Intent i = new Intent().setClass(ItineraryManagement.this, ItineraryReviewFragment.class);
+                i.putExtra("itinerary", itinerary.toJSONObject().toString());
+                i.putExtra("rating", review.getRating());
+                i.putExtra("reviewed_itinerary", itinerary.getCode());
+                startActivity(i);
             });
 
         } catch (JSONException e) {
@@ -129,8 +125,8 @@ public class ItineraryManagement extends AppCompatActivity {
         duration.setText(dur.substring(0, 5));
         location.setText(itinerary.getLocation());
         repetitions.setText(String.valueOf(itinerary.getRepetitions()));
-        fPrice.setText(Float.toString(itinerary.getFullPrice()));
-        rPrice.setText(Float.toString(itinerary.getReducedPrice()));
+        fPrice.setText(Float.toString(itinerary.getFullPrice())); //TODO: Add price tag (branch ui-improvement)
+        rPrice.setText(Float.toString(itinerary.getReducedPrice())); //TODO: Add price tag (branch ui-improvement)
         minP.setText(String.valueOf(itinerary.getMinParticipants()));
         maxP.setText(String.valueOf(itinerary.getMaxParticipants()));
         bDate.setText(out.format(itinerary.getBeginningDate()));
