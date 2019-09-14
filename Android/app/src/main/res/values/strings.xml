@@ -216,4 +216,6 @@
     <string name="participations">Participation</string>
     <string name="my_itineraries">My itineraries</string>
     <string name="no_itineraries">You are not participating at any itinerary.</string>
+    <string name="reservation_added">Reservation added.</string>
+    <string name="reservation_removed">Reservation removed.</string>
 </resources>
