@@ -212,12 +212,20 @@ public final class ConnectorConstants {
      */
     public static final String EMAIL_SENDER = "https://fscgroup.ddns.net" + "/email_sender/sender.php";
 
-    /**
+    /** 
      * URL of the server-side connector for updating a reservation.
      */
     public static final String UPDATE_RESERVATION = SERVER_URL + "/UpdateReservation.php";
 
+    /**
+     * URL of the script that takes care of uploading the images to the server.
+     */
+    public static final String IMAGE_UPLOADER = "https://fscgroup.ddns.net" + "/img_uploader/Uploader.php";
 
+    /**
+     * URL of the images folder on the server.
+     */
+    public static final String IMG_FOLDER = "https://fscgroup.ddns.net/images/";
 }
 
 

@@ -218,4 +218,5 @@
     <string name="no_itineraries">You are not participating at any itinerary.</string>
     <string name="reservation_added">Reservation added.</string>
     <string name="reservation_removed">Reservation removed.</string>
+    <string name="itinerary_image">Itinerary image</string>
 </resources>

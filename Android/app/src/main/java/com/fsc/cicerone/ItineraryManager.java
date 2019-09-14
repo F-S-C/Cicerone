@@ -2,6 +2,9 @@ package com.fsc.cicerone;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import com.fsc.cicerone.model.Itinerary;
 
 import java.text.ParseException;
@@ -20,12 +23,14 @@ public abstract class ItineraryManager {
     private ItineraryManager() {
         throw new IllegalStateException("Utility class");
     }
+    private static final String ERROR_TAG = "ERROR IN " + ItineraryManager.class.getName();
 
     /**
      * Create and upload a new itinerary to the server.
      *
      * @param title       The title of the new itinerary.
      * @param description The description of the itinerary.
+
      * @param bDate       The beginning date of the itinerary (format "yyyy-MM-dd").
      * @param eDate       The ending date of the itinerary (format "yyyy-MM-dd").
      * @param rDate       The reservation's ending date of the itinerary (format "yyyy-MM-dd").
@@ -39,7 +44,7 @@ public abstract class ItineraryManager {
      * @param url         The URL of the image of the itinerary.
      * @return The new itinerary.
      */
-    public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url) {
+    public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url, AccountManager.BooleanRunnable result) {
         SimpleDateFormat in = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date beginningDate;
         Date endingDate;
@@ -87,6 +92,7 @@ public abstract class ItineraryManager {
                     @Override
                     public void onEndConnection(BooleanConnector.BooleanResult result) {
                         Log.d("uploadItinerary", result.getResult() + ": " + result.getMessage());
+                        result.accept(result.getResult());
                     }
                 },
                 itinerary.toJSONObject());
