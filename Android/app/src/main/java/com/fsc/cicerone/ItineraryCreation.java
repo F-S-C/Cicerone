@@ -47,7 +47,7 @@ public class ItineraryCreation extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
-    private static final String DATE_FORMAT = "dd-MM-yy";
+    private static final String DATE_FORMAT = "dd-MM-yyyy";
     private static String URL = "image_url";
 
     @Override
@@ -377,30 +377,6 @@ public class ItineraryCreation extends AppCompatActivity {
             }
         }
 
-    }
-
-    private void submit(JSONObject params) {
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.INSERT_ITINERARY,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (result.getResult()) {
-                            Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
-                        }
-
-                    }
-                },
-                params);
-        connector.execute();
     }
 
     private boolean allFilled() {

@@ -57,7 +57,7 @@ public abstract class ItineraryManager {
      * @return The new itinerary.
      */
     public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url) {
-        SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat in = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date beginningDate, endingDate, reservationDate;
         try {
             beginningDate = in.parse(bDate);
@@ -65,12 +65,12 @@ public abstract class ItineraryManager {
             beginningDate = new Date();
         }
         try {
-            endingDate = in.parse(bDate);
+            endingDate = in.parse(eDate);
         } catch (ParseException e) {
             endingDate = new Date();
         }
         try {
-            reservationDate = in.parse(bDate);
+            reservationDate = in.parse(rDate);
         } catch (ParseException e) {
             reservationDate = new Date();
         }
