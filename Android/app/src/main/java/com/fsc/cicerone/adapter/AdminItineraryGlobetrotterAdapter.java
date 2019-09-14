@@ -63,15 +63,15 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     }
 
     /**
-     * Return the length of the JSON array passed into the ReviewAdapter.
+     * Return the length of the array passed into the ReviewAdapter.
      *
-     * @return Length of JSON array.
+     * @return Length of the array.
      */
     @Override
     public int getItemCount() {
         return mData.size();
     }
-A
+
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
