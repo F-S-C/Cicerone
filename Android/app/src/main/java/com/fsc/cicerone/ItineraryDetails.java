@@ -331,7 +331,7 @@ public class ItineraryDetails extends AppCompatActivity {
                         Log.e(ERROR_TAG, e.getMessage());
                     }
                     isReservated(object2);
-                    Toast.makeText(ItineraryDetails.this, "Reservation added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItineraryDetails.this,R.string.reservation_added, Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton(R.string.no, (dialog, id) -> {
                     // Do nothing
@@ -345,6 +345,8 @@ public class ItineraryDetails extends AppCompatActivity {
                 .setMessage(getString(R.string.sure_to_remove_reservation))
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
                     ReservationManager.removeReservation(itinerary);
+                    Toast.makeText(ItineraryDetails.this,R.string.reservation_removed, Toast.LENGTH_SHORT).show();
+
                     isReservated(object2);
                 })
                 .setNegativeButton(getString(R.string.no), null)
