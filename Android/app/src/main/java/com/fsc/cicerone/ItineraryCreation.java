@@ -281,7 +281,6 @@ public class ItineraryCreation extends AppCompatActivity {
     public void sendData(View view) {
         boolean canSend = allFilled();
         if (canSend) {
-
             ItineraryManager.uploadItinerary(
                     title.getText().toString(),
                     description.getText().toString(),
@@ -297,8 +296,7 @@ public class ItineraryCreation extends AppCompatActivity {
                     Float.parseFloat(reducedPrice.getText().toString()),
                     URL
             );
-
-
+            finish();
         } else {
             Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
         }
