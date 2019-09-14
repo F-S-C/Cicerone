@@ -100,7 +100,7 @@ public abstract class ItineraryManager {
 
                     @Override
                     public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        Log.d("uploadItinerary", String.valueOf(result.getResult()));
+                        Log.d("uploadItinerary", result.getResult() + ": " + result.getMessage());
                     }
                 },
                 itinerary.toJSONObject());
