@@ -32,7 +32,6 @@ import app_connector.SendInPostConnector;
 
 public class InsertItineraryReviewFragment extends Fragment {
 
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
     private ItineraryReview result; //TODO: Edit class diagram
     private Button submitReview;
     private Button updateReview;

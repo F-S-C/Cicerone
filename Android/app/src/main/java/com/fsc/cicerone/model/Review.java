@@ -6,9 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public abstract class Review extends BusinessEntity {
-    protected final User author;
-    protected int feedback;
-    protected String description;
+    private final User author;
+    private int feedback;
+    private String description;
 
     Review(JSONObject jsonObject) {
         User tempAuthor;
