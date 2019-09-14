@@ -35,7 +35,7 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the itinerary table.
      */
-    public static final String REQUEST_ITINERARY = SERVER_URL + "/RequestItinerary.php";
+    public static final String REQUEST_ITINERARY = SERVER_URL + "/GetItinerary.php";
 
     /**
      * URL of the server-side connector for the itinerary table.

@@ -73,7 +73,6 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
-            Log.e("TESING", mData.get(position).getCicerone().toJSONObject().toString() + " " + String.valueOf(mData.get(position).getCicerone().equals(AccountManager.getCurrentLoggedUser())));
             if (mData.get(position).getCicerone().equals(AccountManager.getCurrentLoggedUser())) {
                 i = new Intent().setClass(v.getContext(), ItineraryManagement.class);
             } else {

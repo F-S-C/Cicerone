@@ -455,7 +455,7 @@ public class Itinerary extends BusinessEntity {
         try {
             result.put("itinerary_code", this.itineraryCode);
             result.put("title", this.title);
-            result.put("username", this.cicerone.getUsername());
+            result.put("username", this.cicerone.toJSONObject());
             result.put("description", this.description);
             result.put("beginning_date", in.format(this.beginningDate));
             result.put("ending_date", in.format(this.endingDate));

@@ -83,7 +83,7 @@ class RequestItinerary extends JsonConnector
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
         $to_return = $this->execute_query($query, $data, $types);
-        foreach ($to_return as &$row){
+        foreach ($to_return as &$row) {
             $parameters = array($row["username"]);
             $row["username"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
         }
@@ -106,6 +106,3 @@ class RequestItinerary extends JsonConnector
         return $date_condition;
     }
 }
-
-$connector = new RequestItinerary($_POST['username'], $_POST['location'], $_POST['beginning_date'], $_POST['ending_date'], $_POST['itinerary_code']);
-print $connector->get_content();
