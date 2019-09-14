@@ -32,8 +32,7 @@ import app_connector.SendInPostConnector;
 
 public class InsertReviewFragment extends Fragment {
 
-    //private static final String ERROR_TAG = "ERROR IN " + InsertReviewFragment.class.getName();
-    private UserReview result; // TODO: Edit class diagram
+    private UserReview result;
     private Button submitReview;
     private Button updateReview;
     private Button deleteReview;
@@ -94,7 +93,7 @@ public class InsertReviewFragment extends Fragment {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
 
                         if (result.getResult()) {
                             message.setVisibility(View.GONE);

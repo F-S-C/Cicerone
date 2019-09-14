@@ -43,11 +43,11 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
      * Constructor.
      *
      * @param context   The parent Context.
-     * @param jsonArray The array of JSON Objects got from server.
+     * @param list The array of JSON Objects got from server.
      */
-    public AdminItineraryAdapter(Context context, List<Itinerary> jsonArray) {
+    public AdminItineraryAdapter(Context context, List<Itinerary> list) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = jsonArray;
+        this.mData = list;
         this.context = context;
     }
 
@@ -89,7 +89,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add in class diagram
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;

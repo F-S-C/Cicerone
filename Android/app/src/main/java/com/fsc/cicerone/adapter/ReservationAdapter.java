@@ -30,8 +30,6 @@ import java.util.Locale;
  */
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder> {
 
-    private static final String ERROR_TAG = "ERROR IN " + ReservationAdapter.class.getName();
-
     private List<Reservation> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -61,10 +59,10 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.layout = layout;
-        this.mData = list;
-        for (Reservation reservation : this.mData) {
-            if (reservation.isConfirmed()) {
-                this.mData.remove(reservation);
+        this.mData = new ArrayList<>(list.size());
+        for(Reservation reservation : list){
+            if (!reservation.isConfirmed()){
+                this.mData.add(reservation);
             }
         }
     }

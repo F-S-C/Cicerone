@@ -73,7 +73,6 @@ public class ProfileFragment extends Fragment {
     private EditText documentNumber;
     private EditText documentType;
     private EditText documentExpiryDate;
-    private Dialog switchToCiceroneDialog; // TODO: Remove this field
     private Button switchButton;
     private Button modifyButton;
     private Calendar birthCalendar;

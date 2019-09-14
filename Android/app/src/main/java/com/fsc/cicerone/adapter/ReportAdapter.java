@@ -28,8 +28,6 @@ import java.util.List;
  */
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder> {
 
-    private static final String ERROR_TAG = "ERROR IN " + ReviewAdapter.class.getName();
-
     private final Context context;
     private List<Report> mData;
     private LayoutInflater mInflater;
@@ -113,7 +111,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add to class diagram
         TextView object;
         TextView reportCode;
         ImageView status;

@@ -14,6 +14,7 @@ import com.fsc.cicerone.model.Reservation;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,8 +22,6 @@ import java.util.Locale;
  * The adapter useful to show data in the admin part of the application.
  */
 public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<AdminItineraryGlobetrotterAdapter.ViewHolder> {
-
-    private static final String ERROR_TAG = "ERROR IN " + AdminItineraryGlobetrotterAdapter.class.getName();
 
     private List<Reservation> mData;
     private LayoutInflater mInflater;
@@ -36,10 +35,11 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     public AdminItineraryGlobetrotterAdapter(Context context, List<Reservation> list) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
-        for (Reservation reservation : this.mData) {
+        this.mData = new ArrayList<>(list.size());
+        for (Reservation reservation : list) {
             // The reservation must be shown if and only if it was confirmed.
-            if (!reservation.isConfirmed()) {
-                this.mData.remove(reservation);
+            if (reservation.isConfirmed()) {
+                this.mData.add(reservation);
             }
         }
     }
@@ -48,7 +48,6 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View itineraryView = mInflater.inflate(R.layout.globetrotter_itinerary_admin_list, parent, false);
         return new ViewHolder(itineraryView);
     }
@@ -76,7 +75,7 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add to class diagram
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;

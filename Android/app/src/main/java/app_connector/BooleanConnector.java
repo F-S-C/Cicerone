@@ -29,7 +29,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
 
     private CallbackInterface callback;
 
-    public BooleanConnector(String url) {
+    public BooleanConnector(String url)     {
         super(url, null);
         this.callback = new CallbackInterface() {
             @Override

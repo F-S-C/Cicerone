@@ -30,8 +30,6 @@ import java.util.Objects;
  */
 public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.ViewHolder> {
 
-    private static final String ERROR_TAG = "ERROR IN " + ItineraryAdapter.class.getName();
-
     private final Context context;
     private List<Itinerary> mData;
     private LayoutInflater mInflater;
@@ -103,7 +101,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add to class diagram
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;
@@ -133,7 +131,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     /**
      * Item Click Listener for parent activity will implement this method to respond to click events.
      */
-    interface ItemClickListener {
+    interface ItemClickListener { //TODO: Remove?
         void onItemClick(View view, int position);
     }
 

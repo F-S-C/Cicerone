@@ -23,12 +23,8 @@ import java.util.List;
  */
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
-    private static final String ERROR_TAG = "ERROR IN " + ReviewAdapter.class.getName();
-
-    private final Context context;
     private List<? extends Review> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
 
 
     /**
@@ -40,7 +36,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public ReviewAdapter(Context context, List<? extends Review> list) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
-        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -83,7 +78,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView reviewerUsername;
         TextView reviewDescription;
         RatingBar ratingBar;
@@ -94,19 +89,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             reviewerUsername = itemView.findViewById(R.id.reviewer_username);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             reviewDescription = itemView.findViewById(R.id.review_description);
-            itemView.setOnClickListener(this);
         }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
-    }
-
-    /**
-     * Item Click Listener for parent activity will implement this method to respond to click events.
-     */
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
     }
 }

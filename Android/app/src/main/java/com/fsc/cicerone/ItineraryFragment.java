@@ -39,7 +39,7 @@ import app_connector.SendInPostConnector;
 public class ItineraryFragment extends Fragment {
 
     private Activity context;
-    RecyclerView.Adapter adapter; //TODO: Edit class diagram
+    RecyclerView.Adapter adapter;
     ReservationAdapter adapter2;
     Button newItinerary;
     Button participations;
@@ -47,8 +47,6 @@ public class ItineraryFragment extends Fragment {
     RecyclerView participationList;
     RecyclerView madeItineraries;
     TextView message;
-
-    private static final String ERROR_TAG = "ERROR IN " + ItineraryFragment.class.getName();
 
     /**
      * Empty constructor

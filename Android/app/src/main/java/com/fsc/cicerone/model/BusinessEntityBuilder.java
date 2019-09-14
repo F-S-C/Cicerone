@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class BusinessEntityBuilder<T> {
+public class BusinessEntityBuilder<T extends BusinessEntity> {
 
     private Class<T> type;
 
@@ -16,7 +16,7 @@ public class BusinessEntityBuilder<T> {
         return type.getConstructor(JSONObject.class).newInstance(jsonObject);
     }
 
-    public static <T> BusinessEntityBuilder<T> getFactory(Class<T> type){
+    public static <T extends BusinessEntity> BusinessEntityBuilder<T> getFactory(Class<T> type){
         return new BusinessEntityBuilder<>(type);
     }
 }

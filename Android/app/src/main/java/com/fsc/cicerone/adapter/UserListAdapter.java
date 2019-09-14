@@ -34,8 +34,6 @@ import app_connector.SendInPostConnector;
  */
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
-    private static final String ERROR_TAG = "ERROR IN " + UserListAdapter.class.getName();
-
     private final Context context;
     private List<User> mData;
     private LayoutInflater mInflater;
@@ -107,7 +105,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add to class diagram
 
         TextView usr;
         TextView usrType;

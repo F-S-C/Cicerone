@@ -32,7 +32,7 @@ import app_connector.SendInPostConnector;
 
 public class InsertItineraryReviewFragment extends Fragment {
 
-    private ItineraryReview result; //TODO: Edit class diagram
+    private ItineraryReview result;
     private Button submitReview;
     private Button updateReview;
     private Button deleteReview;
