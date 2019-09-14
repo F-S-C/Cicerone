@@ -44,8 +44,7 @@ public class ItineraryFragment extends Fragment {
     Button newItinerary;
     Button participations;
     Button myItineraries;
-    RecyclerView participationList;
-    RecyclerView madeItineraries;
+    RecyclerView itineraryList;
     TextView message;
 
     /**
@@ -66,8 +65,8 @@ public class ItineraryFragment extends Fragment {
         newItinerary = view.findViewById(R.id.newItinerary);
         participations = view.findViewById(R.id.partecipations);
         myItineraries = view.findViewById(R.id.myitineraries);
-        madeItineraries = view.findViewById(R.id.itinerary_list);
-        participationList = view.findViewById(R.id.itinerary_list);
+        itineraryList = view.findViewById(R.id.itinerary_list);
+        //itineraryList = view.findViewById(R.id.itinerary_list);
         message = view.findViewById(R.id.noItineraries);
 
 
@@ -78,15 +77,15 @@ public class ItineraryFragment extends Fragment {
             myItineraries.setVisibility(View.VISIBLE);
 
             // set up the RecyclerView for Cicerone's itineraries
-            madeItineraries.setLayoutManager(new LinearLayoutManager(getActivity()));
-            madeItineraries.addItemDecoration(new DividerItemDecoration(madeItineraries.getContext(), DividerItemDecoration.VERTICAL));
+            //itineraryList.setLayoutManager(new LinearLayoutManager(getActivity()));
+            //itineraryList.addItemDecoration(new DividerItemDecoration(itineraryList.getContext(), DividerItemDecoration.VERTICAL));
         }
 
 
         // Set up the RecyclerView for Globetrotter's participations
-        participationList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        participationList.addItemDecoration(new DividerItemDecoration(participationList.getContext(), DividerItemDecoration.VERTICAL));
-        getParticipations(view, parameters, participationList);
+        itineraryList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        itineraryList.addItemDecoration(new DividerItemDecoration(itineraryList.getContext(), DividerItemDecoration.VERTICAL));
+        getParticipations(view,parameters,itineraryList);
 
 
         myItineraries.setOnClickListener(v -> {
@@ -96,7 +95,7 @@ public class ItineraryFragment extends Fragment {
             //enable button (Outlined Style)
             myItineraries.setBackgroundColor(ContextCompat.getColor(context, myItineraries.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             myItineraries.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getMyItineraries(v, parameters, madeItineraries);
+            getMyItineraries(v,parameters,itineraryList);
             message.setVisibility(View.GONE);
             newItinerary.setVisibility(View.VISIBLE);
 
@@ -107,9 +106,9 @@ public class ItineraryFragment extends Fragment {
             myItineraries.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             myItineraries.setTextColor(ContextCompat.getColor(context, myItineraries.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             //enable button (Outlined Style)
-            participations.setBackgroundColor(ContextCompat.getColor(context, participationList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
+            participations.setBackgroundColor(ContextCompat.getColor(context, itineraryList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             participations.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getParticipations(v, parameters, madeItineraries);
+            getParticipations(v,parameters,itineraryList);
             newItinerary.setVisibility(View.GONE);
 
 

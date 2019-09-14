@@ -61,7 +61,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         this.layout = layout;
         this.mData = new ArrayList<>(list.size());
         for(Reservation reservation : list){
-            if (!reservation.isConfirmed()){
+            if (reservation.isConfirmed()){
                 this.mData.add(reservation);
             }
         }
