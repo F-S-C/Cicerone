@@ -2,10 +2,9 @@ package com.fsc.cicerone;
 
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import com.fsc.cicerone.model.Itinerary;
+
+import org.json.JSONException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,14 +22,12 @@ public abstract class ItineraryManager {
     private ItineraryManager() {
         throw new IllegalStateException("Utility class");
     }
-    private static final String ERROR_TAG = "ERROR IN " + ItineraryManager.class.getName();
 
     /**
      * Create and upload a new itinerary to the server.
      *
      * @param title       The title of the new itinerary.
      * @param description The description of the itinerary.
-
      * @param bDate       The beginning date of the itinerary (format "yyyy-MM-dd").
      * @param eDate       The ending date of the itinerary (format "yyyy-MM-dd").
      * @param rDate       The reservation's ending date of the itinerary (format "yyyy-MM-dd").
@@ -90,9 +87,9 @@ public abstract class ItineraryManager {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        Log.d("uploadItinerary", result.getResult() + ": " + result.getMessage());
-                        result.accept(result.getResult());
+                    public void onEndConnection(BooleanConnector.BooleanResult booleanResult) throws JSONException {
+                        Log.d("uploadItinerary", booleanResult.getResult() + ": " + booleanResult.getMessage());
+                        result.accept(booleanResult.getResult());
                     }
                 },
                 itinerary.toJSONObject());

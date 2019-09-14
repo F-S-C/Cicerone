@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 
@@ -57,7 +58,6 @@ public class ItineraryCreation extends AppCompatActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
     private static final String DATE_FORMAT = "dd-MM-yyyy";
-    private static final String URL = "image_url";
     private static final int IMG_REQUEST = 1;
     private boolean imgSelected = false;
 
@@ -292,15 +292,15 @@ public class ItineraryCreation extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null){
+        if (requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null) {
             Uri imgPath = data.getData();
             try {
                 bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath);
                 selectedImage.setBackground(null);
                 selectedImage.setImageBitmap(bitmapImage);
-            }catch (IOException e){
+            } catch (IOException e) {
                 Log.e(ERROR_TAG, e.toString());
             }
         }
@@ -309,9 +309,9 @@ public class ItineraryCreation extends AppCompatActivity {
     public void sendData(View view) {
         boolean canSend = allFilled();
         if (canSend) {
-            if(imgSelected) {
+            if (imgSelected) {
                 uploadItineraryWithImage();
-            }else{
+            } else {
                 ItineraryManager.uploadItinerary(
                         title.getText().toString(),
                         description.getText().toString(),
@@ -462,26 +462,26 @@ public class ItineraryCreation extends AppCompatActivity {
         }
     }
 
-    private void selectImage(){
+    private void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,IMG_REQUEST);
+        startActivityForResult(intent, IMG_REQUEST);
         imgSelected = true;
     }
 
-    private String imgToString(Bitmap image){
+    private String imgToString(Bitmap image) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] imgByteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(imgByteArray, Base64.DEFAULT);
     }
 
-    private void uploadItineraryWithImage(){
+    private void uploadItineraryWithImage() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ConnectorConstants.IMAGE_UPLOADER, response -> {
             try {
                 JSONObject result = new JSONObject(response);
-                if(result.getBoolean("result")) {
+                if (result.getBoolean("result")) {
                     String imgURL = ConnectorConstants.IMG_FOLDER.concat(result.getString("name"));
                     ItineraryManager.uploadItinerary(
                             title.getText().toString(),
@@ -506,17 +506,18 @@ public class ItineraryCreation extends AppCompatActivity {
                                     Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
                                 }
                             });
-                }else{
-                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) ,Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
-                Log.e(ERROR_TAG,e.toString());
+                Log.e(ERROR_TAG, e.toString());
             }
-        }, (error) -> {}){
+        }, (error) -> {
+        }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("image",imgToString(bitmapImage));
+                params.put("image", imgToString(bitmapImage));
                 return params;
             }
         };
