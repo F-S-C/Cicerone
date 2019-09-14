@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -109,12 +110,15 @@ public class ItineraryDetails extends AppCompatActivity {
             object2.put("username", currentLoggedUser.getUsername());
             object2.put("booked_itinerary", itinerary.getCode());
 
-            review.setOnClickListener(v -> {
-                Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewFragment.class);
-                i.putExtra("itinerary", itinerary.toJSONObject().toString());
-                i.putExtra("rating", review.getRating());
-                i.putExtra("reviewed_itinerary", itinerary.getCode());
-                startActivity(i);
+            review.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewFragment.class);
+                    i.putExtra("itinerary", itinerary.toJSONObject().toString());
+                    i.putExtra("rating", review.getRating());
+                    i.putExtra("reviewed_itinerary", itinerary.getCode());
+                    startActivity(i);
+                }
+                return true;
             });
 
             isReservated(object2);

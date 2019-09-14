@@ -4,6 +4,7 @@ package com.fsc.cicerone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -93,18 +94,22 @@ public class ItineraryManagement extends AppCompatActivity {
                     .setNegativeButton(getString(R.string.no), null)
                     .show());
 
+
             updateItinerary.setOnClickListener(v -> {
                 Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
                 i.putExtras(bundle);
                 v.getContext().startActivity(i);
             });
 
-            review.setOnClickListener(v -> {
-                Intent i = new Intent().setClass(ItineraryManagement.this, ItineraryReviewFragment.class);
-                i.putExtra("itinerary", itinerary.toJSONObject().toString());
-                i.putExtra("rating", review.getRating());
-                i.putExtra("reviewed_itinerary", itinerary.getCode());
-                startActivity(i);
+            review.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Intent i = new Intent().setClass(ItineraryManagement.this, ItineraryReviewFragment.class);
+                    i.putExtra("itinerary", itinerary.toJSONObject().toString());
+                    i.putExtra("rating", review.getRating());
+                    i.putExtra("reviewed_itinerary", itinerary.getCode());
+                    startActivity(i);
+                }
+                return true;
             });
 
         } catch (JSONException e) {
