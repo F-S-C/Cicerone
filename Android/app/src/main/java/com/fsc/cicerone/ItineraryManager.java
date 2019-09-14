@@ -1,6 +1,9 @@
 package com.fsc.cicerone;
 
+import android.util.Log;
+
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -11,6 +14,7 @@ import app_connector.SendInPostConnector;
  */
 public abstract class ItineraryManager {
 
+    private static final String ERROR_TAG = "ERROR IN " + ItineraryManager.class.getName();
 
     /**
      *
@@ -27,9 +31,10 @@ public abstract class ItineraryManager {
      * @param fPrice The full price of the itinerary per globetrotter.
      * @param rPrice The reduced price of the itinerary per globetrotter.
      * @param url The image url of the itinerary.
-     * @return
+     * @param result BooleanRunnable that indicates the result of the operation.
+     * @return The itinerary uploaded.
      */
-    public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url) {
+    public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url, AccountManager.BooleanRunnable result) {
         Itinerary itinerary = new Itinerary(AccountManager.getCurrentLoggedUser().getUsername(), title, description, bDate, eDate, rDate, minP, maxP, location, repetitions, duration, fPrice, rPrice, url);
         SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_ITINERARY, new DatabaseConnector.CallbackInterface() {
             @Override
@@ -38,6 +43,11 @@ public abstract class ItineraryManager {
 
             @Override
             public void onEndConnection(JSONArray jsonArray) {
+                try {
+                    result.accept(jsonArray.getJSONObject(0).getBoolean("result"));
+                }catch (JSONException e){
+                    Log.e(ERROR_TAG,e.toString());
+                }
             }
         }, itinerary.toJSONObject());
 
