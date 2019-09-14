@@ -76,7 +76,7 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
         super();
         fileUrl = url;
         this.builder = builder;
-        this.callback = callback != null? callback : new CallbackInterface<T>() {
+        this.callback = callback != null ? callback : new CallbackInterface<T>() {
             @Override
             public void onStartConnection() {
                 // Do nothing
@@ -120,13 +120,9 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
             JSONArray jsonArray = new JSONArray((s.startsWith("[") ? "" : "[") + s + (s.endsWith("]") ? "" : "]"));
             ArrayList<T> array = new ArrayList<>(jsonArray.length());
             for (int i = 0; i < jsonArray.length(); i++) {
-                try {
-                    T object = builder.fromJSONObject(jsonArray.getJSONObject(i));
+                T object = builder.fromJSONObject(jsonArray.getJSONObject(i));
 
-                    array.add(object);
-                } catch (JSONException e) {
-                    Log.e("ADD_ELEMENT_EXCEPTION", e.getMessage());
-                }
+                array.add(object);
             }
 
 

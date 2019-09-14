@@ -197,8 +197,8 @@ public class ItineraryDetails extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onEndConnection(List<Wishlist> jsonArray) {
-                        if (jsonArray.size() > 0) {
+                    public void onEndConnection(List<Wishlist> list) {
+                        if (!list.isEmpty()) {
                             intoWishlist.setVisibility(View.GONE);
                             removeFromWishlist.setVisibility(View.VISIBLE);
                         } else {
@@ -245,12 +245,12 @@ public class ItineraryDetails extends AppCompatActivity {
 
                     @Override
                     public void onEndConnection(List<ItineraryReview> list) {
-                        if (list.size() > 0) {
+                        if (!list.isEmpty()) {
                             int sum = 0;
-                            for (ItineraryReview review : list) {
-                                sum += review.getFeedback();
+                            for (ItineraryReview itineraryReview : list) {
+                                sum += itineraryReview.getFeedback();
                             }
-                            float total = sum / list.size();
+                            float total = (float) sum / list.size();
                             review.setRating(total);
                         } else {
                             review.setRating(0);
@@ -273,12 +273,12 @@ public class ItineraryDetails extends AppCompatActivity {
 
                     @Override
                     public void onEndConnection(List<Reservation> list) {
-                        if (list.size() > 0) {
+                        if (!list.isEmpty()) {
                             requestReservation.setText(getString(R.string.remove_reservation));
-                            requestReservation.setOnClickListener(v -> removeReservation(v));
+                            requestReservation.setOnClickListener(ItineraryDetails.this::removeReservation);
                         } else {
                             requestReservation.setText(getString(R.string.request_reservation));
-                            requestReservation.setOnClickListener(v -> askForReservation(v));
+                            requestReservation.setOnClickListener(ItineraryDetails.this::askForReservation);
                         }
                     }
                 },
@@ -331,7 +331,7 @@ public class ItineraryDetails extends AppCompatActivity {
                         Log.e(ERROR_TAG, e.getMessage());
                     }
                     isReservated(object2);
-                    Toast.makeText(ItineraryDetails.this,R.string.reservation_added, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItineraryDetails.this, R.string.reservation_added, Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton(R.string.no, (dialog, id) -> {
                     // Do nothing
@@ -345,7 +345,7 @@ public class ItineraryDetails extends AppCompatActivity {
                 .setMessage(getString(R.string.sure_to_remove_reservation))
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
                     ReservationManager.removeReservation(itinerary);
-                    Toast.makeText(ItineraryDetails.this,R.string.reservation_removed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItineraryDetails.this, R.string.reservation_removed, Toast.LENGTH_SHORT).show();
 
                     isReservated(object2);
                 })

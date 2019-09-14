@@ -86,6 +86,7 @@ public class AdminUserProfile extends AppCompatActivity {
                         supportActionBar.setTitle(getString(R.string.created_itineraries));
                         fragment = new CiceroneItineraryListFragment();
                         fragment.setArguments(bundle);
+                        break;
                     default:
                         break;
                 }

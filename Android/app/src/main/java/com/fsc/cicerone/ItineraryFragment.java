@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.adapter.ReservationAdapter;
 import com.fsc.cicerone.adapter.ItineraryAdapter;
+import com.fsc.cicerone.adapter.ReservationAdapter;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
@@ -85,7 +85,7 @@ public class ItineraryFragment extends Fragment {
         // Set up the RecyclerView for Globetrotter's participations
         itineraryList.setLayoutManager(new LinearLayoutManager(getActivity()));
         itineraryList.addItemDecoration(new DividerItemDecoration(itineraryList.getContext(), DividerItemDecoration.VERTICAL));
-        getParticipations(view,parameters,itineraryList);
+        getParticipations(parameters,itineraryList);
 
 
         myItineraries.setOnClickListener(v -> {
@@ -95,7 +95,7 @@ public class ItineraryFragment extends Fragment {
             //enable button (Outlined Style)
             myItineraries.setBackgroundColor(ContextCompat.getColor(context, myItineraries.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             myItineraries.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getMyItineraries(v,parameters,itineraryList);
+            getMyItineraries(parameters,itineraryList);
             message.setVisibility(View.GONE);
             newItinerary.setVisibility(View.VISIBLE);
 
@@ -108,7 +108,7 @@ public class ItineraryFragment extends Fragment {
             //enable button (Outlined Style)
             participations.setBackgroundColor(ContextCompat.getColor(context, itineraryList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             participations.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getParticipations(v,parameters,itineraryList);
+            getParticipations(parameters,itineraryList);
             newItinerary.setVisibility(View.GONE);
 
 
@@ -122,7 +122,7 @@ public class ItineraryFragment extends Fragment {
         return view;
     }
 
-    private void getMyItineraries(View view, JSONObject parameters, RecyclerView recyclerView) {
+    private void getMyItineraries(JSONObject parameters, RecyclerView recyclerView) {
         //TODO: Test and check if the new adapter works as expected.
         //RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
@@ -145,7 +145,7 @@ public class ItineraryFragment extends Fragment {
         connector.execute();
     }
 
-    private void getParticipations(View view, JSONObject parameters, RecyclerView recyclerView) {
+    private void getParticipations(JSONObject parameters, RecyclerView recyclerView) {
         //RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
@@ -159,7 +159,7 @@ public class ItineraryFragment extends Fragment {
                     @Override
                     public void onEndConnection(List<Reservation> list) {
                         //progressBar.setVisibility(View.GONE);
-                        if (list.size() == 0)
+                        if (!list.isEmpty())
                             message.setVisibility(View.VISIBLE);
                         adapter2 = new ReservationAdapter(getActivity(), list, R.layout.participation_list);
                         recyclerView.setAdapter(adapter2);

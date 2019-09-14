@@ -1,7 +1,6 @@
 package com.fsc.cicerone;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,20 +12,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import app_connector.BooleanConnector;
-import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
-import app_connector.SendInPostConnector;
 
 
 public class ItineraryCreation extends AppCompatActivity {
@@ -48,7 +38,7 @@ public class ItineraryCreation extends AppCompatActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
     private static final String DATE_FORMAT = "dd-MM-yyyy";
-    private static String URL = "image_url";
+    private static final String URL = "image_url";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

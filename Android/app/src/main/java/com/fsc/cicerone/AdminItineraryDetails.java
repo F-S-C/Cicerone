@@ -119,12 +119,12 @@ public class AdminItineraryDetails extends AppCompatActivity {
 
                     @Override
                     public void onEndConnection(List<ItineraryReview> list) {
-                        if (list.size() > 0) {
+                        if (!list.isEmpty()) {
                             int sum = 0;
-                            for (ItineraryReview review : list) {
-                                sum += review.getFeedback();
+                            for (ItineraryReview itineraryReview : list) {
+                                sum += itineraryReview.getFeedback();
                             }
-                            float total = sum / list.size();
+                            float total = (float) sum / list.size();
                             review.setRating(total);
                         } else {
                             review.setRating(0);

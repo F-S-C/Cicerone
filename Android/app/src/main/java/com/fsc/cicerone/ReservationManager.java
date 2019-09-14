@@ -12,8 +12,6 @@ import java.util.Date;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
-import app_connector.SendInPostConnector;
 
 public abstract class ReservationManager {
 
@@ -49,7 +47,7 @@ public abstract class ReservationManager {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
                         if (!result.getResult())
                             Log.e("INSERT_RESERVATION_ERR", result.getMessage());
                     }
@@ -62,7 +60,7 @@ public abstract class ReservationManager {
 
     public static void confirmReservation(Reservation reservation) {
         reservation.setConfirmationDate(new Date());
-        AccountManager.sendEmailWithContacts(reservation.getItinerary(), reservation.getClient(), (result) -> {
+        AccountManager.sendEmailWithContacts(reservation.getItinerary(), reservation.getClient(), result -> {
             if (result) {
                 BooleanConnector connector = new BooleanConnector(ConnectorConstants.UPDATE_RESERVATION);
                 connector.setObjectToSend(reservation.toJSONObject());

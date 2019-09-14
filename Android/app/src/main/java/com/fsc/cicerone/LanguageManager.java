@@ -5,7 +5,6 @@ import android.util.Log;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Language;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,7 +16,6 @@ import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.GetDataConnector;
-import app_connector.SendInPostConnector;
 
 /**
  * LanguageManager is used to manage multiple instances of the Language class and to interact

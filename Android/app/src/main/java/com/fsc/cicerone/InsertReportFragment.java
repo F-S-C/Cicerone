@@ -18,7 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +29,6 @@ import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.GetDataConnector;
-import app_connector.SendInPostConnector;
 
 
 public class InsertReportFragment extends Fragment {
@@ -65,32 +63,29 @@ public class InsertReportFragment extends Fragment {
             e.printStackTrace();
         }
 
-        sendReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (object.getText().toString().equals("") || body.getText().toString().equals("")) {
-                    Toast.makeText(InsertReportFragment.this.getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+        sendReport.setOnClickListener(v -> {
+            if (object.getText().toString().equals("") || body.getText().toString().equals("")) {
+                Toast.makeText(InsertReportFragment.this.getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
 
-                } else {
-                    try {
-                        param.put("reported_user", users.getSelectedItem().toString());
-                        param.put("report_body", body.getText().toString());
-                        param.put("state", "1");
-                        param.put("object", object.getText().toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    InsertReportFragment.this.sendToTableReport(param);
-                    InsertReportFragment.this.sendToTableReportDetails(param);
-
-                    fragment = new ReportFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame, fragment);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
+            } else {
+                try {
+                    param.put("reported_user", users.getSelectedItem().toString());
+                    param.put("report_body", body.getText().toString());
+                    param.put("state", "1");
+                    param.put("object", object.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
+                InsertReportFragment.this.sendToTableReport(param);
+                InsertReportFragment.this.sendToTableReportDetails(param);
+
+                fragment = new ReportFragment();
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame, fragment);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
             }
         });
 
@@ -105,7 +100,7 @@ public class InsertReportFragment extends Fragment {
                 new DatabaseConnector.CallbackInterface<User>() {
                     @Override
                     public void onStartConnection() {
-
+                        // Do nothing
                     }
 
                     @Override

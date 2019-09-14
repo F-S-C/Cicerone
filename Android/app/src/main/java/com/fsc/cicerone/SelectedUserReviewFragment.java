@@ -81,7 +81,7 @@ public class SelectedUserReviewFragment extends Fragment {
                     @Override
                     public void onEndConnection(List<UserReview> list) {
                         progressBar.setVisibility(View.GONE);
-                        if (list.size() != 0) {
+                        if (!list.isEmpty()) {
                             adapter = new ReviewAdapter(getActivity(), list);
                             recyclerView.setAdapter(adapter);
                         } else {

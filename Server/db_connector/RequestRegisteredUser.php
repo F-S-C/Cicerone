@@ -23,7 +23,7 @@ class RequestRegisteredUser extends JsonConnector
     public function __construct(string $username = null, string $email = null)
     {
         $this->username = isset($username) && $username != "" ? strtolower($username) : null;
-        $this->email = isset($email) && $email != ""? $email : null;
+        $this->email = isset($email) && $email != "" ? $email : null;
         parent::__construct();
     }
 
@@ -48,9 +48,7 @@ class RequestRegisteredUser extends JsonConnector
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
-        $to_return = $this->execute_query($query, $data, $types);
-
-        return $to_return;
+        return $this->execute_query($query, $data, $types);
     }
 }
 

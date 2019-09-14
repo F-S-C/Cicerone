@@ -45,6 +45,7 @@ public class InsertItineraryReviewFragment extends Fragment {
     private JSONObject sendParam;
 
     public InsertItineraryReviewFragment() {
+        // Required public empty constructor
     }
 
     @Override
@@ -90,13 +91,14 @@ public class InsertItineraryReviewFragment extends Fragment {
                 new DatabaseConnector.CallbackInterface<Reservation>() {
                     @Override
                     public void onStartConnection() {
+                        // Do nothing
                     }
 
                     @Override
                     public void onEndConnection(List<Reservation> list) throws JSONException {
                         sendParam = new JSONObject();
 
-                        if (list.size() > 0) {
+                        if (!list.isEmpty()) {
                             message.setVisibility(View.GONE);
                             parameters.put("reviewed_itinerary", parameters.getString("booked_itinerary"));
                             checkReview(parameters);
@@ -172,12 +174,13 @@ public class InsertItineraryReviewFragment extends Fragment {
                 new DatabaseConnector.CallbackInterface<ItineraryReview>() {
                     @Override
                     public void onStartConnection() {
+                        // Do nothing
                     }
 
                     @Override
                     public void onEndConnection(List<ItineraryReview> list) {
                         message.setVisibility(View.GONE);
-                        if (list.size() > 0) {
+                        if (!list.isEmpty()) {
                             result = list.get(0);
                             submitReview.setVisibility(View.GONE);
                             updateReview.setVisibility(View.VISIBLE);

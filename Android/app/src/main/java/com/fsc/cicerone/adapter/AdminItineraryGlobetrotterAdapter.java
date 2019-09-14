@@ -71,7 +71,7 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     public int getItemCount() {
         return mData.size();
     }
-
+A
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */

@@ -19,7 +19,6 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -144,12 +143,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                     }
 
                     @Override
-                    public void onEndConnection(List<UserReview> jsonArray) {
+                    public void onEndConnection(List<UserReview> list) {
                         int sum = 0;
-                        for (UserReview review : jsonArray) {
+                        for (UserReview review : list) {
                             sum += review.getFeedback();
                         }
-                        holder.avgRating.setRating((jsonArray.size() > 0) ? ((float) sum / jsonArray.size()) : 0);
+                        holder.avgRating.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
                     }
                 });
         try {

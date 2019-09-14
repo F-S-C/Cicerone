@@ -35,9 +35,6 @@ public class HomeFragment extends Fragment {
     private ItineraryAdapter adapter;
     private Activity context;
 
-    //private static final String ERROR_TAG = "ERROR IN " + HomeFragment.class.getName();
-
-
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -70,7 +67,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onEndConnection(List<Itinerary> list) {
                         progressBar.setVisibility(View.GONE);
-                        if (list.size() > 0) {
+                        if (!list.isEmpty()) {
                             adapter = new ItineraryAdapter(getActivity(), list);
                             recyclerView.setAdapter(adapter);
                         } else {

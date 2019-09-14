@@ -3,7 +3,6 @@ package app_connector;
 import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +11,7 @@ import java.util.List;
 
 public class BooleanConnector extends SendInPostConnector<BooleanConnector.BooleanResult> {
 
+    private static final String ERROR_TAG = "BOOL_CONNECTOR_ERROR";
 
     public interface CallbackInterface {
         /**
@@ -79,7 +79,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         try {
             this.callback.onEndConnection(new BooleanResult(s));
         } catch (JSONException e) {
-            Log.e("ERROR", e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
         }
     }
 
@@ -93,7 +93,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
                 result = jsonObject.getBoolean("result");
                 message = jsonObject.getString(result ? "message" : "error");
             } catch (JSONException e) {
-                Log.e("ERROR", e.getMessage());
+                Log.e(ERROR_TAG, e.getMessage());
             }
         }
 
@@ -112,7 +112,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
                 toReturn.put("result", result);
                 toReturn.put(result ? "message" : "error", message);
             } catch (JSONException e) {
-                Log.e("ERROR", e.getMessage());
+                Log.e(ERROR_TAG, e.getMessage());
             }
             return toReturn;
         }

@@ -20,7 +20,6 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -85,7 +84,7 @@ public class ReservationFragment extends Fragment {
                     @Override
                     public void onEndConnection(List<Reservation> list) {
                         progressBar.setVisibility(View.GONE);
-                        if (list.size() > 0) {
+                        if (!list.isEmpty()) {
                             adapter = new ReservationAdapter(getActivity(), list);
                             recyclerView.setAdapter(adapter);
                         } else {

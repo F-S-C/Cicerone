@@ -1,7 +1,6 @@
 package com.fsc.cicerone.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.ReservationManager;
+import com.fsc.cicerone.model.Reservation;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

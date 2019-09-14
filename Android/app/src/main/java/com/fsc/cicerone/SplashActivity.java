@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SplashActivity extends AppCompatActivity {
-    private static final String ERROR_TAG = "ERROR IN " + SplashActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

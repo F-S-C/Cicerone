@@ -15,7 +15,7 @@ public class ItineraryReview extends Review {
         try {
             tempReviewedUser = new Itinerary(jsonObject.getJSONObject("reviewed_itinerary"));
         } catch (JSONException e) {
-            Log.e("REVIEW_ITINERARY_ERROR", e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
             tempReviewedUser = new Itinerary();
         }
         reviewedItinerary = tempReviewedUser;
@@ -31,7 +31,7 @@ public class ItineraryReview extends Review {
         try {
             object.put("reviewed_itinerary", reviewedItinerary.getItineraryCode());
         } catch (JSONException e) {
-            Log.e("REVIEW_ITINERARY_ERROR", e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
         }
         return object;
     }

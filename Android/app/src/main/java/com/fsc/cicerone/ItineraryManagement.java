@@ -49,8 +49,6 @@ public class ItineraryManagement extends AppCompatActivity {
     private TextView fPrice;
     private TextView rPrice;
 
-    private static final String ERROR_TAG = "ERROR IN " + ItineraryManagement.class.getName();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,12 +149,12 @@ public class ItineraryManagement extends AppCompatActivity {
 
                     @Override
                     public void onEndConnection(List<ItineraryReview> list) {
-                        if (list.size() > 0) {
+                        if (!list.isEmpty()) {
                             int sum = 0;
-                            for (ItineraryReview review : list) {
-                                sum += review.getFeedback();
+                            for (ItineraryReview itineraryReview : list) {
+                                sum += itineraryReview.getFeedback();
                             }
-                            float total = sum / list.size();
+                            float total = (float) sum / list.size();
                             review.setRating(total);
                         } else {
                             review.setRating(0);

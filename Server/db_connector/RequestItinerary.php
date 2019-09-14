@@ -2,8 +2,6 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
 
 /**
@@ -58,8 +56,8 @@ class RequestItinerary extends JsonConnector
         }
         if (isset($this->location)) {
             array_push($conditions, "location LIKE ?");
-            $location = "%" . $this->location . "%";
-            array_push($data, $location);
+            $temp_location = "%" . $this->location . "%";
+            array_push($data, $temp_location);
             $types .= "s";
         }
         if (isset($this->code)) {

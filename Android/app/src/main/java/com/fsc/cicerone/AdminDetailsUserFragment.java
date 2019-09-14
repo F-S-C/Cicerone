@@ -21,14 +21,11 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -48,7 +45,6 @@ public class AdminDetailsUserFragment extends Fragment {
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
-    private TextView avgEarn;
     private String data;
     private DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
@@ -76,7 +72,7 @@ public class AdminDetailsUserFragment extends Fragment {
         documentNumber = view.findViewById(R.id.nrDoc_user_admin);
         documentType = view.findViewById(R.id.typeDoc_user_admin);
         documentExpiryDate = view.findViewById(R.id.dateEx_user_admin);
-        avgEarn = view.findViewById(R.id.avg_earn);
+        TextView avgEarn = view.findViewById(R.id.avg_earn);
         TextView sex = view.findViewById(R.id.sex_user_admin);
         Button removeUser = view.findViewById(R.id.remove_user_admin);
         Bundle bundle = getArguments();
@@ -128,9 +124,9 @@ public class AdminDetailsUserFragment extends Fragment {
                     }
 
                     @Override
-                    public void onEndConnection(List<Document> jsonArray) {
-                        if (jsonArray.size() > 0) {
-                            Document dataDocument = jsonArray.get(0);
+                    public void onEndConnection(List<Document> list) {
+                        if (!list.isEmpty()) {
+                            Document dataDocument = list.get(0);
                             data = "Document Number: " + dataDocument.getNumber();
                             documentNumber.setText(data);
                             data = "Document Type: " + dataDocument.getType();
@@ -144,7 +140,6 @@ public class AdminDetailsUserFragment extends Fragment {
                             documentType.setVisibility(View.GONE);
                             documentExpiryDate.setVisibility(View.GONE);
                             Toast.makeText(context, AdminDetailsUserFragment.this.getString(R.string.doc_not_found), Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 },

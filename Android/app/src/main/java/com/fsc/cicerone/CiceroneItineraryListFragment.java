@@ -17,7 +17,6 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,21 +58,21 @@ public class CiceroneItineraryListFragment extends Fragment {
             RecyclerView recyclerView = view.findViewById(R.id.cicerone_itinerary_recycler);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(view, parameters, recyclerView);
+            requireData(parameters, recyclerView);
         }catch (JSONException e){
             Log.e(ERROR_TAG,e.toString());
         }
         return view;
     }
 
-    private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
+    private void requireData(JSONObject parameters, RecyclerView recyclerView) {
         SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_ITINERARY,
                 BusinessEntityBuilder.getFactory(Itinerary.class),
                 new DatabaseConnector.CallbackInterface<Itinerary>() {
             @Override
             public void onStartConnection() {
-
+                // Do nothing
             }
 
             @Override

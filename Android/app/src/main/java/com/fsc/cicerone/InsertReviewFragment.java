@@ -18,7 +18,6 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,6 +89,7 @@ public class InsertReviewFragment extends Fragment {
                 new BooleanConnector.CallbackInterface() {
                     @Override
                     public void onStartConnection() {
+                        // Do nothing
                     }
 
                     @Override
@@ -159,12 +159,13 @@ public class InsertReviewFragment extends Fragment {
                 new DatabaseConnector.CallbackInterface<UserReview>() {
                     @Override
                     public void onStartConnection() {
+                        // Do nothing
                     }
 
                     @Override
                     public void onEndConnection(List<UserReview> list) {
                         message.setVisibility(View.GONE);
-                        if (list.size() > 0) {
+                        if (!list.isEmpty()) {
                             result = list.get(0);
                             submitReview.setVisibility(View.GONE);
                             updateReview.setVisibility(View.VISIBLE);

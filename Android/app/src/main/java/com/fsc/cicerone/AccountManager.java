@@ -13,10 +13,7 @@ import com.fsc.cicerone.model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
@@ -193,8 +190,8 @@ public abstract class AccountManager {
                         }
 
                         @Override
-                        public void onEndConnection(List<User> jsonArray) throws JSONException {
-                            result.accept(jsonArray.size() > 0);
+                        public void onEndConnection(List<User> list) throws JSONException {
+                            result.accept(!list.isEmpty());
                         }
                     },
                     obj);
@@ -224,8 +221,8 @@ public abstract class AccountManager {
                         }
 
                         @Override
-                        public void onEndConnection(List<User> jsonArray) throws JSONException {
-                            result.accept(jsonArray.size() > 0);
+                        public void onEndConnection(List<User> list) throws JSONException {
+                            result.accept(!list.isEmpty());
                         }
                     },
                     obj);

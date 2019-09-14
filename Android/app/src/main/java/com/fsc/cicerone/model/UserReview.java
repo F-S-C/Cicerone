@@ -15,7 +15,7 @@ public class UserReview extends Review {
         try {
             tempReviewedUser = new User(jsonObject.getJSONObject("reviewed_user"));
         } catch (JSONException e) {
-            Log.e("REVIEW_USER_ERROR", e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
             tempReviewedUser = new User();
         }
         reviewedUser = tempReviewedUser;
@@ -31,7 +31,7 @@ public class UserReview extends Review {
         try {
             object.put("reviewed_user", reviewedUser.getUsername());
         } catch (JSONException e) {
-            Log.e("REVIEW_USER_ERROR", e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
         }
         return object;
     }

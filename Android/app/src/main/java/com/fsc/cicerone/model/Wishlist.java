@@ -10,6 +10,8 @@ public class Wishlist extends BusinessEntity {
     private final User user;
     private final Itinerary itinerary;
 
+    private static final String ERROR_TAG = "WISHLIST_ERROR";
+
     public Wishlist(JSONObject jsonObject){
         User tempUser;
         Itinerary tempItinerary;
@@ -17,14 +19,14 @@ public class Wishlist extends BusinessEntity {
         try{
             tempUser = new User(jsonObject.getJSONObject("username"));
         } catch (JSONException e) {
-            Log.e("WISHLIST_ERROR", e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
             tempUser = new User();
         }
 
         try {
             tempItinerary = new Itinerary(jsonObject.getJSONObject("itinerary_in_wishlist"));
         } catch (JSONException e) {
-            Log.e("WISHLIST_ERROR", e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
             tempItinerary = new Itinerary();
         }
 
@@ -47,12 +49,12 @@ public class Wishlist extends BusinessEntity {
         try {
             jsonObject.put("username", user.getUsername());
         } catch (JSONException e) {
-            Log.e("WISHLIST_ERROR", e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
         }
         try {
             jsonObject.put("itinerary_in_wishlist", itinerary.getCode());
         } catch (JSONException e) {
-            Log.e("WISHLIST_ERROR", e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
         }
 
         return jsonObject;

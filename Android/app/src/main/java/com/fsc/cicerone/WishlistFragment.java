@@ -41,8 +41,6 @@ public class WishlistFragment extends Fragment {
     private TextView numberItineraries;
     private Button clearWishlist;
 
-    private static final String ERROR_TAG = "ERROR IN " + WishlistFragment.class.getName();
-
 
     @Nullable
     @Override
@@ -93,7 +91,7 @@ public class WishlistFragment extends Fragment {
 
                         Log.e("length", String.valueOf(list.size()));
                         numberItineraries.setText(String.format(getString(R.string.wishlist_number), list.size()));
-                        if (list.size() == 0)
+                        if (!list.isEmpty())
                             clearWishlist.setVisibility(View.GONE);
 
                         recyclerView.setAdapter(adapter);
@@ -109,6 +107,7 @@ public class WishlistFragment extends Fragment {
                 new BooleanConnector.CallbackInterface() {
                     @Override
                     public void onStartConnection() {
+                        // Do nothing
                     }
 
                     @Override

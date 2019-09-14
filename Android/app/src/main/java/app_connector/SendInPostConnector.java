@@ -21,7 +21,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
-import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 

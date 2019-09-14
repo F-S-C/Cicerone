@@ -147,13 +147,13 @@ public class ProfileActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onEndConnection(List<UserReview> jsonArray) {
+                    public void onEndConnection(List<UserReview> list) {
                         int sum = 0;
-                        for (UserReview review : jsonArray) {
+                        for (UserReview review : list) {
                             sum += review.getFeedback();
                         }
                         RatingBar star = findViewById(R.id.avg_feedback);
-                        star.setRating((jsonArray.size() > 0) ? ((float) sum / jsonArray.size()) : 0);
+                        star.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
                     }
                 });
         try {
