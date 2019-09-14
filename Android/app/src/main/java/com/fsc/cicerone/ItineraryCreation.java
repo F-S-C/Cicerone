@@ -336,7 +336,6 @@ public class ItineraryCreation extends AppCompatActivity {
                             }
                         });
             }
-            finish();
         } else {
             Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
         }
