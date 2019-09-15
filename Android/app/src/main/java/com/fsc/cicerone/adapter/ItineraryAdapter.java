@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.AccountManager;
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.AdminItineraryDetails;
 import com.fsc.cicerone.ItineraryDetails;
 import com.fsc.cicerone.ItineraryManagement;

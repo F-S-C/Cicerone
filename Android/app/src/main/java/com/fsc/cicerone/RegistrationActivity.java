@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.LanguageManager;
 import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Sex;
 import com.fsc.cicerone.model.User;

@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.AccountManager;
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.AdminReportDetailsActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.ReportDetailsActivity;

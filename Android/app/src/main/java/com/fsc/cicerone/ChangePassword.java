@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.User;
 
 import org.json.JSONException;

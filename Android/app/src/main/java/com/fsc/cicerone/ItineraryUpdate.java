@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.manager.AccountManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

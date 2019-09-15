@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.UserType;
 
 import org.json.JSONException;
