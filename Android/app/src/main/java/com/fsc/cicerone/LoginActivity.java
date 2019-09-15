@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
 import org.json.JSONException;
@@ -61,15 +62,8 @@ public class LoginActivity extends AppCompatActivity {
 
         final String username = usernameEditText.getText().toString();
         final String password = passwordEditText.getText().toString();
-        final JSONObject user = new JSONObject();
-        try {
-            user.put("username", username);
-            user.put("password", password);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
 
-        attemptLogin(user);
+        attemptLogin(username, password);
 
     }
 
@@ -86,10 +80,10 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void attemptLogin(JSONObject user) {
+    private void attemptLogin(String username, String password) {
         RelativeLayout progressBar = findViewById(R.id.loginProgressBarContainer);
 
-        AccountManager.attemptLogin(user, () -> {
+        AccountManager.attemptLogin(username, password, () -> {
             progressBar.setVisibility(View.VISIBLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -106,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             CheckBox rememberMeCheckBox = findViewById(R.id.rememberMeCheckBox);
             if (rememberMeCheckBox.isChecked()) {
                 SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-                preferences.edit().putString("session", user.toString()).apply();
+                preferences.edit().putString("session", new User(username, password).toJSONObject().toString()).apply();
             }
 
             if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN){

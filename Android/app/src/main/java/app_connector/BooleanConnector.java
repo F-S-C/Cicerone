@@ -29,7 +29,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
 
     private CallbackInterface callback;
 
-    public BooleanConnector(String url)     {
+    public BooleanConnector(String url) {
         super(url, null);
         this.callback = new CallbackInterface() {
             @Override
@@ -86,6 +86,11 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
     public static class BooleanResult extends BusinessEntity {
         private boolean result;
         private String message;
+
+        public BooleanResult(boolean result, String message) {
+            this.result = result;
+            this.message = message;
+        }
 
         BooleanResult(String json) {
             try {

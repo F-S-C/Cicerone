@@ -327,8 +327,7 @@ public class ItineraryDetails extends AppCompatActivity {
                         ReservationManager.addReservation(itinerary,
                                 Integer.parseInt(numberOfAdultsInput.getText().toString()),
                                 Integer.parseInt(numberOfChildrenInput.getText().toString()),
-                                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(requestedDateInput.getText().toString()),
-                                new Date());
+                                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(requestedDateInput.getText().toString()));
                     } catch (ParseException e) {
                         Log.e(ERROR_TAG, e.getMessage());
                     }

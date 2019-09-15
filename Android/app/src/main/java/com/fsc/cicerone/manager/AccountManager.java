@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.model.BusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Itinerary;
@@ -47,16 +48,14 @@ public abstract class AccountManager {
      * <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Runnable.html">java.lang.Runnable</a>.
      * It can be implemented by a lambda function.
      */
-    public interface RunnableUsingJson {
+    public interface RunnableUsingBusinessEntity {
         /**
          * The method that will be called by the interface's users.
          *
-         * @param jsonObject The JSON Object to be used in the body.
-         * @param success    Whether the previous operations were executed with success or not.
-         * @throws JSONException The method could throw a JSON Exception in its body if the parameter
-         *                       jsonObject is used.
+         * @param result  The JSON Object to be used in the body.
+         * @param success Whether the previous operations were executed with success or not.
          */
-        void run(JSONObject jsonObject, boolean success) throws JSONException;
+        void run(BusinessEntity result, boolean success);
     }
 
     /**
@@ -76,13 +75,12 @@ public abstract class AccountManager {
     /**
      * Attempt the login.
      *
-     * @param user    The user's credentials (username and password). The JSON Object must
-     *                contain both (using "username" and "password" as keys for the respective
-     *                values).
-     * @param onStart A function to be executed before the login attempt.
-     * @param onEnd   A function to be executed after the login attempt.
+     * @param username The user's username.
+     * @param password The user's password.
+     * @param onStart  A function to be executed before the login attempt.
+     * @param onEnd    A function to be executed after the login attempt.
      */
-    public static void attemptLogin(JSONObject user, Runnable onStart, RunnableUsingJson onEnd) {
+    public static void attemptLogin(String username, String password, Runnable onStart, RunnableUsingBusinessEntity onEnd) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.LOGIN_CONNECTOR,
                 new BooleanConnector.CallbackInterface() {
@@ -92,8 +90,9 @@ public abstract class AccountManager {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
                         if (result.getResult()) {
+                            // Get all the user's data.
                             SendInPostConnector<User> connector = new SendInPostConnector<>(
                                     ConnectorConstants.REGISTERED_USER,
                                     BusinessEntityBuilder.getFactory(User.class),
@@ -104,25 +103,25 @@ public abstract class AccountManager {
                                         }
 
                                         @Override
-                                        public void onEndConnection(List<User> jsonArray) throws JSONException {
-                                            User result = jsonArray.get(0);
-                                            try {
-                                                result.setPassword(user.getString("password"));
-                                            } catch (JSONException e) {
-                                                Log.e(ERROR_TAG, e.getMessage());
+                                        public void onEndConnection(List<User> list) {
+                                            if (!list.isEmpty()) {
+                                                list.get(0).setPassword(password);
+                                                currentLoggedUser = list.get(0);
+                                                onEnd.run(list.get(0), true);
+                                            } else {
+                                                BooleanConnector.BooleanResult booleanResult = new BooleanConnector.BooleanResult(false, "No user found");
+                                                onEnd.run(booleanResult, false);
                                             }
-                                            currentLoggedUser = result;
-                                            onEnd.run(result.toJSONObject(), true);
                                         }
                                     },
-                                    user);
+                                    new User(username, password).toJSONObject());
                             connector.execute();
                         } else {
-                            onEnd.run(result.toJSONObject(), false);
+                            onEnd.run(result, false);
                         }
                     }
                 },
-                user);
+                new User(username, password).toJSONObject());
 
         connector.execute();
     }
@@ -236,10 +235,10 @@ public abstract class AccountManager {
     /**
      * Inserts the user into the database.
      *
-     * @param user   User to insert in the database.
-     * @param result A function to be executed after the insert attempt.
+     * @param user     User to insert in the database.
+     * @param callback A function to be executed after the insert attempt.
      */
-    public static void insertUser(User user, BooleanRunnable result) {
+    public static void insertUser(User user, BooleanRunnable callback) {
         Log.i("USERDATA", user.toJSONObject().toString());
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.INSERT_USER,
@@ -250,10 +249,10 @@ public abstract class AccountManager {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result1) throws JSONException {
-                        result.accept(result1.getResult());
-                        if (!result1.getResult())
-                            Log.e("ERROR INSERT USER", result1.getMessage());
+                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                        callback.accept(result.getResult());
+                        if (!result.getResult())
+                            Log.e("ERROR INSERT USER", result.getMessage());
                     }
                 },
                 user.toJSONObject());
@@ -265,9 +264,9 @@ public abstract class AccountManager {
      *
      * @param username The username of the document owner.
      * @param document Document to insert in the database.
-     * @param result   A function to be executed after the insert attempt.
+     * @param callback A function to be executed after the insert attempt.
      */
-    public static void insertUserDocument(String username, Document document, BooleanRunnable result) {
+    public static void insertUserDocument(String username, Document document, BooleanRunnable callback) {
         JSONObject doc = document.toJSONObject();
         try {
             doc.put("username", username);
@@ -281,10 +280,10 @@ public abstract class AccountManager {
                         }
 
                         @Override
-                        public void onEndConnection(BooleanConnector.BooleanResult result1) throws JSONException {
-                            result.accept(result1.getResult());
-                            if (!result1.getResult())
-                                Log.e("ERROR INSERT DOCUMENT", result1.getMessage());
+                        public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                            callback.accept(result.getResult());
+                            if (!result.getResult())
+                                Log.e("ERROR INSERT DOCUMENT", result.getMessage());
                         }
                     },
                     doc);
@@ -334,7 +333,7 @@ public abstract class AccountManager {
         }
     }
 
-    public static void sendEmailWithContacts(Itinerary itinerary, User deliveryToUser, BooleanRunnable result) {
+    public static void sendEmailWithContacts(Itinerary itinerary, User deliveryToUser, BooleanRunnable callback) {
         JSONObject data = new JSONObject();
         try {
             data.put("username", AccountManager.getCurrentLoggedUser().getUsername());
@@ -349,12 +348,12 @@ public abstract class AccountManager {
                         }
 
                         @Override
-                        public void onEndConnection(BooleanConnector.BooleanResult result1) throws JSONException {
-                            result.accept(result1.getResult());
-                            if (result1.getResult()) {
+                        public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                            callback.accept(result.getResult());
+                            if (result.getResult()) {
                                 Log.i("SEND OK", "true");
                             } else {
-                                Log.e("SEND ERROR", result1.getMessage());
+                                Log.e("SEND ERROR", result.getMessage());
                             }
                         }
                     },
