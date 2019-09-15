@@ -1,9 +1,10 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.manager;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Itinerary;

@@ -1,4 +1,4 @@
-package com.fsc.cicerone;
+package com.fsc.cicerone.manager;
 
 import android.util.Log;
 
