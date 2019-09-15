@@ -195,4 +195,5 @@
     <string name="my_itineraries">I miei itinerari</string>
     <string name="no_itineraries">Non stai partecipando a nessun itinerario.</string>
     <string name="itinerary_image">Immagine dell\'itinerario</string>
+    <string name="create_itinerary">Crea itinerario</string>
 </resources>

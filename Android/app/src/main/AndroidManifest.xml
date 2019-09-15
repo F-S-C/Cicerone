@@ -37,7 +37,8 @@
         </activity>
         <activity android:name=".ItineraryManagement" />
         <activity android:name=".ItineraryDetails" />
-        <activity android:name=".ItineraryCreation" />
+        <activity android:name=".ItineraryCreation"
+            android:label="@string/create_itinerary" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
         <activity

@@ -217,4 +217,5 @@
     <string name="my_itineraries">My itineraries</string>
     <string name="no_itineraries">You are not participating at any itinerary.</string>
     <string name="itinerary_image">Itinerary image</string>
+    <string name="create_itinerary">Create itinerary</string>
 </resources>
