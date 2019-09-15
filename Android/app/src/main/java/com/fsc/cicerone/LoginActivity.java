@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -15,18 +13,15 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
-
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
 
     private EditText usernameEditText;
     private EditText passwordEditText;

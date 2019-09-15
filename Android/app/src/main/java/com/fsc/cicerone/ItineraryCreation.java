@@ -326,7 +326,7 @@ public class ItineraryCreation extends AppCompatActivity {
                         Integer.parseInt(maxParticipants.getText().toString()),
                         Float.parseFloat(fullPrice.getText().toString()),
                         Float.parseFloat(reducedPrice.getText().toString()),
-                        null, (insStatus) -> {
+                        null, insStatus -> {
                             if (insStatus) {
                                 Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
@@ -512,8 +512,7 @@ public class ItineraryCreation extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.e(ERROR_TAG, e.toString());
             }
-        }, (error) -> {
-        }) {
+        }, null) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

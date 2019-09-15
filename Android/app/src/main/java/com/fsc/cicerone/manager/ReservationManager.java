@@ -2,6 +2,8 @@ package com.fsc.cicerone.manager;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 
@@ -102,7 +104,7 @@ public abstract class ReservationManager {
      * @param reservation The reservation.
      * @param callback A callback to be executed after the operation is completed.
      */
-    private static void deleteReservationFromServer(Reservation reservation, RunnableUsingBooleanResult callback) {
+    private static void deleteReservationFromServer(Reservation reservation, @Nullable RunnableUsingBooleanResult callback) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.DELETE_RESERVATION,
                 new BooleanConnector.CallbackInterface() {
