@@ -10,8 +10,8 @@ require_once("InsertConnector.php");
  */
 class InsertItinerary extends InsertConnector
 {
-    protected const COLUMNS = "title, description, beginning_date, ending_date, end_reservations_date, maximum_participants_number, minimum_participants_number, location, repetitions_per_day, duration, username, full_price, reduced_price";
-    protected const COLUMNS_TYPE = "sssssiisissdd";
+    protected const COLUMNS = "title, description, beginning_date, ending_date, end_reservations_date, maximum_participants_number, minimum_participants_number, location, repetitions_per_day, duration, username, full_price, reduced_price, image_url";
+    protected const COLUMNS_TYPE = "sssssiisissdds";
     //TODO: Add image url into query
     protected const TABLE_NAME = "itinerary";
 }
@@ -27,8 +27,9 @@ $connector->add_value(array($_POST['title'],
     $_POST['location'],
     $_POST['repetitions_per_day'],
     $_POST['duration'],
-    strtolower($_POST['username']),
+    strtolower(json_decode($_POST['username'], true)["username"]),
     $_POST['full_price'],
-    $_POST['reduced_price']
+    $_POST['reduced_price'],
+    $_POST['image_url']
 ));
 print $connector->get_content();

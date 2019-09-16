@@ -5,6 +5,7 @@ namespace db_connector;
 
 
 use mysqli;
+use mysqli_sql_exception;
 
 /**
  * A generic connector to a database.
@@ -71,5 +72,45 @@ abstract class DatabaseConnector
             }
         }
         return $where_clause;
+    }
+
+    /**
+     * A utility function used to reduce the code duplication.
+     * It executes a query.
+     * @param string $query The query to be executed (in the form of a prepared statement).
+     * @param array $parameters The parameters to be bond to the query.
+     * @param string $types The types of the parameters concatenated in a string.
+     * @return array An associative array containing the value fetched from the database.
+     * @throws mysqli_sql_exception If the execution of the query ended with an error.
+     */
+    protected function execute_query(string $query, array &$parameters, string $types): array
+    {
+        $to_return = null;
+
+        if ($statement = $this->connection->prepare($query)) {
+            if (!empty($parameters)) {
+                $statement->bind_param($types, ...$parameters);
+            }
+            if ($statement->execute()) {
+                $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
+            } else {
+                throw new mysqli_sql_exception($statement->error);
+            }
+        } else {
+            throw new mysqli_sql_exception($this->connection->error);
+        }
+
+        return $to_return;
+    }
+
+    /**
+     * Get a result from another Database connector.
+     * @param DatabaseConnector $connector The other connector.
+     * @return array The result of the connection in an associative array.
+     */
+    protected function get_from_connector(DatabaseConnector $connector): array
+    {
+        // TODO: Add to class diagram.
+        return json_decode($connector->get_content(), true);
     }
 }
