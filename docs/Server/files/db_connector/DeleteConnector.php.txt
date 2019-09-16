@@ -16,7 +16,7 @@ abstract class DeleteConnector extends BooleanConnector
     protected const ID_COLUMN = "id_col";
     /**
      * @var string The type of the column that identifies the tuples in the table.
-     * @note It must be a type accepted by the mysqli prepared stamements' bind_param ("s", "i", "d" or "b").
+     * @note It must be a type accepted by the mysqli prepared statements' bind_param ("s", "i", "d" or "b").
      */
     protected const ID_COLUMN_TYPE = "s";
     /** @var string The ID of the object to be deleted. */
@@ -54,8 +54,7 @@ abstract class DeleteConnector extends BooleanConnector
         } else {
             $to_return = self::get_false($this->connection->error);
         }
-
+        
         return json_encode($to_return);
     }
 }
-

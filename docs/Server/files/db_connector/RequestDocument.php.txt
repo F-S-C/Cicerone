@@ -34,6 +34,6 @@ class RequestDocument extends JsonConnector
         }
 
         $parameters = isset($this->owner) ? array($this->owner) : array();
-        return $this->$this->execute_query($query, $parameters, isset($this->owner) ? "s" : "");
+        return $this->execute_query($query, $parameters, isset($this->owner) ? "s" : "");
     }
 }

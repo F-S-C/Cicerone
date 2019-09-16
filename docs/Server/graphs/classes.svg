@@ -21,13 +21,13 @@
 <path fill="none" stroke="gray" d="M776,-1580C776,-1580 866,-1580 866,-1580 872,-1580 878,-1586 878,-1592 878,-1592 878,-1640 878,-1640 878,-1646 872,-1652 866,-1652 866,-1652 776,-1652 776,-1652 770,-1652 764,-1646 764,-1640 764,-1640 764,-1592 764,-1592 764,-1586 770,-1580 776,-1580"/>
 <text text-anchor="middle" x="821" y="-1639.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">utilities</text>
 </g>
-<g id="clust5" class="cluster"><title>cluster_\img_uploader</title>
-<path fill="none" stroke="gray" d="M789.5,-96C789.5,-96 852.5,-96 852.5,-96 858.5,-96 864.5,-102 864.5,-108 864.5,-108 864.5,-156 864.5,-156 864.5,-162 858.5,-168 852.5,-168 852.5,-168 789.5,-168 789.5,-168 783.5,-168 777.5,-162 777.5,-156 777.5,-156 777.5,-108 777.5,-108 777.5,-102 783.5,-96 789.5,-96"/>
-<text text-anchor="middle" x="821" y="-155.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">img_uploader</text>
-</g>
 <g id="clust4" class="cluster"><title>cluster_\email_sender</title>
-<path fill="none" stroke="gray" d="M795.5,-16C795.5,-16 846.5,-16 846.5,-16 852.5,-16 858.5,-22 858.5,-28 858.5,-28 858.5,-76 858.5,-76 858.5,-82 852.5,-88 846.5,-88 846.5,-88 795.5,-88 795.5,-88 789.5,-88 783.5,-82 783.5,-76 783.5,-76 783.5,-28 783.5,-28 783.5,-22 789.5,-16 795.5,-16"/>
-<text text-anchor="middle" x="821" y="-75.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">email_sender</text>
+<path fill="none" stroke="gray" d="M795.5,-96C795.5,-96 846.5,-96 846.5,-96 852.5,-96 858.5,-102 858.5,-108 858.5,-108 858.5,-156 858.5,-156 858.5,-162 852.5,-168 846.5,-168 846.5,-168 795.5,-168 795.5,-168 789.5,-168 783.5,-162 783.5,-156 783.5,-156 783.5,-108 783.5,-108 783.5,-102 789.5,-96 795.5,-96"/>
+<text text-anchor="middle" x="821" y="-155.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">email_sender</text>
+</g>
+<g id="clust5" class="cluster"><title>cluster_\img_uploader</title>
+<path fill="none" stroke="gray" d="M789.5,-16C789.5,-16 852.5,-16 852.5,-16 858.5,-16 864.5,-22 864.5,-28 864.5,-28 864.5,-76 864.5,-76 864.5,-82 858.5,-88 852.5,-88 852.5,-88 789.5,-88 789.5,-88 783.5,-88 777.5,-82 777.5,-76 777.5,-76 777.5,-28 777.5,-28 777.5,-22 783.5,-16 789.5,-16"/>
+<text text-anchor="middle" x="821" y="-75.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">img_uploader</text>
 </g>
 <!-- \\db_connector\\utilities\\TableCreator -->
 <g id="node1" class="node"><title>\\db_connector\\utilities\\TableCreator</title>
@@ -547,13 +547,13 @@
 </g>
 <!-- \\email_sender\\Sender -->
 <g id="node53" class="node"><title>\\email_sender\\Sender</title>
-<polygon fill="none" stroke="black" points="849.5,-60 792.5,-60 792.5,-24 849.5,-24 849.5,-60"/>
-<text text-anchor="middle" x="821" y="-39.2" font-family="Courier,monospace" font-size="11.00">Sender</text>
+<polygon fill="none" stroke="black" points="849.5,-140 792.5,-140 792.5,-104 849.5,-104 849.5,-140"/>
+<text text-anchor="middle" x="821" y="-119.2" font-family="Courier,monospace" font-size="11.00">Sender</text>
 </g>
 <!-- \\img_uploader\\Uploader -->
 <g id="node54" class="node"><title>\\img_uploader\\Uploader</title>
-<polygon fill="none" stroke="black" points="856.5,-140 785.5,-140 785.5,-104 856.5,-104 856.5,-140"/>
-<text text-anchor="middle" x="821" y="-119.2" font-family="Courier,monospace" font-size="11.00">Uploader</text>
+<polygon fill="none" stroke="black" points="856.5,-60 785.5,-60 785.5,-24 856.5,-24 856.5,-60"/>
+<text text-anchor="middle" x="821" y="-39.2" font-family="Courier,monospace" font-size="11.00">Uploader</text>
 </g>
 </g>
 </svg>

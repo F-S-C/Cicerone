@@ -20,6 +20,7 @@ class DeleteRegisteredUser extends DeleteConnector
      */
     public function get_content(): string
     {
+        // TODO: Add login check?
         try {
             $this->update_itineraries();
             $this->update_received_reports();
@@ -132,15 +133,24 @@ class DeleteRegisteredUser extends DeleteConnector
         $this->execute_query($query);
     }
 
+
     /**
      * A utility function used to reduce the code duplication.
      * It executes a query.
+     *
      * @param string $query The query to be executed as a prepared statement. It must contain a single
      * parameter to be bond with the ID of the deleted user.
-     * @throws mysqli_sql_exception A mysqli_sql_exception is thrown if there were some errors in the execution
-     * of the query.
+     * @param array|null $parameters [optional] This parameter is unused. It must be defined due to the
+     * PHP function management system.
+     * @param string|null $types [optional] This parameter is unused. It must be defined due to the PHP
+     * function management system.
+     * @return array If everything was completed, the array will be a boolean result and a message
+     * containing the executed query.
+     * @throws mysqli_sql_exception A mysqli_sql_exception is thrown if there were some errors in the
+     * execution of the query.
+     * @see DatabaseConnector::execute_query(), BooleanConnector::get_true(), BooleanConnector::get_false()
      */
-    private function execute_query(string $query): void
+    protected function execute_query(string $query, array &$parameters = null, string $types = null): array
     {
         if ($statement = $this->connection->prepare($query)) {
             $statement->bind_param($this::ID_COLUMN_TYPE, $this->id);
@@ -150,7 +160,10 @@ class DeleteRegisteredUser extends DeleteConnector
         } else {
             throw new mysqli_sql_exception($this->connection->error);
         }
+        return $this::get_true("Query " . $query . " executed.");
     }
+
+
 }
 
 $connector = new DeleteRegisteredUser($_POST['username']);
