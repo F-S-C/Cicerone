@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
             try {
                 JSONObject currentLoggedUser = new JSONObject(latestLoggedUserCredentials);
                 if (!currentLoggedUser.getString("username").equals("") && !currentLoggedUser.getString("password").equals("")) {
-                    AccountManager.attemptLogin(currentLoggedUser, () -> {
+                    AccountManager.attemptLogin(currentLoggedUser.getString("username"), currentLoggedUser.getString("password"), () -> {
                         // Do nothing
                     }, (result, success) -> {
                         if(AccountManager.getCurrentLoggedUser().getUserType()== UserType.ADMIN){
