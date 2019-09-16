@@ -41,11 +41,16 @@ class RequestRegisteredUser extends JsonConnector
             array_push($data, $this->username);
             $types .= "s";
         }
+        if (!isset($this->username) || $this->username != "admin") {
+            array_push($conditions, "username <> 'admin'");
+        }
         if (isset($this->email)) {
             array_push($conditions, "email = ?");
             array_push($data, $this->email);
             $types .= "s";
         }
+        array_push($conditions, "username <> 'deleted_user'");
+
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
         return $this->execute_query($query, $data, $types);

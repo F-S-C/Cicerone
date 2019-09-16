@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,9 +69,14 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void onEndConnection(List<Itinerary> list) {
+                        List<Itinerary> filteredList = new LinkedList<>();
+                        for (Itinerary itinerary : list){
+                            if(!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
+                                filteredList.add(itinerary);
+                        }
                         progressBar.setVisibility(View.GONE);
-                        if (!list.isEmpty()) {
-                            adapter = new ItineraryAdapter(getActivity(), list);
+                        if (!filteredList.isEmpty()) {
+                            adapter = new ItineraryAdapter(getActivity(), filteredList);
                             recyclerView.setAdapter(adapter);
                         } else {
                             Toast.makeText(context, HomeFragment.this.getString(R.string.no_active_itineraries), Toast.LENGTH_SHORT).show();

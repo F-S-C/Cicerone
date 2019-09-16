@@ -109,11 +109,7 @@ public class InsertReportFragment extends Fragment {
                         List<String> cleanList = new ArrayList<>();
 
                         for (User user : list) {
-                            // TODO: This check should be done by the DBMS?
-                            if (!user.getUsername().equals("admin") &&
-                                    !user.getUsername().equals("deleted_user") &&
-                                    !user.getUsername().equals(currentLoggedUser))
-
+                            if (!user.getUsername().equals(currentLoggedUser))
                                 cleanList.add(user.getUsername());
                         }
                         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),

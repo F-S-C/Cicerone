@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 
@@ -35,6 +36,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -197,7 +199,12 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void onEndConnection(List<Itinerary> list) {
                 swipeRefreshLayout.setRefreshing(false);
-                ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), list);
+                List<Itinerary> filteredList = new LinkedList<>();
+                for (Itinerary itinerary : list){
+                    if(!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
+                        filteredList.add(itinerary);
+                }
+                ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList);
 
                 recyclerView.setAdapter(adapter);
             }
