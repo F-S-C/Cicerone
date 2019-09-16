@@ -273,7 +273,9 @@ public class ProfileFragment extends Fragment {
                         }
 
                         @Override
-                        public void onEndConnection(List<Document> list) throws JSONException {
+                        public void onEndConnection(List<Document> list) {
+                            if(list.isEmpty())
+                                return;
                             Document data = list.get(0);
                             documentNumber.setText(data.getNumber());
                             documentType.setText(data.getType());

@@ -44,6 +44,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
+    private Itinerary itinerary; //TODO: Add to class diagram and add final
 
 
     @Override
@@ -68,15 +69,13 @@ public class AdminItineraryDetails extends AppCompatActivity {
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
 
-        JSONObject objectReview = new JSONObject();
         Bundle bundle = getIntent().getExtras();
 
-        final Itinerary itinerary;
-
-
-        try {
             String s = Objects.requireNonNull(bundle).getString("itinerary");
+        try {
             itinerary = new Itinerary(new JSONObject(s));
+            JSONObject objectReview = new JSONObject();
+            objectReview.put("reviewed_itinerary", itinerary.getCode());
 
             getDataFromServer(itinerary);
             getItineraryReviews(objectReview);
@@ -136,9 +135,9 @@ public class AdminItineraryDetails extends AppCompatActivity {
     }
 
     public void goToAuthor(View view) {
-        Intent i = new Intent().setClass(view.getContext(), AdminMainActivity.class);//TODO if-41
+        Intent i = new Intent().setClass(view.getContext(), AdminUserProfile.class);//TODO if-41
         Bundle bundle = new Bundle();
-        bundle.putString("reviewed_user", author.getText().toString());
+        bundle.putString("user", itinerary.getCicerone().toJSONObject().toString());
         i.putExtras(bundle);
         view.getContext().startActivity(i);
     }

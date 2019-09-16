@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.Itinerary;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,6 +54,18 @@ public class ItineraryUpdate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_update);
 
+        Bundle bundle = getIntent().getExtras();
+        Log.e("PROVAPROVA", Objects.requireNonNull(bundle).getString("itinerary"));
+        Itinerary currentItinerary;
+        try {
+            currentItinerary = new Itinerary(new JSONObject(Objects.requireNonNull(bundle).getString("itinerary")));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.getMessage());
+            currentItinerary = new Itinerary();
+        }
+
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+
         title = findViewById(R.id.inputTitle);
         description = findViewById(R.id.inputDescription);
         location = findViewById(R.id.inputLocation);
@@ -68,6 +81,21 @@ public class ItineraryUpdate extends AppCompatActivity {
         fullPrice = findViewById(R.id.inputFullPrice);
         submit = findViewById(R.id.submit);
 
+        // Setting all the fields to the previous values
+        title.setText(currentItinerary.getTitle());
+        description.setText(currentItinerary.getDescription());
+        location.setText(currentItinerary.getLocation());
+        // TODO: Why is it crashing?
+//        selectBeginningDate.setText(formatter.format(currentItinerary.getBeginningDate()));
+//        selectEndingDate.setText(formatter.format(currentItinerary.getEndingDate()));
+//        selectReservationDate.setText(formatter.format(currentItinerary.getReservationDate()));
+        minParticipants.setText(String.valueOf(currentItinerary.getMinParticipants()));
+        maxParticipants.setText(String.valueOf(currentItinerary.getMaxParticipants()));
+        durationHours.setText(currentItinerary.getDuration().substring(0, currentItinerary.getDuration().indexOf(":")));
+        durationMinutes.setText(currentItinerary.getDuration().substring(currentItinerary.getDuration().indexOf(":") + 1));
+        repetitions.setText(String.valueOf(currentItinerary.getRepetitions()));
+        reducedPrice.setText(String.valueOf(currentItinerary.getReducedPrice()));
+        fullPrice.setText(String.valueOf(currentItinerary.getFullPrice()));
 
         selectBeginningDate.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
@@ -383,29 +411,28 @@ public class ItineraryUpdate extends AppCompatActivity {
     }
 
 
-
     private void submitNewData(JSONObject params) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.UPDATE_ITINERARY,
                 new BooleanConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
-                Log.e("p", result.toJSONObject().toString());
-                if (result.getResult()) {
-                    Intent i = new Intent(ItineraryUpdate.this,MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
-                    startActivity(i);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                        Log.e("p", result.toJSONObject().toString());
+                        if (result.getResult()) {
+                            Intent i = new Intent(ItineraryUpdate.this, MainActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
+                            startActivity(i);
 
-                }
+                        }
 
-            }
-        });
+                    }
+                });
         connector.setObjectToSend(params);
         connector.execute();
     }

@@ -46,7 +46,7 @@ public class WishlistFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_wishlist, container, false);
+        View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
         numberItineraries = view.findViewById(R.id.numberOfItineraries);
         clearWishlist = view.findViewById(R.id.clearWishlist);
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
@@ -92,7 +92,7 @@ public class WishlistFragment extends Fragment {
 
                         Log.e("length", String.valueOf(list.size()));
                         numberItineraries.setText(String.format(getString(R.string.wishlist_number), list.size()));
-                        if (!list.isEmpty())
+                        if (list.isEmpty())
                             clearWishlist.setVisibility(View.GONE);
 
                         recyclerView.setAdapter(adapter);

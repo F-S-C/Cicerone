@@ -103,12 +103,12 @@ public class Report extends BusinessEntity {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            jsonObject.put("username", author.getUsername());
+            jsonObject.put("username", author.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }
         try {
-            jsonObject.put("reported_user", reportedUser.getUsername());
+            jsonObject.put("reported_user", reportedUser.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }

@@ -35,13 +35,6 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     public AdminItineraryGlobetrotterAdapter(Context context, List<Reservation> list) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
-        this.mData = new ArrayList<>(list.size());
-        for (Reservation reservation : list) {
-            // The reservation must be shown if and only if it was confirmed.
-            if (reservation.isConfirmed()) {
-                this.mData.add(reservation);
-            }
-        }
     }
 
 

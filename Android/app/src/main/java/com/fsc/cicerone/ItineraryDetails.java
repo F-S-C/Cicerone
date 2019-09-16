@@ -258,8 +258,8 @@ public class ItineraryDetails extends AppCompatActivity {
                             review.setRating(0);
                         }
                     }
-                });
-        connector.setObjectToSend(itineraryCode);
+                },
+                itineraryCode);
         connector.execute();
     }
 

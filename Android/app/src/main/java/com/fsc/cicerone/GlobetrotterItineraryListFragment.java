@@ -22,6 +22,7 @@ import com.fsc.cicerone.model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -79,8 +80,12 @@ public class GlobetrotterItineraryListFragment extends Fragment {
 
                     @Override
                     public void onEndConnection(List<Reservation> list) {
-                        if (!list.isEmpty()) {
-                            adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), list);
+                        List<Reservation> filteredList = new ArrayList<>(list.size());
+                        for (Reservation reservation : list) {
+                            if (reservation.isConfirmed()) filteredList.add(reservation);
+                        }
+                        if (!filteredList.isEmpty()) {
+                            adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), filteredList);
                             recyclerView.setAdapter(adapter);
                         } else {
                             Toast.makeText(context, GlobetrotterItineraryListFragment.this.getString(R.string.no_itineraries_history), Toast.LENGTH_SHORT).show();

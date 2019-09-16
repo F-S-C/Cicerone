@@ -54,7 +54,7 @@ abstract class DeleteConnector extends BooleanConnector
         } else {
             $to_return = self::get_false($this->connection->error);
         }
-
+        
         return json_encode($to_return);
     }
 }
