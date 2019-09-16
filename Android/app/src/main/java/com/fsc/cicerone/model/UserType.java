@@ -31,6 +31,7 @@ public enum UserType {
      * If the value of the integer is 0 then the function will return GLOBETROTTER.
      * Otherwise, if the value of the integer is 1 then the function will return CICERONE.
      */
+    @NonNull
     public static UserType getValue(Integer u) {
         u = u % 3;
         switch (u) {
@@ -41,7 +42,7 @@ public enum UserType {
             case 2:
                 return ADMIN;
             default:
-                return null;
+                throw new IllegalArgumentException();
         }
     }
 

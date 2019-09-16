@@ -15,6 +15,7 @@ public enum ReportStatus {
      * @param i The integer that indicates the enum type.
      * @return the enum type corresponding to the integer past.
      */
+    @NonNull
     public static ReportStatus getValue(Integer i) {
         i = i % 4;
         switch (i) {
@@ -27,7 +28,7 @@ public enum ReportStatus {
             case 3:
                 return CANCELED;
             default:
-                return null;
+                throw new IllegalArgumentException();
         }
     }
 
@@ -36,7 +37,7 @@ public enum ReportStatus {
      * @return The integer that corresponding to the enum type.
      */
     @NonNull
-    public static Integer getInt(ReportStatus state) {
+    public static Integer toInt(ReportStatus state) { //TODO: Edit class diagram (was getInt)
         switch (state) {
             case OPEN:
                 return 0;
@@ -47,7 +48,7 @@ public enum ReportStatus {
             case CANCELED:
                 return 3;
             default:
-                return null;
+                throw new IllegalArgumentException();
         }
     }
 }
