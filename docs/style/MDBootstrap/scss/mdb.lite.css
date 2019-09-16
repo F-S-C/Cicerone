@@ -5706,4 +5706,7 @@ ul.stepper {
 .purple-gradient {
   background: linear-gradient(to right top, #6D73C7, #A14D9E) !important; }
 
+.btn-rounded {
+  border-radius: 10em; }
+
 /*# sourceMappingURL=mdb.lite.css.map */
