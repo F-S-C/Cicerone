@@ -3,6 +3,7 @@
 namespace db_connector;
 
 require_once("JsonConnector.php");
+require_once("RequestRegisteredUser.php");
 
 /**
  * Request all the itineraries that match a set of criteria.
@@ -82,8 +83,7 @@ class RequestItinerary extends JsonConnector
 
         $to_return = $this->execute_query($query, $data, $types);
         foreach ($to_return as &$row) {
-            $parameters = array($row["username"]);
-            $row["username"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
+            $row["username"] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
         }
 
         return $to_return;

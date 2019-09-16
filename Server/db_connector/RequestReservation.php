@@ -56,6 +56,3 @@ class RequestReservation extends JsonConnector
 
 
 }
-
-$connector = new RequestReservation($_POST['username'], $_POST['booked_itinerary']);
-print $connector->get_content();

@@ -3,9 +3,8 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
+require_once("RequestRegisteredUser.php");
 
 /**
  * Request the reports to the admin.
@@ -22,7 +21,7 @@ class RequestReport extends JsonConnector
 
     /**
      * RequestReport constructor.
-     * @param string|null $report_code The report's code.
+     * @param int|null $report_code The report's code.
      * @param string|null $reported_user The reported user's username.
      * @param string|null $username The report's author's username.
      */
@@ -63,16 +62,11 @@ class RequestReport extends JsonConnector
 
 
         $to_return = $this->execute_query($query, $data, $types);
-        foreach ($to_return as &$row){
-            $parameters = array($row["username"]);
-            $row["username"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
-            $parameters = array($row["reported_user"]);
-            $row["reported_user"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
+        foreach ($to_return as &$row) {
+            $row["username"] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
+            $row["reported_user"] = $this->get_from_connector(new RequestRegisteredUser($row["reported_user"]))[0];
         }
 
         return $to_return;
     }
 }
-
-$connector = new RequestReport($_POST['report_code'], $_POST['reported_user'], $_POST['username']);
-print $connector->get_content();

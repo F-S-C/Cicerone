@@ -51,6 +51,3 @@ class RequestRegisteredUser extends JsonConnector
         return $this->execute_query($query, $data, $types);
     }
 }
-
-$connector = new RequestRegisteredUser($_POST['username'], $_POST['email']);
-print $connector->get_content();

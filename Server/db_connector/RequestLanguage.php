@@ -2,8 +2,6 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
 
 /**
@@ -42,6 +40,3 @@ class RequestLanguage extends JsonConnector
 
 
 }
-
-$connector = new RequestLanguage($_POST['language_code']);
-print $connector->get_content();

@@ -2,9 +2,8 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
+require_once("RequestRegisteredUser.php");
 
 /**
  * Request all the itineraries that match a set of criteria.
@@ -82,9 +81,8 @@ class RequestActiveItinerary extends JsonConnector
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
         $to_return = $this->execute_query($query, $data, $types);
-        foreach ($to_return as &$row){
-            $parameters = array($row["username"]);
-            $row["username"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
+        foreach ($to_return as &$row) {
+            $row["username"] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
         }
 
         return $to_return;
@@ -107,6 +105,3 @@ class RequestActiveItinerary extends JsonConnector
         return $date_condition;
     }
 }
-
-$connector = new RequestActiveItinerary($_POST['username'], $_POST['location'], $_POST['beginning_date'], $_POST['ending_date'], $_POST['itinerary_code']);
-print $connector->get_content();

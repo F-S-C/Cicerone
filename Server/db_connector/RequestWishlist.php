@@ -2,10 +2,9 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
 require_once("RequestItinerary.php");
+require_once("RequestRegisteredUser.php");
 
 /**
  * Request all the itineraries from a wishlist of a user.
@@ -54,15 +53,10 @@ class RequestWishlist extends JsonConnector
         $to_return = $this->execute_query($query, $data, $types);
 
         foreach ($to_return as &$row) {
-            $connector = new RequestItinerary(null, null, null, null, $row["itinerary_in_wishlist"]);
-            $row["itinerary_in_wishlist"] = json_decode($connector->get_content(), true)[0];
-            $parameters = array($row["username"]);
-            $row["username"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
+            $row["itinerary_in_wishlist"] = $this->get_from_connector(new RequestItinerary(null, null, null, null, $row["itinerary_in_wishlist"]))[0];
+            $row["username"] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
         }
 
         return $to_return;
     }
 }
-
-$connector = new RequestWishlist($_POST['username'], $_POST['itinerary_in_wishlist']);
-print $connector->get_content();
