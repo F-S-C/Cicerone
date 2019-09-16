@@ -22,7 +22,11 @@ import com.fsc.cicerone.model.UserType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -133,6 +137,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     private void setAvgRating(String usr, ViewHolder holder) {
+        Map<String, Object> params = new HashMap<>(1);
+        params.put("reviewed_user", usr);
         SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_USER_REVIEW,
                 BusinessEntityBuilder.getFactory(UserReview.class),
@@ -150,15 +156,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                         }
                         holder.avgRating.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
                     }
-                });
-        try {
-            JSONObject params = new JSONObject();
-            params.put("reviewed_user", usr);
-            connector.setObjectToSend(params);
-            connector.execute();
-        } catch (JSONException e) {
-            Log.e("error", e.toString());
-        }
+                },
+                params);
+        connector.execute();
     }
 }
 

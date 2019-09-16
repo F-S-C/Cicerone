@@ -1,7 +1,6 @@
 package com.fsc.cicerone.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +14,12 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -41,8 +39,8 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
     /**
      * Constructor.
      *
-     * @param context   The parent Context.
-     * @param list The array of JSON Objects got from server.
+     * @param context The parent Context.
+     * @param list    The array of JSON Objects got from server.
      */
     public AdminItineraryAdapter(Context context, List<Itinerary> list) {
         this.mInflater = LayoutInflater.from(context);
@@ -123,35 +121,32 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
      * @param t             The TextView which shows the average earnings.
      */
     private void setItineraryAvgPrice(Integer itineraryCode, TextView t) {
-        JSONObject params = new JSONObject();
-        try {
-            params.put("booked_itinerary", itineraryCode);
-            SendInPostConnector<Reservation> conn = new SendInPostConnector<>(
-                    ConnectorConstants.REQUEST_RESERVATION,
-                    BusinessEntityBuilder.getFactory(Reservation.class),
-                    new DatabaseConnector.CallbackInterface<Reservation>() {
-                        @Override
-                        public void onStartConnection() {
-                            //Do nothing
-                        }
+        Map<String, Object> params = new HashMap<>(1);
+        params.put("booked_itinerary", itineraryCode);
+        SendInPostConnector<Reservation> conn = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_RESERVATION,
+                BusinessEntityBuilder.getFactory(Reservation.class),
+                new DatabaseConnector.CallbackInterface<Reservation>() {
+                    @Override
+                    public void onStartConnection() {
+                        //Do nothing
+                    }
 
-                        @Override
-                        public void onEndConnection(List<Reservation> list) {
-                            int count = 0;
-                            float price = 0;
-                            for (Reservation reservation : list) {
-                                if (reservation.isConfirmed()) {
-                                    price += reservation.getTotal();
-                                    count++;
-                                }
+                    @Override
+                    public void onEndConnection(List<Reservation> list) {
+                        int count = 0;
+                        float price = 0;
+                        for (Reservation reservation : list) {
+                            if (reservation.isConfirmed()) {
+                                price += reservation.getTotal();
+                                count++;
                             }
-                            t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
                         }
-                    }, params);
-            conn.execute();
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+                        t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
+                    }
+                },
+                params);
+        conn.execute();
     }
 }
 

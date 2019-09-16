@@ -20,7 +20,9 @@ import com.fsc.cicerone.model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -51,7 +53,7 @@ public class CiceroneItineraryListFragment extends Fragment {
         Bundle bundle = getArguments();
 
         try {
-            JSONObject parameters = new JSONObject();
+            Map<String, Object> parameters = new HashMap<>(1);
             User user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
             parameters.put("username", user.getUsername());
 
@@ -65,7 +67,7 @@ public class CiceroneItineraryListFragment extends Fragment {
         return view;
     }
 
-    private void requireData(JSONObject parameters, RecyclerView recyclerView) {
+    private void requireData(Map<String, Object> parameters, RecyclerView recyclerView) {
         SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_ITINERARY,
                 BusinessEntityBuilder.getFactory(Itinerary.class),
@@ -80,8 +82,8 @@ public class CiceroneItineraryListFragment extends Fragment {
                 adapter = new AdminItineraryAdapter(getActivity(), jsonArray);
                 recyclerView.setAdapter(adapter);
             }
-        });
-        connector.setObjectToSend(parameters);
+        },
+                parameters);
         connector.execute();
     }
 

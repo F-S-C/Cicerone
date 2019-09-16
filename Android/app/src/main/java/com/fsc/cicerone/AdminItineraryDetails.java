@@ -19,8 +19,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -74,7 +76,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
         String s = Objects.requireNonNull(bundle).getString("itinerary");
         try {
             itinerary = new Itinerary(new JSONObject(s));
-            JSONObject objectReview = new JSONObject();
+            Map<String, Object> objectReview = new HashMap<>(1);
             objectReview.put("reviewed_itinerary", itinerary.getCode());
 
             getDataFromServer(itinerary);
@@ -106,7 +108,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
         rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
-    public void getItineraryReviews(JSONObject itineraryCode) {
+    public void getItineraryReviews(Map<String, Object> itineraryCode) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
                 ConnectorConstants.ITINERARY_REVIEW,
                 BusinessEntityBuilder.getFactory(ItineraryReview.class),

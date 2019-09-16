@@ -20,7 +20,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -31,7 +33,8 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConnector<T> {
 
-    private JSONObject objectToSend; // The object that will be sent
+    //    private JSONObject objectToSend; // The object that will be sent
+    private Map<String, Object> objectToSend;
 
     /**
      * Constructor.
@@ -40,7 +43,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      */
     public SendInPostConnector(String url, BusinessEntityBuilder<T> builder) {
         super(url, builder);
-        objectToSend = new JSONObject();
+        objectToSend = null;
     }
 
     /**
@@ -52,7 +55,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      */
     public SendInPostConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
         super(url, builder, callback);
-        objectToSend = new JSONObject();
+        objectToSend = null;
     }
 
     /**
@@ -63,7 +66,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      *                     connection.
      * @param objectToSend A JSON Object containing the data that will be sent.
      */
-    public SendInPostConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback, JSONObject objectToSend) {
+    public SendInPostConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback, Map<String, Object> objectToSend) {
         super(url, builder, callback);
         this.objectToSend = objectToSend;
     }
@@ -116,7 +119,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      *
      * @param objectToSend The new object that will be sent.
      */
-    public void setObjectToSend(JSONObject objectToSend) {
+    public void setObjectToSend(Map<String, Object> objectToSend) {
         this.objectToSend = objectToSend;
     }
 
@@ -130,25 +133,49 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      * </pre>
      * Will be translated in <code>attribute1=value1&attribute2=value2</code>.
      *
-     * @param object The JSON Object that has to be converted.
+     * @param list The JSON Object that has to be converted.
      * @return A string containing the URL query.
      */
-    private String urlQueryFromJSONObject(JSONObject object) {
+    private String urlQueryFromJSONObject(Map<String, Object> list) {
+        if (list == null)
+            return "";
+        else if (list.isEmpty())
+            return "";
+
         StringBuilder stringBuilder = new StringBuilder();
 
         try {
-            for (Iterator<String> i = object.keys(); i.hasNext(); ) {
+            for (Map.Entry<String, Object> entry : list.entrySet()) {
                 if (!stringBuilder.toString().equals(""))
                     stringBuilder.append("&");
-                String key = i.next();
-                stringBuilder.append(URLEncoder.encode(key, "UTF-8"));
+                stringBuilder.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
                 stringBuilder.append("=");
-                stringBuilder.append(URLEncoder.encode(object.getString(key), "UTF-8"));
+                stringBuilder.append(URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
             }
-        } catch (JSONException | UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             Log.e("EXCEPTION", e.toString());
         }
 
         return stringBuilder.toString();
+    }
+
+    public static Map<String, Object> paramsFromJSONObject(final JSONObject jsonObject) {
+        Map<String, Object> mapData = new HashMap<>(jsonObject.length());
+        Iterator<String> keysItr = jsonObject.keys();
+        while (keysItr.hasNext()) {
+            try {
+                String key = keysItr.next();
+                Object value = jsonObject.get(key);
+
+                if (value instanceof JSONObject) {
+                    value = paramsFromJSONObject((JSONObject) value);
+                }
+
+                mapData.put(key, value);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return mapData;
     }
 }

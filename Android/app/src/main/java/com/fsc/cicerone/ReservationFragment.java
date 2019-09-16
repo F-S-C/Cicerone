@@ -2,7 +2,6 @@ package com.fsc.cicerone;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +20,9 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -56,12 +54,8 @@ public class ReservationFragment extends Fragment {
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
 
-        final JSONObject parameters = new JSONObject();
-        try {
-            parameters.put("cicerone", currentLoggedUser.getUsername());
-        } catch (JSONException e) {
-            Log.e("ERROR_RESERVATION_FRAG", e.getMessage());
-        }
+        final Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("cicerone", currentLoggedUser.getUsername());
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.reservation_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -71,7 +65,7 @@ public class ReservationFragment extends Fragment {
         return view;
     }
 
-    private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
+    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,

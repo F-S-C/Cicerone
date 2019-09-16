@@ -39,17 +39,16 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -127,21 +126,17 @@ public class ProfileFragment extends Fragment {
         };
 
         addItemsSex(sexList);
-        try {
-            requestUserData(sexList);
-            final JSONObject updateParams = new JSONObject();
-            updateParams.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-            updateParams.put("user_type", AccountManager.getCurrentLoggedUser().getUserType().toInt());
+        requestUserData(sexList);
+        final Map<String, Object> updateParams = new HashMap<>(2);
+        updateParams.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+        updateParams.put("user_type", AccountManager.getCurrentLoggedUser().getUserType().toInt());
 
-            switchButton.setOnClickListener(view1 -> new MaterialAlertDialogBuilder(context)
-                    .setTitle(context.getString(R.string.are_you_sure))
-                    .setMessage(context.getString(R.string.answer_switch_to_cicerone))
-                    .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> switchToCicerone(updateParams)))
-                    .setNegativeButton(context.getString(R.string.no), null)
-                    .show());
-        } catch (JSONException e) {
-            Log.e("EXCEPTION", e.toString());
-        }
+        switchButton.setOnClickListener(view1 -> new MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.are_you_sure))
+                .setMessage(context.getString(R.string.answer_switch_to_cicerone))
+                .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> switchToCicerone(updateParams)))
+                .setNegativeButton(context.getString(R.string.no), null)
+                .show());
 
         name.setEnabled(false);
         surname.setEnabled(false);
@@ -260,36 +255,32 @@ public class ProfileFragment extends Fragment {
         }
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         birthDate.setText(outputFormat.format(currentLoggedUser.getBirthDate()));
-        try {
-            JSONObject parameters = new JSONObject();
-            parameters.put("username", currentLoggedUser.getUsername());
-            SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
-                    ConnectorConstants.REQUEST_DOCUMENT,
-                    BusinessEntityBuilder.getFactory(Document.class),
-                    new DatabaseConnector.CallbackInterface<Document>() {
-                        @Override
-                        public void onStartConnection() {
-                            //Do nothing
-                        }
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("username", currentLoggedUser.getUsername());
+        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_DOCUMENT,
+                BusinessEntityBuilder.getFactory(Document.class),
+                new DatabaseConnector.CallbackInterface<Document>() {
+                    @Override
+                    public void onStartConnection() {
+                        //Do nothing
+                    }
 
-                        @Override
-                        public void onEndConnection(List<Document> list) {
-                            if(list.isEmpty())
-                                return;
-                            Document data = list.get(0);
-                            documentNumber.setText(data.getNumber());
-                            documentType.setText(data.getType());
-                            documentExpiryDate.setText(outputFormat.format(data.getExpirationDate()));
-                        }
-                    },
-                    parameters);
-            userDocumentConnector.execute();
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+                    @Override
+                    public void onEndConnection(List<Document> list) {
+                        if (list.isEmpty())
+                            return;
+                        Document data = list.get(0);
+                        documentNumber.setText(data.getNumber());
+                        documentType.setText(data.getType());
+                        documentExpiryDate.setText(outputFormat.format(data.getExpirationDate()));
+                    }
+                },
+                parameters);
+        userDocumentConnector.execute();
     }
 
-    private void switchToCicerone(JSONObject parameters) {
+    private void switchToCicerone(Map<String, Object> parameters) {
 
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.UPDATE_REGISTERED_USER,
@@ -311,8 +302,8 @@ public class ProfileFragment extends Fragment {
                         }
 
                     }
-                });
-        connector.setObjectToSend(parameters);
+                },
+                parameters);
         connector.execute();
 
     }
@@ -330,83 +321,79 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateUserData() {
-        JSONObject userData = new JSONObject();
-        JSONObject documentData = new JSONObject();
-        try {
-            User user = AccountManager.getCurrentLoggedUser();
-            userData.put("username", user.getUsername());
-            userData.put("password", user.getPassword());
-            userData.put("name", name.getText());
-            userData.put("surname", surname.getText());
-            userData.put("email", email.getText());
-            userData.put("cellphone", cellphone.getText());
-            String sexSelected;
-            switch (sexList.getSelectedItemPosition()) {
-                case 0:
-                    sexSelected = "male";
-                    break;
-                case 1:
-                    sexSelected = "female";
-                    break;
-                default:
-                    sexSelected = "other";
-                    break;
-            }
-            userData.put("sex", sexSelected);
-            userData.put("birth_date", itDateToServerDate(birthDate.getText().toString()));
-
-            BooleanConnector updateRegisteredUser = new BooleanConnector(
-                    ConnectorConstants.UPDATE_REGISTERED_USER,
-                    new BooleanConnector.CallbackInterface() {
-                        @Override
-                        public void onStartConnection() {
-                            //Do nothing
-                        }
-
-                        @Override
-                        public void onEndConnection(BooleanConnector.BooleanResult result) {
-                            if (!result.getResult())
-                                Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
-                            user.setName(name.getText().toString());
-                            user.setSurname(surname.getText().toString());
-                            user.setEmail(email.getText().toString());
-                            user.setCellphone(cellphone.getText().toString());
-                            user.setBirthDate(strToDate(birthDate.getText().toString()));
-                            user.setSex(Sex.getValue(sexList.getSelectedItem().toString().toLowerCase()));
-                        }
-                    },
-                    userData);
-            updateRegisteredUser.execute();
-
-            documentData.put("username", user.getUsername());
-            documentData.put("expiry_date", itDateToServerDate(documentExpiryDate.getText().toString()));
-            documentData.put("document_type", documentType.getText());
-            documentData.put("document_number", documentNumber.getText());
-            BooleanConnector updateDocument = new BooleanConnector(
-                    ConnectorConstants.UPDATE_DOCUMENT,
-                    new BooleanConnector.CallbackInterface() {
-                        @Override
-                        public void onStartConnection() {
-                            //Do nothing
-                        }
-
-                        @Override
-                        public void onEndConnection(BooleanConnector.BooleanResult result) {
-                            if (!result.getResult())
-                                Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
-                            Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
-                            user.setCurrentDocument(newUserDoc);
-                            Intent i = new Intent(getActivity(), SplashActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
-                        }
-                    },
-                    documentData);
-            updateDocument.execute();
-            Toast.makeText(getActivity(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
-        } catch (JSONException e) {
-            Log.e("EXCEPTION", e.toString());
+        Map<String, Object> userData = new HashMap<>();
+        Map<String, Object> documentData = new HashMap<>();
+        User user = AccountManager.getCurrentLoggedUser();
+        userData.put("username", user.getUsername());
+        userData.put("password", user.getPassword());
+        userData.put("name", name.getText());
+        userData.put("surname", surname.getText());
+        userData.put("email", email.getText());
+        userData.put("cellphone", cellphone.getText());
+        String sexSelected;
+        switch (sexList.getSelectedItemPosition()) {
+            case 0:
+                sexSelected = "male";
+                break;
+            case 1:
+                sexSelected = "female";
+                break;
+            default:
+                sexSelected = "other";
+                break;
         }
+        userData.put("sex", sexSelected);
+        userData.put("birth_date", Objects.requireNonNull(itDateToServerDate(birthDate.getText().toString())));
+
+        BooleanConnector updateRegisteredUser = new BooleanConnector(
+                ConnectorConstants.UPDATE_REGISTERED_USER,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        //Do nothing
+                    }
+
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (!result.getResult())
+                            Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                        user.setName(name.getText().toString());
+                        user.setSurname(surname.getText().toString());
+                        user.setEmail(email.getText().toString());
+                        user.setCellphone(cellphone.getText().toString());
+                        user.setBirthDate(strToDate(birthDate.getText().toString()));
+                        user.setSex(Sex.getValue(sexList.getSelectedItem().toString().toLowerCase()));
+                    }
+                },
+                userData);
+        updateRegisteredUser.execute();
+
+        documentData.put("username", user.getUsername());
+        documentData.put("expiry_date", Objects.requireNonNull(itDateToServerDate(documentExpiryDate.getText().toString())));
+        documentData.put("document_type", documentType.getText());
+        documentData.put("document_number", documentNumber.getText());
+        BooleanConnector updateDocument = new BooleanConnector(
+                ConnectorConstants.UPDATE_DOCUMENT,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        //Do nothing
+                    }
+
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (!result.getResult())
+                            Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
+                        Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
+                        user.setCurrentDocument(newUserDoc);
+                        Intent i = new Intent(getActivity(), SplashActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                    }
+                },
+                documentData);
+        updateDocument.execute();
+        Toast.makeText(getActivity(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
     }
 
     private Date strToDate(String text) {

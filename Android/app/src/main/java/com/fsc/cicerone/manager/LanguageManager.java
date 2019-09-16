@@ -5,12 +5,11 @@ import android.util.Log;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Language;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
@@ -24,7 +23,6 @@ import app_connector.GetDataConnector;
 public class LanguageManager {
 
     private static List<Language> langs;
-    private static final String ERROR_TAG = "ERROR IN " + LanguageManager.class.getName();
 
     /**
      * LanguageManager class constructor. Create an array with the list of languages stored
@@ -90,35 +88,30 @@ public class LanguageManager {
      * @param languageToSet List of languages.
      */
     public void setUserLanguages(String username, List<Language> languageToSet) {
-        try {
-            JSONObject data = new JSONObject();
-            data.put("username", username);
-            for (int i = 0; i < languageToSet.size(); i++) {
-                data.put("language_code", languageToSet.get(i).getCode());
-                Log.i("LANGUAGE", data.toString());
-                new BooleanConnector(
-                        ConnectorConstants.INSERT_USER_LANGUAGE,
-                        new BooleanConnector.CallbackInterface() {
-                            @Override
-                            public void onStartConnection() {
-                                //Do nothing
-                            }
+        Map<String, Object> data = new HashMap<>(languageToSet.size() + 1);
+        data.put("username", username);
+        for (int i = 0; i < languageToSet.size(); i++) {
+            data.put("language_code", languageToSet.get(i).getCode());
+            Log.i("LANGUAGE", data.toString());
+            new BooleanConnector(
+                    ConnectorConstants.INSERT_USER_LANGUAGE,
+                    new BooleanConnector.CallbackInterface() {
+                        @Override
+                        public void onStartConnection() {
+                            //Do nothing
+                        }
 
-                            @Override
-                            public void onEndConnection(BooleanConnector.BooleanResult result) {
-                                if (!result.getResult())
-                                    Log.e("ERROR INSERT LANGUAGE", result.getMessage());
+                        @Override
+                        public void onEndConnection(BooleanConnector.BooleanResult result) {
+                            if (!result.getResult())
+                                Log.e("ERROR INSERT LANGUAGE", result.getMessage());
 
-                            }
-                        },
-                        new JSONObject(data.toString()))
-                        .execute();
-                data.remove("language_code");
-            }
-            languageToSet.size();
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
+                        }
+                    },
+                    data)
+                    .execute();
         }
+        languageToSet.size();
     }
 
 }

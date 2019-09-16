@@ -1,7 +1,6 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +19,9 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -35,8 +33,6 @@ import app_connector.SendInPostConnector;
 public class ReviewFragment extends Fragment {
 
     RecyclerView.Adapter adapter;
-
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
 
     /**
      * Empty Constructor
@@ -51,22 +47,18 @@ public class ReviewFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
-        try {
-            final JSONObject parameters = new JSONObject();
-            parameters.put("reviewed_user", currentLoggedUser.getUsername());
-            // set up the RecyclerView
-            RecyclerView recyclerView = view.findViewById(R.id.review_list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(view, parameters, recyclerView);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("reviewed_user", currentLoggedUser.getUsername());
+        // set up the RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.review_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        requireData(view, parameters, recyclerView);
 
         return view;
     }
 
-    private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
+    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
         SendInPostConnector<UserReview> connector = new SendInPostConnector<>(

@@ -27,8 +27,10 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -42,7 +44,7 @@ import app_connector.SendInPostConnector;
 public class AdminDetailsUserFragment extends Fragment {
 
     private static final String ERROR_TAG = "ERROR IN " + AdminDetailsUserFragment.class.getName();
-    private JSONObject parameters = new JSONObject();
+//    private Map<String, Object> parameters = new HashMap<>(); //TODO: Remove from class diagram
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
@@ -89,12 +91,10 @@ public class AdminDetailsUserFragment extends Fragment {
             Log.e(ERROR_TAG, e.getMessage());
         }
 
+
         assert user != null;
-        try {
-            parameters.put("username", user.getUsername());
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("username", user.getUsername());
         data = "Name: " + user.getName();
         name.setText(data);
         data = "Surname: " + user.getSurname();
@@ -114,7 +114,7 @@ public class AdminDetailsUserFragment extends Fragment {
         return view;
     }
 
-    private void requestUserDocument(JSONObject parameters) {
+    private void requestUserDocument(Map<String, Object> parameters) {
         SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_DOCUMENT,
                 BusinessEntityBuilder.getFactory(Document.class),
@@ -148,7 +148,7 @@ public class AdminDetailsUserFragment extends Fragment {
         userDocumentConnector.execute();
     }
 
-    private void deleteAccount(JSONObject parameters) {
+    private void deleteAccount(Map<String, Object> parameters) {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
             BooleanConnector connector = new BooleanConnector(
                     ConnectorConstants.DELETE_REGISTERED_USER,

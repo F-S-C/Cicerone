@@ -23,8 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -72,7 +74,7 @@ public class ItineraryManagement extends AppCompatActivity {
         Button updateItinerary = findViewById(R.id.editItinerary);
 
         final Itinerary itinerary;
-        final JSONObject code = new JSONObject();
+        final Map<String, Object> code = new HashMap<>();
         try {
             //Get the bundle
             Bundle bundle = getIntent().getExtras();
@@ -137,7 +139,7 @@ public class ItineraryManagement extends AppCompatActivity {
         rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
-    public void getItineraryReviews(JSONObject itineraryCode) {
+    public void getItineraryReviews(Map<String, Object> itineraryCode) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
                 ConnectorConstants.ITINERARY_REVIEW,
                 BusinessEntityBuilder.getFactory(ItineraryReview.class),
@@ -165,7 +167,7 @@ public class ItineraryManagement extends AppCompatActivity {
         connector.execute();
     }
 
-    public void deleteItineraryFromServer(JSONObject itCode) {
+    public void deleteItineraryFromServer(Map<String, Object> itCode) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.DELETE_ITINERARY,
                 new BooleanConnector.CallbackInterface() {

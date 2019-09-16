@@ -1,9 +1,6 @@
 package com.fsc.cicerone;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +21,9 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -41,10 +37,8 @@ public class ReportFragment extends Fragment {
 
     RecyclerView.Adapter adapter;
     Fragment fragment = null;
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
-
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
 
     /**
      * Empty Constructor
@@ -62,27 +56,21 @@ public class ReportFragment extends Fragment {
         Button insertReport = view.findViewById(R.id.newReport);
 
 
-        SharedPreferences preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-
-        try {
-            final JSONObject parameters = new JSONObject(preferences.getString("session", "")); //Connection params
-            parameters.remove("password");
-            // set up the RecyclerView
-            if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                parameters.remove("username");
-            }
-            RecyclerView recyclerView = view.findViewById(R.id.report_list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(view, parameters, recyclerView);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
+        final Map<String, Object> parameters = new HashMap<>(1); //Connection params
+        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+        // set up the RecyclerView
+        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
+            parameters.remove("username");
         }
+        RecyclerView recyclerView = view.findViewById(R.id.report_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        requireData(view, parameters, recyclerView);
 
         insertReport.setOnClickListener(v -> {
             fragment = new InsertReportFragment();
             fragmentManager = getFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
             fragmentTransaction.replace(R.id.frame, fragment);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
@@ -92,7 +80,7 @@ public class ReportFragment extends Fragment {
     }
 
 
-    private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
+    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Report> connector = new SendInPostConnector<>(
                 ConnectorConstants.REPORT_FRAGMENT,

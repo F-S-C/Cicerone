@@ -20,7 +20,9 @@ import com.google.android.material.tabs.TabLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -56,20 +58,15 @@ public class ProfileActivity extends AppCompatActivity {
         fragment.setArguments(bundle);
 
 
-        final JSONObject params;
-        try {
-            //Get the bundle
-            //Extract the data…
-            params = new JSONObject();
-            params.put("username", Objects.requireNonNull(bundle).getString("reviewed_user"));
-            Log.e("bundle", Objects.requireNonNull(bundle).getString("reviewed_user"));
-            TextView username = findViewById(R.id.username_profile);
-            String nick = "@" + params.getString("username");
-            username.setText(nick);
-            getData(params);
-        } catch (JSONException e) {
-            Log.e("error", e.toString());
-        }
+        final Map<String, Object> params = new HashMap<>();
+        //Get the bundle
+        //Extract the data…
+        params.put("username", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("reviewed_user")));
+        Log.e("bundle", Objects.requireNonNull(bundle).getString("reviewed_user"));
+        TextView username = findViewById(R.id.username_profile);
+        String nick = "@" + Objects.requireNonNull(params.get("username")).toString();
+        username.setText(nick);
+        getData(params);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -107,7 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private void getData(JSONObject parameters) {
+    private void getData(Map<String, Object> parameters) {
         SendInPostConnector<User> connector = new SendInPostConnector<>(
                 ConnectorConstants.REGISTERED_USER,
                 BusinessEntityBuilder.getFactory(User.class),
@@ -137,6 +134,8 @@ public class ProfileActivity extends AppCompatActivity {
                 parameters);
         connector.execute();
 
+        Map<String, Object> newParameter = new HashMap<>(1);
+        newParameter.put("reviewed_user", Objects.requireNonNull(parameters.get("username")).toString());
         SendInPostConnector<UserReview> connectorReview = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_USER_REVIEW,
                 BusinessEntityBuilder.getFactory(UserReview.class),
@@ -155,14 +154,8 @@ public class ProfileActivity extends AppCompatActivity {
                         RatingBar star = findViewById(R.id.avg_feedback);
                         star.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
                     }
-                });
-        try {
-            JSONObject newParameter = new JSONObject();
-            newParameter.put("reviewed_user", parameters.getString("username"));
-            connectorReview.setObjectToSend(newParameter);
-            connectorReview.execute();
-        } catch (JSONException e) {
-            Log.e("error", e.toString());
-        }
+                },
+                newParameter);
+        connectorReview.execute();
     }
 }

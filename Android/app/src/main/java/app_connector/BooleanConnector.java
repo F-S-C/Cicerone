@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 public class BooleanConnector extends SendInPostConnector<BooleanConnector.BooleanResult> {
 
@@ -59,7 +60,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         this.callback = callback;
     }
 
-    public BooleanConnector(String url, CallbackInterface callback, JSONObject objectToSend) {
+    public BooleanConnector(String url, CallbackInterface callback, Map<String, Object> objectToSend) {
         super(url, null, new DatabaseConnector.CallbackInterface<BooleanResult>() {
             @Override
             public void onStartConnection() {

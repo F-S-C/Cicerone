@@ -23,7 +23,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -64,7 +66,6 @@ public class ItineraryUpdate extends AppCompatActivity {
             currentItinerary = new Itinerary();
         }
 
-        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT, Locale.US);
 
         title = findViewById(R.id.inputTitle);
         description = findViewById(R.id.inputDescription);
@@ -86,6 +87,7 @@ public class ItineraryUpdate extends AppCompatActivity {
         description.setText(currentItinerary.getDescription());
         location.setText(currentItinerary.getLocation());
         // TODO: Why is it crashing?
+//        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT, Locale.US);
 //        selectBeginningDate.setText(formatter.format(currentItinerary.getBeginningDate()));
 //        selectEndingDate.setText(formatter.format(currentItinerary.getEndingDate()));
 //        selectReservationDate.setText(formatter.format(currentItinerary.getReservationDate()));
@@ -380,38 +382,34 @@ public class ItineraryUpdate extends AppCompatActivity {
     }
 
     public void sendData(View view) {
-        JSONObject params = new JSONObject();
+        Map<String, Object> params = new HashMap<>(14);
         boolean canSend = allFilled();
         if (canSend) {
-            try {
-                params.put("title", title.getText().toString());
-                params.put("description", description.getText().toString());
-                params.put("beginning_date", selectBeginningDate.getText().toString());
-                params.put("ending_date", selectEndingDate.getText().toString());
-                params.put("end_reservations_date", selectReservationDate.getText().toString());
-                params.put("maximum_participants_number", maxParticipants.getText().toString());
-                params.put("minimum_participants_number", minParticipants.getText().toString());
-                params.put("repetitions_per_day", repetitions.getText().toString());
-                params.put("location", location.getText().toString());
-                params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
-                params.put("full_price", fullPrice.getText().toString());
-                params.put("reduced_price", reducedPrice.getText().toString());
-                params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-                Bundle bundle = getIntent().getExtras();
-                params.put("itinerary_code", Objects.requireNonNull(bundle).getString("itinerary_code"));
-                submitNewData(params);
+            params.put("title", title.getText().toString());
+            params.put("description", description.getText().toString());
+            params.put("beginning_date", selectBeginningDate.getText().toString());
+            params.put("ending_date", selectEndingDate.getText().toString());
+            params.put("end_reservations_date", selectReservationDate.getText().toString());
+            params.put("maximum_participants_number", maxParticipants.getText().toString());
+            params.put("minimum_participants_number", minParticipants.getText().toString());
+            params.put("repetitions_per_day", repetitions.getText().toString());
+            params.put("location", location.getText().toString());
+            params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
+            params.put("full_price", fullPrice.getText().toString());
+            params.put("reduced_price", reducedPrice.getText().toString());
+            params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            Bundle bundle = getIntent().getExtras();
+            params.put("itinerary_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("itinerary_code")));
+            submitNewData(params);
 
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         } else {
             Toast.makeText(ItineraryUpdate.this, ItineraryUpdate.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    private void submitNewData(JSONObject params) {
+    private void submitNewData(Map<String, Object> params) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.UPDATE_ITINERARY,
                 new BooleanConnector.CallbackInterface() {
@@ -421,7 +419,7 @@ public class ItineraryUpdate extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
                         Log.e("p", result.toJSONObject().toString());
                         if (result.getResult()) {
                             Intent i = new Intent(ItineraryUpdate.this, MainActivity.class);
@@ -432,8 +430,8 @@ public class ItineraryUpdate extends AppCompatActivity {
                         }
 
                     }
-                });
-        connector.setObjectToSend(params);
+                },
+                params);
         connector.execute();
     }
 

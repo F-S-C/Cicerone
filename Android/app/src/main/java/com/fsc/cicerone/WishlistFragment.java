@@ -25,10 +25,10 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.Wishlist;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -51,8 +51,8 @@ public class WishlistFragment extends Fragment {
         clearWishlist = view.findViewById(R.id.clearWishlist);
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        final JSONObject parameters = currentLoggedUser.getCredentials();
-        parameters.remove("password");
+        final Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("username", currentLoggedUser.getUsername());
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -69,7 +69,7 @@ public class WishlistFragment extends Fragment {
         return view;
     }
 
-    private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
+    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_WISHLIST, //TODO: Check
@@ -85,7 +85,7 @@ public class WishlistFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
 
                         List<Itinerary> itineraryList = new ArrayList<>(list.size());
-                        for (Wishlist item : list){
+                        for (Wishlist item : list) {
                             itineraryList.add(item.getItinerary());
                         }
                         adapter = new ItineraryAdapter(getActivity(), itineraryList);
@@ -102,7 +102,7 @@ public class WishlistFragment extends Fragment {
         connector.execute();
     }
 
-    private void clearWish(View view, JSONObject parameters, RecyclerView recyclerView) {
+    private void clearWish(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.CLEAR_WISHLIST,
                 new BooleanConnector.CallbackInterface() {

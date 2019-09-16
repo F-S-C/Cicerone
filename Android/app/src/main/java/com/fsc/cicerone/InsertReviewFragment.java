@@ -22,7 +22,9 @@ import com.fsc.cicerone.model.UserReview;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -41,8 +43,10 @@ public class InsertReviewFragment extends Fragment {
     private TextView message;
     private TextView messageFeedback;
     private TextView messageDescription;
-    private JSONObject param;
-    private JSONObject sendParam;
+
+    // TODO: Are both param and sendParam both needed?
+    private Map<String, Object> param;
+    private Map<String, Object> sendParam;
 
     public InsertReviewFragment() {
         // Required empty public constructor
@@ -64,19 +68,13 @@ public class InsertReviewFragment extends Fragment {
         Bundle bundle = getArguments();
 
 
-        param = new JSONObject();
-        sendParam = new JSONObject();
+        param = new HashMap<>();
+        sendParam = new HashMap<>();
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        try {
-
-            param.put("username", currentLoggedUser.getUsername());
-            param.put("reviewed_user", Objects.requireNonNull(bundle).getString("reviewed_user"));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        param.put("username", currentLoggedUser.getUsername());
+        param.put("reviewed_user", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("reviewed_user")));
 
         requestReview(param);
 
@@ -84,7 +82,7 @@ public class InsertReviewFragment extends Fragment {
 
     }
 
-    private void requestReview(JSONObject parameters) {
+    private void requestReview(Map<String, Object> parameters) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.REQUEST_FOR_REVIEW,
                 new BooleanConnector.CallbackInterface() {
@@ -102,20 +100,16 @@ public class InsertReviewFragment extends Fragment {
 
                             submitReview.setOnClickListener(v -> {
                                 if (allFilled()) {
-                                    try {
-                                        sendParam.put("username", param.getString("username"));
-                                        sendParam.put("reviewed_user", param.getString("reviewed_user"));
-                                        sendParam.put("description", descriptionReview.getText().toString());
-                                        sendParam.put("feedback", (int) feedbackReview.getRating());
-                                        Log.e("username:", sendParam.getString("username"));
-                                        Log.e("reviewed_user:", sendParam.getString("reviewed_user"));
-                                        Log.e("description:", sendParam.getString("description"));
-                                        Log.e("feedback:", sendParam.getString("feedback"));
+                                    sendParam.put("username", Objects.requireNonNull(param.get("username")).toString());
+                                    sendParam.put("reviewed_user", Objects.requireNonNull(param.get("reviewed_user")).toString());
+                                    sendParam.put("description", descriptionReview.getText().toString());
+                                    sendParam.put("feedback", (int) feedbackReview.getRating());
+                                    Log.e("username:", Objects.requireNonNull(sendParam.get("username")).toString());
+                                    Log.e("reviewed_user:", Objects.requireNonNull(sendParam.get("reviewed_user")).toString());
+                                    Log.e("description:", Objects.requireNonNull(sendParam.get("description")).toString());
+                                    Log.e("feedback:", Objects.requireNonNull(sendParam.get("feedback")).toString());
 
-                                        submitReview(sendParam);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                    submitReview(sendParam);
                                 } else
                                     Toast.makeText(getActivity(), InsertReviewFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
 
@@ -123,14 +117,10 @@ public class InsertReviewFragment extends Fragment {
                             deleteReview.setOnClickListener(v -> deleteReview(param));
                             updateReview.setOnClickListener(v -> {
                                 if (allFilled()) {
-                                    try {
-                                        sendParam.put("username", param.getString("username"));
-                                        sendParam.put("reviewed_user", param.getString("reviewed_user"));
-                                        sendParam.put("description", descriptionReview.getText().toString());
-                                        sendParam.put("feedback", (int) feedbackReview.getRating());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                    sendParam.put("username", Objects.requireNonNull(param.get("username")).toString());
+                                    sendParam.put("reviewed_user", Objects.requireNonNull(param.get("reviewed_user")).toString());
+                                    sendParam.put("description", descriptionReview.getText().toString());
+                                    sendParam.put("feedback", (int) feedbackReview.getRating());
 
                                     updateReview(sendParam);
                                 } else
@@ -153,7 +143,7 @@ public class InsertReviewFragment extends Fragment {
         connector.execute();
     }
 
-    private void checkReview(JSONObject parameters) {
+    private void checkReview(Map<String, Object> parameters) {
         SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_USER_REVIEW,
                 BusinessEntityBuilder.getFactory(UserReview.class),
@@ -186,7 +176,7 @@ public class InsertReviewFragment extends Fragment {
         connector.execute();
     }
 
-    private void submitReview(JSONObject sendparam) {
+    private void submitReview(Map<String, Object> sendparam) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.INSERT_USER_REVIEW,
                 new BooleanConnector.CallbackInterface() {
@@ -196,13 +186,13 @@ public class InsertReviewFragment extends Fragment {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
                         Log.e("p", result.toJSONObject().toString());
                         if (result.getResult()) {
                             Toast.makeText(getActivity(), InsertReviewFragment.this.getString(R.string.added_review), Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(getActivity(), ProfileActivity.class);
                             Bundle b = new Bundle();
-                            b.putString("reviewed_user", sendparam.getString("reviewed_user"));
+                            b.putString("reviewed_user", Objects.requireNonNull(sendparam.get("reviewed_user")).toString());
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             i.putExtras(b);
                             startActivity(i);
@@ -219,7 +209,7 @@ public class InsertReviewFragment extends Fragment {
     }
 
 
-    private void deleteReview(JSONObject param) {
+    private void deleteReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.DELETE_USER_REVIEW,
                 new BooleanConnector.CallbackInterface() {
@@ -229,13 +219,13 @@ public class InsertReviewFragment extends Fragment {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
                         Log.e("p", result.toJSONObject().toString());
                         if (result.getResult()) {
                             Toast.makeText(getActivity(), InsertReviewFragment.this.getString(R.string.deleted_review), Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(getActivity(), ProfileActivity.class);
                             Bundle b = new Bundle();
-                            b.putString("reviewed_user", param.getString("reviewed_user"));
+                            b.putString("reviewed_user", param.get("reviewed_user").toString());
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             i.putExtras(b);
                             startActivity(i);
@@ -247,7 +237,7 @@ public class InsertReviewFragment extends Fragment {
         connector.execute();
     }
 
-    private void updateReview(JSONObject param) {
+    private void updateReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.UPDATE_USER_REVIEW,
                 new BooleanConnector.CallbackInterface() {
@@ -257,12 +247,12 @@ public class InsertReviewFragment extends Fragment {
                     }
 
                     @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
                         Log.e("p", result.toJSONObject().toString());
                         if (result.getResult()) {
                             Intent i = new Intent(getActivity(), ProfileActivity.class);
                             Bundle b = new Bundle();
-                            b.putString("reviewed_user", param.getString("reviewed_user"));
+                            b.putString("reviewed_user", Objects.requireNonNull(param.get("reviewed_user")).toString());
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             i.putExtras(b);
                             startActivity(i);

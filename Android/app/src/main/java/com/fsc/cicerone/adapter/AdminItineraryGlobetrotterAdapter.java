@@ -14,7 +14,6 @@ import com.fsc.cicerone.model.Reservation;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 

@@ -11,6 +11,7 @@ import java.util.Date;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
+import app_connector.SendInPostConnector;
 
 /**
  * The manager class for the Reservation data-type.
@@ -67,7 +68,7 @@ public abstract class ReservationManager {
                             Log.e("INSERT_RESERVATION_ERR", result.getMessage()); //TODO: Send email to cicerone (IF-34)?
                     }
                 },
-                reservation.toJSONObject());
+                SendInPostConnector.paramsFromJSONObject(reservation.toJSONObject()));
         connector.execute();
 
         return reservation;
@@ -84,7 +85,7 @@ public abstract class ReservationManager {
         AccountManager.sendEmailWithContacts(reservation.getItinerary(), reservation.getClient(), result -> {
             if (result) {
                 BooleanConnector connector = new BooleanConnector(ConnectorConstants.UPDATE_RESERVATION);
-                connector.setObjectToSend(reservation.toJSONObject());
+                connector.setObjectToSend(SendInPostConnector.paramsFromJSONObject(reservation.toJSONObject()));
                 connector.execute();
             }
         });
@@ -118,7 +119,7 @@ public abstract class ReservationManager {
                         if(callback != null) callback.run(result);
                     }
                 },
-                reservation.toJSONObject());
+                SendInPostConnector.paramsFromJSONObject(reservation.toJSONObject()));
         connector.execute();
     }
 }

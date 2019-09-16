@@ -25,9 +25,8 @@ import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONObject;
-
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -41,12 +40,12 @@ public class ItineraryFragment extends Fragment {
 
     private Activity context;
     RecyclerView.Adapter adapter;
-    ReservationAdapter adapter2;
-    Button newItinerary;
-    Button participations;
-    Button myItineraries;
-    RecyclerView itineraryList;
-    TextView message;
+    private RecyclerView.Adapter adapter2;
+    private Button newItinerary;
+    private Button participations;
+    private Button myItineraries;
+    private RecyclerView itineraryList;
+    private TextView message;
 
     /**
      * Empty constructor
@@ -71,7 +70,7 @@ public class ItineraryFragment extends Fragment {
         message = view.findViewById(R.id.noItineraries);
 
 
-        final JSONObject parameters = currentLoggedUser.getCredentials();
+        final Map<String, Object> parameters = SendInPostConnector.paramsFromJSONObject(currentLoggedUser.getCredentials());
         parameters.remove("password");
         if (currentLoggedUser.getUserType() == UserType.CICERONE) {
             participations.setVisibility(View.VISIBLE);
@@ -123,7 +122,7 @@ public class ItineraryFragment extends Fragment {
         return view;
     }
 
-    private void getMyItineraries(JSONObject parameters, RecyclerView recyclerView) {
+    private void getMyItineraries(Map<String, Object> parameters, RecyclerView recyclerView) {
         //TODO: Test and check if the new adapter works as expected.
         //RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
@@ -146,7 +145,7 @@ public class ItineraryFragment extends Fragment {
         connector.execute();
     }
 
-    private void getParticipations(JSONObject parameters, RecyclerView recyclerView) {
+    private void getParticipations(Map<String, Object> parameters, RecyclerView recyclerView) {
         //RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,

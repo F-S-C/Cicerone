@@ -1,5 +1,7 @@
 package com.fsc.cicerone.model;
 
+import androidx.annotation.NonNull;
+
 /**
  * Enum class that specifies the states that a Report can take.
  */
@@ -33,6 +35,7 @@ public enum ReportStatus {
      * @param state The report status.
      * @return The integer that corresponding to the enum type.
      */
+    @NonNull
     public static Integer getInt(ReportStatus state) {
         switch (state) {
             case OPEN:

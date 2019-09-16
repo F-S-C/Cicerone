@@ -2,7 +2,6 @@ package com.fsc.cicerone;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,10 +13,9 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -33,7 +31,6 @@ public class ReportDetailsActivity extends AppCompatActivity {
     private TextView reportedUser;
     private TextView bodyText;
     private Button cancButton;
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +42,15 @@ public class ReportDetailsActivity extends AppCompatActivity {
         reportedUser = findViewById(R.id.report_user_activity);
         bodyText = findViewById(R.id.body_report_activity);
         cancButton = findViewById(R.id.delete_report_btn);
-        JSONObject parameters = new JSONObject();
-        try {
-            //Get the bundle
-            Bundle bundle = getIntent().getExtras();
-            //Extract the data
-            parameters.put("report_code", Objects.requireNonNull(bundle).getString("report_code"));
-            getReportFromServer(parameters);
-            cancButton.setEnabled(false);
-            cancButton.setVisibility(View.GONE);
-            cancButton.setOnClickListener(view -> deleteReport(parameters));
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+        Map<String, Object> parameters = new HashMap<>();
+        //Get the bundle
+        Bundle bundle = getIntent().getExtras();
+        //Extract the data
+        parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
+        getReportFromServer(parameters);
+        cancButton.setEnabled(false);
+        cancButton.setVisibility(View.GONE);
+        cancButton.setOnClickListener(view -> deleteReport(parameters));
     }
 
     @Override
@@ -67,7 +60,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private void getReportFromServer(JSONObject params) {
+    private void getReportFromServer(Map<String, Object> params) {
         SendInPostConnector<Report> connector = new SendInPostConnector<>(
                 ConnectorConstants.REPORT_FRAGMENT,
                 BusinessEntityBuilder.getFactory(Report.class),
@@ -111,7 +104,8 @@ public class ReportDetailsActivity extends AppCompatActivity {
         connector.execute();
     }
 
-    private void deleteReport(JSONObject params) {
+    private void deleteReport(Map<String, Object> params) {
+            params.put("state", ReportStatus.getInt(ReportStatus.CLOSED));
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.UPDATE_REPORT_DETAILS,
                 new BooleanConnector.CallbackInterface() {
@@ -128,13 +122,8 @@ public class ReportDetailsActivity extends AppCompatActivity {
                             getReportFromServer(params);
                         }
                     }
-                });
-        try {
-            connector.setObjectToSend(params);
-            params.put("state", ReportStatus.getInt(ReportStatus.CLOSED));
-            connector.execute();
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+                },
+                params);
+        connector.execute();
     }
 }

@@ -123,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, (arg0, arg1) -> MainActivity.super.onBackPressed())
                     .create()
                     .show();
-        }
-        else {
+        } else {
             navView.setSelectedItemId(R.id.navigation_home);
         }
     }

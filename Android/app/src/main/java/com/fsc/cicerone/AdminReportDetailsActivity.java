@@ -14,10 +14,9 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -35,7 +34,6 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     private TextView bodyText;
     private Button takeChargeReport;
     private Button closeReport;
-    private static final String ERROR_TAG = "ERROR IN " + AdminReportDetailsActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,25 +49,21 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         reportedUser = findViewById(R.id.report_user_activity_admin);
         reporterUser = findViewById(R.id.reporter_user_activity_admin);
         bodyText = findViewById(R.id.body_report_activity_admin);
-        JSONObject parameters = new JSONObject();
+        Map<String, Object> parameters = new HashMap<>(3);
 
-        try {
-            //Get the bundle
-            Bundle bundle = getIntent().getExtras();
-            //Extract the data
-            parameters.put("report_code", Objects.requireNonNull(bundle).getString("report_code"));
-            getReportFromServer(parameters);
+        //Get the bundle
+        Bundle bundle = getIntent().getExtras();
+        //Extract the data
+        parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
+        getReportFromServer(parameters);
 
-            takeChargeReport.setOnClickListener(v -> takeCharge(parameters));
+        takeChargeReport.setOnClickListener(v -> takeCharge(parameters));
 
-            closeReport.setOnClickListener(v -> close(parameters));
+        closeReport.setOnClickListener(v -> close(parameters));
 
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
     }
 
-    private void getReportFromServer(JSONObject params) {
+    private void getReportFromServer(Map<String, Object> params) {
         SendInPostConnector<Report> connector = new SendInPostConnector<>(
                 ConnectorConstants.REPORT_FRAGMENT,
                 BusinessEntityBuilder.getFactory(Report.class),
@@ -123,7 +117,10 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void takeCharge(JSONObject params) {
+    public void takeCharge(Map<String, Object> params) {
+        params.put("object", reportTitle.getText().toString());
+        params.put("report_body", bodyText.getText().toString());
+        params.put("state", ReportStatus.getInt(ReportStatus.PENDING));
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.UPDATE_REPORT_DETAILS,
                 new BooleanConnector.CallbackInterface() {
@@ -140,19 +137,15 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
                             getReportFromServer(params);
                         }
                     }
-                });
-        try {
-            params.put("object", reportTitle.getText().toString());
-            params.put("report_body", bodyText.getText().toString());
-            params.put("state", ReportStatus.getInt(ReportStatus.PENDING));
-            connector.setObjectToSend(params);
-            connector.execute();
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+                },
+                params);
+        connector.execute();
     }
 
-    public void close(JSONObject params) {
+    public void close(Map<String, Object> params) {
+        params.put("object", reportTitle.getText().toString());
+        params.put("report_body", bodyText.getText().toString());
+        params.put("state", ReportStatus.getInt(ReportStatus.CLOSED));
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.UPDATE_REPORT_DETAILS,
                 new BooleanConnector.CallbackInterface() {
@@ -169,16 +162,9 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
                             getReportFromServer(params);
                         }
                     }
-                });
-        try {
-            params.put("object", reportTitle.getText().toString());
-            params.put("report_body", bodyText.getText().toString());
-            params.put("state", ReportStatus.getInt(ReportStatus.CLOSED));
-            connector.setObjectToSend(params);
-            connector.execute();
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+                },
+                params);
+        connector.execute();
     }
 }
 

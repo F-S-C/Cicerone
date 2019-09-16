@@ -3,7 +3,6 @@ package com.fsc.cicerone;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
@@ -25,7 +24,6 @@ public class ChangePassword extends AppCompatActivity {
     private EditText newPassword;
     private EditText verifyNewPassword;
     private Button changeP;
-    private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,34 +112,30 @@ public class ChangePassword extends AppCompatActivity {
 
     private void changePasswordOnServer() {
         User user = AccountManager.getCurrentLoggedUser();
-        JSONObject params = new JSONObject();
-        try {
-            params.put("username", user.getUsername());
-            params.put("password", newPassword.getText().toString());
-            BooleanConnector connector = new BooleanConnector(
-                    ConnectorConstants.UPDATE_REGISTERED_USER,
-                    new BooleanConnector.CallbackInterface() {
-                        @Override
-                        public void onStartConnection() {
-                            // Do nothing
-                        }
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("username", user.getUsername());
+        params.put("password", newPassword.getText().toString());
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_REGISTERED_USER,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-                        @Override
-                        public void onEndConnection(BooleanConnector.BooleanResult result) {
-                            if (result.getResult()) {
-                                user.setPassword(newPassword.getText().toString());
-                                Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
-                                onBackPressed();
-                            } else {
-                                Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
-                            }
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (result.getResult()) {
+                            user.setPassword(newPassword.getText().toString());
+                            Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        } else {
+                            Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
                         }
-                    },
-                    params);
-            connector.execute();
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+                    }
+                },
+                params);
+        connector.execute();
     }
 
     private void verifyFields() {

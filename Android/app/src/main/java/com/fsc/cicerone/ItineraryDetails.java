@@ -33,8 +33,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -61,7 +63,7 @@ public class ItineraryDetails extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
-    private JSONObject object2;
+    private Map<String, Object> object2;
 
     private Itinerary itinerary;
 
@@ -91,9 +93,9 @@ public class ItineraryDetails extends AppCompatActivity {
         duration = findViewById(R.id.duration);
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
-        JSONObject object = new JSONObject();
-        object2 = new JSONObject();
-        JSONObject objectReview = new JSONObject();
+        Map<String, Object> object = new HashMap<>();
+        object2 = new HashMap<>();
+        Map<String, Object> objectReview = new HashMap<>();
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
@@ -108,7 +110,7 @@ public class ItineraryDetails extends AppCompatActivity {
             checkWishlist(object);
             getDataFromServer(itinerary);
             getItineraryReviews(objectReview);
-            object2.put(IT_CODE, object.getString("itinerary_in_wishlist"));
+            object2.put(IT_CODE, Objects.requireNonNull(object.get("itinerary_in_wishlist")).toString());
             object2.put("username", currentLoggedUser.getUsername());
             object2.put("booked_itinerary", itinerary.getCode());
 
@@ -141,7 +143,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
     }
 
-    public void addToWishlist(JSONObject params) {
+    public void addToWishlist(Map<String, Object> params) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.INSERT_WISHLIST,
                 new BooleanConnector.CallbackInterface() {
@@ -163,7 +165,7 @@ public class ItineraryDetails extends AppCompatActivity {
         connector.execute();
     }
 
-    public void deleteFromWishlist(JSONObject params) {
+    public void deleteFromWishlist(Map<String, Object> params) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.DELETE_WISHLIST,
                 new BooleanConnector.CallbackInterface() {
@@ -188,7 +190,7 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
 
-    public void checkWishlist(JSONObject object) {
+    public void checkWishlist(Map<String, Object> object) {
         SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
                 ConnectorConstants.SEARCH_WISHLIST,
                 BusinessEntityBuilder.getFactory(Wishlist.class),
@@ -235,7 +237,7 @@ public class ItineraryDetails extends AppCompatActivity {
         rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
-    public void getItineraryReviews(JSONObject itineraryCode) {
+    public void getItineraryReviews(Map<String, Object> itineraryCode) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
                 ConnectorConstants.ITINERARY_REVIEW,
                 BusinessEntityBuilder.getFactory(ItineraryReview.class),
@@ -263,7 +265,7 @@ public class ItineraryDetails extends AppCompatActivity {
         connector.execute();
     }
 
-    public void isReservated(JSONObject reservation) {
+    public void isReservated(Map<String, Object> reservation) {
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_RESERVATION,
                 BusinessEntityBuilder.getFactory(Reservation.class),

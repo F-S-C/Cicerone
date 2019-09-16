@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
+import app_connector.SendInPostConnector;
 
 /**
  * A <i>control</i> class that manages the itineraries.
@@ -92,7 +93,7 @@ public abstract class ItineraryManager {
                         result.accept(booleanResult.getResult());
                     }
                 },
-                itinerary.toJSONObject());
+                SendInPostConnector.paramsFromJSONObject(itinerary.toJSONObject()));
 
         connector.execute();
         return itinerary;

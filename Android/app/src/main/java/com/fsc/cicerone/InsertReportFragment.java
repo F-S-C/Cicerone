@@ -19,11 +19,10 @@ import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
@@ -35,8 +34,8 @@ import app_connector.GetDataConnector;
 public class InsertReportFragment extends Fragment {
 
     Fragment fragment = null;
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
 
     public InsertReportFragment() {
         // Required empty public constructor
@@ -56,34 +55,26 @@ public class InsertReportFragment extends Fragment {
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        JSONObject param = new JSONObject();
-        try {
-            param.put("username", currentLoggedUser.getUsername());
-            setUsersInSpinner(users, currentLoggedUser.getUsername());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Map<String, Object> param = new HashMap<>();
+        param.put("username", currentLoggedUser.getUsername());
+        setUsersInSpinner(users, currentLoggedUser.getUsername());
 
         sendReport.setOnClickListener(v -> {
             if (object.getText().toString().equals("") || body.getText().toString().equals("")) {
                 Toast.makeText(InsertReportFragment.this.getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
 
             } else {
-                try {
-                    param.put("reported_user", users.getSelectedItem().toString());
-                    param.put("report_body", body.getText().toString());
-                    param.put("state", "1");
-                    param.put("object", object.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                param.put("reported_user", users.getSelectedItem().toString());
+                param.put("report_body", body.getText().toString());
+                param.put("state", "1");
+                param.put("object", object.getText().toString());
 
                 InsertReportFragment.this.sendToTableReport(param);
                 InsertReportFragment.this.sendToTableReportDetails(param);
 
                 fragment = new ReportFragment();
                 fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
                 fragmentTransaction.replace(R.id.frame, fragment);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
@@ -122,7 +113,7 @@ public class InsertReportFragment extends Fragment {
         connector.execute();
     }
 
-    public void sendToTableReport(JSONObject param) {
+    public void sendToTableReport(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.INSERT_REPORT,
                 new BooleanConnector.CallbackInterface() {
@@ -136,14 +127,13 @@ public class InsertReportFragment extends Fragment {
                         if (result.getResult()) {
                             Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 },
                 param);
         connector.execute();
     }
 
-    public void sendToTableReportDetails(JSONObject param) {
+    public void sendToTableReportDetails(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.INSERT_REPORT_DETAILS,
                 new BooleanConnector.CallbackInterface() {
