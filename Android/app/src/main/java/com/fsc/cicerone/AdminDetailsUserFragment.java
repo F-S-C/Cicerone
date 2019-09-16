@@ -133,7 +133,7 @@ public class AdminDetailsUserFragment extends Fragment {
                             data = "Document Type: " + dataDocument.getType();
                             documentType.setText(data);
 
-                            data = "Expiry Date: " + outputFormat.format(dataDocument.getExpiryDate());
+                            data = "Expiry Date: " + outputFormat.format(dataDocument.getExpirationDate());
                             documentExpiryDate.setText(data);
 
                         } else {

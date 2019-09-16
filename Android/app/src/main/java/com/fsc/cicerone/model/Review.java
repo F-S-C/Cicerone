@@ -53,7 +53,7 @@ public abstract class Review extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("username", author.getUsername());
+            jsonObject.put("username", author.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }

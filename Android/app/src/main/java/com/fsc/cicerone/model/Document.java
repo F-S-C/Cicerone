@@ -17,7 +17,7 @@ import app_connector.ConnectorConstants;
 public class Document extends BusinessEntity {
     private String number;
     private String type;
-    private Date expiryDate;
+    private Date expirationDate; //TODO: Update class diagram (also setter/getter)
 
     /**
      * Default empty constructor.
@@ -30,12 +30,12 @@ public class Document extends BusinessEntity {
      *
      * @param number     The document's number.
      * @param type       The document's type.
-     * @param expiryDate The document's expiration date.
+     * @param expirationDate The document's expiration date.
      */
-    public Document(String number, String type, Date expiryDate) {
+    public Document(String number, String type, Date expirationDate) {
         this.number = number;
         this.type = type;
-        this.expiryDate = expiryDate;
+        this.expirationDate = expirationDate;
     }
 
     /**
@@ -43,15 +43,15 @@ public class Document extends BusinessEntity {
      *
      * @param number     The document's number.
      * @param type       The document's type.
-     * @param expiryDate The document's expiration date.
+     * @param expirationDate The document's expiration date.
      */
-    public Document(String number, String type, String expiryDate) {
+    public Document(String number, String type, String expirationDate) {
         this.number = number;
         this.type = type;
         try {
-            this.expiryDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(expiryDate);
+            this.expirationDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(expirationDate);
         } catch (ParseException e) {
-            this.expiryDate = null;
+            this.expirationDate = null;
         }
     }
 
@@ -67,9 +67,9 @@ public class Document extends BusinessEntity {
             type = "";
         }
         try {
-            expiryDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("expiry_date"));
+            expirationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("expiry_date"));
         } catch (ParseException | JSONException e) {
-            expiryDate = new Date();
+            expirationDate = new Date();
         }
     }
 
@@ -114,17 +114,17 @@ public class Document extends BusinessEntity {
      *
      * @return The document's expiration date.
      */
-    public Date getExpiryDate() {
-        return expiryDate;
+    public Date getExpirationDate() {
+        return expirationDate;
     }
 
     /**
      * Set the document's expiration date.
      *
-     * @param expiryDate The new document's expiration date.
+     * @param expirationDate The new document's expiration date.
      */
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     /**
@@ -140,7 +140,7 @@ public class Document extends BusinessEntity {
         Document document = (Document) o;
         return number.equals(document.number) &&
                 type.equals(document.type) &&
-                expiryDate.equals(document.expiryDate);
+                expirationDate.equals(document.expirationDate);
     }
 
     /**
@@ -150,7 +150,7 @@ public class Document extends BusinessEntity {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(number, type, expiryDate);
+        return Objects.hash(number, type, expirationDate);
     }
 
     /**
@@ -163,7 +163,7 @@ public class Document extends BusinessEntity {
         try {
             doc.put("document_number", this.number);
             doc.put("document_type", this.type);
-            doc.put("expiry_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.expiryDate));
+            doc.put("expiry_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.expirationDate));
         } catch (JSONException e) {
             doc = null;
         }

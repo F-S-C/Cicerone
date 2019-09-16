@@ -29,7 +29,7 @@ public class UserReview extends Review {
     public JSONObject toJSONObject() {
         JSONObject object = super.toJSONObject();
         try {
-            object.put("reviewed_user", reviewedUser.getUsername());
+            object.put("reviewed_user", reviewedUser.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }

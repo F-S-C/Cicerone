@@ -31,10 +31,10 @@ public enum ReportStatus {
 
     /**
      * @param state The report status.
-     * @return  The integer that corresponding to the enum type.
+     * @return The integer that corresponding to the enum type.
      */
-    public static Integer getInt (ReportStatus state){
-        switch (state){
+    public static Integer getInt(ReportStatus state) {
+        switch (state) {
             case OPEN:
                 return 0;
             case PENDING:
@@ -44,7 +44,7 @@ public enum ReportStatus {
             case CANCELED:
                 return 3;
             default:
-                    return null;
+                return null;
         }
     }
 }

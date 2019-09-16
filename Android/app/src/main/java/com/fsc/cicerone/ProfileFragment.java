@@ -279,7 +279,7 @@ public class ProfileFragment extends Fragment {
                             Document data = list.get(0);
                             documentNumber.setText(data.getNumber());
                             documentType.setText(data.getType());
-                            documentExpiryDate.setText(outputFormat.format(data.getExpiryDate()));
+                            documentExpiryDate.setText(outputFormat.format(data.getExpirationDate()));
                         }
                     },
                     parameters);

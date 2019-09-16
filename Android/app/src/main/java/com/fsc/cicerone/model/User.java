@@ -58,7 +58,7 @@ public class User extends BusinessEntity {
         languages = new HashSet<>();
     }
 
-    public User(String username, String password){
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
 
@@ -423,16 +423,17 @@ public class User extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
         try {
-            if(this.name != null) result.put("name", this.name);
-            if(this.surname != null) result.put("surname", this.surname);
-            if(this.email != null) result.put("email", this.email);
-            if(this.password != null) result.put("password", this.password);
-            if(this.sex != null) result.put("sex", this.sex.toString());
-            if(this.taxCode != null) result.put("tax_code", this.taxCode);
-            if(this.username != null) result.put("username", this.username);
-            if(this.userType != null) result.put("user_type", this.userType.toInt());
-            if(this.cellphone != null) result.put("cellphone", this.cellphone);
-            if(this.birthDate != null) result.put("birth_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.birthDate));
+            if (this.name != null) result.put("name", this.name);
+            if (this.surname != null) result.put("surname", this.surname);
+            if (this.email != null) result.put("email", this.email);
+            if (this.password != null) result.put("password", this.password);
+            if (this.sex != null) result.put("sex", this.sex.toString());
+            if (this.taxCode != null) result.put("tax_code", this.taxCode);
+            if (this.username != null) result.put("username", this.username);
+            if (this.userType != null) result.put("user_type", this.userType.toInt());
+            if (this.cellphone != null) result.put("cellphone", this.cellphone);
+            if (this.birthDate != null)
+                result.put("birth_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.birthDate));
         } catch (JSONException e) {
             result = null;
         }

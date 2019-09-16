@@ -492,7 +492,7 @@ public class Itinerary extends BusinessEntity {
         imageUrl = builder.imageUrl;
     }
 
-    public static class Builder {
+    public static class Builder { //TODO: Add to class diagram (if not there)
         private User cicerone;
         private String title;
         private String description;

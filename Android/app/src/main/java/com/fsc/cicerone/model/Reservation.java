@@ -77,9 +77,8 @@ public class Reservation extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
         try {
-            result.put("username", this.client.getUsername());
-            result.put("booked_itinerary", this.itinerary.getCode());
-            result.put("cicerone", this.itinerary.getCicerone());
+            result.put("username", this.client.toJSONObject());
+            result.put("booked_itinerary", this.itinerary.toJSONObject());
             result.put("number_of_children", this.numberOfChildren);
             result.put("number_of_adults", this.numberOfAdults);
             result.put("total", this.total);
@@ -153,12 +152,12 @@ public class Reservation extends BusinessEntity {
             else
                 this.confirmationDate = null;
         } catch (JSONException | ParseException e) {
-            Log.e(ERROR_TAG, e.getMessage());
+            Log.d(ERROR_TAG, e.getMessage());
             this.confirmationDate = null;
         }
     }
 
-    private Reservation(Builder builder) {
+    private Reservation(Builder builder) { //TODO: Add to class diagram (if not there)
         this.client = builder.client;
         this.itinerary = builder.itinerary;
         this.numberOfAdults = builder.numberOfAdults;

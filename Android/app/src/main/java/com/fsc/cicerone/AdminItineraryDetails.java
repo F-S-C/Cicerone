@@ -44,7 +44,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
-    private Itinerary itinerary; //TODO: Add to class diagram and add final
+    private Itinerary itinerary; //TODO: Add to class diagram
 
 
     @Override
@@ -71,7 +71,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
 
-            String s = Objects.requireNonNull(bundle).getString("itinerary");
+        String s = Objects.requireNonNull(bundle).getString("itinerary");
         try {
             itinerary = new Itinerary(new JSONObject(s));
             JSONObject objectReview = new JSONObject();

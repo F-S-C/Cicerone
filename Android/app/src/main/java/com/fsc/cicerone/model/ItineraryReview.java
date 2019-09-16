@@ -29,7 +29,7 @@ public class ItineraryReview extends Review {
     public JSONObject toJSONObject() {
         JSONObject object = super.toJSONObject();
         try {
-            object.put("reviewed_itinerary", reviewedItinerary.getItineraryCode());
+            object.put("reviewed_itinerary", reviewedItinerary.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }
