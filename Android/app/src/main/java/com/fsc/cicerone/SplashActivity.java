@@ -7,11 +7,13 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.UserType;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SplashActivity extends AppCompatActivity {
-    private static final String ERROR_TAG = "ERROR IN " + SplashActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
                     AccountManager.attemptLogin(currentLoggedUser, () -> {
                         // Do nothing
                     }, (result, success) -> {
-                        if(AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
+                        if(AccountManager.getCurrentLoggedUser().getUserType()== UserType.ADMIN){
                             Intent intent = new Intent(SplashActivity.this, (success) ? activityToOpenIfLoggedAdmin : activityToOpenIfNotLogged);
                             startActivity(intent);
                         }

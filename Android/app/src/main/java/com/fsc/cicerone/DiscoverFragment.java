@@ -25,15 +25,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.fsc.cicerone.adapter.WishlistAdapter;
+import com.fsc.cicerone.adapter.ItineraryAdapter;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Itinerary;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -183,16 +185,19 @@ public class DiscoverFragment extends Fragment {
     }
 
     private void refreshData() {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY, new DatabaseConnector.CallbackInterface() {
+        SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_ITINERARY,
+                BusinessEntityBuilder.getFactory(Itinerary.class),
+                new DatabaseConnector.CallbackInterface<Itinerary>() {
             @Override
             public void onStartConnection() {
                 swipeRefreshLayout.setRefreshing(true);
             }
 
             @Override
-            public void onEndConnection(JSONArray jsonArray) {
+            public void onEndConnection(List<Itinerary> list) {
                 swipeRefreshLayout.setRefreshing(false);
-                WishlistAdapter adapter = new WishlistAdapter(getActivity(), jsonArray);
+                ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), list);
 
                 recyclerView.setAdapter(adapter);
             }

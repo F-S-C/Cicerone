@@ -1,7 +1,6 @@
 package com.fsc.cicerone.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.Reservation;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import com.fsc.cicerone.model.Reservation;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,30 +23,23 @@ import java.util.Locale;
  */
 public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<AdminItineraryGlobetrotterAdapter.ViewHolder> {
 
-    private static final String ERROR_TAG = "ERROR IN " + AdminItineraryGlobetrotterAdapter.class.getName();
-
     private List<Reservation> mData;
     private LayoutInflater mInflater;
 
     /**
      * Constructor.
      *
-     * @param context   The parent Context.
-     * @param jsonArray The array of JSON Objects got from server.
+     * @param context The parent Context.
+     * @param list    The array of JSON Objects got from server.
      */
-    public AdminItineraryGlobetrotterAdapter(Context context, JSONArray jsonArray) {
+    public AdminItineraryGlobetrotterAdapter(Context context, List<Reservation> list) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = new ArrayList<>(jsonArray.length());
-        for (int i = 0; i < jsonArray.length(); i++) {
-            try {
-                Reservation toAdd = new Reservation.Builder(jsonArray.getJSONObject(i)).build();
-
-                // The reservation must be shown if and only if it was confirmed.
-                if (toAdd.isConfirmed()) {
-                    this.mData.add(toAdd);
-                }
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
+        this.mData = list;
+        this.mData = new ArrayList<>(list.size());
+        for (Reservation reservation : list) {
+            // The reservation must be shown if and only if it was confirmed.
+            if (reservation.isConfirmed()) {
+                this.mData.add(reservation);
             }
         }
     }
@@ -59,7 +48,6 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View itineraryView = mInflater.inflate(R.layout.globetrotter_itinerary_admin_list, parent, false);
         return new ViewHolder(itineraryView);
     }
@@ -67,19 +55,17 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-            DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-            holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
-            holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
-            holder.location.setText(mData.get(position).getItinerary().getLocation());
-            holder.itineraryCicerone.setText(mData.get(position).getItinerary().getUsername());
-
-    }//END onBindViewHolder
+        DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
+        holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
+        holder.location.setText(mData.get(position).getItinerary().getLocation());
+        holder.itineraryCicerone.setText(mData.get(position).getItinerary().getCicerone().getUsername());
+    }
 
     /**
-     * Return the length of the JSON array passed into the Adapter.
+     * Return the length of the array passed into the ReviewAdapter.
      *
-     * @return Length of JSON array.
+     * @return Length of the array.
      */
     @Override
     public int getItemCount() {
@@ -89,7 +75,7 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add to class diagram
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;

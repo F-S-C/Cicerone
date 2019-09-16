@@ -52,9 +52,6 @@ class RequestItineraryJoinReservation extends JsonConnector
             $query = "SELECT * FROM itinerary WHERE itinerary_code = ?";
             $parameters = array($row['booked_itinerary']);
             $row['booked_itinerary'] = $this->execute_query($query, $parameters, "i")[0];
-        }
-
-        foreach ($to_return as &$row) {
             $query = "SELECT * FROM registered_user WHERE username = ?";
             $parameters = array($row['username']);
             $row['username'] = $this->execute_query($query, $parameters, "s")[0];

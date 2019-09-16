@@ -15,11 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.AdminItineraryGlobetrotterAdapter;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Reservation;
+import com.fsc.cicerone.model.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -57,30 +60,34 @@ public class GlobetrotterItineraryListFragment extends Fragment {
             RecyclerView recyclerView = view.findViewById(R.id.globetrotter_itinerary_recycler);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(view, parameters, recyclerView);
-        }catch (JSONException e){
-            Log.e(ERROR_TAG,e.toString());
+            requireData(parameters, recyclerView);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.toString());
         }
         return view;
     }
 
-    private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() { }
+    private void requireData(JSONObject parameters, RecyclerView recyclerView) {
+        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
+                BusinessEntityBuilder.getFactory(Reservation.class),
+                new DatabaseConnector.CallbackInterface<Reservation>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) {
-                if(jsonArray.length()>0) {
-                    adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), jsonArray);
-                    recyclerView.setAdapter(adapter);
-                }
-                else{
-                    Toast.makeText(context , GlobetrotterItineraryListFragment.this.getString(R.string.no_itineraries_history), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        connector.setObjectToSend(parameters);
+                    @Override
+                    public void onEndConnection(List<Reservation> list) {
+                        if (!list.isEmpty()) {
+                            adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), list);
+                            recyclerView.setAdapter(adapter);
+                        } else {
+                            Toast.makeText(context, GlobetrotterItineraryListFragment.this.getString(R.string.no_itineraries_history), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                parameters);
         connector.execute();
     }
 

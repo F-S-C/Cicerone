@@ -4,7 +4,7 @@ package app_connector;
  * Connector Constants for Cicerone's connector.
  */
 public final class ConnectorConstants {
-
+    //TODO: Check all constants and remove duplicates.
     private ConnectorConstants() {
         throw new IllegalStateException("Utility class");
     }
@@ -35,7 +35,7 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the itinerary table.
      */
-    public static final String REQUEST_ITINERARY = SERVER_URL + "/RequestItinerary.php";
+    public static final String REQUEST_ITINERARY = SERVER_URL + "/GetItinerary.php";
 
     /**
      * URL of the server-side connector for the itinerary table.
@@ -90,12 +90,12 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the wishlist table.
      */
-    public static final String REQUEST_WISHLIST = SERVER_URL + "/RequestWishlistJoinItinerary.php";
+    public static final String REQUEST_WISHLIST = SERVER_URL + "/RequestWishlist.php";
 
     /**
      * URL of the server-side connector for the wishlist table.
      */
-    public static final String SEARCH_WISHLIST = SERVER_URL + "/RequestWishlist.php";
+    public static final String SEARCH_WISHLIST = SERVER_URL + "/RequestWishlist.php"; //TODO: remove from class?
 
     /**
      * URL of the server-side connector for the user_review table.

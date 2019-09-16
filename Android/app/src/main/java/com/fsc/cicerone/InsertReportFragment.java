@@ -1,6 +1,7 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import org.json.JSONArray;
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.User;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,10 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.GetDataConnector;
-import app_connector.SendInPostConnector;
 
 
 public class InsertReportFragment extends Fragment {
@@ -37,7 +41,6 @@ public class InsertReportFragment extends Fragment {
     public InsertReportFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -55,38 +58,35 @@ public class InsertReportFragment extends Fragment {
 
         JSONObject param = new JSONObject();
         try {
-            param.put("username",currentLoggedUser.getUsername());
-            setUsersInSpinner(users,currentLoggedUser.getUsername());
+            param.put("username", currentLoggedUser.getUsername());
+            setUsersInSpinner(users, currentLoggedUser.getUsername());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        sendReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (object.getText().toString().equals("") || body.getText().toString().equals("")) {
-                    Toast.makeText(InsertReportFragment.this.getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+        sendReport.setOnClickListener(v -> {
+            if (object.getText().toString().equals("") || body.getText().toString().equals("")) {
+                Toast.makeText(InsertReportFragment.this.getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
 
-                } else {
-                    try {
-                        param.put("reported_user", users.getSelectedItem().toString());
-                        param.put("report_body", body.getText().toString());
-                        param.put("state", "1");
-                        param.put("object", object.getText().toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    InsertReportFragment.this.sendToTableReport(param);
-                    InsertReportFragment.this.sendToTableReportDetails(param);
-
-                    fragment = new ReportFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame, fragment);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
+            } else {
+                try {
+                    param.put("reported_user", users.getSelectedItem().toString());
+                    param.put("report_body", body.getText().toString());
+                    param.put("state", "1");
+                    param.put("object", object.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
+                InsertReportFragment.this.sendToTableReport(param);
+                InsertReportFragment.this.sendToTableReportDetails(param);
+
+                fragment = new ReportFragment();
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame, fragment);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
             }
         });
 
@@ -94,74 +94,76 @@ public class InsertReportFragment extends Fragment {
     }
 
 
-
     public void setUsersInSpinner(Spinner users, String currentLoggedUser) {
-        GetDataConnector connector = new GetDataConnector(ConnectorConstants.REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
+        GetDataConnector<User> connector = new GetDataConnector<>(
+                ConnectorConstants.REGISTERED_USER,
+                BusinessEntityBuilder.getFactory(User.class),
+                new DatabaseConnector.CallbackInterface<User>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            }
+                    @Override
+                    public void onEndConnection(List<User> list) {
+                        List<String> cleanList = new ArrayList<>();
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                List<String> list = new ArrayList<>();
+                        for (User user : list) {
+                            // TODO: This check should be done by the DBMS?
+                            if (!user.getUsername().equals("admin") &&
+                                    !user.getUsername().equals("deleted_user") &&
+                                    !user.getUsername().equals(currentLoggedUser))
 
-                for(int i=0; i < jsonArray.length(); i++)
-                {
-                    if(
-                            !jsonArray.getJSONObject(i).getString("username").equals("admin") &&
-                            !jsonArray.getJSONObject(i).getString("username").equals("deleted_user") &&
-                            !jsonArray.getJSONObject(i).getString("username").equals(currentLoggedUser))
+                                cleanList.add(user.getUsername());
+                        }
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
+                                android.R.layout.simple_spinner_item, cleanList);
+                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        users.setAdapter(dataAdapter);
 
-                        list.add(jsonArray.getJSONObject(i).getString("username"));
-                }
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
-                        android.R.layout.simple_spinner_item, list);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                users.setAdapter(dataAdapter);
-
-            }
-        });
+                    }
+                });
         connector.execute();
     }
 
-    public void sendToTableReport(JSONObject param)
-    {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_REPORT, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+    public void sendToTableReport(JSONObject param) {
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.INSERT_REPORT,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                if (object.getBoolean("result")) {
-                    Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
-                }
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (result.getResult()) {
+                            Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
+                        }
 
-            }
-        });
-        connector.setObjectToSend(param);
+                    }
+                },
+                param);
         connector.execute();
     }
 
     public void sendToTableReportDetails(JSONObject param) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_REPORT_DETAILS, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.INSERT_REPORT_DETAILS,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-
-            }
-        });
-        connector.setObjectToSend(param);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        Log.d("sendToTableReportDetail", String.valueOf(result.getResult()));
+                    }
+                },
+                param);
         connector.execute();
     }
 
-    
 
 }

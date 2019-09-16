@@ -194,6 +194,8 @@
     <string name="participations">Partecipazioni</string>
     <string name="my_itineraries">I miei itinerari</string>
     <string name="no_itineraries">Non stai partecipando a nessun itinerario.</string>
+    <string name="reservation_added">Richiesta di partecipazione inoltrata.</string>
+    <string name="reservation_removed">Richiesta di partecipazione rimossa..</string>
     <string name="itinerary_image">Immagine dell\'itinerario</string>
     <string name="create_itinerary">Crea itinerario</string>
 </resources>

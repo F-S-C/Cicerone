@@ -15,19 +15,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Document;
+import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -42,11 +46,11 @@ public class AdminDetailsUserFragment extends Fragment {
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
-    private TextView avgEarn;
     private String data;
     private DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
     private Activity context;
+
     /**
      * Empty constructor
      */
@@ -69,7 +73,7 @@ public class AdminDetailsUserFragment extends Fragment {
         documentNumber = view.findViewById(R.id.nrDoc_user_admin);
         documentType = view.findViewById(R.id.typeDoc_user_admin);
         documentExpiryDate = view.findViewById(R.id.dateEx_user_admin);
-        avgEarn = view.findViewById(R.id.avg_earn);
+        TextView avgEarn = view.findViewById(R.id.avg_earn);
         TextView sex = view.findViewById(R.id.sex_user_admin);
         Button removeUser = view.findViewById(R.id.remove_user_admin);
         Bundle bundle = getArguments();
@@ -77,17 +81,17 @@ public class AdminDetailsUserFragment extends Fragment {
         User user = null;
         try {
             user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
-            if(user.getUserType() == UserType.CICERONE) {
+            if (user.getUserType() == UserType.CICERONE) {
                 avgEarn.setVisibility(View.VISIBLE);
                 AccountManager.userAvgEarnings(user.getUsername(), avgEarn, context);
             }
         } catch (JSONException e) {
-            Log.e(ERROR_TAG,e.getMessage());
+            Log.e(ERROR_TAG, e.getMessage());
         }
 
         assert user != null;
         try {
-            parameters.put("username",user.getUsername());
+            parameters.put("username", user.getUsername());
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
@@ -104,67 +108,64 @@ public class AdminDetailsUserFragment extends Fragment {
         data = "Sex: " + user.getSex().toString();
         sex.setText(data);
 
-       requestUserDocument(parameters);
+        requestUserDocument(parameters);
         removeUser.setOnClickListener(v -> deleteAccount(parameters));
 
         return view;
     }
 
     private void requestUserDocument(JSONObject parameters) {
-            SendInPostConnector userDocumentConnector = new SendInPostConnector(ConnectorConstants.REQUEST_DOCUMENT, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
-
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    if (jsonArray.length()>0){
-                    JSONObject dataDocument = jsonArray.getJSONObject(0);
-                    data = "Document Number: " + dataDocument.getString("document_number");
-                    documentNumber.setText(data);
-                    data = "Document Type: " + dataDocument.getString("document_type");
-                    documentType.setText(data);
-
-                    try {
-
-                        Date docExpiryDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dataDocument.getString("expiry_date"));
-                        data = "Expiry Date: " + outputFormat.format(docExpiryDate);
-                        documentExpiryDate.setText(data);
-
-                    } catch (ParseException e) {
-                        Log.e(ERROR_TAG, e.toString());
-                    }}
-                    else{
-                        documentNumber.setVisibility(View.GONE);
-                        documentType.setVisibility(View.GONE);
-                        documentExpiryDate.setVisibility(View.GONE);
-                        Toast.makeText(context , AdminDetailsUserFragment.this.getString(R.string.doc_not_found), Toast.LENGTH_SHORT).show();
-
+        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_DOCUMENT,
+                BusinessEntityBuilder.getFactory(Document.class),
+                new DatabaseConnector.CallbackInterface<Document>() {
+                    @Override
+                    public void onStartConnection() {
+                        //Do nothing
                     }
-                }
-            });
-            userDocumentConnector.setObjectToSend(parameters);
-            userDocumentConnector.execute();
+
+                    @Override
+                    public void onEndConnection(List<Document> list) {
+                        if (!list.isEmpty()) {
+                            Document dataDocument = list.get(0);
+                            data = "Document Number: " + dataDocument.getNumber();
+                            documentNumber.setText(data);
+                            data = "Document Type: " + dataDocument.getType();
+                            documentType.setText(data);
+
+                            data = "Expiry Date: " + outputFormat.format(dataDocument.getExpiryDate());
+                            documentExpiryDate.setText(data);
+
+                        } else {
+                            documentNumber.setVisibility(View.GONE);
+                            documentType.setVisibility(View.GONE);
+                            documentExpiryDate.setVisibility(View.GONE);
+                            Toast.makeText(context, AdminDetailsUserFragment.this.getString(R.string.doc_not_found), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                parameters);
+        userDocumentConnector.execute();
     }
 
     private void deleteAccount(JSONObject parameters) {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
-            SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    // Do nothing
-                }
+            BooleanConnector connector = new BooleanConnector(
+                    ConnectorConstants.DELETE_REGISTERED_USER,
+                    new BooleanConnector.CallbackInterface() {
+                        @Override
+                        public void onStartConnection() {
+                            // Do nothing
+                        }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    JSONObject result = jsonArray.getJSONObject(0);
-                    if(!result.getBoolean("result")){
-                        Log.e("DELETE_USER_ERROR", result.getString("error"));
-                    }
-                }
-            });
-            connector.setObjectToSend(parameters);
+                        @Override
+                        public void onEndConnection(BooleanConnector.BooleanResult result) {
+                            if (!result.getResult()) {
+                                Log.e("DELETE_USER_ERROR", result.getMessage());
+                            }
+                        }
+                    },
+                    parameters);
             connector.execute();
             startActivity(new Intent(context, AdminMainActivity.class));
             context.finish();

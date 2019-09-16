@@ -2,8 +2,6 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
 
 /**
@@ -58,8 +56,8 @@ class RequestItinerary extends JsonConnector
         }
         if (isset($this->location)) {
             array_push($conditions, "location LIKE ?");
-            $location = "%" . $this->location . "%";
-            array_push($data, $location);
+            $temp_location = "%" . $this->location . "%";
+            array_push($data, $temp_location);
             $types .= "s";
         }
         if (isset($this->code)) {
@@ -82,18 +80,12 @@ class RequestItinerary extends JsonConnector
 
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
-        if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->owner) || isset($this->location) || isset($this->beginning_date) || isset($this->ending_date) || isset($this->code)) {
-                $statement->bind_param($types, ...$data);
-            }
-            if ($statement->execute()) {
-                $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-            } else {
-                throw new mysqli_sql_exception($statement->error);
-            }
-        } else {
-            throw new mysqli_sql_exception($this->connection->error);
+        $to_return = $this->execute_query($query, $data, $types);
+        foreach ($to_return as &$row) {
+            $parameters = array($row["username"]);
+            $row["username"] = $this->execute_query("SELECT * FROM registered_user WHERE username = ?", $parameters, "s")[0];
         }
+
         return $to_return;
     }
 
@@ -112,6 +104,3 @@ class RequestItinerary extends JsonConnector
         return $date_condition;
     }
 }
-
-$connector = new RequestItinerary($_POST['username'], $_POST['location'], $_POST['beginning_date'], $_POST['ending_date'], $_POST['itinerary_code']);
-print $connector->get_content();

@@ -13,17 +13,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.ItineraryReview;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -44,8 +48,6 @@ public class ItineraryManagement extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
-
-    private static final String ERROR_TAG = "ERROR IN " + ItineraryManagement.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class ItineraryManagement extends AppCompatActivity {
                     .setNegativeButton(getString(R.string.no), null)
                     .show());
 
+
             updateItinerary.setOnClickListener(v -> {
                 Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
                 i.putExtras(bundle);
@@ -120,13 +123,13 @@ public class ItineraryManagement extends AppCompatActivity {
         itineraryTitle.setText(itinerary.getTitle());
         description.setText(itinerary.getDescription());
         Picasso.get().load(itinerary.getImageUrl()).into(image);
-        author.setText(itinerary.getUsername());
+        author.setText(itinerary.getCicerone().getUsername());
         String dur = itinerary.getDuration();
         duration.setText(dur.substring(0, 5));
         location.setText(itinerary.getLocation());
         repetitions.setText(String.valueOf(itinerary.getRepetitions()));
-        fPrice.setText(Float.toString(itinerary.getFullPrice()));
-        rPrice.setText(Float.toString(itinerary.getReducedPrice()));
+        fPrice.setText(Float.toString(itinerary.getFullPrice())); //TODO: Add price tag (branch ui-improvement)
+        rPrice.setText(Float.toString(itinerary.getReducedPrice())); //TODO: Add price tag (branch ui-improvement)
         minP.setText(String.valueOf(itinerary.getMinParticipants()));
         maxP.setText(String.valueOf(itinerary.getMaxParticipants()));
         bDate.setText(out.format(itinerary.getBeginningDate()));
@@ -135,52 +138,53 @@ public class ItineraryManagement extends AppCompatActivity {
     }
 
     public void getItineraryReviews(JSONObject itineraryCode) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                if (jsonArray.length() > 0) {
-                    int n = 0;
-                    float sum = 0;
-                    do {
-                        sum += jsonArray.getJSONObject(n).getInt("feedback");
-                        n = n + 1;
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.ITINERARY_REVIEW,
+                BusinessEntityBuilder.getFactory(ItineraryReview.class),
+                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
                     }
-                    while (n < jsonArray.length());
-                    float total = sum / n;
-                    review.setRating(total);
-                } else {
-                    review.setRating(0);
-                }
-            }
-        });
-        connector.setObjectToSend(itineraryCode);
+
+                    @Override
+                    public void onEndConnection(List<ItineraryReview> list) {
+                        if (!list.isEmpty()) {
+                            int sum = 0;
+                            for (ItineraryReview itineraryReview : list) {
+                                sum += itineraryReview.getFeedback();
+                            }
+                            float total = (float) sum / list.size();
+                            review.setRating(total);
+                        } else {
+                            review.setRating(0);
+                        }
+                    }
+                },
+                itineraryCode);
         connector.execute();
     }
 
     public void deleteItineraryFromServer(JSONObject itCode) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_ITINERARY, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.DELETE_ITINERARY,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                if (object.getBoolean("result")) {
-                    Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();
-                    startActivity(i);
-                }
-            }
-        });
-        connector.setObjectToSend(itCode);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (result.getResult()) {
+                            Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();
+                            startActivity(i);
+                        }
+                    }
+                },
+                itCode);
         connector.execute();
     }
 }

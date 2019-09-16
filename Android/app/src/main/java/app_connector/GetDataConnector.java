@@ -1,5 +1,8 @@
 package app_connector;
 
+import com.fsc.cicerone.model.BusinessEntity;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -10,15 +13,15 @@ import javax.net.ssl.HttpsURLConnection;
  * Special connector to the database.
  * This connector fetches all entries available from a server-side script.
  */
-public class GetDataConnector extends DatabaseConnector {
+public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnector<T> {
 
     /**
      * Constructor.
      *
      * @param url The url of the server-side script.
      */
-    public GetDataConnector(String url) {
-        super(url);
+    public GetDataConnector(String url, BusinessEntityBuilder<T> builder) {
+        super(url, builder);
     }
 
     /**
@@ -28,8 +31,8 @@ public class GetDataConnector extends DatabaseConnector {
      * @param callback A reference to CallbackInterface that will be used before and after the
      *                 connection.
      */
-    public GetDataConnector(String url, CallbackInterface callback) {
-        super(url, callback);
+    public GetDataConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
+        super(url, builder, callback);
     }
 
     /**

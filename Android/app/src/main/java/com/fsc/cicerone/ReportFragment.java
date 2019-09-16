@@ -18,12 +18,16 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.adapter.Adapter;
+import com.fsc.cicerone.adapter.ReportAdapter;
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Report;
+import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -35,7 +39,7 @@ import app_connector.SendInPostConnector;
  */
 public class ReportFragment extends Fragment {
 
-    Adapter adapter;
+    RecyclerView.Adapter adapter;
     Fragment fragment = null;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -61,10 +65,10 @@ public class ReportFragment extends Fragment {
         SharedPreferences preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
 
         try {
-            final JSONObject parameters = new JSONObject(preferences.getString("session","")); //Connection params
+            final JSONObject parameters = new JSONObject(preferences.getString("session", "")); //Connection params
             parameters.remove("password");
             // set up the RecyclerView
-            if(AccountManager.getCurrentLoggedUser().getUserType()==UserType.ADMIN){
+            if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
                 parameters.remove("username");
             }
             RecyclerView recyclerView = view.findViewById(R.id.report_list);
@@ -82,34 +86,33 @@ public class ReportFragment extends Fragment {
             fragmentTransaction.replace(R.id.frame, fragment);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
-                    });
+        });
 
         return view;
     }
 
 
-
     private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REPORT_FRAGMENT, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                progressBar.setVisibility(View.VISIBLE);
-            }
+        SendInPostConnector<Report> connector = new SendInPostConnector<>(
+                ConnectorConstants.REPORT_FRAGMENT,
+                BusinessEntityBuilder.getFactory(Report.class),
+                new DatabaseConnector.CallbackInterface<Report>() {
+                    @Override
+                    public void onStartConnection() {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) {
-                progressBar.setVisibility(View.GONE);
-                adapter = new Adapter(getActivity(),jsonArray, 0);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-        connector.setObjectToSend(parameters);
+                    @Override
+                    public void onEndConnection(List<Report> list) {
+                        progressBar.setVisibility(View.GONE);
+                        adapter = new ReportAdapter(getActivity(), list);
+                        recyclerView.setAdapter(adapter);
+                    }
+                },
+                parameters);
         connector.execute();
     }
-
-
-
 
 
 }

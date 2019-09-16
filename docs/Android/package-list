@@ -1,2 +1,4 @@
 app_connector
 com.fsc.cicerone
+com.fsc.cicerone.adapter
+com.fsc.cicerone.model

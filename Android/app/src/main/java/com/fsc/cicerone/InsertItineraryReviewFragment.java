@@ -14,20 +14,26 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import org.json.JSONArray;
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.ItineraryReview;
+import com.fsc.cicerone.model.Reservation;
+import com.fsc.cicerone.model.User;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class InsertItineraryReviewFragment extends Fragment {
 
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
-    private  JSONObject result;
+    private ItineraryReview result;
     private Button submitReview;
     private Button updateReview;
     private Button deleteReview;
@@ -38,7 +44,9 @@ public class InsertItineraryReviewFragment extends Fragment {
     private TextView messageDescription;
     private JSONObject param;
     private JSONObject sendParam;
+
     public InsertItineraryReviewFragment() {
+        // Required public empty constructor
     }
 
     @Override
@@ -57,15 +65,15 @@ public class InsertItineraryReviewFragment extends Fragment {
         Bundle bundle = getArguments();
 
 
-         param = new JSONObject();
+        param = new JSONObject();
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
         try {
 
-            param.put("username",currentLoggedUser.getUsername());
-            param.put("booked_itinerary",Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
-            param.put("itinerary",bundle.getString("itinerary"));
+            param.put("username", currentLoggedUser.getUsername());
+            param.put("booked_itinerary", Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
+            param.put("itinerary", bundle.getString("itinerary"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -73,212 +81,214 @@ public class InsertItineraryReviewFragment extends Fragment {
 
         requestReview(param);
 
-            return view;
+        return view;
 
     }
 
-    private void requestReview (JSONObject parameters){
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-            }
+    private void requestReview(JSONObject parameters) {
+        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_RESERVATION,
+                BusinessEntityBuilder.getFactory(Reservation.class),
+                new DatabaseConnector.CallbackInterface<Reservation>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                sendParam = new JSONObject();
+                    @Override
+                    public void onEndConnection(List<Reservation> list) throws JSONException {
+                        sendParam = new JSONObject();
 
-                if(jsonArray.length()>0)
-                {
-                    message.setVisibility(View.GONE);
-                    parameters.put("reviewed_itinerary", parameters.getString("booked_itinerary"));
-                    checkReview(parameters);
+                        if (!list.isEmpty()) {
+                            message.setVisibility(View.GONE);
+                            parameters.put("reviewed_itinerary", parameters.getString("booked_itinerary"));
+                            checkReview(parameters);
 
-                    submitReview.setOnClickListener(v -> {
-                        if (allFilled()) {
-                            try {
-                                sendParam.put("itinerary",param.getString("itinerary"));
-                                sendParam.put("username", param.getString("username"));
-                                sendParam.put("reviewed_itinerary", param.getString("reviewed_itinerary"));
-                                sendParam.put("description", descriptionReview.getText().toString());
-                                sendParam.put("feedback", (int) feedbackReview.getRating());
-                                sendParam.put("itinerary",parameters.getString("itinerary"));
-                                Log.e("username:", sendParam.getString("username"));
+                            submitReview.setOnClickListener(v -> {
+                                if (allFilled()) {
+                                    try {
+                                        sendParam.put("itinerary", param.getString("itinerary"));
+                                        sendParam.put("username", param.getString("username"));
+                                        sendParam.put("reviewed_itinerary", param.getString("reviewed_itinerary"));
+                                        sendParam.put("description", descriptionReview.getText().toString());
+                                        sendParam.put("feedback", (int) feedbackReview.getRating());
+                                        sendParam.put("itinerary", parameters.getString("itinerary"));
+                                        Log.e("username:", sendParam.getString("username"));
 
-                                submitReview(sendParam);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else
-                            Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+                                        submitReview(sendParam);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else
+                                    Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
 
-                    });
-                    deleteReview.setOnClickListener(v -> {
+                            });
+                            deleteReview.setOnClickListener(v -> {
 
-                        try {
-                            sendParam.put("username", parameters.getString("username"));
-                            sendParam.put("reviewed_itinerary",parameters.getString("reviewed_itinerary"));
-                            sendParam.put("itinerary",parameters.getString("itinerary"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                                try {
+                                    sendParam.put("username", parameters.getString("username"));
+                                    sendParam.put("reviewed_itinerary", parameters.getString("reviewed_itinerary"));
+                                    sendParam.put("itinerary", parameters.getString("itinerary"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                deleteReview(sendParam);
+
+                            });
+                            updateReview.setOnClickListener(v -> {
+                                if (allFilled()) {
+                                    try {
+                                        sendParam.put("username", parameters.getString("username"));
+                                        sendParam.put("reviewed_itinerary", parameters.getString("reviewed_itinerary"));
+                                        sendParam.put("description", descriptionReview.getText().toString());
+                                        sendParam.put("feedback", (int) feedbackReview.getRating());
+                                        sendParam.put("itinerary", parameters.getString("itinerary"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    updateReview(sendParam);
+                                } else
+                                    Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+
+                            });
+                        } else {
+                            feedbackReview.setVisibility(View.GONE);
+                            descriptionReview.setVisibility(View.GONE);
+                            submitReview.setVisibility(View.GONE);
+                            deleteReview.setVisibility(View.GONE);
+                            updateReview.setVisibility(View.GONE);
+                            messageFeedback.setVisibility(View.GONE);
+                            messageDescription.setVisibility(View.GONE);
                         }
-                        deleteReview(sendParam);
 
-                    });
-                    updateReview.setOnClickListener(v -> {
-                        if (allFilled()) {
-                            try {
-                                sendParam.put("username", parameters.getString("username"));
-                                sendParam.put("reviewed_itinerary", parameters.getString("reviewed_itinerary"));
-                                sendParam.put("description", descriptionReview.getText().toString());
-                                sendParam.put("feedback", (int) feedbackReview.getRating());
-                                sendParam.put("itinerary",parameters.getString("itinerary"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            updateReview(sendParam);
-                        } else
-                            Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
-
-                    });
-                }
-                else
-                {
-                    feedbackReview.setVisibility(View.GONE);
-                    descriptionReview.setVisibility(View.GONE);
-                    submitReview.setVisibility(View.GONE);
-                    deleteReview.setVisibility(View.GONE);
-                    updateReview.setVisibility(View.GONE);
-                    messageFeedback.setVisibility(View.GONE);
-                    messageDescription.setVisibility(View.GONE);
-                }
-
-            }
-        });
-        connector.setObjectToSend(parameters);
+                    }
+                },
+                parameters);
         connector.execute();
     }
 
-    private void checkReview (JSONObject parameters) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-            }
+    private void checkReview(JSONObject parameters) {
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_ITINERARY_REVIEW,
+                BusinessEntityBuilder.getFactory(ItineraryReview.class),
+                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                message.setVisibility(View.GONE);
-                if( jsonArray.length() > 0)
-                {
-                    result = jsonArray.getJSONObject(0);
-                    submitReview.setVisibility(View.GONE);
-                    updateReview.setVisibility(View.VISIBLE);
-                    deleteReview.setVisibility(View.VISIBLE);
-                    descriptionReview.setText(result.getString("description"));
-                    feedbackReview.setRating(Float.parseFloat(result.getString("feedback")));
-                }
-                else
-                {
-                    feedbackReview.setRating(0);
-                    descriptionReview.setText("");
-                    submitReview.setVisibility(View.VISIBLE);
-                    updateReview.setVisibility(View.GONE);
-                    deleteReview.setVisibility(View.GONE);
-                }
-            }
-        });
-        connector.setObjectToSend(parameters);
+                    @Override
+                    public void onEndConnection(List<ItineraryReview> list) {
+                        message.setVisibility(View.GONE);
+                        if (!list.isEmpty()) {
+                            result = list.get(0);
+                            submitReview.setVisibility(View.GONE);
+                            updateReview.setVisibility(View.VISIBLE);
+                            deleteReview.setVisibility(View.VISIBLE);
+                            descriptionReview.setText(result.getDescription());
+                            feedbackReview.setRating(result.getFeedback());
+                        } else {
+                            feedbackReview.setRating(0);
+                            descriptionReview.setText("");
+                            submitReview.setVisibility(View.VISIBLE);
+                            updateReview.setVisibility(View.GONE);
+                            deleteReview.setVisibility(View.GONE);
+                        }
+                    }
+                },
+                parameters);
         connector.execute();
     }
 
     private void submitReview(JSONObject sendParam) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.INSERT_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.INSERT_ITINERARY_REVIEW,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                        if (result.getResult()) {
+                            Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.added_review), Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                            Bundle b = new Bundle();
+                            b.putString("reviewed_itinerary", sendParam.getString("reviewed_itinerary"));
+                            b.putString("itinerary", sendParam.getString("itinerary"));
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            i.putExtras(b);
+                            startActivity(i);
+                        }
 
-                if (object.getBoolean("result")) {
-                    Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.added_review), Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
-                    Bundle b = new Bundle();
-                    b.putString("reviewed_itinerary",sendParam.getString("reviewed_itinerary"));
-                    b.putString("itinerary",sendParam.getString("itinerary"));
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    i.putExtras(b);
-                    startActivity(i);
-                }
-
-            }
-        });
-        connector.setObjectToSend(sendParam);
+                    }
+                },
+                sendParam);
         connector.execute();
     }
 
-    private boolean allFilled (){
+    private boolean allFilled() {
         return !descriptionReview.getText().toString().equals("") && feedbackReview.getRating() > 0;
     }
 
 
     private void deleteReview(JSONObject param) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.DELETE_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.DELETE_ITINERARY_REVIEW,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                        if (result.getResult()) {
+                            Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.deleted_review), Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                            Bundle b = new Bundle();
+                            b.putString("reviewed_itinerary", param.getString("reviewed_itinerary"));
+                            b.putString("itinerary", param.getString("itinerary"));
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            i.putExtras(b);
+                            startActivity(i);
+                        }
 
-                if (object.getBoolean("result")) {
-                    Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.deleted_review), Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
-                    Bundle b = new Bundle();
-                    b.putString("reviewed_itinerary",param.getString("reviewed_itinerary"));
-                    b.putString("itinerary",param.getString("itinerary"));
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    i.putExtras(b);
-                    startActivity(i);
-                }
-
-            }
-        });
-        connector.setObjectToSend(param);
+                    }
+                },
+                param);
         connector.execute();
     }
 
     private void updateReview(JSONObject param) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_ITINERARY_REVIEW,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
+                        Log.e("p", result.toJSONObject().toString());
+                        if (result.getResult()) {
+                            Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.updated_review), Toast.LENGTH_SHORT).show();
 
-                Log.e("p", object.toString());
-                if (object.getBoolean("result")) {
-                    Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.updated_review), Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                            Bundle b = new Bundle();
+                            b.putString("reviewed_itinerary", param.getString("reviewed_itinerary"));
+                            b.putString("itinerary", param.getString("itinerary"));
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            i.putExtras(b);
+                            startActivity(i);
+                        }
 
-                    Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
-                    Bundle b = new Bundle();
-                    b.putString("reviewed_itinerary",param.getString("reviewed_itinerary"));
-                    b.putString("itinerary",param.getString("itinerary"));
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    i.putExtras(b);
-                    startActivity(i);
-                }
-
-            }
-        });
-        connector.setObjectToSend(param);
+                    }
+                },
+                param);
         connector.execute();
     }
 
