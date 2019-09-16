@@ -5,86 +5,653 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    <style>
-        body {
-            font-family: "Helvetica", sans-serif;
-        }
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="./MDBootstrap/scss/mdb.css" rel="stylesheet">
 
-        header {
-            text-align: center;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        table {
-            border-collapse: collapse;
-        }
-
-        table thead tr {
-            border-top: 2px solid black;
-            border-bottom: 1px solid black;
-        }
-
-        table tbody tr:last-child {
-            border-bottom: 2px solid black;
-        }
-
-        td,
-        th {
-            padding: 5px 15px;
-        }
-
-        th {
-            cursor: pointer;
-        }
-
-        a.icon {
-            text-decoration: none;
-        }
-
-        a.icon::before {
-            font-family: "Font Awesome 5 free";
-            font-weight: 400;
-        }
-
-        a.icon:hover {
-            text-decoration: underline;
-        }
-
-        a.icon.dir::before {
-            content: "\f07b";
-            margin-right: 10pt;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 
     <title>Cicerone: Code Documentation</title>
 </head>
 
-<body>
-    <header>
-        <h1>Cicerone: Code Documentation</h1>
-        <p id="tagline">&copy; FSC</p>
-    </header>
-    <h2>Code Documentation's Sections</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Folder</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><a href="./Android/" class="icon dir">Android</a></td>
-            </tr>
-            <tr>
-                <td><a href="./Server/" class="icon dir">Server</a></td>
-            </tr>
-        </tbody>
-    </table>
+<body data-spy="scroll" data-target="#main-navbar" data-offset="200">
+    <!-- Main navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark purple-gradient scrolling-navbar" id="main-navbar">
+        <div class="container">
+
+            <a class="navbar-brand" href="#" target="_blank">
+                <strong>Cicerone</strong>
+            </a>
+
+            <!-- Collapse -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <!-- Left -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#splash">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#docs">Documentation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#download">Download</a>
+                    </li>
+                </ul>
+
+                <!-- Right -->
+                <ul class="navbar-nav nav-flex-icons">
+                    <li class="nav-item">
+                        <a href="https://www.facebook.com/mdbootstrap" class="nav-link" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://twitter.com/MDBootstrap" class="nav-link" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://github.com/mdbootstrap/bootstrap-material-design"
+                           class="nav-link border border-light rounded"
+                           target="_blank">
+                            <i class="fab fa-github mr-2"></i>MDB GitHub
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+    </nav>
+    <!-- Navbar -->
+
+    <!-- Full Page Intro -->
+    <div id="splash" class="view full-page-intro"
+         style="background-image: url('https://mdbootstrap.com/img/Photos/Others/images/78.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+        <!-- Mask & flexbox options-->
+        <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            <!-- Content -->
+            <div class="container">
+
+                <!--Grid row-->
+                <div class="row wow fadeIn">
+
+                    <!--Grid column-->
+                    <div class="col-md-6 mb-4 white-text text-center text-md-left">
+
+                        <h1 class="display-4 font-weight-bold">Cicerone</h1>
+
+                        <hr class="hr-light">
+
+                        <p>
+                            <strong>Best & free guide of responsive web design</strong>
+                        </p>
+
+                        <p class="mb-4 d-none d-md-block">
+                            <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users.
+                                Video
+                                and written versions
+                                available. Create your own, stunning website.</strong>
+                        </p>
+
+                        <a target="_blank" href="https://mdbootstrap.com/education/bootstrap/"
+                           class="btn btn-primary btn-lg">Start free tutorial
+                            <i class="fas fa-graduation-cap ml-2"></i>
+                        </a>
+
+                    </div>
+
+                    <!--Grid column-->
+                    <div class="col-md-6 col-xl-5 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <!-- TODO: Add image -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--Grid row-->
+
+            </div>
+            <!-- Content -->
+
+        </div>
+        <!-- Mask & flexbox options-->
+
+    </div>
+    <!-- Full Page Intro -->
+
+    <!--Main layout-->
+    <main>
+        <div class="container">
+
+            <section class="mt-5 wow fadeIn" id="about">
+
+                <h3 class="h3 text-center mb-5">About MDB</h3>
+
+                <!--Grid row-->
+                <div class="row wow fadeIn">
+
+                    <!--Grid column-->
+                    <div class="col-lg-6 col-md-12 px-4">
+
+                        <!--First row-->
+                        <div class="row">
+                            <div class="col-1 mr-3">
+                                <i class="fas fa-code fa-2x text-primary"></i>
+                            </div>
+                            <div class="col-10">
+                                <h5 class="feature-title">Bootstrap 4</h5>
+                                <p class="grey-text">Thanks to MDB you can take advantage of all feature of newest
+                                    Bootstrap
+                                    4.</p>
+                            </div>
+                        </div>
+                        <!--/First row-->
+
+                        <div style="height:30px"></div>
+
+                        <!--Second row-->
+                        <div class="row">
+                            <div class="col-1 mr-3">
+                                <i class="fas fa-book fa-2x blue-text"></i>
+                            </div>
+                            <div class="col-10">
+                                <h5 class="feature-title">Detailed documentation</h5>
+                                <p class="grey-text">We give you detailed user-friendly documentation at your disposal.
+                                    It
+                                    will help you to implement your ideas
+                                    easily.
+                                </p>
+                            </div>
+                        </div>
+                        <!--/Second row-->
+
+                        <div style="height:30px"></div>
+
+                        <!--Third row-->
+                        <div class="row">
+                            <div class="col-1 mr-3">
+                                <i class="fas fa-graduation-cap fa-2x cyan-text"></i>
+                            </div>
+                            <div class="col-10">
+                                <h5 class="feature-title">Lots of tutorials</h5>
+                                <p class="grey-text">We care about the development of our users. We have prepared
+                                    numerous
+                                    tutorials, which allow you to learn
+                                    how to use MDB as well as other technologies.</p>
+                            </div>
+                        </div>
+                        <!--/Third row-->
+
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-6 col-md-12">
+
+                        <p class="h5 text-center mb-4">Watch our "5 min Quick Start" tutorial</p>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/cXTThxoywNQ"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <!--/Grid column-->
+
+                </div>
+                <!--/Grid row-->
+
+            </section>
+
+            <hr class="my-5">
+
+            <section id="docs">
+
+                <!--Grid row-->
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-6 mb-4">
+
+                        <img src="https://mdbootstrap.com/img/Marketing/mdb-press-pack/mdb-main.jpg"
+                             class="img-fluid z-depth-1-half" alt="">
+
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-md-6 mb-4">
+
+                        <h3 class="h3 mb-3">Documentation</h3>
+                        <p>The whole system's code base was documented throughout the development. The documentation was
+                            then converted to a HTML website and hosted online, where everyone can take a look at
+                            it!.</p>
+                        <hr>
+                        <p>The system was mainly subdivided into two components: an <strong>Android</strong> client app
+                            and
+                            a <strong>server</strong>. Click on the following button to browse the respective
+                            documentation.
+                        </p>
+
+                        <div class="text-center">
+                            <!-- CTA -->
+                            <a target="_blank" href="./Android/index.html"
+                               class="btn btn-primary">Android
+                                <i class="fab fa-android ml-2"></i>
+                            </a>
+                            <a target="_blank" href="./Server/index.html"
+                               class="btn btn-primary">Server
+                                <i class="fas fa-server ml-2"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                    <!--Grid column-->
+
+                </div>
+                <!--Grid row-->
+
+            </section>
+
+            <hr class="my-5">
+
+            <!--Section: Not enough-->
+            <section id="download">
+
+                <h2 class="my-5 h3 text-center">Not enough?</h2>
+
+                <!--First row-->
+                <div class="row features-small mb-5 mt-3 wow fadeIn">
+
+                    <!--First column-->
+                    <div class="col-md-4">
+                        <!--First row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-check-circle fa-2x text-primary"></i>
+                            </div>
+                            <div class="col-10">
+                                <h6 class="feature-title">Free for personal and commercial use</h6>
+                                <p class="grey-text">Our license is user-friendly. Feel free to use MDB for both private
+                                    as
+                                    well as commercial projects.
+                                </p>
+                                <div style="height:15px"></div>
+                            </div>
+                        </div>
+                        <!--/First row-->
+
+                        <!--Second row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-check-circle fa-2x text-primary"></i>
+                            </div>
+                            <div class="col-10">
+                                <h6 class="feature-title">400+ UI elements</h6>
+                                <p class="grey-text">An impressive collection of flexible components allows you to
+                                    develop
+                                    any project.
+                                </p>
+                                <div style="height:15px"></div>
+                            </div>
+                        </div>
+                        <!--/Second row-->
+
+                        <!--Third row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-check-circle fa-2x text-primary"></i>
+                            </div>
+                            <div class="col-10">
+                                <h6 class="feature-title">600+ icons</h6>
+                                <p class="grey-text">Hundreds of useful, scalable, vector icons at your disposal.</p>
+                                <div style="height:15px"></div>
+                            </div>
+                        </div>
+                        <!--/Third row-->
+
+                        <!--Fourth row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-check-circle fa-2x text-primary"></i>
+                            </div>
+                            <div class="col-10">
+                                <h6 class="feature-title">Fully responsive</h6>
+                                <p class="grey-text">It doesn't matter whether your project will be displayed on
+                                    desktop,
+                                    laptop, tablet or mobile phone. MDB
+                                    looks great on each screen.</p>
+                                <div style="height:15px"></div>
+                            </div>
+                        </div>
+                        <!--/Fourth row-->
+                    </div>
+                    <!--/First column-->
+
+                    <!--Second column-->
+                    <div class="col-md-4 flex-center">
+                        <img src="https://mdbootstrap.com/img/Others/screens.png"
+                             alt="MDB Magazine Template displayed on iPhone" class="z-depth-0 img-fluid">
+                    </div>
+                    <!--/Second column-->
+
+                    <!--Third column-->
+                    <div class="col-md-4 mt-2">
+                        <!--First row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-check-circle fa-2x text-primary"></i>
+                            </div>
+                            <div class="col-10">
+                                <h6 class="feature-title">70+ CSS animations</h6>
+                                <p class="grey-text">Neat and easy to use animations, which will increase the
+                                    interactivity
+                                    of your project and delight your visitors.
+                                </p>
+                                <div style="height:15px"></div>
+                            </div>
+                        </div>
+                        <!--/First row-->
+
+                        <!--Second row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-check-circle fa-2x text-primary"></i>
+                            </div>
+                            <div class="col-10">
+                                <h6 class="feature-title">Plenty of useful templates</h6>
+                                <p class="grey-text">Need inspiration? Use one of our predefined templates for free.</p>
+                                <div style="height:15px"></div>
+                            </div>
+                        </div>
+                        <!--/Second row-->
+
+                        <!--Third row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-check-circle fa-2x text-primary"></i>
+                            </div>
+                            <div class="col-10">
+                                <h6 class="feature-title">Easy installation</h6>
+                                <p class="grey-text">5 minutes, a few clicks and... done. You will be surprised at how
+                                    easy
+                                    it is.
+                                </p>
+                                <div style="height:15px"></div>
+                            </div>
+                        </div>
+                        <!--/Third row-->
+
+                        <!--Fourth row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-check-circle fa-2x text-primary"></i>
+                            </div>
+                            <div class="col-10">
+                                <h6 class="feature-title">Easy to use and customize</h6>
+                                <p class="grey-text">Using MDB is straightforward and pleasant. Components flexibility
+                                    allows you deep customization. You will
+                                    easily adjust each component to suit your needs.</p>
+                                <div style="height:15px"></div>
+                            </div>
+                        </div>
+                        <!--/Fourth row-->
+                    </div>
+                    <!--/Third column-->
+
+                </div>
+                <!--/First row-->
+
+            </section>
+            <!--Section: Not enough-->
+
+            <hr class="mb-5">
+
+            <!--Section: More-->
+            <section>
+
+                <h2 class="my-5 h3 text-center">...and even more</h2>
+
+                <!--First row-->
+                <div class="row features-small mt-5 wow fadeIn">
+
+                    <!--Grid column-->
+                    <div class="col-xl-3 col-lg-6">
+                        <!--Grid row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fab fa-firefox fa-2x mb-1 text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-10 mb-2 pl-3">
+                                <h5 class="feature-title font-bold mb-1">Cross-browser compatibility</h5>
+                                <p class="grey-text mt-2">Chrome, Firefox, IE, Safari, Opera, Microsoft Edge - MDB loves
+                                    all
+                                    browsers; all browsers love MDB.
+                                </p>
+                            </div>
+                        </div>
+                        <!--/Grid row-->
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-xl-3 col-lg-6">
+                        <!--Grid row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-level-up-alt fa-2x mb-1 text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-10 mb-2">
+                                <h5 class="feature-title font-bold mb-1">Frequent updates</h5>
+                                <p class="grey-text mt-2">MDB becomes better every month. We love the project and
+                                    enhance as
+                                    much as possible.
+                                </p>
+                            </div>
+                        </div>
+                        <!--/Grid row-->
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-xl-3 col-lg-6">
+                        <!--Grid row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-comments fa-2x mb-1 text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-10 mb-2">
+                                <h5 class="feature-title font-bold mb-1">Active community</h5>
+                                <p class="grey-text mt-2">Our society grows day by day. Visit our forum and check how it
+                                    is
+                                    to be a part of our family.
+                                </p>
+                            </div>
+                        </div>
+                        <!--/Grid row-->
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-xl-3 col-lg-6">
+                        <!--Grid row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-code fa-2x mb-1 text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-10 mb-2">
+                                <h5 class="feature-title font-bold mb-1">jQuery 3.x</h5>
+                                <p class="grey-text mt-2">MDB is integrated with newest jQuery. Therefore you can use
+                                    all
+                                    the latest features which come along with
+                                    it.
+                                </p>
+                            </div>
+                        </div>
+                        <!--/Grid row-->
+                    </div>
+                    <!--/Grid column-->
+
+                </div>
+                <!--/First row-->
+
+                <!--Second row-->
+                <div class="row features-small mt-4 wow fadeIn">
+
+                    <!--Grid column-->
+                    <div class="col-xl-3 col-lg-6">
+                        <!--Grid row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-cubes fa-2x mb-1 text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-10 mb-2">
+                                <h5 class="feature-title font-bold mb-1">Modularity</h5>
+                                <p class="grey-text mt-2">Material Design for Bootstrap comes with both, compiled, ready
+                                    to
+                                    use libraries including all features as
+                                    well as modules for CSS (SASS files) and JS.</p>
+                            </div>
+                        </div>
+                        <!--/Grid row-->
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-xl-3 col-lg-6">
+                        <!--Grid row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-question fa-2x mb-1 text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-10 mb-2">
+                                <h5 class="feature-title font-bold mb-1">Technical support</h5>
+                                <p class="grey-text mt-2">We care about reliability. If you have any questions - do not
+                                    hesitate to contact us.
+                                </p>
+                            </div>
+                        </div>
+                        <!--/Grid row-->
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-xl-3 col-lg-6">
+                        <!--Grid row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-th fa-2x mb-1 text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-10 mb-2">
+                                <h5 class="feature-title font-bold mb-1">Flexbox</h5>
+                                <p class="grey-text mt-2">MDB fully supports Flex Box. You can forget about alignment
+                                    issues.</p>
+                            </div>
+                        </div>
+                        <!--/Grid row-->
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-xl-3 col-lg-6">
+                        <!--Grid row-->
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="far fa-file-code fa-2x mb-1 text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-10 mb-2">
+                                <h5 class="feature-title font-bold mb-1">SASS files</h5>
+                                <p class="grey-text mt-2">Arranged and well documented .scss files can't wait until you
+                                    compile them.</p>
+                            </div>
+                        </div>
+                        <!--/Grid row-->
+                    </div>
+                    <!--/Grid column-->
+
+                </div>
+                <!--/Second row-->
+
+            </section>
+            <!--Section: More-->
+
+        </div>
+    </main>
+    <!--Main layout-->
+
+    <!--Footer-->
+    <footer class="page-footer text-center font-small mt-4 wow fadeIn purple-gradient">
+
+
+        <div class="pt-4 pb-4">
+            <a title="Open the repository" aria-label="Open the repository" href="https://github.com/F-S-C/Cicerone"
+               target="_blank">
+                <i aria-hidden="true" class="fas fa-code-branch mr-3"></i>
+            </a>
+            <a title="Visit FSC's GitHub profile" aria-label="Visit FSC's GitHub profile"
+               href="https://github.com/F-S-C" target="_blank">
+                <i aria-hidden="true" class="fab fa-github mr-3"></i>
+            </a>
+        </div>
+
+        <div class="footer-copyright text-center py-3">
+            © 2019 Copyright
+            <a href="https://f-s-c.github.io" target="_blank">FSC</a>. Released under the Apache 2.0
+            License.
+        </div>
+    </footer>
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/js/mdb.min.js"></script>
+
+    <script>
+        $(window).on('activate.bs.scrollspy', function () {
+            $(".navbar-nav .active").removeClass("active").parent().addClass("active");
+        });
+        $(document).ready(function () {
+            $('a[href^="#"]').click(function () {
+                if (location.pathname.replace(/^\//, '') === this.pathname.replace(/^\//, '')
+                    && location.hostname === this.hostname) {
+                    let $target = $(this.hash);
+                    $target = $target.length && $target || $('[name=' + this.hash.slice(1) + ']');
+                    if ($target.length) {
+                        let targetOffset = $target.offset().top;
+                        $('html,body').animate({scrollTop: targetOffset - 100}, 1000);
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
