@@ -37,23 +37,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itinerary_number">
+            app:layout_constraintTop_toBottomOf="@+id/location">
 
             <TableRow>
-
-                <TextView
-                    android:maxLength="5"
-                    android:ellipsize="end"
-                    android:id="@+id/location"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/position_pin"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="@string/location" />
 
                 <TextView
                     android:id="@+id/beginning"
@@ -61,9 +47,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/flight_takeoff"
+                    android:ellipsize="end"
+                    android:maxLength="5"
+                    android:maxLines="1"
+                    android:minLines="1"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:text="@string/beginning_date" />
+
+                <TextView
+                    android:id="@+id/ending"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/flight_takeoff"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/ending_date" />
             </TableRow>
         </TableLayout>
 
@@ -76,18 +76,19 @@
             android:layout_marginEnd="4dp"
             android:text="@android:string/untitled"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            app:layout_constraintBottom_toTopOf="@+id/itinerary_number"
+            app:layout_constraintBottom_toTopOf="@+id/location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/media_image" />
 
         <TextView
-            android:id="@+id/itinerary_number"
+            android:id="@+id/location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            android:text="@string/example_number"
+            android:drawableStart="@drawable/position_pin"
+            android:text="@string/location"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
