@@ -76,9 +76,6 @@ public class ItineraryFragment extends Fragment {
         if (currentLoggedUser.getUserType() == UserType.CICERONE) {
             participations.setVisibility(View.VISIBLE);
             myItineraries.setVisibility(View.VISIBLE);
-
-            // set up the RecyclerView for Cicerone's itineraries
-            madeItineraries.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
 
         // Set up the RecyclerView for Globetrotter's participations
@@ -166,7 +163,7 @@ public class ItineraryFragment extends Fragment {
                         if (!list.isEmpty())
                             message.setVisibility(View.VISIBLE);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        recyclerView.addItemDecoration(new DividerItemDecoration(participationList.getContext(),
+                        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                                 DividerItemDecoration.VERTICAL));
                         adapter2 = new ReservationAdapter(getActivity(), list, R.layout.participation_list);
                         recyclerView.setAdapter(adapter2);
