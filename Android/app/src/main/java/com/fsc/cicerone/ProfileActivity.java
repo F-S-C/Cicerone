@@ -1,7 +1,6 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -16,9 +15,6 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +58,6 @@ public class ProfileActivity extends AppCompatActivity {
         //Get the bundle
         //Extract the data…
         params.put("username", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("reviewed_user")));
-        Log.e("bundle", Objects.requireNonNull(bundle).getString("reviewed_user"));
         TextView username = findViewById(R.id.username_profile);
         String nick = "@" + Objects.requireNonNull(params.get("username")).toString();
         username.setText(nick);
