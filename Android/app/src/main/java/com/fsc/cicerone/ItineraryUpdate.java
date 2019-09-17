@@ -381,7 +381,7 @@ public class ItineraryUpdate extends AppCompatActivity {
 
     }
 
-    public void sendData(View view) {
+    public void sendData(View view) throws JSONException {
         Map<String, Object> params = new HashMap<>(14);
         boolean canSend = allFilled();
         if (canSend) {
@@ -399,7 +399,8 @@ public class ItineraryUpdate extends AppCompatActivity {
             params.put("reduced_price", reducedPrice.getText().toString());
             params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
             Bundle bundle = getIntent().getExtras();
-            params.put("itinerary_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("itinerary_code")));
+            
+            params.put("itinerary_code",new Itinerary(new JSONObject(Objects.requireNonNull(bundle).getString("itinerary"))).getCode());
             submitNewData(params);
 
 
