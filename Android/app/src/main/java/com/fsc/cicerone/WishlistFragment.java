@@ -93,7 +93,6 @@ public class WishlistFragment extends Fragment {
                         }
                         adapter = new ItineraryAdapter(getActivity(), itineraryList);
 
-                        Log.e("length", String.valueOf(list.size()));
                         numberOfItinerariesTextView.setText(String.format(getString(R.string.wishlist_number), list.size()));
                         if (list.isEmpty())
                             clearWishlistButton.setVisibility(View.GONE);
