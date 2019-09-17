@@ -223,4 +223,6 @@
     <string name="itinerary_image">Itinerary image</string>
     <string name="create_itinerary">Create itinerary</string>
     <string name="warning_deleted_user">This user has been deleted from the platform.</string>
+    <string name="report_title">Report title</string>
+    <string name="report_code">Report code</string>
 </resources>

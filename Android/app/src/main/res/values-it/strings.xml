@@ -200,4 +200,6 @@
     <string name="itinerary_image">Immagine dell\'itinerario</string>
     <string name="create_itinerary">Crea itinerario</string>
     <string name="warning_deleted_user">Questo utente è stato eliminato dalla piattaforma.</string>
+    <string name="report_code">Codice segnalazione</string>
+    <string name="report_title">Titolo segnalazione</string>
 </resources>
