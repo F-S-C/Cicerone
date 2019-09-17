@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The wishlist fragment (third tab).
      */
-    private final Fragment wishlistFragment = new WishlistFragment();
+    private final WishlistFragment wishlistFragment = new WishlistFragment();
 
     /**
      * The profile fragment (fourth tab).
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_favorites:
                     changeCurrentFragment(wishlistFragment);
                     supportActionBar.setTitle(getString(R.string.wishlist));
+                    wishlistFragment.forceRefresh();
                     toReturn = true;
                     break;
                 case R.id.navigation_discover:

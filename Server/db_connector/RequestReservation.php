@@ -3,9 +3,9 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
+require_once("RequestRegisteredUser.php");
+require_once("RequestItinerary.php");
 
 /**
  * Request a reservation for an itinerary.
@@ -51,7 +51,14 @@ class RequestReservation extends JsonConnector
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
-        return $this->execute_query($query, $data, $types);
+        $to_return = $this->execute_query($query, $data, $types);
+
+        foreach ($to_return as &$row) {
+            $row["username"] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
+            $row["booked_itinerary"] = $this->get_from_connector(new RequestItinerary(null, null, null, null, $row["booked_itinerary"]))[0];
+        }
+
+        return $to_return;
     }
 
 

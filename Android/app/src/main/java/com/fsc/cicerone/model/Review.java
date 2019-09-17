@@ -5,6 +5,8 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public abstract class Review extends BusinessEntity {
     private final User author;
     private int feedback;
