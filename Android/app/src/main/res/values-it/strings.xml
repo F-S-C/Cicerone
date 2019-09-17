@@ -199,4 +199,5 @@
     <string name="reservation_removed">Richiesta di partecipazione rimossa..</string>
     <string name="itinerary_image">Immagine dell\'itinerario</string>
     <string name="create_itinerary">Crea itinerario</string>
+    <string name="warning_deleted_user">Questo utente è stato eliminato dalla piattaforma.</string>
 </resources>
