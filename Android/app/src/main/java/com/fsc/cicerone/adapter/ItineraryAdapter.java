@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.fsc.cicerone.ItineraryManagement;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.UserType;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -64,10 +66,12 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
 
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         holder.beginning.setText(outputFormat.format(mData.get(position).getBeginningDate()));
-        holder.ending.setText(outputFormat.format(mData.get(position).getEndingDate()));
+//        holder.ending.setText(outputFormat.format(mData.get(position).getEndingDate()));
         holder.itineraryTitle.setText(title);
         holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
         holder.location.setText(location);
+        holder.priceTagTextView.setText(String.format(context.getString(R.string.price_value), mData.get(position).getFullPrice()));
+        Picasso.get().load(mData.get(position).getImageUrl()).into(holder.imageView);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
@@ -106,6 +110,8 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         TextView location;
         TextView beginning;
         TextView ending;
+        ImageView imageView;
+        TextView priceTagTextView;
 
 
         ViewHolder(View itemView) {
@@ -115,6 +121,8 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
             location = itemView.findViewById(R.id.location);
             beginning = itemView.findViewById(R.id.beginning);
             ending = itemView.findViewById(R.id.ending);
+            imageView = itemView.findViewById(R.id.media_image);
+            priceTagTextView = itemView.findViewById(R.id.itinerary_price_badge);
             itemView.setOnClickListener(this);
         }
 

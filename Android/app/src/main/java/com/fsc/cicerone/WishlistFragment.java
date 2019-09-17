@@ -6,16 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.manager.AccountManager;
@@ -39,16 +38,18 @@ import app_connector.SendInPostConnector;
 public class WishlistFragment extends Fragment {
 
     private ItineraryAdapter adapter;
-    private TextView numberItineraries;
-    private Button clearWishlist;
+    private TextView numberOfItinerariesTextView;
+    private Button clearWishlistButton;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
-        numberItineraries = view.findViewById(R.id.numberOfItineraries);
-        clearWishlist = view.findViewById(R.id.clearWishlist);
+        numberOfItinerariesTextView = view.findViewById(R.id.numberOfItineraries);
+        clearWishlistButton = view.findViewById(R.id.clearWishlist);
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
         final Map<String, Object> parameters = new HashMap<>(1);
@@ -56,32 +57,35 @@ public class WishlistFragment extends Fragment {
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        requireData(view, parameters, recyclerView);
 
-        clearWishlist.setOnClickListener(v -> new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()))
+        swipeRefreshLayout = view.findViewById(R.id.WishlistRoot);
+        swipeRefreshLayout.setOnRefreshListener(() -> requireData(parameters, recyclerView));
+
+        requireData(parameters, recyclerView);
+
+        clearWishlistButton.setOnClickListener(v -> new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()))
                 .setTitle(getString(R.string.are_you_sure))
                 .setMessage(getString(R.string.confirm_delete_wishlist))
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> clearWish(view, parameters, recyclerView))
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> clearWish(parameters, recyclerView))
                 .setNegativeButton(getString(R.string.no), null)
                 .show());
 
         return view;
     }
 
-    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
-        RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
+    private void requireData(Map<String, Object> parameters, RecyclerView recyclerView) {
         SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_WISHLIST, //TODO: Check
                 BusinessEntityBuilder.getFactory(Wishlist.class),
                 new DatabaseConnector.CallbackInterface<Wishlist>() {
                     @Override
                     public void onStartConnection() {
-                        progressBar.setVisibility(View.VISIBLE);
+                        swipeRefreshLayout.setRefreshing(true);
                     }
 
                     @Override
                     public void onEndConnection(List<Wishlist> list) {
-                        progressBar.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
 
                         List<Itinerary> itineraryList = new ArrayList<>(list.size());
                         for (Wishlist item : list) {
@@ -90,9 +94,9 @@ public class WishlistFragment extends Fragment {
                         adapter = new ItineraryAdapter(getActivity(), itineraryList);
 
                         Log.e("length", String.valueOf(list.size()));
-                        numberItineraries.setText(String.format(getString(R.string.wishlist_number), list.size()));
+                        numberOfItinerariesTextView.setText(String.format(getString(R.string.wishlist_number), list.size()));
                         if (list.isEmpty())
-                            clearWishlist.setVisibility(View.GONE);
+                            clearWishlistButton.setVisibility(View.GONE);
 
                         recyclerView.setAdapter(adapter);
                     }
@@ -101,7 +105,7 @@ public class WishlistFragment extends Fragment {
         connector.execute();
     }
 
-    private void clearWish(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
+    private void clearWish(Map<String, Object> parameters, RecyclerView recyclerView) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.CLEAR_WISHLIST,
                 new BooleanConnector.CallbackInterface() {
@@ -118,7 +122,7 @@ public class WishlistFragment extends Fragment {
                             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
                             //startActivity(i);
-                            requireData(view, parameters, recyclerView);
+                            requireData(parameters, recyclerView);
                         }
 
                     }
