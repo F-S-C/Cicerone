@@ -51,13 +51,8 @@ class RequestReservation extends JsonConnector
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
-        $to_return = $this->execute_query($query, $data, $types);
-
-        return $to_return;
+        return $this->execute_query($query, $data, $types);
     }
 
 
 }
-
-$connector = new RequestReservation($_POST['username'], $_POST['booked_itinerary']);
-print $connector->get_content();

@@ -51,6 +51,3 @@ class RequestWishlistJoinItinerary extends JsonConnector
         return $to_return;
     }
 }
-
-$connector = new RequestWishlistJoinItinerary($_POST['username']);
-print $connector->get_content();

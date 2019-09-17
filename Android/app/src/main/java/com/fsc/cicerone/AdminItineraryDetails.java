@@ -10,14 +10,19 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.ItineraryReview;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -41,6 +46,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
+    private Itinerary itinerary; //TODO: Add to class diagram
 
 
     @Override
@@ -65,15 +71,13 @@ public class AdminItineraryDetails extends AppCompatActivity {
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
 
-        JSONObject objectReview = new JSONObject();
         Bundle bundle = getIntent().getExtras();
 
-        final Itinerary itinerary;
-
-
+        String s = Objects.requireNonNull(bundle).getString("itinerary");
         try {
-            String s = Objects.requireNonNull(bundle).getString("itinerary");
             itinerary = new Itinerary(new JSONObject(s));
+            Map<String, Object> objectReview = new HashMap<>(1);
+            objectReview.put("reviewed_itinerary", itinerary.getCode());
 
             getDataFromServer(itinerary);
             getItineraryReviews(objectReview);
@@ -90,7 +94,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
         itineraryTitle.setText(itinerary.getTitle());
         description.setText(itinerary.getDescription());
         Picasso.get().load(itinerary.getImageUrl()).into(image);
-        author.setText(itinerary.getUsername());
+        author.setText(itinerary.getCicerone().getUsername());
         String dur = itinerary.getDuration();
         duration.setText(dur.substring(0, 5));
         location.setText(itinerary.getLocation());
@@ -104,38 +108,38 @@ public class AdminItineraryDetails extends AppCompatActivity {
         rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
-    public void getItineraryReviews(JSONObject itineraryCode) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                if (jsonArray.length() > 0) {
-                    int n = 0;
-                    float sum = 0;
-                    do {
-                        sum += jsonArray.getJSONObject(n).getInt("feedback");
-                        n = n + 1;
+    public void getItineraryReviews(Map<String, Object> itineraryCode) {
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.ITINERARY_REVIEW,
+                BusinessEntityBuilder.getFactory(ItineraryReview.class),
+                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
                     }
-                    while (n < jsonArray.length());
-                    float total = sum / n;
-                    review.setRating(total);
-                } else {
-                    review.setRating(0);
-                }
-            }
-        });
-        connector.setObjectToSend(itineraryCode);
+
+                    @Override
+                    public void onEndConnection(List<ItineraryReview> list) {
+                        if (!list.isEmpty()) {
+                            int sum = 0;
+                            for (ItineraryReview itineraryReview : list) {
+                                sum += itineraryReview.getFeedback();
+                            }
+                            float total = (float) sum / list.size();
+                            review.setRating(total);
+                        } else {
+                            review.setRating(0);
+                        }
+                    }
+                },
+                itineraryCode);
         connector.execute();
     }
 
     public void goToAuthor(View view) {
-        Intent i = new Intent().setClass(view.getContext(),AdminMainActivity.class);//TODO if-41
+        Intent i = new Intent().setClass(view.getContext(), AdminUserProfile.class);//TODO if-41
         Bundle bundle = new Bundle();
-        bundle.putString("reviewed_user",author.getText().toString());
+        bundle.putString("user", itinerary.getCicerone().toJSONObject().toString());
         i.putExtras(bundle);
         view.getContext().startActivity(i);
     }

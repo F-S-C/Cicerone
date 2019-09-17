@@ -1,7 +1,6 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +13,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.adapter.Adapter;
+import com.fsc.cicerone.adapter.ReviewAdapter;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.ItineraryReview;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -31,9 +31,7 @@ import app_connector.SendInPostConnector;
  */
 public class SelectedItineraryReviewFragment extends Fragment {
 
-    Adapter adapter;
-
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
+    RecyclerView.Adapter adapter;
 
     /**
      * Empty Constructor
@@ -48,45 +46,43 @@ public class SelectedItineraryReviewFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
         Bundle bundle = getArguments();
-        try {
-            final JSONObject parameters = new JSONObject();
-            parameters.put("reviewed_itinerary", Objects.requireNonNull(bundle).getString("reviewed_itinerary"));
-            // set up the RecyclerView
-            RecyclerView recyclerView = view.findViewById(R.id.review_list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(view, parameters, recyclerView);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+        final Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("reviewed_itinerary", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("reviewed_itinerary")));
+        // set up the RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.review_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        requireData(view, parameters, recyclerView);
 
         return view;
     }
 
-    private void requireData(View view, JSONObject parameters, RecyclerView recyclerView) {
+    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                message.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-            }
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_ITINERARY_REVIEW,
+                BusinessEntityBuilder.getFactory(ItineraryReview.class),
+                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        message.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) {
-                progressBar.setVisibility(View.GONE);
-                if (jsonArray.length() != 0) {
-                    adapter = new Adapter(getActivity(), jsonArray, 2);
-                    recyclerView.setAdapter(adapter);
-                }
-                else{
-                    message.setVisibility(View.VISIBLE);
-                }
+                    @Override
+                    public void onEndConnection(List<ItineraryReview> list) {
+                        progressBar.setVisibility(View.GONE);
+                        if (!list.isEmpty()) {
+                            adapter = new ReviewAdapter(getActivity(), list);
+                            recyclerView.setAdapter(adapter);
+                        } else {
+                            message.setVisibility(View.VISIBLE);
+                        }
 
-            }
-        });
-        connector.setObjectToSend(parameters);
+                    }
+                },
+                parameters);
         connector.execute();
     }
 

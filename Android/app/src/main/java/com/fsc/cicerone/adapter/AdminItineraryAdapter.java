@@ -1,7 +1,6 @@
 package com.fsc.cicerone.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +9,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.Itinerary;
 import com.fsc.cicerone.R;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.Reservation;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
@@ -33,18 +33,18 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
     private static final String ERROR_TAG = "ERROR IN " + AdminItineraryAdapter.class.getName();
 
     private final Context context;
-    private JSONArray mData;
+    private List<Itinerary> mData;
     private LayoutInflater mInflater;
 
     /**
      * Constructor.
      *
-     * @param context   The parent Context.
-     * @param jsonArray The array of JSON Objects got from server.
+     * @param context The parent Context.
+     * @param list    The array of JSON Objects got from server.
      */
-    public AdminItineraryAdapter(Context context, JSONArray jsonArray) {
+    public AdminItineraryAdapter(Context context, List<Itinerary> list) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = jsonArray;
+        this.mData = list;
         this.context = context;
     }
 
@@ -60,41 +60,33 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Itinerary[] itineraryList = new Itinerary[mData.length()];
+        String title = mData.get(position).getTitle();
+        Integer itineraryNumber = mData.get(position).getCode();
+        String location = mData.get(position).getLocation();
 
-
-        try {
-            itineraryList[position] = new Itinerary(mData.getJSONObject(position));
-            String title = itineraryList[position].getTitle();
-            Integer itineraryNumber = itineraryList[position].getCode();
-            String location = itineraryList[position].getLocation();
-
-            DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-            holder.beginning.setText(outputFormat.format(itineraryList[position].getBeginningDate()));
-            holder.ending.setText(outputFormat.format(itineraryList[position].getEndingDate()));
-            holder.itineraryTitle.setText(title);
-            holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
-            holder.location.setText(location);
-            setItineraryAvgPrice(itineraryNumber, holder.avgItineraryPrice);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-        }
-    }//END onBindViewHolder
+        DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        holder.beginning.setText(outputFormat.format(mData.get(position).getBeginningDate()));
+        holder.ending.setText(outputFormat.format(mData.get(position).getEndingDate()));
+        holder.itineraryTitle.setText(title);
+        holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
+        holder.location.setText(location);
+        setItineraryAvgPrice(itineraryNumber, holder.avgItineraryPrice);
+    }
 
     /**
-     * Return the length of the JSON array passed into the Adapter.
+     * Return the length of the JSON array passed into the ReviewAdapter.
      *
      * @return Length of JSON array.
      */
     @Override
     public int getItemCount() {
-        return mData.length();
+        return mData.size();
     }
 
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add in class diagram
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;
@@ -129,34 +121,32 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
      * @param t             The TextView which shows the average earnings.
      */
     private void setItineraryAvgPrice(Integer itineraryCode, TextView t) {
-        JSONObject params = new JSONObject();
-        try {
-            params.put("booked_itinerary", itineraryCode);
-            SendInPostConnector conn = new SendInPostConnector(ConnectorConstants.REQUEST_RESERVATION, new DatabaseConnector.CallbackInterface() {
-                @Override
-                public void onStartConnection() {
-                    //Do nothing
-                }
+        Map<String, Object> params = new HashMap<>(1);
+        params.put("booked_itinerary", itineraryCode);
+        SendInPostConnector<Reservation> conn = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_RESERVATION,
+                BusinessEntityBuilder.getFactory(Reservation.class),
+                new DatabaseConnector.CallbackInterface<Reservation>() {
+                    @Override
+                    public void onStartConnection() {
+                        //Do nothing
+                    }
 
-                @Override
-                public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                    int count = 0;
-                    float price = 0;
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        if (!jsonArray.getJSONObject(i).isNull("confirm_date")) {
-                            if (!jsonArray.getJSONObject(i).getString("confirm_date").equals("0000-00-00")) {
-                                price += Float.valueOf(jsonArray.getJSONObject(i).getString("total"));
+                    @Override
+                    public void onEndConnection(List<Reservation> list) {
+                        int count = 0;
+                        float price = 0;
+                        for (Reservation reservation : list) {
+                            if (reservation.isConfirmed()) {
+                                price += reservation.getTotal();
                                 count++;
                             }
                         }
+                        t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
                     }
-                    t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
-                }
-            }, params);
-            conn.execute();
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+                },
+                params);
+        conn.execute();
     }
 }
 

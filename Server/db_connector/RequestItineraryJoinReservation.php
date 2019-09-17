@@ -3,6 +3,8 @@
 namespace db_connector;
 
 require_once("JsonConnector.php");
+require_once("RequestItinerary.php");
+require_once("RequestRegisteredUser.php");
 
 /**
  * Request the itineraries in a reservation alongside with some their information.
@@ -49,20 +51,10 @@ class RequestItineraryJoinReservation extends JsonConnector
         $to_return = $this->execute_query($query, $parameters, $types);
 
         foreach ($to_return as &$row) {
-            $query = "SELECT * FROM itinerary WHERE itinerary_code = ?";
-            $parameters = array($row['booked_itinerary']);
-            $row['booked_itinerary'] = $this->execute_query($query, $parameters, "i")[0];
-        }
-
-        foreach ($to_return as &$row) {
-            $query = "SELECT * FROM registered_user WHERE username = ?";
-            $parameters = array($row['username']);
-            $row['username'] = $this->execute_query($query, $parameters, "s")[0];
+            $row['booked_itinerary'] = $this->get_from_connector(new RequestItinerary(null, null, null, null, $row["booked_itinerary"]))[0];
+            $row['username'] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
         }
 
         return $to_return;
     }
 }
-
-$connector = new RequestItineraryJoinReservation($_POST['username'], $_POST['cicerone']);
-print $connector->get_content();

@@ -1,4 +1,5 @@
 package com.fsc.cicerone;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,12 +10,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Report;
+import com.fsc.cicerone.model.ReportStatus;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -29,7 +34,6 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     private TextView bodyText;
     private Button takeChargeReport;
     private Button closeReport;
-    private static final String ERROR_TAG = "ERROR IN " + AdminReportDetailsActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,65 +49,64 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         reportedUser = findViewById(R.id.report_user_activity_admin);
         reporterUser = findViewById(R.id.reporter_user_activity_admin);
         bodyText = findViewById(R.id.body_report_activity_admin);
-        JSONObject parameters = new JSONObject();
+        Map<String, Object> parameters = new HashMap<>(3);
 
-        try {
-            //Get the bundle
-            Bundle bundle = getIntent().getExtras();
-            //Extract the data
-            parameters.put("report_code", Objects.requireNonNull(bundle).getString("report_code"));
-            getReportFromServer(parameters);
+        //Get the bundle
+        Bundle bundle = getIntent().getExtras();
+        //Extract the data
+        parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
+        getReportFromServer(parameters);
 
-            takeChargeReport.setOnClickListener(v -> takeCharge(parameters));
+        takeChargeReport.setOnClickListener(v -> takeCharge(parameters));
 
-            closeReport.setOnClickListener(v -> close(parameters));
+        closeReport.setOnClickListener(v -> close(parameters));
 
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
     }
 
-    private void getReportFromServer(JSONObject params){
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REPORT_FRAGMENT, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                takeChargeReport.setEnabled(false);
-                closeReport.setEnabled(false);
-            }
+    private void getReportFromServer(Map<String, Object> params) {
+        SendInPostConnector<Report> connector = new SendInPostConnector<>(
+                ConnectorConstants.REPORT_FRAGMENT,
+                BusinessEntityBuilder.getFactory(Report.class),
+                new DatabaseConnector.CallbackInterface<Report>() {
+                    @Override
+                    public void onStartConnection() {
+                        takeChargeReport.setEnabled(false);
+                        closeReport.setEnabled(false);
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject result = jsonArray.getJSONObject(0);
-                String code = "Nr. " + result.getString("report_code");
-                String statusText = "Status: ";
-                reportTitle.setText(result.getString("object"));
-                reportCode.setText(code);
-                switch (Objects.requireNonNull(ReportStatus.getValue(result.getInt("state")))) {
-                    case OPEN:
-                        statusText += getString(R.string.open);
-                        takeChargeReport.setEnabled(true);
-                        closeReport.setEnabled(true);
-                        break;
-                    case CLOSED:
-                        statusText += getString(R.string.closed);
-                        break;
-                    case PENDING:
-                        statusText += getString(R.string.pending);
-                        closeReport.setEnabled(true);
-                        break;
-                    case CANCELED:
-                        statusText += getString(R.string.canceled);
-                        break;
-                    default:
-                        break;
-                }
-                status.setText(statusText);
-                reportedUser.setText(result.getString("reported_user"));
-                reporterUser.setText(result.getString("username"));
-                bodyText.setText(result.getString("report_body"));
-            }
-        });
-        connector.setObjectToSend(params);
+                    @Override
+                    public void onEndConnection(List<Report> list) {
+                        Report result = list.get(0);
+                        String code = "Nr. " + result.getCode();
+                        String statusText = "Status: ";
+                        reportTitle.setText(result.getObject());
+                        reportCode.setText(code);
+                        switch (result.getStatus()) {
+                            case OPEN:
+                                statusText += getString(R.string.open);
+                                takeChargeReport.setEnabled(true);
+                                closeReport.setEnabled(true);
+                                break;
+                            case CLOSED:
+                                statusText += getString(R.string.closed);
+                                break;
+                            case PENDING:
+                                statusText += getString(R.string.pending);
+                                closeReport.setEnabled(true);
+                                break;
+                            case CANCELED:
+                                statusText += getString(R.string.canceled);
+                                break;
+                            default:
+                                break;
+                        }
+                        status.setText(statusText);
+                        reportedUser.setText(result.getReportedUser().getUsername());
+                        reporterUser.setText(result.getAuthor().getUsername());
+                        bodyText.setText(result.getBody());
+                    }
+                },
+                params);
         connector.execute();
     }
 
@@ -114,60 +117,54 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void takeCharge ( JSONObject params) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REPORT_DETAILS, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+    public void takeCharge(Map<String, Object> params) {
+        params.put("object", reportTitle.getText().toString());
+        params.put("report_body", bodyText.getText().toString());
+        params.put("state", ReportStatus.toInt(ReportStatus.PENDING));
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_REPORT_DETAILS,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                Log.e("p", object.toString());
-                if (object.getBoolean("result")) {
-                    Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show();
-                    getReportFromServer(params);
-                }
-            }
-        });
-        try {
-            params.put("object", reportTitle.getText().toString());
-            params.put("report_body", bodyText.getText().toString());
-            params.put("state",ReportStatus.getInt(ReportStatus.PENDING));
-            connector.setObjectToSend(params);
-            connector.execute();
-        }catch (JSONException e){
-            Log.e(ERROR_TAG,e.toString());
-        }
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        Log.e("p", result.toJSONObject().toString());
+                        if (result.getResult()) {
+                            Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show();
+                            getReportFromServer(params);
+                        }
+                    }
+                },
+                params);
+        connector.execute();
     }
 
-    public void close ( JSONObject params) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REPORT_DETAILS, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+    public void close(Map<String, Object> params) {
+        params.put("object", reportTitle.getText().toString());
+        params.put("report_body", bodyText.getText().toString());
+        params.put("state", ReportStatus.toInt(ReportStatus.CLOSED));
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_REPORT_DETAILS,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                Log.e("p", object.toString());
-                if (object.getBoolean("result")) {
-                    Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();
-                    getReportFromServer(params);
-                }
-            }
-        });
-        try {
-            params.put("object", reportTitle.getText().toString());
-            params.put("report_body", bodyText.getText().toString());
-            params.put("state",ReportStatus.getInt(ReportStatus.CLOSED));
-            connector.setObjectToSend(params);
-            connector.execute();
-        }catch (JSONException e){
-            Log.e(ERROR_TAG,e.toString());
-        }
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        Log.e("p", result.toJSONObject().toString());
+                        if (result.getResult()) {
+                            Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();
+                            getReportFromServer(params);
+                        }
+                    }
+                },
+                params);
+        connector.execute();
     }
 }
 

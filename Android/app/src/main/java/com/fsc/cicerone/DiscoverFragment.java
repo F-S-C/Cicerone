@@ -26,16 +26,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.fsc.cicerone.adapter.WishlistAdapter;
+import com.fsc.cicerone.adapter.ItineraryAdapter;
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Itinerary;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -183,30 +189,34 @@ public class DiscoverFragment extends Fragment {
     }
 
     private void refreshData() {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_ITINERARY, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                swipeRefreshLayout.setRefreshing(true);
-            }
-
-            @Override
-            public void onEndConnection(JSONArray jsonArray) {
-                swipeRefreshLayout.setRefreshing(false);
-                WishlistAdapter adapter = new WishlistAdapter(getActivity(), jsonArray);
-
-                recyclerView.setAdapter(adapter);
-            }
-        });
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
-        try {
-            JSONObject object = new JSONObject();
-            if (beginningDate != null) object.put("beginning_date", sdf.format(beginningDate));
-            if (endingDate != null) object.put("beginning_date", sdf.format(endingDate));
-            if (location != null) object.put("location", location);
-            connector.setObjectToSend(object);
-        } catch (JSONException e) {
-            Log.e("ERROR", "No data sent to the connector");
-        }
+        Map<String, Object> object = new HashMap<>(3);
+        if (beginningDate != null) object.put("beginning_date", sdf.format(beginningDate));
+        if (endingDate != null) object.put("beginning_date", sdf.format(endingDate));
+        if (location != null) object.put("location", location);
+        SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_ITINERARY,
+                BusinessEntityBuilder.getFactory(Itinerary.class),
+                new DatabaseConnector.CallbackInterface<Itinerary>() {
+                    @Override
+                    public void onStartConnection() {
+                        swipeRefreshLayout.setRefreshing(true);
+                    }
+
+                    @Override
+                    public void onEndConnection(List<Itinerary> list) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        List<Itinerary> filteredList = new LinkedList<>();
+                        for (Itinerary itinerary : list) {
+                            if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
+                                filteredList.add(itinerary);
+                        }
+                        ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList);
+
+                        recyclerView.setAdapter(adapter);
+                    }
+                },
+                object);
         connector.execute();
     }
 

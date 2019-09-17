@@ -2,8 +2,6 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
 
 /**
@@ -35,24 +33,10 @@ class RequestLanguage extends JsonConnector
             $query .= " WHERE language_code = ?";
         }
 
-        if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->code)) {
-                $statement->bind_param("s", $this->code);
-            }
-            if ($statement->execute()) {
-                $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-            } else {
-                throw new mysqli_sql_exception($statement->error);
-            }
-        } else {
-            throw new mysqli_sql_exception($this->connection->error);
-        }
+        $data = array($this->code);
 
-        return $to_return;
+        return $this->execute_query($query, $data, "s");
     }
 
 
 }
-
-$connector = new RequestLanguage($_POST['language_code']);
-print $connector->get_content();

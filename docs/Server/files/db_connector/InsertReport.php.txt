@@ -16,5 +16,5 @@ class InsertReport extends InsertConnector
 }
 
 $connector = new InsertReport();
-$connector->add_value(array(strtolower($_POST['username']), strtolower($_POST['report_user'])));
+$connector->add_value(array(strtolower($_POST['username']), strtolower($_POST['reported_user'])));
 print $connector->get_content();

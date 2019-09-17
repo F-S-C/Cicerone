@@ -2,7 +2,6 @@ package com.fsc.cicerone;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,12 +10,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Report;
+import com.fsc.cicerone.model.ReportStatus;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
@@ -29,7 +32,6 @@ public class ReportDetailsActivity extends AppCompatActivity {
     private TextView reportedUser;
     private TextView bodyText;
     private Button cancButton;
-    private static final String ERROR_TAG = "ERROR IN " + LoginActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +48,15 @@ public class ReportDetailsActivity extends AppCompatActivity {
         reportedUser = findViewById(R.id.report_user_activity);
         bodyText = findViewById(R.id.body_report_activity);
         cancButton = findViewById(R.id.delete_report_btn);
-        JSONObject parameters = new JSONObject();
-        try {
-            //Get the bundle
-            Bundle bundle = getIntent().getExtras();
-            //Extract the data
-            parameters.put("report_code", Objects.requireNonNull(bundle).getString("report_code"));
-            getReportFromServer(parameters);
-            cancButton.setEnabled(false);
-            cancButton.setVisibility(View.GONE);
-            cancButton.setOnClickListener(view -> deleteReport(parameters));
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+        Map<String, Object> parameters = new HashMap<>();
+        // Get the bundle
+        Bundle bundle = getIntent().getExtras();
+        // Extract the data
+        parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
+        getReportFromServer(parameters);
+        cancButton.setEnabled(false);
+        cancButton.setVisibility(View.GONE);
+        cancButton.setOnClickListener(view -> deleteReport(parameters));
     }
 
     @Override
@@ -68,44 +66,44 @@ public class ReportDetailsActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private void getReportFromServer(JSONObject params){
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REPORT_FRAGMENT, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+    private void getReportFromServer(Map<String, Object> params) {
+        SendInPostConnector<Report> connector = new SendInPostConnector<>(ConnectorConstants.REPORT_FRAGMENT,
+                BusinessEntityBuilder.getFactory(Report.class), new DatabaseConnector.CallbackInterface<Report>() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject result = jsonArray.getJSONObject(0);
-                String code = "Nr. " + result.getString("report_code");
-                String statusText = "Status: ";
-                reportTitle.setText(result.getString("object"));
-                reportCode.setText(code);
-                switch (Objects.requireNonNull(ReportStatus.getValue(result.getInt("state")))) {
-                    case OPEN:
-                        statusText += getString(R.string.open);
-                        cancButton.setEnabled(true);
-                        cancButton.setVisibility(View.VISIBLE);
-                        break;
-                    case CLOSED:
-                        statusText += getString(R.string.closed);
-                        break;
-                    case PENDING:
-                        statusText += getString(R.string.pending);
-                        break;
-                    case CANCELED:
-                        statusText += getString(R.string.canceled);
-                        break;
-                    default:
-                        break;
-                }
-                status.setText(statusText);
-                reportedUser.setText(result.getString("reported_user"));
-                bodyText.setText(result.getString("report_body"));
-            }
-        });
-        connector.setObjectToSend(params);
+                    @Override
+                    public void onEndConnection(List<Report> list) {
+                        Report result = list.get(0);
+                        String code = "Nr. " + result.getCode();
+                        String statusText = "Status: ";
+                        reportTitle.setText(result.getObject());
+                        reportCode.setText(code);
+                        switch (result.getStatus()) {
+                        case OPEN:
+                            statusText += getString(R.string.open);
+                            cancButton.setEnabled(true);
+                            cancButton.setVisibility(View.VISIBLE);
+                            break;
+                        case CLOSED:
+                            statusText += getString(R.string.closed);
+                            break;
+                        case PENDING:
+                            statusText += getString(R.string.pending);
+                            break;
+                        case CANCELED:
+                            statusText += getString(R.string.canceled);
+                            break;
+                        default:
+                            break;
+                        }
+                        status.setText(statusText);
+                        reportedUser.setText(result.getReportedUser().getUsername());
+                        bodyText.setText(result.getBody());
+                    }
+                }, params);
         connector.execute();
     }
 
@@ -114,27 +112,26 @@ public class ReportDetailsActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
-    
-    private void deleteReport(JSONObject params){
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_REPORT_DETAILS, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray){
-                Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
-                params.remove("state");
-                getReportFromServer(params);
-            }
-        });
-        try {
-            connector.setObjectToSend(params);
-            params.put("state", ReportStatus.getInt(ReportStatus.CLOSED));
-            connector.execute();
-        }catch(JSONException e){
-            Log.e(ERROR_TAG,e.toString());
-        }
+    private void deleteReport(Map<String, Object> params) {
+        params.put("state", ReportStatus.toInt(ReportStatus.CLOSED));
+        BooleanConnector connector = new BooleanConnector(ConnectorConstants.UPDATE_REPORT_DETAILS,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
+
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        if (result.getResult()) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.report_canceled),
+                                    Toast.LENGTH_SHORT).show();
+                            params.remove("state");
+                            getReportFromServer(params);
+                        }
+                    }
+                }, params);
+        connector.execute();
     }
 }

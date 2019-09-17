@@ -53,6 +53,3 @@ class RequestReportDetails extends JsonConnector
 
 
 }
-
-$connector = new RequestReportDetails($_POST['report_code']);
-print $connector->get_content();

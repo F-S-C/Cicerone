@@ -2,9 +2,8 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
+require_once("RequestRegisteredUser.php");
 
 /**
  * Request the reviews written or received by a user.
@@ -51,22 +50,12 @@ class RequestUserReview extends JsonConnector
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
-
-        if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->author) || isset($this->reviewed_user)) {
-                $statement->bind_param($types, ...$data);
-            }
-            if ($statement->execute()) {
-                $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-            } else {
-                throw new mysqli_sql_exception($statement->error);
-            }
-        } else {
-            throw new mysqli_sql_exception($this->connection->error);
+        $to_return = $this->execute_query($query, $data, $types);
+        foreach ($to_return as &$row) {
+            $row["username"] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
+            $row["reviewed_user"] = $this->get_from_connector(new RequestRegisteredUser($row["reviewed_user"]))[0];
         }
+
         return $to_return;
     }
 }
-
-$connector = new RequestUserReview($_POST['username'], $_POST['reviewed_user']);
-print $connector->get_content();

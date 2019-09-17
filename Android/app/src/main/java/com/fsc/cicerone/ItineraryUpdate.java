@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONArray;
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.Itinerary;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,12 +23,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
-import app_connector.SendInPostConnector;
 
 public class ItineraryUpdate extends AppCompatActivity {
     EditText title;
@@ -53,6 +56,17 @@ public class ItineraryUpdate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_update);
 
+        Bundle bundle = getIntent().getExtras();
+        Log.e("PROVAPROVA", Objects.requireNonNull(bundle).getString("itinerary"));
+        Itinerary currentItinerary;
+        try {
+            currentItinerary = new Itinerary(new JSONObject(Objects.requireNonNull(bundle).getString("itinerary")));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.getMessage());
+            currentItinerary = new Itinerary();
+        }
+
+
         title = findViewById(R.id.inputTitle);
         description = findViewById(R.id.inputDescription);
         location = findViewById(R.id.inputLocation);
@@ -68,6 +82,22 @@ public class ItineraryUpdate extends AppCompatActivity {
         fullPrice = findViewById(R.id.inputFullPrice);
         submit = findViewById(R.id.submit);
 
+        // Setting all the fields to the previous values
+        title.setText(currentItinerary.getTitle());
+        description.setText(currentItinerary.getDescription());
+        location.setText(currentItinerary.getLocation());
+        // TODO: Why is it crashing?
+//        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+//        selectBeginningDate.setText(formatter.format(currentItinerary.getBeginningDate()));
+//        selectEndingDate.setText(formatter.format(currentItinerary.getEndingDate()));
+//        selectReservationDate.setText(formatter.format(currentItinerary.getReservationDate()));
+        minParticipants.setText(String.valueOf(currentItinerary.getMinParticipants()));
+        maxParticipants.setText(String.valueOf(currentItinerary.getMaxParticipants()));
+        durationHours.setText(currentItinerary.getDuration().substring(0, currentItinerary.getDuration().indexOf(":")));
+        durationMinutes.setText(currentItinerary.getDuration().substring(currentItinerary.getDuration().indexOf(":") + 1));
+        repetitions.setText(String.valueOf(currentItinerary.getRepetitions()));
+        reducedPrice.setText(String.valueOf(currentItinerary.getReducedPrice()));
+        fullPrice.setText(String.valueOf(currentItinerary.getFullPrice()));
 
         selectBeginningDate.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
@@ -352,60 +382,56 @@ public class ItineraryUpdate extends AppCompatActivity {
     }
 
     public void sendData(View view) {
-        JSONObject params = new JSONObject();
+        Map<String, Object> params = new HashMap<>(14);
         boolean canSend = allFilled();
         if (canSend) {
-            try {
-                params.put("title", title.getText().toString());
-                params.put("description", description.getText().toString());
-                params.put("beginning_date", selectBeginningDate.getText().toString());
-                params.put("ending_date", selectEndingDate.getText().toString());
-                params.put("end_reservations_date", selectReservationDate.getText().toString());
-                params.put("maximum_participants_number", maxParticipants.getText().toString());
-                params.put("minimum_participants_number", minParticipants.getText().toString());
-                params.put("repetitions_per_day", repetitions.getText().toString());
-                params.put("location", location.getText().toString());
-                params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
-                params.put("full_price", fullPrice.getText().toString());
-                params.put("reduced_price", reducedPrice.getText().toString());
-                params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-                Bundle bundle = getIntent().getExtras();
-                params.put("itinerary_code", Objects.requireNonNull(bundle).getString("itinerary_code"));
-                submitNewData(params);
+            params.put("title", title.getText().toString());
+            params.put("description", description.getText().toString());
+            params.put("beginning_date", selectBeginningDate.getText().toString());
+            params.put("ending_date", selectEndingDate.getText().toString());
+            params.put("end_reservations_date", selectReservationDate.getText().toString());
+            params.put("maximum_participants_number", maxParticipants.getText().toString());
+            params.put("minimum_participants_number", minParticipants.getText().toString());
+            params.put("repetitions_per_day", repetitions.getText().toString());
+            params.put("location", location.getText().toString());
+            params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
+            params.put("full_price", fullPrice.getText().toString());
+            params.put("reduced_price", reducedPrice.getText().toString());
+            params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            Bundle bundle = getIntent().getExtras();
+            params.put("itinerary_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("itinerary_code")));
+            submitNewData(params);
 
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         } else {
             Toast.makeText(ItineraryUpdate.this, ItineraryUpdate.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
         }
     }
 
 
+    private void submitNewData(Map<String, Object> params) {
+        BooleanConnector connector = new BooleanConnector(
+                ConnectorConstants.UPDATE_ITINERARY,
+                new BooleanConnector.CallbackInterface() {
+                    @Override
+                    public void onStartConnection() {
+                        // Do nothing
+                    }
 
-    private void submitNewData(JSONObject params) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.UPDATE_ITINERARY, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
+                    @Override
+                    public void onEndConnection(BooleanConnector.BooleanResult result) {
+                        Log.e("p", result.toJSONObject().toString());
+                        if (result.getResult()) {
+                            Intent i = new Intent(ItineraryUpdate.this, MainActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
+                            startActivity(i);
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject object = jsonArray.getJSONObject(0);
-                Log.e("p", object.toString());
-                if (object.getBoolean("result")) {
-                    Intent i = new Intent(ItineraryUpdate.this,MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
-                    startActivity(i);
+                        }
 
-                }
-
-            }
-        });
-        connector.setObjectToSend(params);
+                    }
+                },
+                params);
         connector.execute();
     }
 

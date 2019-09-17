@@ -3,9 +3,8 @@
 
 namespace db_connector;
 
-use mysqli_sql_exception;
-
 require_once("JsonConnector.php");
+require_once("RequestRegisteredUser.php");
 
 /**
  * Request the reports to the admin.
@@ -22,7 +21,7 @@ class RequestReport extends JsonConnector
 
     /**
      * RequestReport constructor.
-     * @param string|null $report_code The report's code.
+     * @param int|null $report_code The report's code.
      * @param string|null $reported_user The reported user's username.
      * @param string|null $username The report's author's username.
      */
@@ -39,7 +38,7 @@ class RequestReport extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT * FROM report";
+        $query = "SELECT report.username, report.reported_user, report_details.* FROM report INNER JOIN report_details ON report.report_code = report_details.report_code";
 
         $conditions = array();
         $data = array();
@@ -62,21 +61,12 @@ class RequestReport extends JsonConnector
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
 
-        if ($statement = $this->connection->prepare($query)) {
-            if (isset($this->reported_user) || isset($this->username)) {
-                $statement->bind_param($types, ...$data);
-            }
-            if ($statement->execute()) {
-                $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-            } else {
-                throw new mysqli_sql_exception($statement->error);
-            }
-        } else {
-            throw new mysqli_sql_exception($this->connection->error);
+        $to_return = $this->execute_query($query, $data, $types);
+        foreach ($to_return as &$row) {
+            $row["username"] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
+            $row["reported_user"] = $this->get_from_connector(new RequestRegisteredUser($row["reported_user"]))[0];
         }
+
         return $to_return;
     }
 }
-
-$connector = new RequestReport($_POST['report_code'], $_POST['reported_user'], $_POST['username']);
-print $connector->get_content();

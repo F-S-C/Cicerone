@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.fsc.cicerone.model.Itinerary;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
@@ -57,7 +58,7 @@ public class ItineraryReviewFragment extends AppCompatActivity {
                 bundle.putString("itinerary", itinerary.toJSONObject().toString());
                 title.setText(itinerary.getTitle());
                 rating.setRating(bundle.getFloat("rating"));
-                author.setText(itinerary.getUsername());
+                author.setText(itinerary.getCicerone().getUsername());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

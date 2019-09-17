@@ -88,7 +88,9 @@ abstract class DatabaseConnector
         $to_return = null;
 
         if ($statement = $this->connection->prepare($query)) {
+            if (!empty($parameters)) {
                 $statement->bind_param($types, ...$parameters);
+            }
             if ($statement->execute()) {
                 $to_return = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
             } else {
@@ -99,5 +101,16 @@ abstract class DatabaseConnector
         }
 
         return $to_return;
+    }
+
+    /**
+     * Get a result from another Database connector.
+     * @param DatabaseConnector $connector The other connector.
+     * @return array The result of the connection in an associative array.
+     */
+    protected function get_from_connector(DatabaseConnector $connector): array
+    {
+        // TODO: Add to class diagram.
+        return json_decode($connector->get_content(), true);
     }
 }

@@ -30,7 +30,7 @@ abstract class JsonConnector extends DatabaseConnector
     {
         try {
             $rows = $this->fetch_all_rows();
-        } catch (Exception $e) {
+        } catch (Exception $e) {    
             $rows = array();
         }
 

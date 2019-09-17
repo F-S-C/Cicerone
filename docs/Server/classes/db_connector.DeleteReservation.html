@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>my docs</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">my docs</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/db_connector.html">\db_connector</a></li>
+                                                        <li><a href="../namespaces/email_sender.html">\email_sender</a></li>
+                                                        <li><a href="../namespaces/img_uploader.html">\img_uploader</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-387032276"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-387032276" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-675343993"></a>
+                                <a href="../namespaces/db_connector.html" style="margin-left: 30px; padding-left: 0">db_connector</a>
+            </div>
+            <div id="namespace-675343993" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1491606963"></a>
+                                <a href="../namespaces/db_connector.utilities.html" style="margin-left: 30px; padding-left: 0">utilities</a>
+            </div>
+            <div id="namespace-1491606963" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/db_connector.utilities.TableCreator.html">TableCreator</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/db_connector.BooleanConnector.html">BooleanConnector</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.CheckIfUserCanReviewUser.html">CheckIfUserCanReviewUser</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.ClearWishlist.html">ClearWishlist</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.DatabaseConnector.html">DatabaseConnector</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.DeleteConnector.html">DeleteConnector</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.DeleteItinerary.html">DeleteItinerary</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.DeleteItineraryReview.html">DeleteItineraryReview</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.DeleteRegisteredUser.html">DeleteRegisteredUser</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.DeleteReservation.html">DeleteReservation</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.DeleteUserReview.html">DeleteUserReview</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.DeleteWishlist.html">DeleteWishlist</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertConnector.html">InsertConnector</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertDocument.html">InsertDocument</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertItinerary.html">InsertItinerary</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertItineraryLanguage.html">InsertItineraryLanguage</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertItineraryReview.html">InsertItineraryReview</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertLanguage.html">InsertLanguage</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertRegisteredUser.html">InsertRegisteredUser</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertReport.html">InsertReport</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertReportDetails.html">InsertReportDetails</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertReservation.html">InsertReservation</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertUserLanguage.html">InsertUserLanguage</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertUserReview.html">InsertUserReview</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.InsertWishlist.html">InsertWishlist</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.JsonConnector.html">JsonConnector</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestActiveItinerary.html">RequestActiveItinerary</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestDocument.html">RequestDocument</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestItinerary.html">RequestItinerary</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestItineraryJoinReservation.html">RequestItineraryJoinReservation</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestItineraryLanguage.html">RequestItineraryLanguage</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestItineraryReview.html">RequestItineraryReview</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestLanguage.html">RequestLanguage</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestRegisteredUser.html">RequestRegisteredUser</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestReport.html">RequestReport</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestReportDetails.html">RequestReportDetails</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestReportJoinReportDetails.html">RequestReportJoinReportDetails</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestReservation.html">RequestReservation</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestUserLanguage.html">RequestUserLanguage</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestUserReview.html">RequestUserReview</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestWishlist.html">RequestWishlist</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.RequestWishlistJoinItinerary.html">RequestWishlistJoinItinerary</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UpdateConnector.html">UpdateConnector</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UpdateDocument.html">UpdateDocument</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UpdateItinerary.html">UpdateItinerary</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UpdateItineraryReview.html">UpdateItineraryReview</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UpdateRegisteredUser.html">UpdateRegisteredUser</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UpdateReportDetails.html">UpdateReportDetails</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UpdateReservation.html">UpdateReservation</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UpdateUserReview.html">UpdateUserReview</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UserDataDownloader.html">UserDataDownloader</a></li>
+                                                    <li class="class"><a href="../classes/db_connector.UserLogin.html">UserLogin</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-176418542"></a>
+                                <a href="../namespaces/email_sender.html" style="margin-left: 30px; padding-left: 0">email_sender</a>
+            </div>
+            <div id="namespace-176418542" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/email_sender.Sender.html">Sender</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1375425986"></a>
+                                <a href="../namespaces/img_uploader.html" style="margin-left: 30px; padding-left: 0">img_uploader</a>
+            </div>
+            <div id="namespace-1375425986" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/img_uploader.Uploader.html">Uploader</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/db_connector.html">\db_connector</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\db_connector</small>DeleteReservation</h1>
+                    <p><em>A connector that deletes an reservation from the reservation table.</em></p>
+                    <p>The answer is provided in an associative array format.</p>
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/db_connector.DeleteReservation.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/db_connector.DeleteReservation.html#method_get_content" class="">get_content()</a><br />
+                                                                    <a href="../classes/db_connector.DatabaseConnector.html#method___destruct" class="">__destruct()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/db_connector.DeleteReservation.html#constant_TABLE_NAME" class="">TABLE_NAME</a><br />
+                                                                    <a href="../classes/db_connector.DeleteReservation.html#constant_ID_COLUMN" class="">ID_COLUMN</a><br />
+                                                                    <a href="../classes/db_connector.DeleteReservation.html#constant_ID_COLUMN_TYPE" class="">ID_COLUMN_TYPE</a><br />
+                                                                    <a href="../classes/db_connector.BooleanConnector.html#constant_RESULT_KEY" class="">RESULT_KEY</a><br />
+                                                                    <a href="../classes/db_connector.BooleanConnector.html#constant_MESSAGE_KEY" class="">MESSAGE_KEY</a><br />
+                                                                    <a href="../classes/db_connector.BooleanConnector.html#constant_ERROR_KEY" class="">ERROR_KEY</a><br />
+                                                                    <a href="../classes/db_connector.DatabaseConnector.html#constant_DB_SERVER_NAME" class="">DB_SERVER_NAME</a><br />
+                                                                    <a href="../classes/db_connector.DatabaseConnector.html#constant_DB_USERNAME" class="">DB_USERNAME</a><br />
+                                                                    <a href="../classes/db_connector.DatabaseConnector.html#constant_DB_P" class="">DB_P</a><br />
+                                                                    <a href="../classes/db_connector.DatabaseConnector.html#constant_DB_NAME" class="">DB_NAME</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/db_connector.DeleteReservation.html"><div class="path-wrapper">db_connector/DeleteReservation.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">db_connector</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                        <div class="namespace-wrapper"><a href="../classes/db_connector.DatabaseConnector.html">\db_connector\DatabaseConnector</a></div>
+                                                                    
+                                        <div class="namespace-wrapper"><a href="../classes/db_connector.BooleanConnector.html">\db_connector\BooleanConnector</a></div>
+                                                                    
+                                        <div class="namespace-wrapper"><a href="../classes/db_connector.DeleteConnector.html">\db_connector\DeleteConnector</a></div>
+                                                                                                    <div class="namespace-wrapper">\db_connector\DeleteReservation</div>
+                            </dd>
+
+                        
+                        
+                        
+                                                
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_TABLE_NAME" name="constant_TABLE_NAME" class="anchor"></a>
+            <article id="constant_TABLE_NAME" class="constant">
+                <h3 class="">TABLE_NAME</h3>
+                <pre class="signature">TABLE_NAME = reservation : </pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_ID_COLUMN" name="constant_ID_COLUMN" class="anchor"></a>
+            <article id="constant_ID_COLUMN" class="constant">
+                <h3 class="">ID_COLUMN</h3>
+                <pre class="signature">ID_COLUMN = username : </pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_ID_COLUMN_TYPE" name="constant_ID_COLUMN_TYPE" class="anchor"></a>
+            <article id="constant_ID_COLUMN_TYPE" class="constant">
+                <h3 class="">ID_COLUMN_TYPE</h3>
+                <pre class="signature">ID_COLUMN_TYPE = s : </pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_RESULT_KEY" name="constant_RESULT_KEY" class="anchor"></a>
+            <article id="constant_RESULT_KEY" class="constant">
+                <h3 class="">RESULT_KEY</h3>
+                <pre class="signature">RESULT_KEY = result</pre>
+                <p><em>The key for the boolean result.</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.BooleanConnector.html"><div class="path-wrapper">\db_connector\BooleanConnector</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_MESSAGE_KEY" name="constant_MESSAGE_KEY" class="anchor"></a>
+            <article id="constant_MESSAGE_KEY" class="constant">
+                <h3 class="">MESSAGE_KEY</h3>
+                <pre class="signature">MESSAGE_KEY = message</pre>
+                <p><em>The key for the message (available if the result is true).</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.BooleanConnector.html"><div class="path-wrapper">\db_connector\BooleanConnector</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_ERROR_KEY" name="constant_ERROR_KEY" class="anchor"></a>
+            <article id="constant_ERROR_KEY" class="constant">
+                <h3 class="">ERROR_KEY</h3>
+                <pre class="signature">ERROR_KEY = error</pre>
+                <p><em>The key for the error (available if the result is false).</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.BooleanConnector.html"><div class="path-wrapper">\db_connector\BooleanConnector</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DB_SERVER_NAME" name="constant_DB_SERVER_NAME" class="anchor"></a>
+            <article id="constant_DB_SERVER_NAME" class="constant">
+                <h3 class="">DB_SERVER_NAME</h3>
+                <pre class="signature">DB_SERVER_NAME = 127.0.0.1 : </pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.DatabaseConnector.html"><div class="path-wrapper">\db_connector\DatabaseConnector</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DB_USERNAME" name="constant_DB_USERNAME" class="anchor"></a>
+            <article id="constant_DB_USERNAME" class="constant">
+                <h3 class="">DB_USERNAME</h3>
+                <pre class="signature">DB_USERNAME = fsc : </pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.DatabaseConnector.html"><div class="path-wrapper">\db_connector\DatabaseConnector</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DB_P" name="constant_DB_P" class="anchor"></a>
+            <article id="constant_DB_P" class="constant">
+                <h3 class="">DB_P</h3>
+                <pre class="signature">DB_P = 89n@W[ : </pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.DatabaseConnector.html"><div class="path-wrapper">\db_connector\DatabaseConnector</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DB_NAME" name="constant_DB_NAME" class="anchor"></a>
+            <article id="constant_DB_NAME" class="constant">
+                <h3 class="">DB_NAME</h3>
+                <pre class="signature">DB_NAME = cicerone : </pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.DatabaseConnector.html"><div class="path-wrapper">\db_connector\DatabaseConnector</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                        
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(  <span class="argument">username = null</span>,   <span class="argument">itinerary = null</span>) : </pre>
+                <p><em>DeleteReservation constructor.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>username </td>
+                                <td><p>The author of the review.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>itinerary </td>
+                                <td><p>The code of the booked itinerary.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.DeleteReservation.html"><div class="path-wrapper">\db_connector\DeleteReservation</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            warning
+                        </th>
+                        <td>
+                                                                                            <p>If the username or the itinerary is not set, the connector will die with an error.</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_content" name="method_get_content" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_content()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_content() : </pre>
+                <p><em>Delete the object from the database and get the result of the operation.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    
+                                            &mdash; <p>The result of the operation.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.DeleteReservation.html"><div class="path-wrapper">\db_connector\DeleteReservation</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/db_connector.DeleteConnector.html#method_get_content"><span class="namespace-wrapper">\db_connector\DeleteConnector::get_content()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___destruct" name="method___destruct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__destruct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__destruct() : </pre>
+                <p><em>DatabaseConnector destructor.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/db_connector.DatabaseConnector.html"><div class="path-wrapper">\db_connector\DatabaseConnector</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">DeleteReservation.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/db_connector/DeleteReservation.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/db_connector.html">\db_connector</a></li>
+                                                                            <li><a href="../namespaces/email_sender.html">\email_sender</a></li>
+                                                                            <li><a href="../namespaces/img_uploader.html">\img_uploader</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on September 16th, 2019 at 21:28.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

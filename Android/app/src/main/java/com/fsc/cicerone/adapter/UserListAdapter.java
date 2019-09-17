@@ -14,38 +14,43 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.AdminUserProfile;
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.User;
-import com.fsc.cicerone.UserType;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserReview;
+import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import app_connector.ConnectorConstants;
 import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
- * The Adapter of the Recycler View for the styles present in the app.
+ * The ReviewAdapter of the Recycler View for the styles present in the app.
  */
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
-    private static final String ERROR_TAG = "ERROR IN " + UserListAdapter.class.getName();
-
     private final Context context;
-    private JSONArray mData;
+    private List<User> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener = null;
 
     /**
      * Constructor.
      *
-     * @param context    The parent Context.
-     * @param jsonArray  The array of JSON Objects got from server.
+     * @param context The parent Context.
+     * @param list    The array of JSON Objects got from server.
      */
-    public UserListAdapter(Context context, JSONArray jsonArray) {
+    public UserListAdapter(Context context, List<User> list) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = jsonArray;
+        this.mData = list;
         this.context = context;
     }
 
@@ -60,58 +65,50 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User[] userList = new User[mData.length()];
-
-
-        try {
-            userList[position] = new User(mData.getJSONObject(position));
-            String usernameStr = userList[position].getUsername();
-            UserType type = userList[position].getUserType();
-            String typeName;
-            holder.usr.setText(usernameStr);
-            switch (type){
-                case GLOBETROTTER:
-                    typeName = context.getString(R.string.user_type_globetrotter);
-                    break;
-                case CICERONE:
-                    typeName = context.getString(R.string.user_type_cicerone);
-                    break;
-                case ADMIN:
-                    typeName = context.getString(R.string.user_type_admin);
-                    break;
-                default:
-                    typeName = "";
-                    break;
-            }
-            holder.usrType.setText(typeName);
-            setAvgRating(usernameStr, holder);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
+        String usernameStr = mData.get(position).getUsername();
+        UserType type = mData.get(position).getUserType();
+        String typeName;
+        holder.usr.setText(usernameStr);
+        switch (type) {
+            case GLOBETROTTER:
+                typeName = context.getString(R.string.user_type_globetrotter);
+                break;
+            case CICERONE:
+                typeName = context.getString(R.string.user_type_cicerone);
+                break;
+            case ADMIN:
+                typeName = context.getString(R.string.user_type_admin);
+                break;
+            default:
+                typeName = "";
+                break;
         }
+        holder.usrType.setText(typeName);
+        setAvgRating(usernameStr, holder);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             i = new Intent().setClass(v.getContext(), AdminUserProfile.class);
-            i.putExtra("user",userList[position].toJSONObject().toString());
+            i.putExtra("user", mData.get(position).toJSONObject().toString());
             v.getContext().startActivity(i);
         });
 
     }//END onBindViewHolder
 
     /**
-     * Return the length of the JSON array passed into the Adapter.
+     * Return the length of the JSON array passed into the ReviewAdapter.
      *
      * @return Length of JSON array.
      */
     @Override
     public int getItemCount() {
-        return mData.length();
+        return mData.size();
     }
 
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add to class diagram
 
         TextView usr;
         TextView usrType;
@@ -140,32 +137,28 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     private void setAvgRating(String usr, ViewHolder holder) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                //
-            }
+        Map<String, Object> params = new HashMap<>(1);
+        params.put("reviewed_user", usr);
+        SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_USER_REVIEW,
+                BusinessEntityBuilder.getFactory(UserReview.class),
+                new DatabaseConnector.CallbackInterface<UserReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        //
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                int i;
-                int sum = 0;
-                JSONObject result;
-                for (i = 0; i < jsonArray.length(); i++) {
-                    result = jsonArray.getJSONObject(i);
-                    sum += result.getInt("feedback");
-                }
-                holder.avgRating.setRating((i > 0) ? ((float) sum / i) : 0);
-            }
-        });
-        try {
-            JSONObject params = new JSONObject();
-            params.put("reviewed_user", usr);
-            connector.setObjectToSend(params);
-            connector.execute();
-        } catch (JSONException e) {
-            Log.e("error", e.toString());
-        }
+                    @Override
+                    public void onEndConnection(List<UserReview> list) {
+                        int sum = 0;
+                        for (UserReview review : list) {
+                            sum += review.getFeedback();
+                        }
+                        holder.avgRating.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
+                    }
+                },
+                params);
+        connector.execute();
     }
 }
 

@@ -11,12 +11,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserReview;
+import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
@@ -43,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
         fragment = new SelectedUserReviewFragment();
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame,fragment);
+        fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
         tabLayout = findViewById(R.id.tabs);
@@ -52,20 +58,15 @@ public class ProfileActivity extends AppCompatActivity {
         fragment.setArguments(bundle);
 
 
-        final JSONObject params;
-        try {
-            //Get the bundle
-            //Extract the data…
-            params = new JSONObject();
-            params.put("username", Objects.requireNonNull(bundle).getString("reviewed_user"));
-            Log.e("bundle",Objects.requireNonNull(bundle).getString("reviewed_user"));
-            TextView username = findViewById(R.id.username_profile);
-            String nick = "@" + params.getString("username");
-            username.setText(nick);
-            getData(params);
-        } catch (JSONException e) {
-            Log.e("error", e.toString());
-        }
+        final Map<String, Object> params = new HashMap<>();
+        //Get the bundle
+        //Extract the data…
+        params.put("username", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("reviewed_user")));
+        Log.e("bundle", Objects.requireNonNull(bundle).getString("reviewed_user"));
+        TextView username = findViewById(R.id.username_profile);
+        String nick = "@" + Objects.requireNonNull(params.get("username")).toString();
+        username.setText(nick);
+        getData(params);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -103,59 +104,58 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private void getData(JSONObject parameters) {
-        SendInPostConnector connector = new SendInPostConnector(ConnectorConstants.REGISTERED_USER, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                //
-            }
+    private void getData(Map<String, Object> parameters) {
+        SendInPostConnector<User> connector = new SendInPostConnector<>(
+                ConnectorConstants.REGISTERED_USER,
+                BusinessEntityBuilder.getFactory(User.class),
+                new DatabaseConnector.CallbackInterface<User>() {
+                    @Override
+                    public void onStartConnection() {
+                        //
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                JSONObject result = jsonArray.getJSONObject(0);
-                TextView name = findViewById(R.id.name_profile);
-                name.setText(result.getString("name"));
-                TextView surname = findViewById(R.id.surname_profile);
-                surname.setText(result.getString("surname"));
-                TextView email = findViewById(R.id.email_profile);
-                email.setText(result.getString("email"));
-                TextView userType = findViewById(R.id.user_type_profile);
-                if (Objects.requireNonNull(UserType.getValue(result.getInt("user_type"))) == UserType.CICERONE) {
-                    userType.setText(R.string.user_type_cicerone);
-                } else {
-                    userType.setText(R.string.user_type_globetrotter);
-                }
-            }
-        });
-        connector.setObjectToSend(parameters);
+                    @Override
+                    public void onEndConnection(List<User> list) {
+                        User result = list.get(0);
+                        TextView name = findViewById(R.id.name_profile);
+                        name.setText(result.getName());
+                        TextView surname = findViewById(R.id.surname_profile);
+                        surname.setText(result.getSurname());
+                        TextView email = findViewById(R.id.email_profile);
+                        email.setText(result.getEmail());
+                        TextView userType = findViewById(R.id.user_type_profile);
+                        if (result.getUserType() == UserType.CICERONE) {
+                            userType.setText(R.string.user_type_cicerone);
+                        } else {
+                            userType.setText(R.string.user_type_globetrotter);
+                        }
+                    }
+                },
+                parameters);
         connector.execute();
 
-        SendInPostConnector connectorReview = new SendInPostConnector(ConnectorConstants.REQUEST_USER_REVIEW, new DatabaseConnector.CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                //
-            }
+        Map<String, Object> newParameter = new HashMap<>(1);
+        newParameter.put("reviewed_user", Objects.requireNonNull(parameters.get("username")).toString());
+        SendInPostConnector<UserReview> connectorReview = new SendInPostConnector<>(
+                ConnectorConstants.REQUEST_USER_REVIEW,
+                BusinessEntityBuilder.getFactory(UserReview.class),
+                new DatabaseConnector.CallbackInterface<UserReview>() {
+                    @Override
+                    public void onStartConnection() {
+                        //
+                    }
 
-            @Override
-            public void onEndConnection(JSONArray jsonArray) throws JSONException {
-                int i;
-                int sum = 0;
-                JSONObject result;
-                for (i = 0; i < jsonArray.length(); i++) {
-                    result = jsonArray.getJSONObject(i);
-                    sum += result.getInt("feedback");
-                }
-                RatingBar star = findViewById(R.id.avg_feedback);
-                star.setRating((i > 0) ? ((float) sum / i) : 0);
-            }
-        });
-        try {
-            JSONObject newParameter = new JSONObject();
-            newParameter.put("reviewed_user", parameters.getString("username"));
-            connectorReview.setObjectToSend(newParameter);
-            connectorReview.execute();
-        } catch (JSONException e) {
-            Log.e("error", e.toString());
-        }
+                    @Override
+                    public void onEndConnection(List<UserReview> list) {
+                        int sum = 0;
+                        for (UserReview review : list) {
+                            sum += review.getFeedback();
+                        }
+                        RatingBar star = findViewById(R.id.avg_feedback);
+                        star.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
+                    }
+                },
+                newParameter);
+        connectorReview.execute();
     }
 }
