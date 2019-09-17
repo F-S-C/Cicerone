@@ -171,7 +171,7 @@
     <string name="username_error">Username not valid or too short!</string>
     <string name="document_not_valid">The document entered is not valid.</string>
     <string name="active_itineraries">Active itineraries</string>
-    <string name="list_users">Registered users</string>
+    <string name="list_users">Users</string>
     <string name="reports">Reports</string>
     <string name="reporter_user">Reporter user:</string>
     <string name="details_itinerary">Itinerary Details</string>

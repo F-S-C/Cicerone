@@ -28,7 +28,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     private Context context;
     private LayoutInflater mInflater;
 
-
     /**
      * Constructor.
      *
