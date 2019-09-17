@@ -33,7 +33,6 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     private final Context context;
     private List<Itinerary> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
 
 
     /**
