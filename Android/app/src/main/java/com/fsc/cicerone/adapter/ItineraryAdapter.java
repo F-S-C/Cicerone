@@ -118,7 +118,6 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
             ending = itemView.findViewById(R.id.ending);
             imageView = itemView.findViewById(R.id.media_image);
             priceTagTextView = itemView.findViewById(R.id.itinerary_price_badge);
-            itemView.setOnClickListener(this);
         }
     }
 }
