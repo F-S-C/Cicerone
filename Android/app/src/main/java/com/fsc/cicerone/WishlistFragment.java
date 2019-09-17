@@ -40,6 +40,7 @@ public class WishlistFragment extends Fragment {
     private ItineraryAdapter adapter;
     private TextView numberOfItinerariesTextView;
     private Button clearWishlistButton;
+    private RecyclerView recyclerView;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -55,25 +56,25 @@ public class WishlistFragment extends Fragment {
         final Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("username", currentLoggedUser.getUsername());
         // set up the RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
+        recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         swipeRefreshLayout = view.findViewById(R.id.WishlistRoot);
-        swipeRefreshLayout.setOnRefreshListener(() -> requireData(parameters, recyclerView));
+        swipeRefreshLayout.setOnRefreshListener(() -> requireData(parameters));
 
-        requireData(parameters, recyclerView);
+        requireData(parameters);
 
         clearWishlistButton.setOnClickListener(v -> new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()))
                 .setTitle(getString(R.string.are_you_sure))
                 .setMessage(getString(R.string.confirm_delete_wishlist))
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> clearWish(parameters, recyclerView))
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> clearWish(parameters))
                 .setNegativeButton(getString(R.string.no), null)
                 .show());
 
         return view;
     }
 
-    private void requireData(Map<String, Object> parameters, RecyclerView recyclerView) {
+    private void requireData(Map<String, Object> parameters) {
         SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_WISHLIST, //TODO: Check
                 BusinessEntityBuilder.getFactory(Wishlist.class),
@@ -105,7 +106,7 @@ public class WishlistFragment extends Fragment {
         connector.execute();
     }
 
-    private void clearWish(Map<String, Object> parameters, RecyclerView recyclerView) {
+    private void clearWish(Map<String, Object> parameters) {
         BooleanConnector connector = new BooleanConnector(
                 ConnectorConstants.CLEAR_WISHLIST,
                 new BooleanConnector.CallbackInterface() {
@@ -122,7 +123,7 @@ public class WishlistFragment extends Fragment {
                             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
                             //startActivity(i);
-                            requireData(parameters, recyclerView);
+                            requireData(parameters);
                         }
 
                     }
@@ -131,4 +132,10 @@ public class WishlistFragment extends Fragment {
         connector.execute();
     }
 
+    public void forceRefresh(){
+        final Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+        // set up the RecyclerView
+        requireData(parameters);
+    }
 }
