@@ -61,14 +61,14 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String title = mData.get(position).getTitle();
-        Integer itineraryNumber = mData.get(position).getCode();
+        //Integer itineraryNumber = mData.get(position).getCode();
         String location = mData.get(position).getLocation();
 
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         holder.beginning.setText(outputFormat.format(mData.get(position).getBeginningDate()));
 //        holder.ending.setText(outputFormat.format(mData.get(position).getEndingDate()));
         holder.itineraryTitle.setText(title);
-        holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
+        //holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
         holder.location.setText(location);
         holder.priceTagTextView.setText(String.format(context.getString(R.string.price_value), mData.get(position).getFullPrice()));
         Picasso.get().load(mData.get(position).getImageUrl()).into(holder.imageView);
@@ -117,7 +117,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         ViewHolder(View itemView) {
             super(itemView);
             itineraryTitle = itemView.findViewById(R.id.itinerary_title);
-            itineraryNumber = itemView.findViewById(R.id.itinerary_number);
+            //itineraryNumber = itemView.findViewById(R.id.itinerary_number);
             location = itemView.findViewById(R.id.location);
             beginning = itemView.findViewById(R.id.beginning);
             ending = itemView.findViewById(R.id.ending);
