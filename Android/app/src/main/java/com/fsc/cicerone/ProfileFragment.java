@@ -258,6 +258,7 @@ public class ProfileFragment extends Fragment {
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("username", currentLoggedUser.getUsername());
         SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
+                context,
                 ConnectorConstants.REQUEST_DOCUMENT,
                 BusinessEntityBuilder.getFactory(Document.class),
                 new DatabaseConnector.CallbackInterface<Document>() {
@@ -283,6 +284,7 @@ public class ProfileFragment extends Fragment {
     private void switchToCicerone(Map<String, Object> parameters) {
 
         BooleanConnector connector = new BooleanConnector(
+                context,
                 ConnectorConstants.UPDATE_REGISTERED_USER,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -346,6 +348,7 @@ public class ProfileFragment extends Fragment {
         userData.put("birth_date", Objects.requireNonNull(itDateToServerDate(birthDate.getText().toString())));
 
         BooleanConnector updateRegisteredUser = new BooleanConnector(
+                context,
                 ConnectorConstants.UPDATE_REGISTERED_USER,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -373,6 +376,7 @@ public class ProfileFragment extends Fragment {
         documentData.put("document_type", documentType.getText());
         documentData.put("document_number", documentNumber.getText());
         BooleanConnector updateDocument = new BooleanConnector(
+                context,
                 ConnectorConstants.UPDATE_DOCUMENT,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -510,7 +514,7 @@ public class ProfileFragment extends Fragment {
 
     public void deleteAccount() {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
-            AccountManager.deleteCurrentAccount();
+            AccountManager.deleteCurrentAccount(context);
             preferences.edit().remove("session").apply();
             startActivity(new Intent(context, LoginActivity.class));
             context.finish();

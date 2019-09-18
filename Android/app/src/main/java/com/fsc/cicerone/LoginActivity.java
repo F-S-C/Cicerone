@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptLogin(String username, String password) {
         RelativeLayout progressBar = findViewById(R.id.loginProgressBarContainer);
 
-        AccountManager.attemptLogin(username, password, () -> {
+        AccountManager.attemptLogin(this, username, password, () -> {
             progressBar.setVisibility(View.VISIBLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

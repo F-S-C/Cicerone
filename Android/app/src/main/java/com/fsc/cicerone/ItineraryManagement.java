@@ -141,6 +141,7 @@ public class ItineraryManagement extends AppCompatActivity {
 
     public void getItineraryReviews(Map<String, Object> itineraryCode) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                this,
                 ConnectorConstants.ITINERARY_REVIEW,
                 BusinessEntityBuilder.getFactory(ItineraryReview.class),
                 new DatabaseConnector.CallbackInterface<ItineraryReview>() {
@@ -169,6 +170,7 @@ public class ItineraryManagement extends AppCompatActivity {
 
     public void deleteItineraryFromServer(Map<String, Object> itCode) {
         BooleanConnector connector = new BooleanConnector(
+                this,
                 ConnectorConstants.DELETE_ITINERARY,
                 new BooleanConnector.CallbackInterface() {
                     @Override

@@ -30,6 +30,7 @@ public class LanguageManager {
      */
     public LanguageManager() {
         GetDataConnector<Language> request = new GetDataConnector<>(
+                null,
                 ConnectorConstants.REQUEST_LANGUAGES,
                 BusinessEntityBuilder.getFactory(Language.class),
                 new DatabaseConnector.CallbackInterface<Language>() {
@@ -94,6 +95,7 @@ public class LanguageManager {
             data.put("language_code", languageToSet.get(i).getCode());
             Log.i("LANGUAGE", data.toString());
             new BooleanConnector(
+                    null,
                     ConnectorConstants.INSERT_USER_LANGUAGE,
                     new BooleanConnector.CallbackInterface() {
                         @Override

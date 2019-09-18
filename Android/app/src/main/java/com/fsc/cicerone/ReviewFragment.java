@@ -62,6 +62,7 @@ public class ReviewFragment extends Fragment {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
         SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
+                getContext(),
                 ConnectorConstants.REQUEST_USER_REVIEW,
                 BusinessEntityBuilder.getFactory(UserReview.class),
                 new DatabaseConnector.CallbackInterface<UserReview>() {

@@ -83,6 +83,7 @@ public class ReportFragment extends Fragment {
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Report> connector = new SendInPostConnector<>(
+                getContext(),
                 ConnectorConstants.REPORT_FRAGMENT,
                 BusinessEntityBuilder.getFactory(Report.class),
                 new DatabaseConnector.CallbackInterface<Report>() {

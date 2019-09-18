@@ -1,14 +1,22 @@
 package app_connector;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Process;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
+import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.BusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +50,18 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
     private CallbackInterface<T> callback; // A reference to a CallbackInterface
 
     private BusinessEntityBuilder<T> builder;
+    private final WeakReference<Context> context;
+
+    private Exception error = null;
 
     /**
      * Constructor.
      *
      * @param url The url of the server-side script.
      */
-    DatabaseConnector(String url, BusinessEntityBuilder<T> builder) {
+    DatabaseConnector(Context context, String url, BusinessEntityBuilder<T> builder) {
         super();
+        this.context = context != null ? new WeakReference<>(context) : null;
         fileUrl = url;
         this.builder = builder;
         callback = new CallbackInterface<T>() {
@@ -72,8 +84,9 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
      * @param callback A reference to CallbackInterface that will be used before and after the
      *                 connection.
      */
-    DatabaseConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
+    DatabaseConnector(Context context, String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
         super();
+        this.context = context != null ? new WeakReference<>(context) : null;
         fileUrl = url;
         this.builder = builder;
         this.callback = callback != null ? callback : new CallbackInterface<T>() {
@@ -107,10 +120,10 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if (s != null) {
-
             s = s.trim(); // removing excess blank characters
-
             executeAfterConnection(s);
+        } else {
+            manageErrors();
         }
     }
 
@@ -140,4 +153,23 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
      */
     @Override
     protected abstract String doInBackground(Void... voids);
+
+    protected void setError(Exception error) {
+        this.error = error;
+    }
+
+    private void manageErrors() {
+        if (context == null || error == null)
+            return;
+
+        new MaterialAlertDialogBuilder(context.get())
+                .setTitle("Connection Error")
+                .setMessage(error.getMessage())
+                .setPositiveButton(context.get().getString(R.string.ok), null)
+                .setNegativeButton("Close app", (dialog, which) -> {
+                    Process.killProcess(Process.myPid());
+                    System.exit(1);
+                })
+                .show();
+    }
 }

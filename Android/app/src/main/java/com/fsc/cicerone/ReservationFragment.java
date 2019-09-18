@@ -68,6 +68,7 @@ public class ReservationFragment extends Fragment {
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
+                context,
                 ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
                 BusinessEntityBuilder.getFactory(Reservation.class),
                 new DatabaseConnector.CallbackInterface<Reservation>() {

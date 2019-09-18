@@ -72,6 +72,7 @@ public class WishlistFragment extends Fragment {
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
+                getContext(),
                 ConnectorConstants.REQUEST_WISHLIST, //TODO: Check
                 BusinessEntityBuilder.getFactory(Wishlist.class),
                 new DatabaseConnector.CallbackInterface<Wishlist>() {
@@ -104,6 +105,7 @@ public class WishlistFragment extends Fragment {
 
     private void clearWish(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.CLEAR_WISHLIST,
                 new BooleanConnector.CallbackInterface() {
                     @Override

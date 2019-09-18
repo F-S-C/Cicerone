@@ -87,6 +87,7 @@ public class InsertReportFragment extends Fragment {
 
     public void setUsersInSpinner(Spinner users, String currentLoggedUser) {
         GetDataConnector<User> connector = new GetDataConnector<>(
+                getContext(),
                 ConnectorConstants.REGISTERED_USER,
                 BusinessEntityBuilder.getFactory(User.class),
                 new DatabaseConnector.CallbackInterface<User>() {
@@ -115,6 +116,7 @@ public class InsertReportFragment extends Fragment {
 
     public void sendToTableReport(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.INSERT_REPORT,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -135,6 +137,7 @@ public class InsertReportFragment extends Fragment {
 
     public void sendToTableReportDetails(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.INSERT_REPORT_DETAILS,
                 new BooleanConnector.CallbackInterface() {
                     @Override

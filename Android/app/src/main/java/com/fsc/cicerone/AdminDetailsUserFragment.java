@@ -85,7 +85,7 @@ public class AdminDetailsUserFragment extends Fragment {
             user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
             if (user.getUserType() == UserType.CICERONE) {
                 avgEarn.setVisibility(View.VISIBLE);
-                AccountManager.userAvgEarnings(user.getUsername(), avgEarn, context);
+                AccountManager.userAvgEarnings(context, user.getUsername(), avgEarn, context);
             }
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
@@ -116,6 +116,7 @@ public class AdminDetailsUserFragment extends Fragment {
 
     private void requestUserDocument(Map<String, Object> parameters) {
         SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
+                context,
                 ConnectorConstants.REQUEST_DOCUMENT,
                 BusinessEntityBuilder.getFactory(Document.class),
                 new DatabaseConnector.CallbackInterface<Document>() {
@@ -151,6 +152,7 @@ public class AdminDetailsUserFragment extends Fragment {
     private void deleteAccount(Map<String, Object> parameters) {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
             BooleanConnector connector = new BooleanConnector(
+                    context,
                     ConnectorConstants.DELETE_REGISTERED_USER,
                     new BooleanConnector.CallbackInterface() {
                         @Override

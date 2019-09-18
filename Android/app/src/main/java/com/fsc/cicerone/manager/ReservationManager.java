@@ -55,6 +55,7 @@ public abstract class ReservationManager {
                 .build();
 
         BooleanConnector connector = new BooleanConnector(
+                null,
                 ConnectorConstants.INSERT_RESERVATION,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -82,9 +83,9 @@ public abstract class ReservationManager {
      */
     public static void confirmReservation(Reservation reservation) {
         reservation.setConfirmationDate(new Date());
-        AccountManager.sendEmailWithContacts(reservation.getItinerary(), reservation.getClient(), result -> {
+        AccountManager.sendEmailWithContacts(null, reservation.getItinerary(), reservation.getClient(), result -> {
             if (result) {
-                BooleanConnector connector = new BooleanConnector(ConnectorConstants.UPDATE_RESERVATION);
+                BooleanConnector connector = new BooleanConnector(null, ConnectorConstants.UPDATE_RESERVATION);
                 connector.setObjectToSend(SendInPostConnector.paramsFromJSONObject(reservation.toJSONObject()));
                 connector.execute();
             }
@@ -107,6 +108,7 @@ public abstract class ReservationManager {
      */
     private static void deleteReservationFromServer(Reservation reservation, @Nullable RunnableUsingBooleanResult callback) {
         BooleanConnector connector = new BooleanConnector(
+                null,
                 ConnectorConstants.DELETE_RESERVATION,
                 new BooleanConnector.CallbackInterface() {
                     @Override

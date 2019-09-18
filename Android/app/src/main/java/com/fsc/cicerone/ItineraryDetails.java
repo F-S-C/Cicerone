@@ -145,6 +145,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
     public void addToWishlist(Map<String, Object> params) {
         BooleanConnector connector = new BooleanConnector(
+                this,
                 ConnectorConstants.INSERT_WISHLIST,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -167,6 +168,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
     public void deleteFromWishlist(Map<String, Object> params) {
         BooleanConnector connector = new BooleanConnector(
+                this,
                 ConnectorConstants.DELETE_WISHLIST,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -192,6 +194,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
     public void checkWishlist(Map<String, Object> object) {
         SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
+                this,
                 ConnectorConstants.SEARCH_WISHLIST,
                 BusinessEntityBuilder.getFactory(Wishlist.class),
                 new DatabaseConnector.CallbackInterface<Wishlist>() {
@@ -239,6 +242,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
     public void getItineraryReviews(Map<String, Object> itineraryCode) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                this,
                 ConnectorConstants.ITINERARY_REVIEW,
                 BusinessEntityBuilder.getFactory(ItineraryReview.class),
                 new DatabaseConnector.CallbackInterface<ItineraryReview>() {
@@ -267,6 +271,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
     public void isReservated(Map<String, Object> reservation) {
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
+                this,
                 ConnectorConstants.REQUEST_RESERVATION,
                 BusinessEntityBuilder.getFactory(Reservation.class),
                 new DatabaseConnector.CallbackInterface<Reservation>() {

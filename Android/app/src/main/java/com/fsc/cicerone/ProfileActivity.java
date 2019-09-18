@@ -106,6 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void getData(Map<String, Object> parameters) {
         SendInPostConnector<User> connector = new SendInPostConnector<>(
+                this,
                 ConnectorConstants.REGISTERED_USER,
                 BusinessEntityBuilder.getFactory(User.class),
                 new DatabaseConnector.CallbackInterface<User>() {
@@ -137,6 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
         Map<String, Object> newParameter = new HashMap<>(1);
         newParameter.put("reviewed_user", Objects.requireNonNull(parameters.get("username")).toString());
         SendInPostConnector<UserReview> connectorReview = new SendInPostConnector<>(
+                this,
                 ConnectorConstants.REQUEST_USER_REVIEW,
                 BusinessEntityBuilder.getFactory(UserReview.class),
                 new DatabaseConnector.CallbackInterface<UserReview>() {

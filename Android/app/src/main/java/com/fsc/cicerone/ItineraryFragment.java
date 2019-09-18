@@ -126,6 +126,7 @@ public class ItineraryFragment extends Fragment {
         //TODO: Test and check if the new adapter works as expected.
         //RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
+                context,
                 ConnectorConstants.REQUEST_ITINERARY,
                 BusinessEntityBuilder.getFactory(Itinerary.class),
                 new DatabaseConnector.CallbackInterface<Itinerary>() {
@@ -148,6 +149,7 @@ public class ItineraryFragment extends Fragment {
     private void getParticipations(Map<String, Object> parameters, RecyclerView recyclerView) {
         //RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
+                context,
                 ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
                 BusinessEntityBuilder.getFactory(Reservation.class),
                 new DatabaseConnector.CallbackInterface<Reservation>() {

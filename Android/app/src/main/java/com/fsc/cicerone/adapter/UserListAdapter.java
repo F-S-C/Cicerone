@@ -140,6 +140,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         Map<String, Object> params = new HashMap<>(1);
         params.put("reviewed_user", usr);
         SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
+                context,
                 ConnectorConstants.REQUEST_USER_REVIEW,
                 BusinessEntityBuilder.getFactory(UserReview.class),
                 new DatabaseConnector.CallbackInterface<UserReview>() {

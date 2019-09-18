@@ -61,6 +61,7 @@ public class SelectedItineraryReviewFragment extends Fragment {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                getContext(),
                 ConnectorConstants.REQUEST_ITINERARY_REVIEW,
                 BusinessEntityBuilder.getFactory(ItineraryReview.class),
                 new DatabaseConnector.CallbackInterface<ItineraryReview>() {

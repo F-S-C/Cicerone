@@ -45,6 +45,7 @@ public class UsersListFragment extends Fragment {
     private void requireData(View view, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         GetDataConnector<User> connector = new GetDataConnector<>(
+                getContext(),
                 ConnectorConstants.REGISTERED_USER,
                 BusinessEntityBuilder.getFactory(User.class),
                 new DatabaseConnector.CallbackInterface<User>() {

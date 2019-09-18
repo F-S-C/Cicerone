@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
     private void requireData(View view, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         GetDataConnector<Itinerary> connector = new GetDataConnector<>(
+                context,
                 ConnectorConstants.REQUEST_ACTIVE_ITINERARY,
                 BusinessEntityBuilder.getFactory(Itinerary.class),
                 new DatabaseConnector.CallbackInterface<Itinerary>() {

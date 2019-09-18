@@ -124,6 +124,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
         Map<String, Object> params = new HashMap<>(1);
         params.put("booked_itinerary", itineraryCode);
         SendInPostConnector<Reservation> conn = new SendInPostConnector<>(
+                context,
                 ConnectorConstants.REQUEST_RESERVATION,
                 BusinessEntityBuilder.getFactory(Reservation.class),
                 new DatabaseConnector.CallbackInterface<Reservation>() {

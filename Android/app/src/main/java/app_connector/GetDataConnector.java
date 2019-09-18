@@ -1,10 +1,15 @@
 package app_connector;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.fsc.cicerone.model.BusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -20,8 +25,8 @@ public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnecto
      *
      * @param url The url of the server-side script.
      */
-    public GetDataConnector(String url, BusinessEntityBuilder<T> builder) {
-        super(url, builder);
+    public GetDataConnector(Context context, String url, BusinessEntityBuilder<T> builder) {
+        super(context, url, builder);
     }
 
     /**
@@ -31,8 +36,8 @@ public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnecto
      * @param callback A reference to CallbackInterface that will be used before and after the
      *                 connection.
      */
-    public GetDataConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
-        super(url, builder, callback);
+    public GetDataConnector(Context context, String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
+        super(context, url, builder, callback);
     }
 
     /**
@@ -54,6 +59,10 @@ public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnecto
             }
             return stringBuilder.toString().trim();
         } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            Log.e("GET_DATA_ERROR", sw.toString());
+            setError(e);
             return null;
         }
     }

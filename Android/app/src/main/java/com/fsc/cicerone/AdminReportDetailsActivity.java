@@ -65,6 +65,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
 
     private void getReportFromServer(Map<String, Object> params) {
         SendInPostConnector<Report> connector = new SendInPostConnector<>(
+                this,
                 ConnectorConstants.REPORT_FRAGMENT,
                 BusinessEntityBuilder.getFactory(Report.class),
                 new DatabaseConnector.CallbackInterface<Report>() {
@@ -122,6 +123,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         params.put("report_body", bodyText.getText().toString());
         params.put("state", ReportStatus.toInt(ReportStatus.PENDING));
         BooleanConnector connector = new BooleanConnector(
+                this,
                 ConnectorConstants.UPDATE_REPORT_DETAILS,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -147,6 +149,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         params.put("report_body", bodyText.getText().toString());
         params.put("state", ReportStatus.toInt(ReportStatus.CLOSED));
         BooleanConnector connector = new BooleanConnector(
+                this,
                 ConnectorConstants.UPDATE_REPORT_DETAILS,
                 new BooleanConnector.CallbackInterface() {
                     @Override

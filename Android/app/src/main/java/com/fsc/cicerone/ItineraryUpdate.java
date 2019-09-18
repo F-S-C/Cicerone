@@ -411,6 +411,7 @@ public class ItineraryUpdate extends AppCompatActivity {
 
     private void submitNewData(Map<String, Object> params) {
         BooleanConnector connector = new BooleanConnector(
+                this,
                 ConnectorConstants.UPDATE_ITINERARY,
                 new BooleanConnector.CallbackInterface() {
                     @Override

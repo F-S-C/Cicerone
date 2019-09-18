@@ -116,6 +116,7 @@ public class ChangePassword extends AppCompatActivity {
         params.put("username", user.getUsername());
         params.put("password", newPassword.getText().toString());
         BooleanConnector connector = new BooleanConnector(
+                this,
                 ConnectorConstants.UPDATE_REGISTERED_USER,
                 new BooleanConnector.CallbackInterface() {
                     @Override

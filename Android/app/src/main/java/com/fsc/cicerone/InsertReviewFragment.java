@@ -84,6 +84,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void requestReview(Map<String, Object> parameters) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.REQUEST_FOR_REVIEW,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -145,6 +146,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void checkReview(Map<String, Object> parameters) {
         SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
+                getContext(),
                 ConnectorConstants.REQUEST_USER_REVIEW,
                 BusinessEntityBuilder.getFactory(UserReview.class),
                 new DatabaseConnector.CallbackInterface<UserReview>() {
@@ -178,6 +180,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void submitReview(Map<String, Object> sendparam) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.INSERT_USER_REVIEW,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -211,6 +214,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void deleteReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.DELETE_USER_REVIEW,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -239,6 +243,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void updateReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.UPDATE_USER_REVIEW,
                 new BooleanConnector.CallbackInterface() {
                     @Override

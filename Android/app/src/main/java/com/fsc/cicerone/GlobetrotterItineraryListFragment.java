@@ -72,6 +72,7 @@ public class GlobetrotterItineraryListFragment extends Fragment {
 
     private void requireData(Map<String, Object> parameters, RecyclerView recyclerView) {
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
+                context,
                 ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
                 BusinessEntityBuilder.getFactory(Reservation.class),
                 new DatabaseConnector.CallbackInterface<Reservation>() {

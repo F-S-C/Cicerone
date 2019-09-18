@@ -1,5 +1,6 @@
 package app_connector;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
@@ -30,8 +31,8 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
 
     private CallbackInterface callback;
 
-    public BooleanConnector(String url) {
-        super(url, null);
+    public BooleanConnector(Context context, String url) {
+        super(context, url, null);
         this.callback = new CallbackInterface() {
             @Override
             public void onStartConnection() {
@@ -45,8 +46,8 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         };
     }
 
-    public BooleanConnector(String url, CallbackInterface callback) {
-        super(url, null, new DatabaseConnector.CallbackInterface<BooleanResult>() {
+    public BooleanConnector(Context context, String url, CallbackInterface callback) {
+        super(context, url, null, new DatabaseConnector.CallbackInterface<BooleanResult>() {
             @Override
             public void onStartConnection() {
                 callback.onStartConnection();
@@ -60,8 +61,8 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         this.callback = callback;
     }
 
-    public BooleanConnector(String url, CallbackInterface callback, Map<String, Object> objectToSend) {
-        super(url, null, new DatabaseConnector.CallbackInterface<BooleanResult>() {
+    public BooleanConnector(Context context, String url, CallbackInterface callback, Map<String, Object> objectToSend) {
+        super(context, url, null, new DatabaseConnector.CallbackInterface<BooleanResult>() {
             @Override
             public void onStartConnection() {
                 callback.onStartConnection();

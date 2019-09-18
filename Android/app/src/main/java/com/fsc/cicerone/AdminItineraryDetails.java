@@ -110,6 +110,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
 
     public void getItineraryReviews(Map<String, Object> itineraryCode) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                this,
                 ConnectorConstants.ITINERARY_REVIEW,
                 BusinessEntityBuilder.getFactory(ItineraryReview.class),
                 new DatabaseConnector.CallbackInterface<ItineraryReview>() {

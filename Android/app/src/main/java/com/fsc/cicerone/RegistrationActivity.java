@@ -123,13 +123,13 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (validateFirstPageData()) {
                     next.setText(R.string.loading);
                     next.setEnabled(false);
-                    AccountManager.checkIfUsernameExists(username.getText().toString().trim().toLowerCase(), resultUser -> {
+                    AccountManager.checkIfUsernameExists(RegistrationActivity.this, username.getText().toString().trim().toLowerCase(), resultUser -> {
                         if (resultUser) {
                             username.setError(getString(R.string.username_already_exists));
                             next.setText(R.string.next);
                             next.setEnabled(true);
                         } else {
-                            AccountManager.checkIfEmailExists(email.getText().toString().trim().toLowerCase(), resultEmail -> {
+                            AccountManager.checkIfEmailExists(RegistrationActivity.this, email.getText().toString().trim().toLowerCase(), resultEmail -> {
                                 if (resultEmail) {
                                     email.setError(getString(R.string.email_already_exists));
                                     next.setText(R.string.next);
@@ -202,9 +202,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (validateSecondPageData()) {
                     signup.setText(R.string.loading);
                     signup.setEnabled(false);
-                    AccountManager.insertUser(setNewUser(), result -> {
+                    AccountManager.insertUser(this, setNewUser(), result -> {
                         if (result) {
-                            AccountManager.insertUserDocument(username.getText().toString().trim().toLowerCase(), new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()),
+                            AccountManager.insertUserDocument(this, username.getText().toString().trim().toLowerCase(), new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()),
                                     ins -> {
                                         if (ins) {
                                             ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());

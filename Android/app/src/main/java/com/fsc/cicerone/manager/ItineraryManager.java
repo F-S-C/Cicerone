@@ -80,6 +80,7 @@ public abstract class ItineraryManager {
                 .build();
 
         BooleanConnector connector = new BooleanConnector(
+                null,
                 ConnectorConstants.INSERT_ITINERARY,
                 new BooleanConnector.CallbackInterface() {
                     @Override

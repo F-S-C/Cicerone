@@ -82,6 +82,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void requestReview(Map<String, Object> parameters) {
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
+                getContext(),
                 ConnectorConstants.REQUEST_RESERVATION,
                 BusinessEntityBuilder.getFactory(Reservation.class),
                 new DatabaseConnector.CallbackInterface<Reservation>() {
@@ -152,6 +153,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void checkReview(Map<String, Object> parameters) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
+                getContext(),
                 ConnectorConstants.REQUEST_ITINERARY_REVIEW,
                 BusinessEntityBuilder.getFactory(ItineraryReview.class),
                 new DatabaseConnector.CallbackInterface<ItineraryReview>() {
@@ -185,6 +187,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void submitReview(Map<String, Object> sendParam) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.INSERT_ITINERARY_REVIEW,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -218,6 +221,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void deleteReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.DELETE_ITINERARY_REVIEW,
                 new BooleanConnector.CallbackInterface() {
                     @Override
@@ -246,6 +250,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void updateReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector(
+                getContext(),
                 ConnectorConstants.UPDATE_ITINERARY_REVIEW,
                 new BooleanConnector.CallbackInterface() {
                     @Override

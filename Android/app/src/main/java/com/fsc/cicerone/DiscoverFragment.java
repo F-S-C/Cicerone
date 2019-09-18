@@ -195,6 +195,7 @@ public class DiscoverFragment extends Fragment {
         if (endingDate != null) object.put("beginning_date", sdf.format(endingDate));
         if (location != null) object.put("location", location);
         SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
+                context,
                 ConnectorConstants.REQUEST_ITINERARY,
                 BusinessEntityBuilder.getFactory(Itinerary.class),
                 new DatabaseConnector.CallbackInterface<Itinerary>() {

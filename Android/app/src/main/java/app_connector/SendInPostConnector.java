@@ -1,5 +1,6 @@
 package app_connector;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
@@ -41,8 +42,8 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      *
      * @param url The url of the server-side script.
      */
-    public SendInPostConnector(String url, BusinessEntityBuilder<T> builder) {
-        super(url, builder);
+    public SendInPostConnector(Context context, String url, BusinessEntityBuilder<T> builder) {
+        super(context, url, builder);
         objectToSend = null;
     }
 
@@ -53,8 +54,8 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      * @param callback A reference to CallbackInterface that will be used before and after the
      *                 connection.
      */
-    public SendInPostConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
-        super(url, builder, callback);
+    public SendInPostConnector(Context context, String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
+        super(context, url, builder, callback);
         objectToSend = null;
     }
 
@@ -66,8 +67,8 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      *                     connection.
      * @param objectToSend A JSON Object containing the data that will be sent.
      */
-    public SendInPostConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback, Map<String, Object> objectToSend) {
-        super(url, builder, callback);
+    public SendInPostConnector(Context context, String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback, Map<String, Object> objectToSend) {
+        super(context, url, builder, callback);
         this.objectToSend = objectToSend;
     }
 
@@ -110,6 +111,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             Log.e("SEND_IN_POST_ERROR", sw.toString());
+            setError(e);
             return null;
         }
     }
