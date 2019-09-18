@@ -28,14 +28,12 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -44,7 +42,7 @@ import app_connector.SendInPostConnector;
 public class AdminDetailsUserFragment extends Fragment {
 
     private static final String ERROR_TAG = "ERROR IN " + AdminDetailsUserFragment.class.getName();
-//    private Map<String, Object> parameters = new HashMap<>(); //TODO: Remove from class diagram
+    //    private Map<String, Object> parameters = new HashMap<>(); //TODO: Remove from class diagram
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
@@ -85,7 +83,7 @@ public class AdminDetailsUserFragment extends Fragment {
             user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
             if (user.getUserType() == UserType.CICERONE) {
                 avgEarn.setVisibility(View.VISIBLE);
-                AccountManager.userAvgEarnings(user.getUsername(), avgEarn, context);
+                AccountManager.userAvgEarnings(context, user.getUsername(), avgEarn, context);
             }
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
@@ -115,57 +113,42 @@ public class AdminDetailsUserFragment extends Fragment {
     }
 
     private void requestUserDocument(Map<String, Object> parameters) {
-        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_DOCUMENT,
-                BusinessEntityBuilder.getFactory(Document.class),
-                new DatabaseConnector.CallbackInterface<Document>() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
+        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_DOCUMENT, BusinessEntityBuilder.getFactory(Document.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    if (!list.isEmpty()) {
+                        Document dataDocument = list.get(0);
+                        data = "Document Number: " + dataDocument.getNumber();
+                        documentNumber.setText(data);
+                        data = "Document Type: " + dataDocument.getType();
+                        documentType.setText(data);
+
+                        data = "Expiry Date: " + outputFormat.format(dataDocument.getExpirationDate());
+                        documentExpiryDate.setText(data);
+
+                    } else {
+                        documentNumber.setVisibility(View.GONE);
+                        documentType.setVisibility(View.GONE);
+                        documentExpiryDate.setVisibility(View.GONE);
+                        Toast.makeText(context, AdminDetailsUserFragment.this.getString(R.string.doc_not_found), Toast.LENGTH_SHORT).show();
                     }
-
-                    @Override
-                    public void onEndConnection(List<Document> list) {
-                        if (!list.isEmpty()) {
-                            Document dataDocument = list.get(0);
-                            data = "Document Number: " + dataDocument.getNumber();
-                            documentNumber.setText(data);
-                            data = "Document Type: " + dataDocument.getType();
-                            documentType.setText(data);
-
-                            data = "Expiry Date: " + outputFormat.format(dataDocument.getExpirationDate());
-                            documentExpiryDate.setText(data);
-
-                        } else {
-                            documentNumber.setVisibility(View.GONE);
-                            documentType.setVisibility(View.GONE);
-                            documentExpiryDate.setVisibility(View.GONE);
-                            Toast.makeText(context, AdminDetailsUserFragment.this.getString(R.string.doc_not_found), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         userDocumentConnector.execute();
     }
 
     private void deleteAccount(Map<String, Object> parameters) {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
-            BooleanConnector connector = new BooleanConnector(
-                    ConnectorConstants.DELETE_REGISTERED_USER,
-                    new BooleanConnector.CallbackInterface() {
-                        @Override
-                        public void onStartConnection() {
-                            // Do nothing
+            BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
+                    .setContext(context)
+                    .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                        if (!result.getResult()) {
+                            Log.e("DELETE_USER_ERROR", result.getMessage());
                         }
-
-                        @Override
-                        public void onEndConnection(BooleanConnector.BooleanResult result) {
-                            if (!result.getResult()) {
-                                Log.e("DELETE_USER_ERROR", result.getMessage());
-                            }
-                        }
-                    },
-                    parameters);
+                    })
+                    .setObjectToSend(parameters)
+                    .build();
             connector.execute();
             startActivity(new Intent(context, AdminMainActivity.class));
             context.finish();

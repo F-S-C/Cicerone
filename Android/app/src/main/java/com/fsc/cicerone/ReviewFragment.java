@@ -20,11 +20,9 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -61,28 +59,23 @@ public class ReviewFragment extends Fragment {
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
-        SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_USER_REVIEW,
-                BusinessEntityBuilder.getFactory(UserReview.class),
-                new DatabaseConnector.CallbackInterface<UserReview>() {
-                    @Override
-                    public void onStartConnection() {
-                        progressBar.setVisibility(View.VISIBLE);
-                        message.setVisibility(View.GONE);
+        SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
+                .setContext(getContext())
+                .setOnStartConnectionListener(() -> {
+                    progressBar.setVisibility(View.VISIBLE);
+                    message.setVisibility(View.GONE);
+                })
+                .setOnEndConnectionListener(list -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (!list.isEmpty()) {
+                        adapter = new ReviewAdapter(getActivity(), list);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        message.setVisibility(View.VISIBLE);
                     }
-
-                    @Override
-                    public void onEndConnection(List<UserReview> list) {
-                        progressBar.setVisibility(View.GONE);
-                        if (!list.isEmpty()) {
-                            adapter = new ReviewAdapter(getActivity(), list);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            message.setVisibility(View.VISIBLE);
-                        }
-                    }
-                },
-                parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

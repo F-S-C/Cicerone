@@ -1,14 +1,19 @@
 package app_connector;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Process;
 import android.util.Log;
 
+import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.BusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,73 +26,30 @@ import java.util.List;
  */
 public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncTask<Void, Void, String> {
 
-    /**
-     * An interface to use before and after the connection.
-     */
-    public interface CallbackInterface<T> {
+    public interface OnStartConnectionListener {
         /**
          * Function that will be called before the start of the connection.
          */
         void onStartConnection();
+    }
 
+    public interface OnEndConnectionListener<T> {
         /**
          * Function that will be called when the connection has ended.
          *
          * @param list This array contains the results of the connection.
          */
-        void onEndConnection(List<T> list) throws JSONException;
+        void onEndConnection(List<T> list);
     }
 
-    final String fileUrl; // The URL of the server-side script
-    private CallbackInterface<T> callback; // A reference to a CallbackInterface
+    String fileUrl; // The URL of the server-side script
+    private OnStartConnectionListener onStartConnectionListener;
+    private OnEndConnectionListener<T> onEndConnectionListener;
 
     private BusinessEntityBuilder<T> builder;
+    private WeakReference<Context> context;
 
-    /**
-     * Constructor.
-     *
-     * @param url The url of the server-side script.
-     */
-    DatabaseConnector(String url, BusinessEntityBuilder<T> builder) {
-        super();
-        fileUrl = url;
-        this.builder = builder;
-        callback = new CallbackInterface<T>() {
-            @Override
-            public void onEndConnection(List<T> jsonArray) {
-                // Do nothing by default
-            }
-
-            @Override
-            public void onStartConnection() {
-                // Do nothing by default
-            }
-        };
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param url      The url of the server-side script.
-     * @param callback A reference to CallbackInterface that will be used before and after the
-     *                 connection.
-     */
-    DatabaseConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
-        super();
-        fileUrl = url;
-        this.builder = builder;
-        this.callback = callback != null ? callback : new CallbackInterface<T>() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(List<T> list) {
-                // Do nothing
-            }
-        };
-    }
+    private Exception error = null;
 
     /**
      * A function that will be called before the execution.
@@ -95,7 +57,7 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        callback.onStartConnection();
+        if (onStartConnectionListener != null) onStartConnectionListener.onStartConnection();
     }
 
     /**
@@ -107,13 +69,19 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if (s != null) {
-
             s = s.trim(); // removing excess blank characters
-
             executeAfterConnection(s);
+        } else {
+            manageErrors();
         }
     }
 
+    /**
+     * A function that will be executed after the connection ends. It should call onEndConnectionListener.onEndConnection in its body.
+     *
+     * @param s A string containing the connection result.
+     * @see OnEndConnectionListener#onEndConnection(List)
+     */
     protected void executeAfterConnection(String s) {
         try {
             // adapting the string to be a JSON Array by adding the brackets where needed
@@ -121,12 +89,11 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
             ArrayList<T> array = new ArrayList<>(jsonArray.length());
             for (int i = 0; i < jsonArray.length(); i++) {
                 T object = builder.fromJSONObject(jsonArray.getJSONObject(i));
-
                 array.add(object);
             }
 
 
-            callback.onEndConnection(array);
+            if (onEndConnectionListener != null) onEndConnectionListener.onEndConnection(array);
         } catch (JSONException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             Log.e("EXCEPTION", e.toString());
         }
@@ -140,4 +107,67 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
      */
     @Override
     protected abstract String doInBackground(Void... voids);
+
+    protected void setError(Exception error) {
+        this.error = error;
+    }
+
+    /**
+     * Manages the errors.
+     */
+    private void manageErrors() {
+        if (context == null || error == null)
+            return;
+
+        new MaterialAlertDialogBuilder(context.get())
+                .setTitle("Connection Error")
+                .setMessage(error.getMessage())
+                .setPositiveButton(context.get().getString(R.string.ok), null)
+                .setNegativeButton("Close app", (dialog, which) -> {
+                    Process.killProcess(Process.myPid());
+                    System.exit(1);
+                })
+                .show();
+    }
+
+    protected DatabaseConnector(Builder<T> builder) {
+        this.context = builder.context;
+        this.onStartConnectionListener = builder.onStartConnectionListener;
+        this.onEndConnectionListener = builder.onEndConnectionListener;
+        this.fileUrl = builder.url;
+        this.builder = builder.builder;
+    }
+
+    public static abstract class Builder<BuilderType extends BusinessEntity> {
+        private final String url; // The URL of the server-side script
+
+        private OnStartConnectionListener onStartConnectionListener = null;
+        private OnEndConnectionListener<BuilderType> onEndConnectionListener = null;
+
+        private final BusinessEntityBuilder<BuilderType> builder;
+        private WeakReference<Context> context = null;
+
+        Builder(String url, BusinessEntityBuilder<BuilderType> builder) {
+            this.url = url;
+            this.builder = builder;
+        }
+
+        public Builder<BuilderType> setOnStartConnectionListener(OnStartConnectionListener onStartConnectionListener) {
+            this.onStartConnectionListener = onStartConnectionListener;
+            return this;
+        }
+
+        public Builder<BuilderType> setOnEndConnectionListener(OnEndConnectionListener<BuilderType> onEndConnectionListener) {
+            this.onEndConnectionListener = onEndConnectionListener;
+            return this;
+        }
+
+        public Builder<BuilderType> setContext(Context context) {
+            this.context = context != null ? new WeakReference<>(context) : null;
+            return this;
+        }
+
+        public abstract DatabaseConnector<BuilderType> build();
+
+    }
 }

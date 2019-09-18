@@ -19,17 +19,12 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class InsertReviewFragment extends Fragment {
@@ -81,129 +76,113 @@ public class InsertReviewFragment extends Fragment {
     }
 
     private void requestReview(Map<String, Object> parameters) {
-        BooleanConnector connector = new BooleanConnector(ConnectorConstants.REQUEST_FOR_REVIEW,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        submitReview.setVisibility(View.GONE);
-                        updateReview.setVisibility(View.GONE);
-                        message.setVisibility(View.GONE);
-                        deleteReview.setVisibility(View.GONE);
-                        descriptionReview.setVisibility(View.GONE);
-                        feedbackReview.setVisibility(View.GONE);
-                        messageDescription.setVisibility(View.GONE);
-                        messageFeedback.setVisibility(View.GONE);
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.REQUEST_FOR_REVIEW)
+                .setContext(getContext())
+                .setOnStartConnectionListener(() -> {
+                    submitReview.setVisibility(View.GONE);
+                    updateReview.setVisibility(View.GONE);
+                    message.setVisibility(View.GONE);
+                    deleteReview.setVisibility(View.GONE);
+                    descriptionReview.setVisibility(View.GONE);
+                    feedbackReview.setVisibility(View.GONE);
+                    messageDescription.setVisibility(View.GONE);
+                    messageFeedback.setVisibility(View.GONE);
+                })
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        descriptionReview.setVisibility(View.VISIBLE);
+                        feedbackReview.setVisibility(View.VISIBLE);
+                        messageDescription.setVisibility(View.VISIBLE);
+                        messageFeedback.setVisibility(View.VISIBLE);
+                        checkReview(parameters);
+
+                        submitReview.setOnClickListener(v -> {
+                            if (allFilled()) {
+                                sendParam.put("username", Objects.requireNonNull(param.get("username")).toString());
+                                sendParam.put("reviewed_user",
+                                        Objects.requireNonNull(param.get("reviewed_user")).toString());
+                                sendParam.put("description", descriptionReview.getText().toString());
+                                sendParam.put("feedback", (int) feedbackReview.getRating());
+                                Log.e("username:", Objects.requireNonNull(sendParam.get("username")).toString());
+                                Log.e("reviewed_user:",
+                                        Objects.requireNonNull(sendParam.get("reviewed_user")).toString());
+                                Log.e("description:",
+                                        Objects.requireNonNull(sendParam.get("description")).toString());
+                                Log.e("feedback:", Objects.requireNonNull(sendParam.get("feedback")).toString());
+
+                                submitReview(sendParam);
+                            } else
+                                Toast.makeText(getActivity(),
+                                        InsertReviewFragment.this.getString(R.string.error_fields_empty),
+                                        Toast.LENGTH_SHORT).show();
+
+                        });
+                        deleteReview.setOnClickListener(v -> deleteReview(param));
+                        updateReview.setOnClickListener(v -> {
+                            if (allFilled()) {
+                                sendParam.put("username", Objects.requireNonNull(param.get("username")).toString());
+                                sendParam.put("reviewed_user",
+                                        Objects.requireNonNull(param.get("reviewed_user")).toString());
+                                sendParam.put("description", descriptionReview.getText().toString());
+                                sendParam.put("feedback", (int) feedbackReview.getRating());
+
+                                updateReview(sendParam);
+                            } else
+                                Toast.makeText(getActivity(),
+                                        InsertReviewFragment.this.getString(R.string.error_fields_empty),
+                                        Toast.LENGTH_SHORT).show();
+
+                        });
+                    } else {
+                        message.setVisibility(View.VISIBLE);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-
-                        if (result.getResult()) {
-                            descriptionReview.setVisibility(View.VISIBLE);
-                            feedbackReview.setVisibility(View.VISIBLE);
-                            messageDescription.setVisibility(View.VISIBLE);
-                            messageFeedback.setVisibility(View.VISIBLE);
-                            checkReview(parameters);
-
-                            submitReview.setOnClickListener(v -> {
-                                if (allFilled()) {
-                                    sendParam.put("username", Objects.requireNonNull(param.get("username")).toString());
-                                    sendParam.put("reviewed_user",
-                                            Objects.requireNonNull(param.get("reviewed_user")).toString());
-                                    sendParam.put("description", descriptionReview.getText().toString());
-                                    sendParam.put("feedback", (int) feedbackReview.getRating());
-                                    Log.e("username:", Objects.requireNonNull(sendParam.get("username")).toString());
-                                    Log.e("reviewed_user:",
-                                            Objects.requireNonNull(sendParam.get("reviewed_user")).toString());
-                                    Log.e("description:",
-                                            Objects.requireNonNull(sendParam.get("description")).toString());
-                                    Log.e("feedback:", Objects.requireNonNull(sendParam.get("feedback")).toString());
-
-                                    submitReview(sendParam);
-                                } else
-                                    Toast.makeText(getActivity(),
-                                            InsertReviewFragment.this.getString(R.string.error_fields_empty),
-                                            Toast.LENGTH_SHORT).show();
-
-                            });
-                            deleteReview.setOnClickListener(v -> deleteReview(param));
-                            updateReview.setOnClickListener(v -> {
-                                if (allFilled()) {
-                                    sendParam.put("username", Objects.requireNonNull(param.get("username")).toString());
-                                    sendParam.put("reviewed_user",
-                                            Objects.requireNonNull(param.get("reviewed_user")).toString());
-                                    sendParam.put("description", descriptionReview.getText().toString());
-                                    sendParam.put("feedback", (int) feedbackReview.getRating());
-
-                                    updateReview(sendParam);
-                                } else
-                                    Toast.makeText(getActivity(),
-                                            InsertReviewFragment.this.getString(R.string.error_fields_empty),
-                                            Toast.LENGTH_SHORT).show();
-
-                            });
-                        } else {
-                            message.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-                }, parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 
     private void checkReview(Map<String, Object> parameters) {
-        SendInPostConnector<UserReview> connector = new SendInPostConnector<>(ConnectorConstants.REQUEST_USER_REVIEW,
-                BusinessEntityBuilder.getFactory(UserReview.class),
-                new DatabaseConnector.CallbackInterface<UserReview>() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
+                .setContext(getContext())
+                .setOnEndConnectionListener(list -> {
+                    message.setVisibility(View.GONE);
+                    if (!list.isEmpty()) {
+                        result = list.get(0);
+                        updateReview.setVisibility(View.VISIBLE);
+                        deleteReview.setVisibility(View.VISIBLE);
+                        descriptionReview.setText(result.getDescription());
+                        feedbackReview.setRating(result.getFeedback());
+                    } else {
+                        feedbackReview.setRating(0);
+                        descriptionReview.setText("");
+                        submitReview.setVisibility(View.VISIBLE);
                     }
-
-                    @Override
-                    public void onEndConnection(List<UserReview> list) {
-                        message.setVisibility(View.GONE);
-                        if (!list.isEmpty()) {
-                            result = list.get(0);
-                            updateReview.setVisibility(View.VISIBLE);
-                            deleteReview.setVisibility(View.VISIBLE);
-                            descriptionReview.setText(result.getDescription());
-                            feedbackReview.setRating(result.getFeedback());
-                        } else {
-                            feedbackReview.setRating(0);
-                            descriptionReview.setText("");
-                            submitReview.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }, parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 
     private void submitReview(Map<String, Object> sendparam) {
-        BooleanConnector connector = new BooleanConnector(ConnectorConstants.INSERT_USER_REVIEW,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_USER_REVIEW)
+                .setContext(getContext())
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    Log.e("p", result.toJSONObject().toString());
+                    if (result.getResult()) {
+                        Toast.makeText(getActivity(), InsertReviewFragment.this.getString(R.string.added_review),
+                                Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getActivity(), ProfileActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("reviewed_user",
+                                Objects.requireNonNull(sendparam.get("reviewed_user")).toString());
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        i.putExtras(b);
+                        startActivity(i);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        Log.e("p", result.toJSONObject().toString());
-                        if (result.getResult()) {
-                            Toast.makeText(getActivity(), InsertReviewFragment.this.getString(R.string.added_review),
-                                    Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getActivity(), ProfileActivity.class);
-                            Bundle b = new Bundle();
-                            b.putString("reviewed_user",
-                                    Objects.requireNonNull(sendparam.get("reviewed_user")).toString());
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            i.putExtras(b);
-                            startActivity(i);
-                        }
-
-                    }
-                }, sendparam);
+                })
+                .setObjectToSend(sendparam)
+                .build();
         connector.execute();
     }
 
@@ -212,54 +191,42 @@ public class InsertReviewFragment extends Fragment {
     }
 
     private void deleteReview(Map<String, Object> param) {
-        BooleanConnector connector = new BooleanConnector(ConnectorConstants.DELETE_USER_REVIEW,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_USER_REVIEW)
+                .setContext(getContext())
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    Log.e("p", result.toJSONObject().toString());
+                    if (result.getResult()) {
+                        Toast.makeText(getActivity(), InsertReviewFragment.this.getString(R.string.deleted_review),
+                                Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getActivity(), ProfileActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("reviewed_user", param.get("reviewed_user").toString());
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        i.putExtras(b);
+                        startActivity(i);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        Log.e("p", result.toJSONObject().toString());
-                        if (result.getResult()) {
-                            Toast.makeText(getActivity(), InsertReviewFragment.this.getString(R.string.deleted_review),
-                                    Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getActivity(), ProfileActivity.class);
-                            Bundle b = new Bundle();
-                            b.putString("reviewed_user", param.get("reviewed_user").toString());
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            i.putExtras(b);
-                            startActivity(i);
-                        }
-
-                    }
-                }, param);
+                })
+                .setObjectToSend(param)
+                .build();
         connector.execute();
     }
 
     private void updateReview(Map<String, Object> param) {
-        BooleanConnector connector = new BooleanConnector(ConnectorConstants.UPDATE_USER_REVIEW,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_USER_REVIEW)
+                .setContext(getContext())
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    Log.e("p", result.toJSONObject().toString());
+                    if (result.getResult()) {
+                        Intent i = new Intent(getActivity(), ProfileActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("reviewed_user", Objects.requireNonNull(param.get("reviewed_user")).toString());
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        i.putExtras(b);
+                        startActivity(i);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        Log.e("p", result.toJSONObject().toString());
-                        if (result.getResult()) {
-                            Intent i = new Intent(getActivity(), ProfileActivity.class);
-                            Bundle b = new Bundle();
-                            b.putString("reviewed_user", Objects.requireNonNull(param.get("reviewed_user")).toString());
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            i.putExtras(b);
-                            startActivity(i);
-                        }
-
-                    }
-                }, param);
+                })
+                .setObjectToSend(param)
+                .build();
         connector.execute();
     }
 

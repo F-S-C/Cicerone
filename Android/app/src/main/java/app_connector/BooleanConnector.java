@@ -1,5 +1,6 @@
 package app_connector;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
@@ -7,81 +8,27 @@ import com.fsc.cicerone.model.BusinessEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.Map;
 
 public class BooleanConnector extends SendInPostConnector<BooleanConnector.BooleanResult> {
 
     private static final String ERROR_TAG = "BOOL_CONNECTOR_ERROR";
 
-    public interface CallbackInterface {
-        /**
-         * Function that will be called before the start of the connection.
-         */
-        void onStartConnection();
-
+    public interface OnEndConnectionListener {
         /**
          * Function that will be called when the connection has ended.
          *
          * @param result The response of the connection.
          */
-        void onEndConnection(BooleanResult result) throws JSONException;
+        void onEndConnection(BooleanResult result);
     }
 
-    private CallbackInterface callback;
-
-    public BooleanConnector(String url) {
-        super(url, null);
-        this.callback = new CallbackInterface() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(BooleanResult result) {
-                // Do nothing
-            }
-        };
-    }
-
-    public BooleanConnector(String url, CallbackInterface callback) {
-        super(url, null, new DatabaseConnector.CallbackInterface<BooleanResult>() {
-            @Override
-            public void onStartConnection() {
-                callback.onStartConnection();
-            }
-
-            @Override
-            public void onEndConnection(List<BooleanResult> list) {
-                // Do nothing
-            }
-        });
-        this.callback = callback;
-    }
-
-    public BooleanConnector(String url, CallbackInterface callback, Map<String, Object> objectToSend) {
-        super(url, null, new DatabaseConnector.CallbackInterface<BooleanResult>() {
-            @Override
-            public void onStartConnection() {
-                callback.onStartConnection();
-            }
-
-            @Override
-            public void onEndConnection(List<BooleanResult> list) {
-                // Do nothing
-            }
-        }, objectToSend);
-        this.callback = callback;
-    }
+    private OnEndConnectionListener onEndConnectionListener;
 
     @Override
     protected void executeAfterConnection(String s) {
-        try {
-            this.callback.onEndConnection(new BooleanResult(s));
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-        }
+        if (onEndConnectionListener != null)
+            onEndConnectionListener.onEndConnection(new BooleanResult(s));
     }
 
     public static class BooleanResult extends BusinessEntity {
@@ -121,6 +68,45 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
                 Log.e(ERROR_TAG, e.getMessage());
             }
             return toReturn;
+        }
+    }
+
+    private BooleanConnector(Builder builder) {
+        super(builder);
+        onEndConnectionListener = builder.onEndConnectionListener;
+    }
+
+    public static class Builder extends SendInPostConnector.Builder<BooleanResult> {
+
+        private OnEndConnectionListener onEndConnectionListener;
+
+        public Builder(String url) {
+            super(url, null);
+        }
+
+        @Override
+        public Builder setOnStartConnectionListener(OnStartConnectionListener listener) {
+            return (Builder) super.setOnStartConnectionListener(listener);
+        }
+
+        public Builder setOnEndConnectionListener(OnEndConnectionListener listener) {
+            onEndConnectionListener = listener;
+            return this;
+        }
+
+        @Override
+        public Builder setContext(Context context) {
+            return (Builder) super.setContext(context);
+        }
+
+        @Override
+        public Builder setObjectToSend(Map<String, Object> objectToSend) {
+            return (Builder) super.setObjectToSend(objectToSend);
+        }
+
+        @Override
+        public BooleanConnector build() {
+            return new BooleanConnector(this);
         }
     }
 }

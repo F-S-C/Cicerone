@@ -74,30 +74,24 @@ public class GlobetrotterItineraryListFragment extends Fragment {
 
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         TextView message = view.findViewById(R.id.no_itinerary_history);
-        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
-                BusinessEntityBuilder.getFactory(Reservation.class),
-                new DatabaseConnector.CallbackInterface<Reservation>() {
-                    @Override
-                    public void onStartConnection() {
-                        message.setVisibility(View.GONE);
+        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnStartConnectionListener(() -> message.setVisibility(View.GONE))
+                .setOnEndConnectionListener(list -> {
+                    List<Reservation> filteredList = new ArrayList<>(list.size());
+                    for (Reservation reservation : list) {
+                        if (reservation.isConfirmed())
+                            filteredList.add(reservation);
                     }
-
-                    @Override
-                    public void onEndConnection(List<Reservation> list) {
-                        List<Reservation> filteredList = new ArrayList<>(list.size());
-                        for (Reservation reservation : list) {
-                            if (reservation.isConfirmed())
-                                filteredList.add(reservation);
-                        }
-                        if (!filteredList.isEmpty()) {
-                            adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), filteredList);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            message.setVisibility(View.VISIBLE);
-                        }
+                    if (!filteredList.isEmpty()) {
+                        adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), filteredList);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        message.setVisibility(View.VISIBLE);
                     }
-                }, parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

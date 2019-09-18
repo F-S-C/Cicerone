@@ -79,21 +79,11 @@ public abstract class ItineraryManager {
                 .imageUrl(url)
                 .build();
 
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.INSERT_ITINERARY,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult booleanResult) throws JSONException {
-                        Log.d("uploadItinerary", booleanResult.getResult() + ": " + booleanResult.getMessage());
-                        result.accept(booleanResult.getResult());
-                    }
-                },
-                SendInPostConnector.paramsFromJSONObject(itinerary.toJSONObject()));
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY)
+                .setContext(null)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) booleanResult -> result.accept(booleanResult.getResult()))
+                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(itinerary.toJSONObject()))
+                .build();
 
         connector.execute();
         return itinerary;

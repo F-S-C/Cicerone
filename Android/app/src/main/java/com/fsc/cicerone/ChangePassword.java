@@ -115,26 +115,19 @@ public class ChangePassword extends AppCompatActivity {
         Map<String, Object> params = new HashMap<>(2);
         params.put("username", user.getUsername());
         params.put("password", newPassword.getText().toString());
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.UPDATE_REGISTERED_USER,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
+                .setContext(this)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        user.setPassword(newPassword.getText().toString());
+                        Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                    } else {
+                        Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (result.getResult()) {
-                            user.setPassword(newPassword.getText().toString());
-                            Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
-                            onBackPressed();
-                        } else {
-                            Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                params);
+                })
+                .setObjectToSend(params)
+                .build();
         connector.execute();
     }
 

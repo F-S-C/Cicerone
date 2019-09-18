@@ -139,25 +139,17 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     private void setAvgRating(String usr, ViewHolder holder) {
         Map<String, Object> params = new HashMap<>(1);
         params.put("reviewed_user", usr);
-        SendInPostConnector<UserReview> connector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_USER_REVIEW,
-                BusinessEntityBuilder.getFactory(UserReview.class),
-                new DatabaseConnector.CallbackInterface<UserReview>() {
-                    @Override
-                    public void onStartConnection() {
-                        //
+        SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    int sum = 0;
+                    for (UserReview review : list) {
+                        sum += review.getFeedback();
                     }
-
-                    @Override
-                    public void onEndConnection(List<UserReview> list) {
-                        int sum = 0;
-                        for (UserReview review : list) {
-                            sum += review.getFeedback();
-                        }
-                        holder.avgRating.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
-                    }
-                },
-                params);
+                    holder.avgRating.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
+                })
+                .setObjectToSend(params)
+                .build();
         connector.execute();
     }
 }

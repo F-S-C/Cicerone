@@ -24,14 +24,12 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class ItineraryManagement extends AppCompatActivity {
@@ -140,53 +138,38 @@ public class ItineraryManagement extends AppCompatActivity {
     }
 
     public void getItineraryReviews(Map<String, Object> itineraryCode) {
-        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
-                ConnectorConstants.ITINERARY_REVIEW,
-                BusinessEntityBuilder.getFactory(ItineraryReview.class),
-                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(List<ItineraryReview> list) {
-                        if (!list.isEmpty()) {
-                            int sum = 0;
-                            for (ItineraryReview itineraryReview : list) {
-                                sum += itineraryReview.getFeedback();
-                            }
-                            float total = (float) sum / list.size();
-                            review.setRating(total);
-                        } else {
-                            review.setRating(0);
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    if (!list.isEmpty()) {
+                        int sum = 0;
+                        for (ItineraryReview itineraryReview : list) {
+                            sum += itineraryReview.getFeedback();
                         }
+                        float total = (float) sum / list.size();
+                        review.setRating(total);
+                    } else {
+                        review.setRating(0);
                     }
-                },
-                itineraryCode);
+                })
+                .setObjectToSend(itineraryCode)
+                .build();
         connector.execute();
     }
 
     public void deleteItineraryFromServer(Map<String, Object> itCode) {
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.DELETE_ITINERARY,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
+                .setContext(this)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();
+                        startActivity(i);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (result.getResult()) {
-                            Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();
-                            startActivity(i);
-                        }
-                    }
-                },
-                itCode);
+                })
+                .setObjectToSend(itCode)
+                .build();
         connector.execute();
     }
 }

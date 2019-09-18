@@ -32,7 +32,6 @@ import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class WishlistFragment extends Fragment {
@@ -75,63 +74,48 @@ public class WishlistFragment extends Fragment {
     }
 
     private void requireData(Map<String, Object> parameters) {
-        SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_WISHLIST, //TODO: Check
-                BusinessEntityBuilder.getFactory(Wishlist.class),
-                new DatabaseConnector.CallbackInterface<Wishlist>() {
-                    @Override
-                    public void onStartConnection() {
-                        swipeRefreshLayout.setRefreshing(true);
+        SendInPostConnector<Wishlist> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class)) //TODO: Check)
+                .setContext(getContext())
+                .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
+                .setOnEndConnectionListener(list -> {
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    List<Itinerary> itineraryList = new ArrayList<>(list.size());
+                    for (Wishlist item : list) {
+                        itineraryList.add(item.getItinerary());
                     }
+                    adapter = new ItineraryAdapter(getActivity(), itineraryList);
 
-                    @Override
-                    public void onEndConnection(List<Wishlist> list) {
-                        swipeRefreshLayout.setRefreshing(false);
+                    numberOfItinerariesTextView.setText(String.format(getString(R.string.wishlist_number), list.size()));
+                    if (list.isEmpty())
+                        clearWishlistButton.setVisibility(View.GONE);
 
-                        List<Itinerary> itineraryList = new ArrayList<>(list.size());
-                        for (Wishlist item : list) {
-                            itineraryList.add(item.getItinerary());
-                        }
-                        adapter = new ItineraryAdapter(getActivity(), itineraryList);
-
-                        numberOfItinerariesTextView.setText(String.format(getString(R.string.wishlist_number), list.size()));
-                        if (list.isEmpty())
-                            clearWishlistButton.setVisibility(View.GONE);
-
-                        recyclerView.setAdapter(adapter);
-                    }
-                },
-                parameters);
+                    recyclerView.setAdapter(adapter);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 
     private void clearWish(Map<String, Object> parameters) {
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.CLEAR_WISHLIST,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.CLEAR_WISHLIST)
+                .setContext(getContext())
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    Log.e("p", result.toJSONObject().toString());
+                    if (result.getResult()) {
+                        //Intent i = new Intent(getActivity(), MainActivity.class);
+                        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
+                        //startActivity(i);
+                        requireData(parameters);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        Log.e("p", result.toJSONObject().toString());
-                        if (result.getResult()) {
-                            //Intent i = new Intent(getActivity(), MainActivity.class);
-                            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
-                            //startActivity(i);
-                            requireData(parameters);
-                        }
-
-                    }
-                },
-                parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 
-    public void forceRefresh(){
+    public void forceRefresh() {
         final Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         // set up the RecyclerView

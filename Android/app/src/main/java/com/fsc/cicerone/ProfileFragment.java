@@ -258,53 +258,38 @@ public class ProfileFragment extends Fragment {
         birthDate.setText(outputFormat.format(currentLoggedUser.getBirthDate()));
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("username", currentLoggedUser.getUsername());
-        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_DOCUMENT,
-                BusinessEntityBuilder.getFactory(Document.class),
-                new DatabaseConnector.CallbackInterface<Document>() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(List<Document> list) {
-                        if (list.isEmpty())
-                            return;
-                        Document data = list.get(0);
-                        documentNumber.setText(data.getNumber());
-                        documentType.setText(data.getType());
-                        documentExpiryDate.setText(outputFormat.format(data.getExpirationDate()));
-                    }
-                },
-                parameters);
+        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_DOCUMENT, BusinessEntityBuilder.getFactory(Document.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    if (list.isEmpty())
+                        return;
+                    Document data = list.get(0);
+                    documentNumber.setText(data.getNumber());
+                    documentType.setText(data.getType());
+                    documentExpiryDate.setText(outputFormat.format(data.getExpirationDate()));
+                })
+                .setObjectToSend(parameters)
+                .build();
         userDocumentConnector.execute();
     }
 
     private void switchToCicerone(Map<String, Object> parameters) {
 
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.UPDATE_REGISTERED_USER,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        Toast.makeText(getActivity(), getString(R.string.operation_completed), Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getActivity(), SplashActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
                     }
 
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (result.getResult()) {
-                            Toast.makeText(getActivity(), getString(R.string.operation_completed), Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getActivity(), SplashActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
-                        } else {
-                            Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                },
-                parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
 
     }
@@ -346,53 +331,39 @@ public class ProfileFragment extends Fragment {
         userData.put("sex", sexSelected);
         userData.put("birth_date", Objects.requireNonNull(itDateToServerDate(birthDate.getText().toString())));
 
-        BooleanConnector updateRegisteredUser = new BooleanConnector(
-                ConnectorConstants.UPDATE_REGISTERED_USER,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (!result.getResult())
-                            Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
-                        user.setName(name.getText().toString());
-                        user.setSurname(surname.getText().toString());
-                        user.setEmail(email.getText().toString());
-                        user.setCellphone(cellphone.getText().toString());
-                        user.setBirthDate(strToDate(birthDate.getText().toString()));
-                        user.setSex(Sex.getValue(sexList.getSelectedItem().toString().toLowerCase()));
-                    }
-                },
-                userData);
+        BooleanConnector updateRegisteredUser = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (!result.getResult())
+                        Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                    user.setName(name.getText().toString());
+                    user.setSurname(surname.getText().toString());
+                    user.setEmail(email.getText().toString());
+                    user.setCellphone(cellphone.getText().toString());
+                    user.setBirthDate(strToDate(birthDate.getText().toString()));
+                    user.setSex(Sex.getValue(sexList.getSelectedItem().toString().toLowerCase()));
+                })
+                .setObjectToSend(userData)
+                .build();
         updateRegisteredUser.execute();
 
         documentData.put("username", user.getUsername());
         documentData.put("expiry_date", Objects.requireNonNull(itDateToServerDate(documentExpiryDate.getText().toString())));
         documentData.put("document_type", documentType.getText());
         documentData.put("document_number", documentNumber.getText());
-        BooleanConnector updateDocument = new BooleanConnector(
-                ConnectorConstants.UPDATE_DOCUMENT,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (!result.getResult())
-                            Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
-                        Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
-                        user.setCurrentDocument(newUserDoc);
-                        Intent i = new Intent(getActivity(), SplashActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                    }
-                },
-                documentData);
+        BooleanConnector updateDocument = new BooleanConnector.Builder(ConnectorConstants.UPDATE_DOCUMENT)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (!result.getResult())
+                        Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
+                    Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
+                    user.setCurrentDocument(newUserDoc);
+                    Intent i = new Intent(getActivity(), SplashActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                })
+                .setObjectToSend(documentData)
+                .build();
         updateDocument.execute();
         Toast.makeText(getActivity(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
     }
@@ -511,7 +482,7 @@ public class ProfileFragment extends Fragment {
 
     public void deleteAccount() {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
-            AccountManager.deleteCurrentAccount();
+            AccountManager.deleteCurrentAccount(context);
             preferences.edit().remove("session").apply();
             startActivity(new Intent(context, LoginActivity.class));
             context.finish();

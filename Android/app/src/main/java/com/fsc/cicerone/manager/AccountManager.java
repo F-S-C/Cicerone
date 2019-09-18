@@ -29,7 +29,6 @@ import app_connector.SendInPostConnector;
 public abstract class AccountManager {
 
     private static User currentLoggedUser;
-    private static final String ERROR_TAG = "ERROR IN " + AccountManager.class.getName();
 
     private AccountManager() {
         throw new IllegalStateException("Utility class");
@@ -70,7 +69,7 @@ public abstract class AccountManager {
          *
          * @param success Whether the previous operations were executed with success or not.
          */
-        void accept(boolean success) throws JSONException;
+        void accept(boolean success);
     }
 
     /**
@@ -81,51 +80,37 @@ public abstract class AccountManager {
      * @param onStart  A function to be executed before the login attempt.
      * @param onEnd    A function to be executed after the login attempt.
      */
-    public static void attemptLogin(String username, String password, Runnable onStart, RunnableUsingBusinessEntity onEnd) {
+    public static void attemptLogin(Context context, String username, String password, Runnable onStart, RunnableUsingBusinessEntity onEnd) {
         Map<String, Object> params = new HashMap<>(2);
         params.put("username", username);
         params.put("password", password);
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.LOGIN_CONNECTOR,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        onStart.run();
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.LOGIN_CONNECTOR)
+                .setContext(context)
+                .setOnStartConnectionListener(onStart::run)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        // Get all the user's data.
+                        SendInPostConnector<User> sendInPostConnector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                                .setContext(context)
+                                .setOnEndConnectionListener(list -> {
+                                    if (!list.isEmpty()) {
+                                        list.get(0).setPassword(password);
+                                        currentLoggedUser = list.get(0);
+                                        onEnd.run(list.get(0), true);
+                                    } else {
+                                        BooleanConnector.BooleanResult booleanResult = new BooleanConnector.BooleanResult(false, "No user found");
+                                        onEnd.run(booleanResult, false);
+                                    }
+                                })
+                                .setObjectToSend(params)
+                                .build();
+                        sendInPostConnector.execute();
+                    } else {
+                        onEnd.run(result, false);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (result.getResult()) {
-                            // Get all the user's data.
-                            SendInPostConnector<User> connector = new SendInPostConnector<>(
-                                    ConnectorConstants.REGISTERED_USER,
-                                    BusinessEntityBuilder.getFactory(User.class),
-                                    new DatabaseConnector.CallbackInterface<User>() {
-                                        @Override
-                                        public void onStartConnection() {
-                                            // Do nothing
-                                        }
-
-                                        @Override
-                                        public void onEndConnection(List<User> list) {
-                                            if (!list.isEmpty()) {
-                                                list.get(0).setPassword(password);
-                                                currentLoggedUser = list.get(0);
-                                                onEnd.run(list.get(0), true);
-                                            } else {
-                                                BooleanConnector.BooleanResult booleanResult = new BooleanConnector.BooleanResult(false, "No user found");
-                                                onEnd.run(booleanResult, false);
-                                            }
-                                        }
-                                    },
-                                    params);
-                            connector.execute();
-                        } else {
-                            onEnd.run(result, false);
-                        }
-                    }
-                },
-                params);
+                })
+                .setObjectToSend(params)
+                .build();
 
         connector.execute();
     }
@@ -140,26 +125,19 @@ public abstract class AccountManager {
     /**
      * Delete the current logged account from the system.
      */
-    public static void deleteCurrentAccount() {
+    public static void deleteCurrentAccount(Context context) {
         if (!isLogged())
             return;
 
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.DELETE_REGISTERED_USER,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (!result.getResult()) {
+                        Log.e("DELETE_USER_ERROR", result.getMessage());
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (!result.getResult()) {
-                            Log.e("DELETE_USER_ERROR", result.getMessage());
-                        }
-                    }
-                },
-                SendInPostConnector.paramsFromJSONObject(currentLoggedUser.getCredentials()));
+                })
+                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(currentLoggedUser.getCredentials()))
+                .build();
         connector.execute();
 
         logout();
@@ -180,24 +158,14 @@ public abstract class AccountManager {
      * @param user   The username to verify.
      * @param result A function to be executed after the check.
      */
-    public static void checkIfUsernameExists(String user, BooleanRunnable result) {
+    public static void checkIfUsernameExists(Context context, String user, BooleanRunnable result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put("username", user);
-        SendInPostConnector<User> connector = new SendInPostConnector<>(
-                ConnectorConstants.REGISTERED_USER,
-                BusinessEntityBuilder.getFactory(User.class),
-                new DatabaseConnector.CallbackInterface<User>() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(List<User> list) throws JSONException {
-                        result.accept(!list.isEmpty());
-                    }
-                },
-                obj);
+        SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> result.accept(!list.isEmpty()))
+                .setObjectToSend(obj)
+                .build();
         connector.execute();
     }
 
@@ -207,24 +175,14 @@ public abstract class AccountManager {
      * @param email  The email to verify.
      * @param result A function to be executed after the check.
      */
-    public static void checkIfEmailExists(String email, BooleanRunnable result) {
+    public static void checkIfEmailExists(Context context, String email, BooleanRunnable result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put("email", email);
-        SendInPostConnector<User> connector = new SendInPostConnector<>(
-                ConnectorConstants.REGISTERED_USER,
-                BusinessEntityBuilder.getFactory(User.class),
-                new DatabaseConnector.CallbackInterface<User>() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(List<User> list) throws JSONException {
-                        result.accept(!list.isEmpty());
-                    }
-                },
-                obj);
+        SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> result.accept(!list.isEmpty()))
+                .setObjectToSend(obj)
+                .build();
         connector.execute();
     }
 
@@ -234,24 +192,16 @@ public abstract class AccountManager {
      * @param user     User to insert in the database.
      * @param callback A function to be executed after the insert attempt.
      */
-    public static void insertUser(User user, BooleanRunnable callback) {
+    public static void insertUser(Context context, User user, BooleanRunnable callback) {
         Log.i("USERDATA", user.toJSONObject().toString());
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.INSERT_USER,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
-                        callback.accept(result.getResult());
-                        if (!result.getResult())
-                            Log.e("ERROR INSERT USER", result.getMessage());
-                    }
-                },
-                SendInPostConnector.paramsFromJSONObject(user.toJSONObject()));
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_USER)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    callback.accept(result.getResult());
+                    if (!result.getResult())
+                        Log.e("ERROR INSERT USER", result.getMessage());
+                })
+                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(user.toJSONObject())).build();
         connector.execute();
     }
 
@@ -262,26 +212,19 @@ public abstract class AccountManager {
      * @param document Document to insert in the database.
      * @param callback A function to be executed after the insert attempt.
      */
-    public static void insertUserDocument(String username, Document document, BooleanRunnable callback) {
+    public static void insertUserDocument(Context context, String username, Document document, BooleanRunnable callback) {
         Map<String, Object> doc = SendInPostConnector.paramsFromJSONObject(document.toJSONObject());
         doc.put("username", username);
         Log.i("DOCUMENT", doc.toString());
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.INSERT_DOCUMENT,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
-                        callback.accept(result.getResult());
-                        if (!result.getResult())
-                            Log.e("ERROR INSERT DOCUMENT", result.getMessage());
-                    }
-                },
-                doc);
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_DOCUMENT)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    callback.accept(result.getResult());
+                    if (!result.getResult())
+                        Log.e("ERROR INSERT DOCUMENT", result.getMessage());
+                })
+                .setObjectToSend(doc)
+                .build();
         connector.execute();
     }
 
@@ -292,59 +235,45 @@ public abstract class AccountManager {
      * @param t        The TextView to be set with the earnings.
      * @param c        The application context.
      */
-    public static void userAvgEarnings(String username, TextView t, Context c) {
+    public static void userAvgEarnings(Context context, String username, TextView t, Context c) {
         Map<String, Object> user = new HashMap<>(1);
         user.put("cicerone", username);
-        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
-                BusinessEntityBuilder.getFactory(Reservation.class),
-                new DatabaseConnector.CallbackInterface<Reservation>() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(List<Reservation> list) {
-                        int count = 0;
-                        float sum = 0;
-                        for (Reservation reservation : list) {
-                            if (reservation.isConfirmed()) {
-                                count++;
-                                sum += reservation.getTotal();
-                            }
+        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    int count = 0;
+                    float sum = 0;
+                    for (Reservation reservation : list) {
+                        if (reservation.isConfirmed()) {
+                            count++;
+                            sum += reservation.getTotal();
                         }
-                        t.setText(c.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
                     }
-                },
-                user);
+                    t.setText(c.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
+                })
+                .setObjectToSend(user)
+                .build();
         connector.execute();
     }
 
-    public static void sendEmailWithContacts(Itinerary itinerary, User deliveryToUser, BooleanRunnable callback) {
+    public static void sendEmailWithContacts(Context context, Itinerary itinerary, User deliveryToUser, BooleanRunnable callback) {
         Map<String, Object> data = new HashMap<>(3);
         data.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         data.put("itinerary_code", itinerary.getCode());
         data.put("recipient_email", deliveryToUser.getEmail());
-        BooleanConnector sendEmailConnector = new BooleanConnector(
-                ConnectorConstants.EMAIL_SENDER,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
+        BooleanConnector sendEmailConnector = new BooleanConnector.Builder(
+                ConnectorConstants.EMAIL_SENDER)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    callback.accept(result.getResult());
+                    if (result.getResult()) {
+                        Log.i("SEND OK", "true");
+                    } else {
+                        Log.e("SEND ERROR", result.getMessage());
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) throws JSONException {
-                        callback.accept(result.getResult());
-                        if (result.getResult()) {
-                            Log.i("SEND OK", "true");
-                        } else {
-                            Log.e("SEND ERROR", result.getMessage());
-                        }
-                    }
-                },
-                data);
+                })
+                .setObjectToSend(data)
+                .build();
         sendEmailConnector.execute();
     }
 }

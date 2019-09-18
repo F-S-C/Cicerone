@@ -1,10 +1,15 @@
 package app_connector;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.fsc.cicerone.model.BusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -14,26 +19,6 @@ import javax.net.ssl.HttpsURLConnection;
  * This connector fetches all entries available from a server-side script.
  */
 public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnector<T> {
-
-    /**
-     * Constructor.
-     *
-     * @param url The url of the server-side script.
-     */
-    public GetDataConnector(String url, BusinessEntityBuilder<T> builder) {
-        super(url, builder);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param url      The url of the server-side script.
-     * @param callback A reference to CallbackInterface that will be used before and after the
-     *                 connection.
-     */
-    public GetDataConnector(String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
-        super(url, builder, callback);
-    }
 
     /**
      * The function fetches the results.
@@ -54,7 +39,42 @@ public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnecto
             }
             return stringBuilder.toString().trim();
         } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            Log.e("GET_DATA_ERROR", sw.toString());
+            setError(e);
             return null;
+        }
+    }
+
+    private GetDataConnector(Builder<T> builder) {
+        super(builder);
+    }
+
+    public static class Builder<BuilderType extends BusinessEntity> extends DatabaseConnector.Builder<BuilderType> {
+
+        public Builder(String url, BusinessEntityBuilder<BuilderType> builder) {
+            super(url, builder);
+        }
+
+        @Override
+        public Builder<BuilderType> setOnStartConnectionListener(OnStartConnectionListener listener) {
+            return (Builder<BuilderType>) super.setOnStartConnectionListener(listener);
+        }
+
+        @Override
+        public Builder<BuilderType> setOnEndConnectionListener(OnEndConnectionListener<BuilderType> onEndConnectionListener) {
+            return (Builder<BuilderType>) super.setOnEndConnectionListener(onEndConnectionListener);
+        }
+
+        @Override
+        public Builder<BuilderType> setContext(Context context) {
+            return (Builder<BuilderType>) super.setContext(context);
+        }
+
+        @Override
+        public GetDataConnector<BuilderType> build() {
+            return new GetDataConnector<>(this);
         }
     }
 }

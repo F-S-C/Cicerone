@@ -56,32 +56,25 @@ public class HomeFragment extends Fragment {
 
     private void requireData(View view, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        GetDataConnector<Itinerary> connector = new GetDataConnector<>(
-                ConnectorConstants.REQUEST_ACTIVE_ITINERARY,
-                BusinessEntityBuilder.getFactory(Itinerary.class),
-                new DatabaseConnector.CallbackInterface<Itinerary>() {
-                    @Override
-                    public void onStartConnection() {
-                        progressBar.setVisibility(View.VISIBLE);
+        GetDataConnector<Itinerary> connector = new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
+                .setContext(context)
+                .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
+                .setOnEndConnectionListener(list -> {
+                    List<Itinerary> filteredList = new LinkedList<>();
+                    for (Itinerary itinerary : list) {
+                        if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
+                            filteredList.add(itinerary);
                     }
+                    progressBar.setVisibility(View.GONE);
+                    if (!filteredList.isEmpty()) {
+                        adapter = new ItineraryAdapter(getActivity(), filteredList);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(context, HomeFragment.this.getString(R.string.no_active_itineraries), Toast.LENGTH_SHORT).show();
 
-                    @Override
-                    public void onEndConnection(List<Itinerary> list) {
-                        List<Itinerary> filteredList = new LinkedList<>();
-                        for (Itinerary itinerary : list){
-                            if(!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
-                                filteredList.add(itinerary);
-                        }
-                        progressBar.setVisibility(View.GONE);
-                        if (!filteredList.isEmpty()) {
-                            adapter = new ItineraryAdapter(getActivity(), filteredList);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            Toast.makeText(context, HomeFragment.this.getString(R.string.no_active_itineraries), Toast.LENGTH_SHORT).show();
-
-                        }
                     }
-                });
+                })
+                .build();
         connector.execute();
     }
 
