@@ -26,12 +26,10 @@ import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -124,51 +122,38 @@ public class ItineraryFragment extends Fragment {
     private void getMyItineraries(Map<String, Object> parameters, RecyclerView recyclerView) {
         // TODO: Test and check if the new adapter works as expected.
         // RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(ConnectorConstants.REQUEST_ITINERARY,
-                BusinessEntityBuilder.getFactory(Itinerary.class),
-                new DatabaseConnector.CallbackInterface<Itinerary>() {
-                    @Override
-                    public void onStartConnection() {
-                        // progressBar.setVisibility(View.VISIBLE);
+        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
+                .setContext(context)
+                .setOnEndConnectionListener(jsonArray -> {
+                    // progressBar.setVisibility(View.GONE);
+                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                    while (recyclerView.getItemDecorationCount() > 0) {
+                        recyclerView.removeItemDecorationAt(0);
                     }
-
-                    @Override
-                    public void onEndConnection(List<Itinerary> jsonArray) {
-                        // progressBar.setVisibility(View.GONE);
-                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                        while (recyclerView.getItemDecorationCount() > 0) {
-                            recyclerView.removeItemDecorationAt(0);
-                        }
-                        adapter = new ItineraryAdapter(getActivity(), jsonArray);
-                        recyclerView.setAdapter(adapter);
-                    }
-                }, parameters);
+                    adapter = new ItineraryAdapter(getActivity(), jsonArray);
+                    recyclerView.setAdapter(adapter);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 
     private void getParticipations(Map<String, Object> parameters, RecyclerView recyclerView) {
         // RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
-                BusinessEntityBuilder.getFactory(Reservation.class),
-                new DatabaseConnector.CallbackInterface<Reservation>() {
-                    @Override
-                    public void onStartConnection() {
-                        // progressBar.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onEndConnection(List<Reservation> list) {
-                        // progressBar.setVisibility(View.GONE);
-                        if (!list.isEmpty())
-                            message.setVisibility(View.VISIBLE);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
-                                DividerItemDecoration.VERTICAL));
-                        adapter2 = new ReservationAdapter(getActivity(), list, R.layout.participation_list);
-                        recyclerView.setAdapter(adapter2);
-                    }
-                }, parameters);
+        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    // progressBar.setVisibility(View.GONE);
+                    if (!list.isEmpty())
+                        message.setVisibility(View.VISIBLE);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+                            DividerItemDecoration.VERTICAL));
+                    adapter2 = new ReservationAdapter(getActivity(), list, R.layout.participation_list);
+                    recyclerView.setAdapter(adapter2);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

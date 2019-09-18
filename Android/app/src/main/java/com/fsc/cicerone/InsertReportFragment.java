@@ -86,68 +86,44 @@ public class InsertReportFragment extends Fragment {
 
 
     public void setUsersInSpinner(Spinner users, String currentLoggedUser) {
-        GetDataConnector<User> connector = new GetDataConnector<>(
-                ConnectorConstants.REGISTERED_USER,
-                BusinessEntityBuilder.getFactory(User.class),
-                new DatabaseConnector.CallbackInterface<User>() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(getContext())
+                .setOnEndConnectionListener(list -> {
+                    List<String> cleanList = new ArrayList<>();
+
+                    for (User user : list) {
+                        if (!user.getUsername().equals(currentLoggedUser))
+                            cleanList.add(user.getUsername());
                     }
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
+                            android.R.layout.simple_spinner_item, cleanList);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    users.setAdapter(dataAdapter);
 
-                    @Override
-                    public void onEndConnection(List<User> list) {
-                        List<String> cleanList = new ArrayList<>();
-
-                        for (User user : list) {
-                            if (!user.getUsername().equals(currentLoggedUser))
-                                cleanList.add(user.getUsername());
-                        }
-                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
-                                android.R.layout.simple_spinner_item, cleanList);
-                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        users.setAdapter(dataAdapter);
-
-                    }
-                });
+                })
+                .build();
         connector.execute();
     }
 
     public void sendToTableReport(Map<String, Object> param) {
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.INSERT_REPORT,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
+                .setContext(getContext())
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (result.getResult()) {
-                            Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                param);
+                })
+                .setObjectToSend(param)
+                .build();
         connector.execute();
     }
 
     public void sendToTableReportDetails(Map<String, Object> param) {
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.INSERT_REPORT_DETAILS,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        Log.d("sendToTableReportDetail", String.valueOf(result.getResult()));
-                    }
-                },
-                param);
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT_DETAILS)
+                .setContext(getContext())
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> Log.d("sendToTableReportDetail", String.valueOf(result.getResult())))
+                .setObjectToSend(param)
+                .build();
         connector.execute();
     }
 

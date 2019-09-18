@@ -100,57 +100,41 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void getData(Map<String, Object> parameters) {
-        SendInPostConnector<User> connector = new SendInPostConnector<>(
-                ConnectorConstants.REGISTERED_USER,
-                BusinessEntityBuilder.getFactory(User.class),
-                new DatabaseConnector.CallbackInterface<User>() {
-                    @Override
-                    public void onStartConnection() {
-                        //
+        SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    User result = list.get(0);
+                    TextView name = findViewById(R.id.name_profile);
+                    name.setText(result.getName());
+                    TextView surname = findViewById(R.id.surname_profile);
+                    surname.setText(result.getSurname());
+                    TextView email = findViewById(R.id.email_profile);
+                    email.setText(result.getEmail());
+                    TextView userType = findViewById(R.id.user_type_profile);
+                    if (result.getUserType() == UserType.CICERONE) {
+                        userType.setText(R.string.user_type_cicerone);
+                    } else {
+                        userType.setText(R.string.user_type_globetrotter);
                     }
-
-                    @Override
-                    public void onEndConnection(List<User> list) {
-                        User result = list.get(0);
-                        TextView name = findViewById(R.id.name_profile);
-                        name.setText(result.getName());
-                        TextView surname = findViewById(R.id.surname_profile);
-                        surname.setText(result.getSurname());
-                        TextView email = findViewById(R.id.email_profile);
-                        email.setText(result.getEmail());
-                        TextView userType = findViewById(R.id.user_type_profile);
-                        if (result.getUserType() == UserType.CICERONE) {
-                            userType.setText(R.string.user_type_cicerone);
-                        } else {
-                            userType.setText(R.string.user_type_globetrotter);
-                        }
-                    }
-                },
-                parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
 
         Map<String, Object> newParameter = new HashMap<>(1);
         newParameter.put("reviewed_user", Objects.requireNonNull(parameters.get("username")).toString());
-        SendInPostConnector<UserReview> connectorReview = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_USER_REVIEW,
-                BusinessEntityBuilder.getFactory(UserReview.class),
-                new DatabaseConnector.CallbackInterface<UserReview>() {
-                    @Override
-                    public void onStartConnection() {
-                        //
+        SendInPostConnector<UserReview> connectorReview = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    int sum = 0;
+                    for (UserReview review : list) {
+                        sum += review.getFeedback();
                     }
-
-                    @Override
-                    public void onEndConnection(List<UserReview> list) {
-                        int sum = 0;
-                        for (UserReview review : list) {
-                            sum += review.getFeedback();
-                        }
-                        RatingBar star = findViewById(R.id.avg_feedback);
-                        star.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
-                    }
-                },
-                newParameter);
+                    RatingBar star = findViewById(R.id.avg_feedback);
+                    star.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
+                })
+                .setObjectToSend(newParameter)
+                .build();
         connectorReview.execute();
     }
 }

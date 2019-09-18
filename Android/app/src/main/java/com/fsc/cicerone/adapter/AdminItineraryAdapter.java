@@ -22,15 +22,12 @@ import java.util.Locale;
 import java.util.Map;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
  * The adapter useful to show data in the admin part of the application.
  */
 public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAdapter.ViewHolder> {
-
-    private static final String ERROR_TAG = "ERROR IN " + AdminItineraryAdapter.class.getName();
 
     private final Context context;
     private List<Itinerary> mData;
@@ -123,29 +120,21 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
     private void setItineraryAvgPrice(Integer itineraryCode, TextView t) {
         Map<String, Object> params = new HashMap<>(1);
         params.put("booked_itinerary", itineraryCode);
-        SendInPostConnector<Reservation> conn = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_RESERVATION,
-                BusinessEntityBuilder.getFactory(Reservation.class),
-                new DatabaseConnector.CallbackInterface<Reservation>() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(List<Reservation> list) {
-                        int count = 0;
-                        float price = 0;
-                        for (Reservation reservation : list) {
-                            if (reservation.isConfirmed()) {
-                                price += reservation.getTotal();
-                                count++;
-                            }
+        SendInPostConnector<Reservation> conn = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    int count = 0;
+                    float price = 0;
+                    for (Reservation reservation : list) {
+                        if (reservation.isConfirmed()) {
+                            price += reservation.getTotal();
+                            count++;
                         }
-                        t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
                     }
-                },
-                params);
+                    t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
+                })
+                .setObjectToSend(params)
+                .build();
         conn.execute();
     }
 }

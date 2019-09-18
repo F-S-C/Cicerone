@@ -22,12 +22,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -72,24 +70,19 @@ public class CiceroneItineraryListFragment extends Fragment {
 
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         TextView message = view.findViewById(R.id.no_itinerary_history);
-        SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(ConnectorConstants.REQUEST_ITINERARY,
-                BusinessEntityBuilder.getFactory(Itinerary.class),
-                new DatabaseConnector.CallbackInterface<Itinerary>() {
-                    @Override
-                    public void onStartConnection() {
-                        message.setVisibility(View.GONE);
+        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
+                .setContext(getContext())
+                .setOnStartConnectionListener(() -> message.setVisibility(View.GONE))
+                .setOnEndConnectionListener(list -> {
+                    if (!list.isEmpty()) {
+                        adapter = new AdminItineraryAdapter(getActivity(), list);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        message.setVisibility(View.VISIBLE);
                     }
-
-                    @Override
-                    public void onEndConnection(List<Itinerary> list) {
-                        if (!list.isEmpty()) {
-                            adapter = new AdminItineraryAdapter(getActivity(), list);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            message.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }, parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

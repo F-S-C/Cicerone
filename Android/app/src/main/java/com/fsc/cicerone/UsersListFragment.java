@@ -49,22 +49,15 @@ public class UsersListFragment extends Fragment {
     }
 
     private void requireData() {
-        GetDataConnector<User> connector = new GetDataConnector<>(
-                ConnectorConstants.REGISTERED_USER,
-                BusinessEntityBuilder.getFactory(User.class),
-                new DatabaseConnector.CallbackInterface<User>() {
-                    @Override
-                    public void onStartConnection() {
-                        swipeRefreshLayout.setRefreshing(true);
-                    }
-
-                    @Override
-                    public void onEndConnection(List<User> list) {
-                        swipeRefreshLayout.setRefreshing(false);
-                        adapter = new UserListAdapter(getContext(), list);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
+        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(getContext())
+                .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
+                .setOnEndConnectionListener(list -> {
+                    swipeRefreshLayout.setRefreshing(false);
+                    adapter = new UserListAdapter(getContext(), list);
+                    recyclerView.setAdapter(adapter);
+                })
+                .build();
         connector.execute();
     }
 }

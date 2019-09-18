@@ -69,27 +69,23 @@ public class ReservationFragment extends Fragment {
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReservation);
-        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
-                BusinessEntityBuilder.getFactory(Reservation.class),
-                new DatabaseConnector.CallbackInterface<Reservation>() {
-                    @Override
-                    public void onStartConnection() {
+        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnStartConnectionListener(() -> {
+                    message.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                })
+                .setOnEndConnectionListener(list -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (!list.isEmpty()) {
+                        adapter = new ReservationAdapter(getActivity(), list);
+                        recyclerView.setAdapter(adapter);
+                    } else {
                         message.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.VISIBLE);
                     }
-
-                    @Override
-                    public void onEndConnection(List<Reservation> list) {
-                        progressBar.setVisibility(View.GONE);
-                        if (!list.isEmpty()) {
-                            adapter = new ReservationAdapter(getActivity(), list);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            message.setVisibility(View.GONE);
-                        }
-                    }
-                }, parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

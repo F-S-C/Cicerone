@@ -1,6 +1,7 @@
 package com.fsc.cicerone;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -114,57 +115,42 @@ public class AdminDetailsUserFragment extends Fragment {
     }
 
     private void requestUserDocument(Map<String, Object> parameters) {
-        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_DOCUMENT,
-                BusinessEntityBuilder.getFactory(Document.class),
-                new DatabaseConnector.CallbackInterface<Document>() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
+        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_DOCUMENT, BusinessEntityBuilder.getFactory(Document.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    if (!list.isEmpty()) {
+                        Document dataDocument = list.get(0);
+                        data = "Document Number: " + dataDocument.getNumber();
+                        documentNumber.setText(data);
+                        data = "Document Type: " + dataDocument.getType();
+                        documentType.setText(data);
+
+                        data = "Expiry Date: " + outputFormat.format(dataDocument.getExpirationDate());
+                        documentExpiryDate.setText(data);
+
+                    } else {
+                        documentNumber.setVisibility(View.GONE);
+                        documentType.setVisibility(View.GONE);
+                        documentExpiryDate.setVisibility(View.GONE);
+                        Toast.makeText(context, AdminDetailsUserFragment.this.getString(R.string.doc_not_found), Toast.LENGTH_SHORT).show();
                     }
-
-                    @Override
-                    public void onEndConnection(List<Document> list) {
-                        if (!list.isEmpty()) {
-                            Document dataDocument = list.get(0);
-                            data = "Document Number: " + dataDocument.getNumber();
-                            documentNumber.setText(data);
-                            data = "Document Type: " + dataDocument.getType();
-                            documentType.setText(data);
-
-                            data = "Expiry Date: " + outputFormat.format(dataDocument.getExpirationDate());
-                            documentExpiryDate.setText(data);
-
-                        } else {
-                            documentNumber.setVisibility(View.GONE);
-                            documentType.setVisibility(View.GONE);
-                            documentExpiryDate.setVisibility(View.GONE);
-                            Toast.makeText(context, AdminDetailsUserFragment.this.getString(R.string.doc_not_found), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         userDocumentConnector.execute();
     }
 
     private void deleteAccount(Map<String, Object> parameters) {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
-            BooleanConnector connector = new BooleanConnector(
-                    ConnectorConstants.DELETE_REGISTERED_USER,
-                    new BooleanConnector.CallbackInterface() {
-                        @Override
-                        public void onStartConnection() {
-                            // Do nothing
+            BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
+                    .setContext(context)
+                    .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                        if (!result.getResult()) {
+                            Log.e("DELETE_USER_ERROR", result.getMessage());
                         }
-
-                        @Override
-                        public void onEndConnection(BooleanConnector.BooleanResult result) {
-                            if (!result.getResult()) {
-                                Log.e("DELETE_USER_ERROR", result.getMessage());
-                            }
-                        }
-                    },
-                    parameters);
+                    })
+                    .setObjectToSend(parameters)
+                    .build();
             connector.execute();
             startActivity(new Intent(context, AdminMainActivity.class));
             context.finish();

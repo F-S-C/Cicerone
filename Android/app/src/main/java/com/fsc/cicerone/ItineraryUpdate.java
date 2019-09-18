@@ -411,28 +411,21 @@ public class ItineraryUpdate extends AppCompatActivity {
 
 
     private void submitNewData(Map<String, Object> params) {
-        BooleanConnector connector = new BooleanConnector(
-                ConnectorConstants.UPDATE_ITINERARY,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        Log.e("p", result.toJSONObject().toString());
-                        if (result.getResult()) {
-                            Intent i = new Intent(ItineraryUpdate.this, MainActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
-                            startActivity(i);
-
-                        }
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY)
+                .setContext(this)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    Log.e("p", result.toJSONObject().toString());
+                    if (result.getResult()) {
+                        Intent i = new Intent(ItineraryUpdate.this, MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
+                        startActivity(i);
 
                     }
-                },
-                params);
+
+                })
+                .setObjectToSend(params)
+                .build();
         connector.execute();
     }
 

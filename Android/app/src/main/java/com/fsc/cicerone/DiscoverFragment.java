@@ -194,29 +194,22 @@ public class DiscoverFragment extends Fragment {
         if (beginningDate != null) object.put("beginning_date", sdf.format(beginningDate));
         if (endingDate != null) object.put("beginning_date", sdf.format(endingDate));
         if (location != null) object.put("location", location);
-        SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
-                ConnectorConstants.REQUEST_ITINERARY,
-                BusinessEntityBuilder.getFactory(Itinerary.class),
-                new DatabaseConnector.CallbackInterface<Itinerary>() {
-                    @Override
-                    public void onStartConnection() {
-                        swipeRefreshLayout.setRefreshing(true);
+        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
+                .setContext(context)
+                .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
+                .setOnEndConnectionListener(list -> {
+                    swipeRefreshLayout.setRefreshing(false);
+                    List<Itinerary> filteredList = new LinkedList<>();
+                    for (Itinerary itinerary : list) {
+                        if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
+                            filteredList.add(itinerary);
                     }
+                    ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList);
 
-                    @Override
-                    public void onEndConnection(List<Itinerary> list) {
-                        swipeRefreshLayout.setRefreshing(false);
-                        List<Itinerary> filteredList = new LinkedList<>();
-                        for (Itinerary itinerary : list) {
-                            if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
-                                filteredList.add(itinerary);
-                        }
-                        ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList);
-
-                        recyclerView.setAdapter(adapter);
-                    }
-                },
-                object);
+                    recyclerView.setAdapter(adapter);
+                })
+                .setObjectToSend(object)
+                .build();
         connector.execute();
     }
 
