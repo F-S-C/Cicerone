@@ -235,11 +235,11 @@ public abstract class AccountManager {
      * @param t        The TextView to be set with the earnings.
      * @param c        The application context.
      */
-    public static void userAvgEarnings(Context context, String username, TextView t, Context c) {
+    public static void userAvgEarnings(String username, TextView t, Context c) {
         Map<String, Object> user = new HashMap<>(1);
         user.put("cicerone", username);
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(context)
+                .setContext(c)
                 .setOnEndConnectionListener(list -> {
                     int count = 0;
                     float sum = 0;
