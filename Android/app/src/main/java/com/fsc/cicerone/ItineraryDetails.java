@@ -50,7 +50,6 @@ public class ItineraryDetails extends AppCompatActivity {
     private Button requestReservation;
     private Button intoWishlist;
     private Button removeFromWishlist;
-    private TextView itineraryTitle; // TODO: Remove from class diagram
     private ImageView image;
     private TextView description;
     private TextView bDate;

@@ -37,7 +37,7 @@ public enum ReportStatus {
      * @return The integer that corresponding to the enum type.
      */
     @NonNull
-    public static Integer toInt(ReportStatus state) { //TODO: Edit class diagram (was getInt)
+    public static Integer toInt(ReportStatus state) {
         switch (state) {
             case OPEN:
                 return 0;

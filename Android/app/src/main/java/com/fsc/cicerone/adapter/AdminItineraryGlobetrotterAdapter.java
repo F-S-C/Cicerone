@@ -67,7 +67,7 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add to class diagram
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;

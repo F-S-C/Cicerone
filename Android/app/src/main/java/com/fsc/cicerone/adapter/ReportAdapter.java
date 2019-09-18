@@ -87,7 +87,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                i = new Intent().setClass(v.getContext(), AdminReportDetailsActivity.class); //TODO IF-38
+                i = new Intent().setClass(v.getContext(), AdminReportDetailsActivity.class);
             } else {
                 i = new Intent().setClass(v.getContext(), ReportDetailsActivity.class);
             }
@@ -111,7 +111,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add to class diagram
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView object;
         TextView reportCode;
         ImageView status;

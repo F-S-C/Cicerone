@@ -44,7 +44,6 @@ import app_connector.SendInPostConnector;
 public class AdminDetailsUserFragment extends Fragment {
 
     private static final String ERROR_TAG = "ERROR IN " + AdminDetailsUserFragment.class.getName();
-//    private Map<String, Object> parameters = new HashMap<>(); //TODO: Remove from class diagram
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
