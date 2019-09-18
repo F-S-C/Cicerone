@@ -60,30 +60,24 @@ public class SelectedItineraryReviewFragment extends Fragment {
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
-        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
-                getContext(),
-                ConnectorConstants.REQUEST_ITINERARY_REVIEW,
-                BusinessEntityBuilder.getFactory(ItineraryReview.class),
-                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
-                    @Override
-                    public void onStartConnection() {
-                        message.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.VISIBLE);
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
+                .setContext(getContext())
+                .setOnStartConnectionListener(() -> {
+                    message.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                })
+                .setOnEndConnectionListener(list -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (!list.isEmpty()) {
+                        adapter = new ReviewAdapter(getActivity(), list);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        message.setVisibility(View.VISIBLE);
                     }
 
-                    @Override
-                    public void onEndConnection(List<ItineraryReview> list) {
-                        progressBar.setVisibility(View.GONE);
-                        if (!list.isEmpty()) {
-                            adapter = new ReviewAdapter(getActivity(), list);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            message.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-                },
-                parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

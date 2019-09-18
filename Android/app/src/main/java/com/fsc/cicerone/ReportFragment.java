@@ -82,24 +82,16 @@ public class ReportFragment extends Fragment {
 
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector<Report> connector = new SendInPostConnector<>(
-                getContext(),
-                ConnectorConstants.REPORT_FRAGMENT,
-                BusinessEntityBuilder.getFactory(Report.class),
-                new DatabaseConnector.CallbackInterface<Report>() {
-                    @Override
-                    public void onStartConnection() {
-                        progressBar.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onEndConnection(List<Report> list) {
-                        progressBar.setVisibility(View.GONE);
-                        adapter = new ReportAdapter(getActivity(), list);
-                        recyclerView.setAdapter(adapter);
-                    }
-                },
-                parameters);
+        SendInPostConnector<Report> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
+                .setContext(getContext())
+                .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
+                .setOnEndConnectionListener(list -> {
+                    progressBar.setVisibility(View.GONE);
+                    adapter = new ReportAdapter(getActivity(), list);
+                    recyclerView.setAdapter(adapter);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

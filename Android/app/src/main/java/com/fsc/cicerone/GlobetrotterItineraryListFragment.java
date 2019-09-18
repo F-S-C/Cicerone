@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -71,31 +70,22 @@ public class GlobetrotterItineraryListFragment extends Fragment {
     }
 
     private void requireData(Map<String, Object> parameters, RecyclerView recyclerView) {
-        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
-                context,
-                ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
-                BusinessEntityBuilder.getFactory(Reservation.class),
-                new DatabaseConnector.CallbackInterface<Reservation>() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    List<Reservation> filteredList = new ArrayList<>(list.size());
+                    for (Reservation reservation : list) {
+                        if (reservation.isConfirmed()) filteredList.add(reservation);
                     }
-
-                    @Override
-                    public void onEndConnection(List<Reservation> list) {
-                        List<Reservation> filteredList = new ArrayList<>(list.size());
-                        for (Reservation reservation : list) {
-                            if (reservation.isConfirmed()) filteredList.add(reservation);
-                        }
-                        if (!filteredList.isEmpty()) {
-                            adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), filteredList);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            Toast.makeText(context, GlobetrotterItineraryListFragment.this.getString(R.string.no_itineraries_history), Toast.LENGTH_SHORT).show();
-                        }
+                    if (!filteredList.isEmpty()) {
+                        adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), filteredList);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(context, GlobetrotterItineraryListFragment.this.getString(R.string.no_itineraries_history), Toast.LENGTH_SHORT).show();
                     }
-                },
-                parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

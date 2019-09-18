@@ -32,16 +32,13 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class ItineraryDetails extends AppCompatActivity {
@@ -144,77 +141,52 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     public void addToWishlist(Map<String, Object> params) {
-        BooleanConnector connector = new BooleanConnector(
-                this,
-                ConnectorConstants.INSERT_WISHLIST,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_WISHLIST)
+                .setContext(this)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    Log.e("p", result.toJSONObject().toString());
+                    if (result.getResult()) {
+                        Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                        checkWishlist(params);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        Log.e("p", result.toJSONObject().toString());
-                        if (result.getResult()) {
-                            Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                            checkWishlist(params);
-                        }
-                    }
-                },
-                params);
+                })
+                .setObjectToSend(params)
+                .build();
         connector.execute();
     }
 
     public void deleteFromWishlist(Map<String, Object> params) {
-        BooleanConnector connector = new BooleanConnector(
-                this,
-                ConnectorConstants.DELETE_WISHLIST,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_WISHLIST)
+                .setContext(this)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        //Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
+                        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show();
+                        //startActivity(i);
+                        checkWishlist(params);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (result.getResult()) {
-                            //Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
-                            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show();
-                            //startActivity(i);
-                            checkWishlist(params);
-                        }
-                    }
-                },
-                params);
+                })
+                .setObjectToSend(params)
+                .build();
         connector.execute();
     }
 
 
     public void checkWishlist(Map<String, Object> object) {
-        SendInPostConnector<Wishlist> connector = new SendInPostConnector<>(
-                this,
-                ConnectorConstants.SEARCH_WISHLIST,
-                BusinessEntityBuilder.getFactory(Wishlist.class),
-                new DatabaseConnector.CallbackInterface<Wishlist>() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        SendInPostConnector<Wishlist> connector = new SendInPostConnector.Builder<>(ConnectorConstants.SEARCH_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    if (!list.isEmpty()) {
+                        intoWishlist.setVisibility(View.GONE);
+                        removeFromWishlist.setVisibility(View.VISIBLE);
+                    } else {
+                        intoWishlist.setVisibility(View.VISIBLE);
+                        removeFromWishlist.setVisibility(View.GONE);
                     }
-
-                    @Override
-                    public void onEndConnection(List<Wishlist> list) {
-                        if (!list.isEmpty()) {
-                            intoWishlist.setVisibility(View.GONE);
-                            removeFromWishlist.setVisibility(View.VISIBLE);
-                        } else {
-                            intoWishlist.setVisibility(View.VISIBLE);
-                            removeFromWishlist.setVisibility(View.GONE);
-                        }
-                    }
-                },
-                object);
+                })
+                .setObjectToSend(object)
+                .build();
         connector.execute();
 
     }
@@ -241,57 +213,39 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     public void getItineraryReviews(Map<String, Object> itineraryCode) {
-        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
-                this,
-                ConnectorConstants.ITINERARY_REVIEW,
-                BusinessEntityBuilder.getFactory(ItineraryReview.class),
-                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(List<ItineraryReview> list) {
-                        if (!list.isEmpty()) {
-                            int sum = 0;
-                            for (ItineraryReview itineraryReview : list) {
-                                sum += itineraryReview.getFeedback();
-                            }
-                            float total = (float) sum / list.size();
-                            review.setRating(total);
-                        } else {
-                            review.setRating(0);
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    if (!list.isEmpty()) {
+                        int sum = 0;
+                        for (ItineraryReview itineraryReview : list) {
+                            sum += itineraryReview.getFeedback();
                         }
+                        float total = (float) sum / list.size();
+                        review.setRating(total);
+                    } else {
+                        review.setRating(0);
                     }
-                },
-                itineraryCode);
+                })
+                .setObjectToSend(itineraryCode)
+                .build();
         connector.execute();
     }
 
     public void isReservated(Map<String, Object> reservation) {
-        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
-                this,
-                ConnectorConstants.REQUEST_RESERVATION,
-                BusinessEntityBuilder.getFactory(Reservation.class),
-                new DatabaseConnector.CallbackInterface<Reservation>() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    if (!list.isEmpty()) {
+                        requestReservation.setText(getString(R.string.remove_reservation));
+                        requestReservation.setOnClickListener(ItineraryDetails.this::removeReservation);
+                    } else {
+                        requestReservation.setText(getString(R.string.request_reservation));
+                        requestReservation.setOnClickListener(ItineraryDetails.this::askForReservation);
                     }
-
-                    @Override
-                    public void onEndConnection(List<Reservation> list) {
-                        if (!list.isEmpty()) {
-                            requestReservation.setText(getString(R.string.remove_reservation));
-                            requestReservation.setOnClickListener(ItineraryDetails.this::removeReservation);
-                        } else {
-                            requestReservation.setText(getString(R.string.request_reservation));
-                            requestReservation.setOnClickListener(ItineraryDetails.this::askForReservation);
-                        }
-                    }
-                },
-                reservation);
+                })
+                .setObjectToSend(reservation)
+                .build();
         connector.execute();
     }
 

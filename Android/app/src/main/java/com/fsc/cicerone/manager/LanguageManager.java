@@ -29,21 +29,10 @@ public class LanguageManager {
      * on the server.
      */
     public LanguageManager() {
-        GetDataConnector<Language> request = new GetDataConnector<>(
-                null,
-                ConnectorConstants.REQUEST_LANGUAGES,
-                BusinessEntityBuilder.getFactory(Language.class),
-                new DatabaseConnector.CallbackInterface<Language>() {
-                    @Override
-                    public void onStartConnection() {
-                        //Do nothing
-                    }
+        GetDataConnector<Language> request = new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_LANGUAGES, BusinessEntityBuilder.getFactory(Language.class))
+                .setOnEndConnectionListener(list -> langs = list)
+                .build();
 
-                    @Override
-                    public void onEndConnection(List<Language> list) {
-                        langs = list;
-                    }
-                });
         request.execute();
     }
 
@@ -94,23 +83,14 @@ public class LanguageManager {
         for (int i = 0; i < languageToSet.size(); i++) {
             data.put("language_code", languageToSet.get(i).getCode());
             Log.i("LANGUAGE", data.toString());
-            new BooleanConnector(
-                    null,
-                    ConnectorConstants.INSERT_USER_LANGUAGE,
-                    new BooleanConnector.CallbackInterface() {
-                        @Override
-                        public void onStartConnection() {
-                            //Do nothing
-                        }
-
-                        @Override
-                        public void onEndConnection(BooleanConnector.BooleanResult result) {
-                            if (!result.getResult())
-                                Log.e("ERROR INSERT LANGUAGE", result.getMessage());
-
-                        }
-                    },
-                    data)
+            new BooleanConnector.Builder(ConnectorConstants.INSERT_USER_LANGUAGE)
+                    .setContext(null)
+                    .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                        if (!result.getResult())
+                            Log.e("ERROR INSERT LANGUAGE", result.getMessage());
+                    })
+                    .setObjectToSend(data)
+                    .build()
                     .execute();
         }
         languageToSet.size();

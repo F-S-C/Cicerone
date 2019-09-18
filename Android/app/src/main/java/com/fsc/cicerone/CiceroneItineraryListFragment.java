@@ -61,30 +61,21 @@ public class CiceroneItineraryListFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
             requireData(parameters, recyclerView);
-        }catch (JSONException e){
-            Log.e(ERROR_TAG,e.toString());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.toString());
         }
         return view;
     }
 
     private void requireData(Map<String, Object> parameters, RecyclerView recyclerView) {
-        SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
-                getContext(),
-                ConnectorConstants.REQUEST_ITINERARY,
-                BusinessEntityBuilder.getFactory(Itinerary.class),
-                new DatabaseConnector.CallbackInterface<Itinerary>() {
-            @Override
-            public void onStartConnection() {
-                // Do nothing
-            }
-
-            @Override
-            public void onEndConnection(List<Itinerary> jsonArray) {
-                adapter = new AdminItineraryAdapter(getActivity(), jsonArray);
-                recyclerView.setAdapter(adapter);
-            }
-        },
-                parameters);
+        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
+                .setContext(getContext())
+                .setOnEndConnectionListener(list -> {
+                    adapter = new AdminItineraryAdapter(getActivity(), list);
+                    recyclerView.setAdapter(adapter);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

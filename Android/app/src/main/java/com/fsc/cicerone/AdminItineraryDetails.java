@@ -20,13 +20,11 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class AdminItineraryDetails extends AppCompatActivity {
@@ -109,31 +107,22 @@ public class AdminItineraryDetails extends AppCompatActivity {
     }
 
     public void getItineraryReviews(Map<String, Object> itineraryCode) {
-        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector<>(
-                this,
-                ConnectorConstants.ITINERARY_REVIEW,
-                BusinessEntityBuilder.getFactory(ItineraryReview.class),
-                new DatabaseConnector.CallbackInterface<ItineraryReview>() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
-                    }
-
-                    @Override
-                    public void onEndConnection(List<ItineraryReview> list) {
-                        if (!list.isEmpty()) {
-                            int sum = 0;
-                            for (ItineraryReview itineraryReview : list) {
-                                sum += itineraryReview.getFeedback();
-                            }
-                            float total = (float) sum / list.size();
-                            review.setRating(total);
-                        } else {
-                            review.setRating(0);
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    if (!list.isEmpty()) {
+                        int sum = 0;
+                        for (ItineraryReview itineraryReview : list) {
+                            sum += itineraryReview.getFeedback();
                         }
+                        float total = (float) sum / list.size();
+                        review.setRating(total);
+                    } else {
+                        review.setRating(0);
                     }
-                },
-                itineraryCode);
+                })
+                .setObjectToSend(itineraryCode)
+                .build();
         connector.execute();
     }
 

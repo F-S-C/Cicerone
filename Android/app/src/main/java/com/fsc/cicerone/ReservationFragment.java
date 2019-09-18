@@ -67,28 +67,20 @@ public class ReservationFragment extends Fragment {
 
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
-                context,
-                ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
-                BusinessEntityBuilder.getFactory(Reservation.class),
-                new DatabaseConnector.CallbackInterface<Reservation>() {
-                    @Override
-                    public void onStartConnection() {
-                        progressBar.setVisibility(View.VISIBLE);
+        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
+                .setOnEndConnectionListener(list -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (!list.isEmpty()) {
+                        adapter = new ReservationAdapter(getActivity(), list);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(context, ReservationFragment.this.getString(R.string.no_requests_reservation), Toast.LENGTH_SHORT).show();
                     }
-
-                    @Override
-                    public void onEndConnection(List<Reservation> list) {
-                        progressBar.setVisibility(View.GONE);
-                        if (!list.isEmpty()) {
-                            adapter = new ReservationAdapter(getActivity(), list);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            Toast.makeText(context, ReservationFragment.this.getString(R.string.no_requests_reservation), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                parameters);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

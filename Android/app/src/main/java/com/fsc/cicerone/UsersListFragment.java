@@ -44,23 +44,16 @@ public class UsersListFragment extends Fragment {
 
     private void requireData(View view, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        GetDataConnector<User> connector = new GetDataConnector<>(
-                getContext(),
-                ConnectorConstants.REGISTERED_USER,
-                BusinessEntityBuilder.getFactory(User.class),
-                new DatabaseConnector.CallbackInterface<User>() {
-            @Override
-            public void onStartConnection() {
-                progressBar.setVisibility(View.VISIBLE);
-            }
+        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(getContext())
+                .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
+                .setOnEndConnectionListener(list -> {
+                    progressBar.setVisibility(View.GONE);
+                    adapter = new UserListAdapter(view.getContext(), list);
+                    recyclerView.setAdapter(adapter);
+                })
+                .build();
 
-            @Override
-            public void onEndConnection(List<User> list) {
-                progressBar.setVisibility(View.GONE);
-                adapter = new UserListAdapter(view.getContext(), list);
-                recyclerView.setAdapter(adapter);
-            }
-        });
         connector.execute();
     }
 }

@@ -38,41 +38,6 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
     private Map<String, Object> objectToSend;
 
     /**
-     * Constructor.
-     *
-     * @param url The url of the server-side script.
-     */
-    public SendInPostConnector(Context context, String url, BusinessEntityBuilder<T> builder) {
-        super(context, url, builder);
-        objectToSend = null;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param url      The url of the server-side script.
-     * @param callback A reference to CallbackInterface that will be used before and after the
-     *                 connection.
-     */
-    public SendInPostConnector(Context context, String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
-        super(context, url, builder, callback);
-        objectToSend = null;
-    }
-
-    /**
-     * Constructor
-     *
-     * @param url          The url of the server-side script.
-     * @param callback     A reference to CallbackInterface that will be used before and after the
-     *                     connection.
-     * @param objectToSend A JSON Object containing the data that will be sent.
-     */
-    public SendInPostConnector(Context context, String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback, Map<String, Object> objectToSend) {
-        super(context, url, builder, callback);
-        this.objectToSend = objectToSend;
-    }
-
-    /**
      * This function send the data to the server-side script and fetches its response.
      *
      * @param voids Various parameters
@@ -179,5 +144,43 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
             }
         }
         return mapData;
+    }
+
+    protected SendInPostConnector(Builder<T> builder) {
+        super(builder);
+        this.objectToSend = builder.objectToSend;
+    }
+
+    public static class Builder<BuilderType extends BusinessEntity> extends DatabaseConnector.Builder<BuilderType> {
+        private Map<String, Object> objectToSend;
+
+        public Builder(String url, BusinessEntityBuilder<BuilderType> builder) {
+            super(url, builder);
+        }
+
+        @Override
+        public Builder<BuilderType> setOnStartConnectionListener(OnStartConnectionListener listener) {
+            return (Builder<BuilderType>) super.setOnStartConnectionListener(listener);
+        }
+
+        @Override
+        public Builder<BuilderType> setOnEndConnectionListener(OnEndConnectionListener<BuilderType> listener) {
+            return (Builder<BuilderType>) super.setOnEndConnectionListener(listener);
+        }
+
+        @Override
+        public Builder<BuilderType> setContext(Context context) {
+            return (Builder<BuilderType>) super.setContext(context);
+        }
+
+        public Builder<BuilderType> setObjectToSend(Map<String, Object> objectToSend) {
+            this.objectToSend = objectToSend;
+            return this;
+        }
+
+        @Override
+        public SendInPostConnector<BuilderType> build() {
+            return new SendInPostConnector<>(this);
+        }
     }
 }

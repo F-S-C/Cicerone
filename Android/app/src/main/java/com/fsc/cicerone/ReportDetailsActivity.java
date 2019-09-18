@@ -14,13 +14,11 @@ import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class ReportDetailsActivity extends AppCompatActivity {
@@ -61,71 +59,54 @@ public class ReportDetailsActivity extends AppCompatActivity {
     }
 
     private void getReportFromServer(Map<String, Object> params) {
-        SendInPostConnector<Report> connector = new SendInPostConnector<>(
-                this,
-                ConnectorConstants.REPORT_FRAGMENT,
-                BusinessEntityBuilder.getFactory(Report.class),
-                new DatabaseConnector.CallbackInterface<Report>() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        SendInPostConnector<Report> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    Report result = list.get(0);
+                    String code = "Nr. " + result.getCode();
+                    String statusText = "Status: ";
+                    reportTitle.setText(result.getObject());
+                    reportCode.setText(code);
+                    switch (result.getStatus()) {
+                        case OPEN:
+                            statusText += getString(R.string.open);
+                            cancButton.setEnabled(true);
+                            cancButton.setVisibility(View.VISIBLE);
+                            break;
+                        case CLOSED:
+                            statusText += getString(R.string.closed);
+                            break;
+                        case PENDING:
+                            statusText += getString(R.string.pending);
+                            break;
+                        case CANCELED:
+                            statusText += getString(R.string.canceled);
+                            break;
+                        default:
+                            break;
                     }
-
-                    @Override
-                    public void onEndConnection(List<Report> list) {
-                        Report result = list.get(0);
-                        String code = "Nr. " + result.getCode();
-                        String statusText = "Status: ";
-                        reportTitle.setText(result.getObject());
-                        reportCode.setText(code);
-                        switch (result.getStatus()) {
-                            case OPEN:
-                                statusText += getString(R.string.open);
-                                cancButton.setEnabled(true);
-                                cancButton.setVisibility(View.VISIBLE);
-                                break;
-                            case CLOSED:
-                                statusText += getString(R.string.closed);
-                                break;
-                            case PENDING:
-                                statusText += getString(R.string.pending);
-                                break;
-                            case CANCELED:
-                                statusText += getString(R.string.canceled);
-                                break;
-                            default:
-                                break;
-                        }
-                        status.setText(statusText);
-                        reportedUser.setText(result.getReportedUser().getUsername());
-                        bodyText.setText(result.getBody());
-                    }
-                },
-                params);
+                    status.setText(statusText);
+                    reportedUser.setText(result.getReportedUser().getUsername());
+                    bodyText.setText(result.getBody());
+                })
+                .setObjectToSend(params)
+                .build();
         connector.execute();
     }
 
     private void deleteReport(Map<String, Object> params) {
-            params.put("state", ReportStatus.toInt(ReportStatus.CLOSED));
-        BooleanConnector connector = new BooleanConnector(
-                this,
-                ConnectorConstants.UPDATE_REPORT_DETAILS,
-                new BooleanConnector.CallbackInterface() {
-                    @Override
-                    public void onStartConnection() {
-                        // Do nothing
+        params.put("state", ReportStatus.toInt(ReportStatus.CLOSED));
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
+                .setContext(this)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
+                        params.remove("state");
+                        getReportFromServer(params);
                     }
-
-                    @Override
-                    public void onEndConnection(BooleanConnector.BooleanResult result) {
-                        if (result.getResult()) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
-                            params.remove("state");
-                            getReportFromServer(params);
-                        }
-                    }
-                },
-                params);
+                })
+                .setObjectToSend(params)
+                .build();
         connector.execute();
     }
 }

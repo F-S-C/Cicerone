@@ -85,7 +85,7 @@ public class ItineraryFragment extends Fragment {
         // Set up the RecyclerView for Globetrotter's participations
         itineraryList.setLayoutManager(new LinearLayoutManager(getActivity()));
         itineraryList.addItemDecoration(new DividerItemDecoration(itineraryList.getContext(), DividerItemDecoration.VERTICAL));
-        getParticipations(parameters,itineraryList);
+        getParticipations(parameters, itineraryList);
 
 
         myItineraries.setOnClickListener(v -> {
@@ -95,7 +95,7 @@ public class ItineraryFragment extends Fragment {
             //enable button (Outlined Style)
             myItineraries.setBackgroundColor(ContextCompat.getColor(context, myItineraries.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             myItineraries.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getMyItineraries(parameters,itineraryList);
+            getMyItineraries(parameters, itineraryList);
             message.setVisibility(View.GONE);
             newItinerary.setVisibility(View.VISIBLE);
 
@@ -108,7 +108,7 @@ public class ItineraryFragment extends Fragment {
             //enable button (Outlined Style)
             participations.setBackgroundColor(ContextCompat.getColor(context, itineraryList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             participations.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getParticipations(parameters,itineraryList);
+            getParticipations(parameters, itineraryList);
             newItinerary.setVisibility(View.GONE);
 
 
@@ -125,49 +125,31 @@ public class ItineraryFragment extends Fragment {
     private void getMyItineraries(Map<String, Object> parameters, RecyclerView recyclerView) {
         //TODO: Test and check if the new adapter works as expected.
         //RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(
-                context,
-                ConnectorConstants.REQUEST_ITINERARY,
-                BusinessEntityBuilder.getFactory(Itinerary.class),
-                new DatabaseConnector.CallbackInterface<Itinerary>() {
-                    @Override
-                    public void onStartConnection() {
-                        //progressBar.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onEndConnection(List<Itinerary> jsonArray) {
-                        //progressBar.setVisibility(View.GONE);
-                        adapter = new ItineraryAdapter(getActivity(), jsonArray);
-                        recyclerView.setAdapter(adapter);
-                    }
-                },
-                parameters);
+        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
+                .setContext(context)
+                .setOnEndConnectionListener(jsonArray -> {
+                    //progressBar.setVisibility(View.GONE);
+                    adapter = new ItineraryAdapter(getActivity(), jsonArray);
+                    recyclerView.setAdapter(adapter);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 
     private void getParticipations(Map<String, Object> parameters, RecyclerView recyclerView) {
         //RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
-                context,
-                ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
-                BusinessEntityBuilder.getFactory(Reservation.class),
-                new DatabaseConnector.CallbackInterface<Reservation>() {
-                    @Override
-                    public void onStartConnection() {
-                        //progressBar.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onEndConnection(List<Reservation> list) {
-                        //progressBar.setVisibility(View.GONE);
-                        if (!list.isEmpty())
-                            message.setVisibility(View.VISIBLE);
-                        adapter2 = new ReservationAdapter(getActivity(), list, R.layout.participation_list);
-                        recyclerView.setAdapter(adapter2);
-                    }
-                },
-                parameters);
+        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    //progressBar.setVisibility(View.GONE);
+                    if (!list.isEmpty())
+                        message.setVisibility(View.VISIBLE);
+                    adapter2 = new ReservationAdapter(getActivity(), list, R.layout.participation_list);
+                    recyclerView.setAdapter(adapter2);
+                })
+                .setObjectToSend(parameters)
+                .build();
         connector.execute();
     }
 

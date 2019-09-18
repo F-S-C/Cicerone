@@ -21,26 +21,6 @@ import javax.net.ssl.HttpsURLConnection;
 public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnector<T> {
 
     /**
-     * Constructor.
-     *
-     * @param url The url of the server-side script.
-     */
-    public GetDataConnector(Context context, String url, BusinessEntityBuilder<T> builder) {
-        super(context, url, builder);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param url      The url of the server-side script.
-     * @param callback A reference to CallbackInterface that will be used before and after the
-     *                 connection.
-     */
-    public GetDataConnector(Context context, String url, BusinessEntityBuilder<T> builder, CallbackInterface<T> callback) {
-        super(context, url, builder, callback);
-    }
-
-    /**
      * The function fetches the results.
      *
      * @param voids Various parameters
@@ -64,6 +44,37 @@ public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnecto
             Log.e("GET_DATA_ERROR", sw.toString());
             setError(e);
             return null;
+        }
+    }
+
+    private GetDataConnector(Builder<T> builder) {
+        super(builder);
+    }
+
+    public static class Builder<BuilderType extends BusinessEntity> extends DatabaseConnector.Builder<BuilderType> {
+
+        public Builder(String url, BusinessEntityBuilder<BuilderType> builder) {
+            super(url, builder);
+        }
+
+        @Override
+        public Builder<BuilderType> setOnStartConnectionListener(OnStartConnectionListener listener) {
+            return (Builder<BuilderType>) super.setOnStartConnectionListener(listener);
+        }
+
+        @Override
+        public Builder<BuilderType> setOnEndConnectionListener(OnEndConnectionListener<BuilderType> onEndConnectionListener) {
+            return (Builder<BuilderType>) super.setOnEndConnectionListener(onEndConnectionListener);
+        }
+
+        @Override
+        public Builder<BuilderType> setContext(Context context) {
+            return (Builder<BuilderType>) super.setContext(context);
+        }
+
+        @Override
+        public GetDataConnector<BuilderType> build() {
+            return new GetDataConnector<>(this);
         }
     }
 }
