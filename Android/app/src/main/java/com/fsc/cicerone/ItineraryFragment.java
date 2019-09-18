@@ -123,18 +123,15 @@ public class ItineraryFragment extends Fragment {
 
     private void getMyItineraries(Map<String, Object> parameters, RecyclerView recyclerView) {
         // TODO: Test and check if the new adapter works as expected.
-        // RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Itinerary> connector = new SendInPostConnector<>(ConnectorConstants.REQUEST_ITINERARY,
                 BusinessEntityBuilder.getFactory(Itinerary.class),
                 new DatabaseConnector.CallbackInterface<Itinerary>() {
                     @Override
                     public void onStartConnection() {
-                        // progressBar.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onEndConnection(List<Itinerary> jsonArray) {
-                        // progressBar.setVisibility(View.GONE);
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                         while (recyclerView.getItemDecorationCount() > 0) {
                             recyclerView.removeItemDecorationAt(0);
@@ -147,19 +144,16 @@ public class ItineraryFragment extends Fragment {
     }
 
     private void getParticipations(Map<String, Object> parameters, RecyclerView recyclerView) {
-        // RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Reservation> connector = new SendInPostConnector<>(
                 ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY,
                 BusinessEntityBuilder.getFactory(Reservation.class),
                 new DatabaseConnector.CallbackInterface<Reservation>() {
                     @Override
                     public void onStartConnection() {
-                        // progressBar.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onEndConnection(List<Reservation> list) {
-                        // progressBar.setVisibility(View.GONE);
                         if (!list.isEmpty())
                             message.setVisibility(View.VISIBLE);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
