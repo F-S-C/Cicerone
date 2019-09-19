@@ -9,7 +9,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -18,13 +17,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText usernameEditText;
-    private EditText passwordEditText;
+    private TextInputLayout usernameEditTextContainer;
+    private TextInputEditText usernameEditText;
+    private TextInputLayout passwordEditTextContainer;
+    private TextInputEditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_login);
 
+        usernameEditTextContainer = findViewById(R.id.usernameInputContainer);
+        passwordEditTextContainer = findViewById(R.id.passwordInputContainer);
         usernameEditText = findViewById(R.id.usernameInput);
         passwordEditText = findViewById(R.id.passwordInput);
 
@@ -46,20 +51,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        if (usernameEditText.getText().toString().trim().length() == 0) {
-            usernameEditText.setError(getString(R.string.empty_username_error));
-            return;
-        }
-        if (passwordEditText.getText().toString().trim().length() == 0) {
-            passwordEditText.setError(getString(R.string.empty_password_error));
-            return;
-        }
+        final String username = usernameEditText.getText() != null ? usernameEditText.getText().toString().trim() : "";
+        final String password = passwordEditText.getText() != null ? passwordEditText.getText().toString() : "";
 
-        final String username = usernameEditText.getText().toString();
-        final String password = passwordEditText.getText().toString();
+        if (username.length() == 0) {
+            usernameEditTextContainer.setError(getString(R.string.empty_username_error));
+            return;
+        }
+        if (password.length() == 0) {
+            passwordEditTextContainer.setError(getString(R.string.empty_password_error));
+            return;
+        }
 
         attemptLogin(username, password);
-
     }
 
     public void forgotPassword(View view) {
@@ -87,8 +91,8 @@ public class LoginActivity extends AppCompatActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             if (!success) {
                 Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_SHORT).show();
-                usernameEditText.setError(getString(R.string.wrong_credentials));
-                passwordEditText.setError(getString(R.string.wrong_credentials));
+                usernameEditTextContainer.setError(getString(R.string.wrong_credentials));
+                passwordEditTextContainer.setError(getString(R.string.wrong_credentials));
                 return;
             }
 
@@ -98,9 +102,9 @@ public class LoginActivity extends AppCompatActivity {
                 preferences.edit().putString("session", new User(username, password).toJSONObject().toString()).apply();
             }
 
-            if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN){
+            if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
                 startActivity(new Intent(LoginActivity.this, AdminMainActivity.class));
-            }else {
+            } else {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
             finish();

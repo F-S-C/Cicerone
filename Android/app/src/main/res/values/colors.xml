@@ -9,4 +9,5 @@
     <color name="colorGreen">#11EA00</color>
     <color name="colorRed">#FF2700</color>
     <color name="colorYellow">#FFBB00</color>
+    <color name="editTextBackground">#261136</color>
 </resources>
