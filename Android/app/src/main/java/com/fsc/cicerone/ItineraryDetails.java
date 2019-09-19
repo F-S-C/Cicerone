@@ -13,7 +13,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReservationManager;
@@ -24,6 +26,7 @@ import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.Wishlist;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -43,9 +46,7 @@ import app_connector.SendInPostConnector;
 
 public class ItineraryDetails extends AppCompatActivity {
     private Button requestReservation;
-    private Button intoWishlist;
-    private Button removeFromWishlist;
-    private TextView itineraryTitle;
+    private FloatingActionButton modifyWishlistButton;
     private ImageView image;
     private TextView description;
     private TextView bDate;
@@ -61,11 +62,15 @@ public class ItineraryDetails extends AppCompatActivity {
     private TextView fPrice;
     private TextView rPrice;
     private Map<String, Object> object2;
+    private boolean isInWishlist;
 
     private Itinerary itinerary;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
     private static final String IT_CODE = "itinerary_code";
+
+    public ItineraryDetails() {
+    }
 
 
     @Override
@@ -73,9 +78,7 @@ public class ItineraryDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_details);
         requestReservation = findViewById(R.id.requestReservation);
-        intoWishlist = findViewById(R.id.intoWishlist);
-        removeFromWishlist = findViewById(R.id.removeFromWishlist);
-        itineraryTitle = findViewById(R.id.title);
+        modifyWishlistButton = findViewById(R.id.intoWishlist);
         image = findViewById(R.id.image);
         description = findViewById(R.id.description);
         bDate = findViewById(R.id.beginningDate);
@@ -96,10 +99,18 @@ public class ItineraryDetails extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
+
 
         try {
             String s = Objects.requireNonNull(bundle).getString("itinerary");
             itinerary = new Itinerary(new JSONObject(s));
+
+            supportActionBar.setTitle(itinerary.getTitle());
 
             object.put("itinerary_in_wishlist", itinerary.getCode());
             object.put("username", currentLoggedUser.getUsername());
@@ -113,7 +124,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
             review.setOnTouchListener((v, event) -> {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewFragment.class);
+                    Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewActivity.class);
                     i.putExtra("itinerary", itinerary.toJSONObject().toString());
                     i.putExtra("rating", review.getRating());
                     i.putExtra("reviewed_itinerary", itinerary.getCode());
@@ -127,17 +138,18 @@ public class ItineraryDetails extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        removeFromWishlist.setOnClickListener(v -> new MaterialAlertDialogBuilder(ItineraryDetails.this).
-                setTitle(getString(R.string.are_you_sure))
-                .setMessage(getString(R.string.confirm_delete))
-                .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteFromWishlist(object)))
-                .setNegativeButton(getString(R.string.no), null)
-                .show());
-
-
-        intoWishlist.setOnClickListener(v -> addToWishlist(object));
-
-
+        modifyWishlistButton.setOnClickListener(v -> {
+            if (isInWishlist) {
+                new MaterialAlertDialogBuilder(ItineraryDetails.this).
+                        setTitle(getString(R.string.are_you_sure))
+                        .setMessage(getString(R.string.confirm_delete))
+                        .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteFromWishlist(object)))
+                        .setNegativeButton(getString(R.string.no), null)
+                        .show();
+            } else {
+                addToWishlist(object);
+            }
+        });
     }
 
     public void addToWishlist(Map<String, Object> params) {
@@ -177,13 +189,8 @@ public class ItineraryDetails extends AppCompatActivity {
         SendInPostConnector<Wishlist> connector = new SendInPostConnector.Builder<>(ConnectorConstants.SEARCH_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class))
                 .setContext(this)
                 .setOnEndConnectionListener(list -> {
-                    if (!list.isEmpty()) {
-                        intoWishlist.setVisibility(View.GONE);
-                        removeFromWishlist.setVisibility(View.VISIBLE);
-                    } else {
-                        intoWishlist.setVisibility(View.VISIBLE);
-                        removeFromWishlist.setVisibility(View.GONE);
-                    }
+                    isInWishlist = !list.isEmpty();
+                    modifyWishlistButton.setImageResource(isInWishlist ? R.drawable.ic_favorite_black_24dp : R.drawable.ic_outline_favorite_border_24px);
                 })
                 .setObjectToSend(object)
                 .build();
@@ -195,7 +202,6 @@ public class ItineraryDetails extends AppCompatActivity {
     public void getDataFromServer(Itinerary itinerary) {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
-        itineraryTitle.setText(itinerary.getTitle());
         description.setText(itinerary.getDescription());
         Picasso.get().load(itinerary.getImageUrl()).into(image);
         author.setText(itinerary.getCicerone().getUsername());
@@ -323,6 +329,10 @@ public class ItineraryDetails extends AppCompatActivity {
         view.getContext().startActivity(i);
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
 

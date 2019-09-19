@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,7 +31,8 @@ import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
- * Class that contains the elements of the TAB Itinerary on the account details page.
+ * Class that contains the elements of the TAB Itinerary on the account details
+ * page.
  */
 public class CiceroneItineraryListFragment extends Fragment {
 
@@ -46,33 +48,40 @@ public class CiceroneItineraryListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_cicerone_itinerary_list_fragment, container, false);
 
         Bundle bundle = getArguments();
 
         try {
             Map<String, Object> parameters = new HashMap<>(1);
-            User user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
+            User user = new User(
+                    new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
             parameters.put("username", user.getUsername());
 
             RecyclerView recyclerView = view.findViewById(R.id.cicerone_itinerary_recycler);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(parameters, recyclerView);
+            recyclerView.addItemDecoration(
+                    new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+            requireData(view, parameters, recyclerView);
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.toString());
         }
         return view;
     }
 
-    private void requireData(Map<String, Object> parameters, RecyclerView recyclerView) {
+    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
+        TextView message = view.findViewById(R.id.no_itinerary_history);
         SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(getActivity())
+                .setOnStartConnectionListener(() -> message.setVisibility(View.GONE))
                 .setOnEndConnectionListener(list -> {
-                    adapter = new AdminItineraryAdapter(getActivity(), list);
-                    recyclerView.setAdapter(adapter);
+                    if (!list.isEmpty()) {
+                        adapter = new AdminItineraryAdapter(getActivity(), list);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        message.setVisibility(View.VISIBLE);
+                    }
                 })
                 .setObjectToSend(parameters)
                 .build();

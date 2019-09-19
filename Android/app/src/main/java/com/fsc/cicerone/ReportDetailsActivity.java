@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -14,11 +15,13 @@ import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
+import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class ReportDetailsActivity extends AppCompatActivity {
@@ -34,6 +37,11 @@ public class ReportDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_details);
+
+        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
+
         reportTitle = findViewById(R.id.report_title);
         reportCode = findViewById(R.id.report_code);
         status = findViewById(R.id.status_text);
@@ -41,9 +49,9 @@ public class ReportDetailsActivity extends AppCompatActivity {
         bodyText = findViewById(R.id.body_report_activity);
         cancButton = findViewById(R.id.delete_report_btn);
         Map<String, Object> parameters = new HashMap<>();
-        //Get the bundle
+        // Get the bundle
         Bundle bundle = getIntent().getExtras();
-        //Extract the data
+        // Extract the data
         parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
         getReportFromServer(parameters);
         cancButton.setEnabled(false);
@@ -92,6 +100,12 @@ public class ReportDetailsActivity extends AppCompatActivity {
                 .setObjectToSend(params)
                 .build();
         connector.execute();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void deleteReport(Map<String, Object> params) {

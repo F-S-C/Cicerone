@@ -46,6 +46,7 @@ public class AdminDetailsUserFragment extends Fragment {
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
+    private TextView documentNotFound;
     private String data;
     private DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
@@ -76,6 +77,7 @@ public class AdminDetailsUserFragment extends Fragment {
         TextView avgEarn = view.findViewById(R.id.avg_earn);
         TextView sex = view.findViewById(R.id.sex_user_admin);
         Button removeUser = view.findViewById(R.id.remove_user_admin);
+        documentNotFound = view.findViewById(R.id.document_not_exists);
         Bundle bundle = getArguments();
 
         User user = null;
@@ -118,6 +120,7 @@ public class AdminDetailsUserFragment extends Fragment {
                 .setOnEndConnectionListener(list -> {
                     if (!list.isEmpty()) {
                         Document dataDocument = list.get(0);
+                        documentNotFound.setVisibility(View.GONE);
                         data = "Document Number: " + dataDocument.getNumber();
                         documentNumber.setText(data);
                         data = "Document Type: " + dataDocument.getType();
@@ -130,7 +133,6 @@ public class AdminDetailsUserFragment extends Fragment {
                         documentNumber.setVisibility(View.GONE);
                         documentType.setVisibility(View.GONE);
                         documentExpiryDate.setVisibility(View.GONE);
-                        Toast.makeText(context, AdminDetailsUserFragment.this.getString(R.string.doc_not_found), Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setObjectToSend(parameters)

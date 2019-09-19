@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
+    <TextView
+        android:id="@+id/noActiveItineraries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="25dp"
+        android:text="@string/no_active_itineraries"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:textSize="18sp" />
+
     <RelativeLayout
         android:id="@+id/progressContainer"
         android:layout_width="match_parent"
@@ -40,7 +50,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itinerary_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content">
 
         </androidx.recyclerview.widget.RecyclerView>
 

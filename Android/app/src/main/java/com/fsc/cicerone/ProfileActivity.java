@@ -1,11 +1,11 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,9 +16,6 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,12 +35,25 @@ public class ProfileActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     Fragment fragment = null;
     FragmentManager fragmentManager;
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         frameLayout = findViewById(R.id.frame);
         fragment = new SelectedUserReviewFragment();
@@ -62,7 +72,6 @@ public class ProfileActivity extends AppCompatActivity {
         //Get the bundle
         //Extract the data…
         params.put("username", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("reviewed_user")));
-        Log.e("bundle", Objects.requireNonNull(bundle).getString("reviewed_user"));
         TextView username = findViewById(R.id.username_profile);
         String nick = "@" + Objects.requireNonNull(params.get("username")).toString();
         username.setText(nick);

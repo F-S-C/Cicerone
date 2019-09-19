@@ -21,6 +21,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -90,8 +91,7 @@ public class DiscoverFragment extends Fragment {
 
 
         recyclerView = view.findViewById(R.id.itinerary_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
 
         setBeginningDateBtn = view.findViewById(R.id.itinerary_search_beginning_date_btn);
         setBeginningDateBtn.setOnClickListener(this::setBeginningDate);

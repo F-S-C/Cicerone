@@ -4,7 +4,7 @@
     android:id="@+id/page_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ItineraryReviewFragment">
+    tools:context=".ItineraryReviewActivity">
 
     <LinearLayout
         android:id="@+id/base_itinerary_review_layout"
@@ -52,7 +52,7 @@
 
                         <RatingBar
                             android:id="@+id/it_feedback"
-                            style="@style/Widget.AppCompat.RatingBar.Indicator"
+                            style="@android:style/Widget.Material.RatingBar.Indicator"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:isIndicator="true"
@@ -67,11 +67,14 @@
                             android:id="@+id/author"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_outline_account_circle_24px"
                             android:gravity="center"
                             android:text="@string/user_type_cicerone"
                             android:textAlignment="viewStart"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                            android:textColor="@color/colorWhite" />
+                            android:textColor="@color/colorWhite"
+                            android:textSize="14sp"
+                            app:drawableTint="@color/design_default_color_background" />
 
                     </LinearLayout>
                 </LinearLayout>

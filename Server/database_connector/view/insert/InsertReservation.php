@@ -4,7 +4,7 @@ namespace database_connector\view\insert;
 
 use database_connector\controller\insert\InsertReservation;
 
-require_once "../../controller/insert/InsertReservation.php";
+require_once "/membri/fsc/database_connector/controller/insert/InsertReservation.php";
 
 $connector = new InsertReservation();
 $connector->add_value(array(strtolower(json_decode($_POST['username'], true)["username"]),

@@ -38,4 +38,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/noReservation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="25dp"
+        android:text="@string/no_requests_reservation"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
 </FrameLayout>

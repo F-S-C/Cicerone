@@ -171,7 +171,7 @@
     <string name="username_error">Username not valid or too short!</string>
     <string name="document_not_valid">The document entered is not valid.</string>
     <string name="active_itineraries">Active itineraries</string>
-    <string name="list_users">Registered users</string>
+    <string name="list_users">Users</string>
     <string name="reports">Reports</string>
     <string name="reporter_user">Reporter user:</string>
     <string name="details_itinerary">Itinerary Details</string>
@@ -179,6 +179,7 @@
     <string name="connection_error">No internet connection.</string>
     <string name="major_date_required">You must be an adult to register.</string>
     <string name="date_invalid">The date entered is not valid.</string>
+    <string name="price_value" translatable="false">€ %.2f</string>
     <string name="insert_details">Insert Details</string>
     <string name="reservation_dialog_message">Please insert all the requested details to ask for a reservation. All fields are required.</string>
     <string name="requested_date">Requested date</string>
@@ -212,12 +213,17 @@
     <string name="itinerary_earn">Average earnings: %.2f €</string>
     <string name="no_requests_reservation">At the moment there are no reservation requests.</string>
     <string name="avg_earn">Average earnings: %.2f €</string>
-    <string name="no_itineraries_history">At the moment you haven\'t taken part to an itinerary.</string>
+    <string name="no_itineraries_history">" Didn't participate in any itinerary."</string>
     <string name="participations">Participation</string>
     <string name="my_itineraries">My itineraries</string>
     <string name="no_itineraries">You are not participating at any itinerary.</string>
+    <string name="no_created_itinerary">Has not created any itinerary.</string>
     <string name="reservation_added">Reservation added.</string>
     <string name="reservation_removed">Reservation removed.</string>
     <string name="itinerary_image">Itinerary image</string>
     <string name="create_itinerary">Create itinerary</string>
+    <string name="warning_deleted_user">This user has been deleted from the platform.</string>
+    <string name="report_title">Report title</string>
+    <string name="report_code">Report code</string>
+    <string name="doc_not_exists">Document: No documents found.</string>
 </resources>

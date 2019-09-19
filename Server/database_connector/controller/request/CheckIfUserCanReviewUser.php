@@ -4,7 +4,7 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\BooleanConnector;
 
-require_once "../BooleanConnector.php";
+require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
 
 /**
  * Request for control over the existence of a possible connection between the possible reviewer and the possible reviewed.

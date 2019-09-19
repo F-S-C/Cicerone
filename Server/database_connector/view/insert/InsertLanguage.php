@@ -4,7 +4,7 @@ namespace database_connector\view\insert;
 
 use database_connector\controller\insert\InsertLanguage;
 
-require_once "../../controller/insert/InsertLanguage.php";
+require_once "/membri/fsc/database_connector/controller/insert/InsertLanguage.php";
 
 $connector = new InsertLanguage();
 $connector->add_value(array($_POST['language_code'], $_POST['language_name']));

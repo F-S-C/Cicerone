@@ -5,12 +5,13 @@
     android:id="@+id/ItineraryManagementRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="25dp"
+
     tools:context=".ItineraryManagement">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="25dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -64,15 +65,12 @@
 
                 <RatingBar
                     android:id="@+id/itineraryReview"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    style="@android:style/Widget.Material.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:indeterminate="false"
                     android:numStars="5"
-                    android:rating="4"
                     tools:visibility="visible" />
 
             </LinearLayout>

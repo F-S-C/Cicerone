@@ -117,6 +117,9 @@ public class AdminMainActivity extends AppCompatActivity {
     private void changeCurrentFragment(Fragment nextFragment) {
         fragmentManager.beginTransaction().hide(activeFragment).show(nextFragment).commit();
         activeFragment = nextFragment;
+        ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setDisplayHomeAsUpEnabled(!nextFragment.equals(itineraryActiveFragment));
+        supportActionBar.setDisplayShowHomeEnabled(!nextFragment.equals(itineraryActiveFragment));
     }
 
     @Override
@@ -132,5 +135,11 @@ public class AdminMainActivity extends AppCompatActivity {
         } else {
             navView.setSelectedItemId(R.id.navigation_itineraries_active_admin);
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() { //TODO: Add to class diagram
+        onBackPressed();
+        return true;
     }
 }

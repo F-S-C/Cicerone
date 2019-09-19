@@ -38,6 +38,7 @@ import com.fsc.cicerone.model.Sex;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -63,14 +64,14 @@ import app_connector.SendInPostConnector;
 public class ProfileFragment extends Fragment {
 
     private static final String ERROR_TAG = "ERROR IN " + ProfileFragment.class.getName();
-    private EditText name;
-    private EditText surname;
-    private EditText email;
-    private EditText cellphone;
-    private EditText birthDate;
-    private EditText documentNumber;
-    private EditText documentType;
-    private EditText documentExpiryDate;
+    private TextInputEditText name;
+    private TextInputEditText surname;
+    private TextInputEditText email;
+    private TextInputEditText cellphone;
+    private TextInputEditText birthDate;
+    private TextInputEditText documentNumber;
+    private TextInputEditText documentType;
+    private TextInputEditText documentExpiryDate;
     private Button switchButton;
     private Button modifyButton;
     private Calendar birthCalendar;
@@ -98,7 +99,7 @@ public class ProfileFragment extends Fragment {
 
         preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         name = view.findViewById(R.id.name);
-        surname = view.findViewById(R.id.surname_textbox);
+        surname = view.findViewById(R.id.surname);
         email = view.findViewById(R.id.email);
         cellphone = view.findViewById(R.id.cellphone);
         birthDate = view.findViewById(R.id.registrationBirthDate);
@@ -273,6 +274,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void switchToCicerone(Map<String, Object> parameters) {
+        parameters.put("user_type", UserType.CICERONE.toInt());
 
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
                 .setContext(context)

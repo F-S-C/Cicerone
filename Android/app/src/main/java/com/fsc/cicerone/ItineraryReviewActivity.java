@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,7 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ItineraryReviewFragment extends AppCompatActivity {
+public class ItineraryReviewActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     FrameLayout frameLayout;
@@ -30,9 +31,21 @@ public class ItineraryReviewFragment extends AppCompatActivity {
     RatingBar rating;
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_review_fragment);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         frameLayout = findViewById(R.id.frame);
         fragment = new SelectedItineraryReviewFragment();

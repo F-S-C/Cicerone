@@ -33,19 +33,19 @@
             android:text="@string/loading" />
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/review_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <TextView
         android:id="@+id/noReview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:padding="25dp"
         android:text="@string/no_review"
         android:textAlignment="center"
         android:textSize="18sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/review_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </FrameLayout>

@@ -65,14 +65,11 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="30dp" />
-
             <TextView
                 android:id="@+id/report_user_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:text="@string/reported_user"
                 android:textColor="@android:color/background_dark"
@@ -121,7 +118,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="41dp"
                 android:layout_weight="1" />
 
             <com.google.android.material.button.MaterialButton

@@ -1,61 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MaterialComponents.CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="15dp">
+    android:layout_marginLeft="@dimen/material_card_spacing"
+    android:layout_marginTop="@dimen/material_card_spacing"
+    android:layout_marginRight="@dimen/material_card_spacing"
+    app:contentPadding="@dimen/default_margin">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/itinerary_requested"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/position_pin"
-                android:text="@string/itinerary"
-                android:textSize="18sp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="12dp" />
-
-            <TextView
-                android:id="@+id/date_requested"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_request_data"
-                android:text="@string/requested_date"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/nr_children_requested"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_children_number"
-                android:text="@string/number_of_children"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/nr_adults_requested"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_adults_number"
-                android:text="@string/number_of_adults"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="65dp"
-            android:layout_height="wrap_content" />
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,44 +21,81 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/date_requested"
+                style="@style/TextAppearance.MaterialComponents.Overline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/requested_date" />
+
+            <TextView
+                android:id="@+id/itinerary_requested"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/itinerary" />
+
+            <TextView
                 android:id="@+id/reservation_globetrotter"
+                style="@style/TextAppearance.MaterialComponents.Body2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_outline_account_circle_24px"
-                android:text="@string/user_type_globetrotter"
-                android:textSize="18sp" />
+                android:drawablePadding="@dimen/material_card_spacing"
+                android:text="@string/user_type_globetrotter" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/nr_children_requested"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_children_number"
+                android:drawablePadding="@dimen/material_card_spacing"
+                android:text="@string/number_of_children" />
+
+            <TextView
+                android:id="@+id/nr_adults_requested"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_adults_number"
+                android:drawablePadding="@dimen/material_card_spacing"
+                android:gravity="center_vertical"
+                android:text="@string/number_of_adults" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/reservation_confirm"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/material_card_spacing"
+                android:text="@string/confirm_reservation" />
+
+            <Button
+                android:id="@+id/reservation_decline"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/decline_reservation" />
+
         </LinearLayout>
 
     </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/reservation_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/confirm_reservation" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/reservation_decline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/decline_reservation" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

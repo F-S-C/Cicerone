@@ -21,13 +21,11 @@ import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class InsertItineraryReviewFragment extends Fragment {
@@ -42,7 +40,7 @@ public class InsertItineraryReviewFragment extends Fragment {
     private TextView messageFeedback;
     private TextView messageDescription;
 
-    //TODO: Are param and sendParam both needed?
+    // TODO: Are param and sendParam both needed?
     private Map<String, Object> param;
     private Map<String, Object> sendParam;
 
@@ -51,8 +49,7 @@ public class InsertItineraryReviewFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_insert_itinerary_review, container, false);
         message = view.findViewById(R.id.noInsertReview);
@@ -65,13 +62,13 @@ public class InsertItineraryReviewFragment extends Fragment {
         feedbackReview = view.findViewById(R.id.inputFeedback);
         Bundle bundle = getArguments();
 
-
         param = new HashMap<>();
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
         param.put("username", currentLoggedUser.getUsername());
-        param.put("booked_itinerary", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("reviewed_itinerary")));
+        param.put("booked_itinerary",
+                Objects.requireNonNull(Objects.requireNonNull(bundle).getString("reviewed_itinerary")));
         param.put("itinerary", Objects.requireNonNull(bundle.getString("itinerary")));
 
         requestReview(param);
@@ -83,59 +80,78 @@ public class InsertItineraryReviewFragment extends Fragment {
     private void requestReview(Map<String, Object> parameters) {
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(getActivity())
+                .setOnStartConnectionListener(() -> {
+                    submitReview.setVisibility(View.GONE);
+                    updateReview.setVisibility(View.GONE);
+                    message.setVisibility(View.GONE);
+                    deleteReview.setVisibility(View.GONE);
+                    descriptionReview.setVisibility(View.GONE);
+                    feedbackReview.setVisibility(View.GONE);
+                    messageDescription.setVisibility(View.GONE);
+                    messageFeedback.setVisibility(View.GONE);
+                })
                 .setOnEndConnectionListener(list -> {
                     sendParam = new HashMap<>();
 
                     if (!list.isEmpty()) {
-                        message.setVisibility(View.GONE);
-                        parameters.put("reviewed_itinerary", Objects.requireNonNull(parameters.get("booked_itinerary")).toString());
+                        descriptionReview.setVisibility(View.VISIBLE);
+                        feedbackReview.setVisibility(View.VISIBLE);
+                        messageDescription.setVisibility(View.VISIBLE);
+                        messageFeedback.setVisibility(View.VISIBLE);
+                        parameters.put("reviewed_itinerary",
+                                Objects.requireNonNull(parameters.get("booked_itinerary")).toString());
                         checkReview(parameters);
 
                         submitReview.setOnClickListener(v -> {
                             if (allFilled()) {
-                                sendParam.put("itinerary", Objects.requireNonNull(param.get("itinerary")).toString());
+                                sendParam.put("itinerary",
+                                        Objects.requireNonNull(param.get("itinerary")).toString());
                                 sendParam.put("username", Objects.requireNonNull(param.get("username")).toString());
-                                sendParam.put("reviewed_itinerary", Objects.requireNonNull(param.get("reviewed_itinerary")).toString());
+                                sendParam.put("reviewed_itinerary",
+                                        Objects.requireNonNull(param.get("reviewed_itinerary")).toString());
                                 sendParam.put("description", descriptionReview.getText().toString());
                                 sendParam.put("feedback", (int) feedbackReview.getRating());
                                 Log.e("username:", Objects.requireNonNull(sendParam.get("username")).toString());
 
                                 submitReview(sendParam);
                             } else
-                                Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(),
+                                        InsertItineraryReviewFragment.this.getString(R.string.error_fields_empty),
+                                        Toast.LENGTH_SHORT).show();
 
                         });
                         deleteReview.setOnClickListener(v -> {
 
-                            sendParam.put("username", Objects.requireNonNull(parameters.get("username")).toString());
-                            sendParam.put("reviewed_itinerary", Objects.requireNonNull(parameters.get("reviewed_itinerary")).toString());
-                            sendParam.put("itinerary", Objects.requireNonNull(parameters.get("itinerary")).toString());
+                            sendParam.put("username",
+                                    Objects.requireNonNull(parameters.get("username")).toString());
+                            sendParam.put("reviewed_itinerary",
+                                    Objects.requireNonNull(parameters.get("reviewed_itinerary")).toString());
+                            sendParam.put("itinerary",
+                                    Objects.requireNonNull(parameters.get("itinerary")).toString());
                             deleteReview(sendParam);
 
                         });
                         updateReview.setOnClickListener(v -> {
                             if (allFilled()) {
-                                sendParam.put("username", Objects.requireNonNull(parameters.get("username")).toString());
-                                sendParam.put("reviewed_itinerary", Objects.requireNonNull(parameters.get("reviewed_itinerary")).toString());
+                                sendParam.put("username",
+                                        Objects.requireNonNull(parameters.get("username")).toString());
+                                sendParam.put("reviewed_itinerary",
+                                        Objects.requireNonNull(parameters.get("reviewed_itinerary")).toString());
                                 sendParam.put("description", descriptionReview.getText().toString());
                                 sendParam.put("feedback", (int) feedbackReview.getRating());
-                                sendParam.put("itinerary", Objects.requireNonNull(parameters.get("itinerary")).toString());
+                                sendParam.put("itinerary",
+                                        Objects.requireNonNull(parameters.get("itinerary")).toString());
 
                                 updateReview(sendParam);
                             } else
-                                Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(),
+                                        InsertItineraryReviewFragment.this.getString(R.string.error_fields_empty),
+                                        Toast.LENGTH_SHORT).show();
 
                         });
                     } else {
-                        feedbackReview.setVisibility(View.GONE);
-                        descriptionReview.setVisibility(View.GONE);
-                        submitReview.setVisibility(View.GONE);
-                        deleteReview.setVisibility(View.GONE);
-                        updateReview.setVisibility(View.GONE);
-                        messageFeedback.setVisibility(View.GONE);
-                        messageDescription.setVisibility(View.GONE);
+                        message.setVisibility(View.VISIBLE);
                     }
-
                 })
                 .setObjectToSend(parameters)
                 .build();
@@ -149,7 +165,6 @@ public class InsertItineraryReviewFragment extends Fragment {
                     message.setVisibility(View.GONE);
                     if (!list.isEmpty()) {
                         result = list.get(0);
-                        submitReview.setVisibility(View.GONE);
                         updateReview.setVisibility(View.VISIBLE);
                         deleteReview.setVisibility(View.VISIBLE);
                         descriptionReview.setText(result.getDescription());
@@ -158,8 +173,6 @@ public class InsertItineraryReviewFragment extends Fragment {
                         feedbackReview.setRating(0);
                         descriptionReview.setText("");
                         submitReview.setVisibility(View.VISIBLE);
-                        updateReview.setVisibility(View.GONE);
-                        deleteReview.setVisibility(View.GONE);
                     }
                 })
                 .setObjectToSend(parameters)
@@ -172,16 +185,18 @@ public class InsertItineraryReviewFragment extends Fragment {
                 .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
-                        Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.added_review), Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                        Toast.makeText(getActivity(),
+                                InsertItineraryReviewFragment.this.getString(R.string.added_review),
+                                Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getActivity(), ItineraryReviewActivity.class);
                         Bundle b = new Bundle();
-                        b.putString("reviewed_itinerary", Objects.requireNonNull(sendParam.get("reviewed_itinerary")).toString());
+                        b.putString("reviewed_itinerary",
+                                Objects.requireNonNull(sendParam.get("reviewed_itinerary")).toString());
                         b.putString("itinerary", Objects.requireNonNull(sendParam.get("itinerary")).toString());
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         i.putExtras(b);
                         startActivity(i);
                     }
-
                 })
                 .setObjectToSend(sendParam)
                 .build();
@@ -192,22 +207,23 @@ public class InsertItineraryReviewFragment extends Fragment {
         return !descriptionReview.getText().toString().equals("") && feedbackReview.getRating() > 0;
     }
 
-
     private void deleteReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY_REVIEW)
                 .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
-                        Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.deleted_review), Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                        Toast.makeText(getActivity(),
+                                InsertItineraryReviewFragment.this.getString(R.string.deleted_review),
+                                Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getActivity(), ItineraryReviewActivity.class);
                         Bundle b = new Bundle();
-                        b.putString("reviewed_itinerary", Objects.requireNonNull(param.get("reviewed_itinerary")).toString());
+                        b.putString("reviewed_itinerary",
+                                Objects.requireNonNull(param.get("reviewed_itinerary")).toString());
                         b.putString("itinerary", Objects.requireNonNull(param.get("itinerary")).toString());
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         i.putExtras(b);
                         startActivity(i);
                     }
-
                 })
                 .setObjectToSend(param)
                 .build();
@@ -220,17 +236,19 @@ public class InsertItineraryReviewFragment extends Fragment {
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     Log.e("p", result.toJSONObject().toString());
                     if (result.getResult()) {
-                        Toast.makeText(getActivity(), InsertItineraryReviewFragment.this.getString(R.string.updated_review), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),
+                                InsertItineraryReviewFragment.this.getString(R.string.updated_review),
+                                Toast.LENGTH_SHORT).show();
 
-                        Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                        Intent i = new Intent(getActivity(), ItineraryReviewActivity.class);
                         Bundle b = new Bundle();
-                        b.putString("reviewed_itinerary", Objects.requireNonNull(param.get("reviewed_itinerary")).toString());
+                        b.putString("reviewed_itinerary",
+                                Objects.requireNonNull(param.get("reviewed_itinerary")).toString());
                         b.putString("itinerary", Objects.requireNonNull(param.get("itinerary")).toString());
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         i.putExtras(b);
                         startActivity(i);
                     }
-
                 })
                 .setObjectToSend(param)
                 .build();

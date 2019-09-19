@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The wishlist fragment (third tab).
      */
-    private final Fragment wishlistFragment = new WishlistFragment();
+    private final WishlistFragment wishlistFragment = new WishlistFragment();
 
     /**
      * The profile fragment (fourth tab).
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
         navView = findViewById(R.id.bottom_navigation);
         navView.setOnNavigationItemSelectedListener(item -> {
-            boolean toReturn = false;
             ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+            boolean toReturn = false;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     changeCurrentFragment(homeFragment);
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_favorites:
                     changeCurrentFragment(wishlistFragment);
                     supportActionBar.setTitle(getString(R.string.wishlist));
+                    wishlistFragment.forceRefresh();
                     toReturn = true;
                     break;
                 case R.id.navigation_discover:
@@ -86,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.navigation_profile:
                     changeCurrentFragment(profileFragment);
-                    toReturn = true;
                     supportActionBar.setTitle(getString(R.string.account));
+                    toReturn = true;
                     break;
                 default:
                     break;
@@ -111,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
     private void changeCurrentFragment(Fragment nextFragment) {
         fragmentManager.beginTransaction().hide(activeFragment).show(nextFragment).commit();
         activeFragment = nextFragment;
+        ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setDisplayHomeAsUpEnabled(!nextFragment.equals(homeFragment));
+        supportActionBar.setDisplayShowHomeEnabled(!nextFragment.equals(homeFragment));
     }
 
     @Override
@@ -126,5 +130,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             navView.setSelectedItemId(R.id.navigation_home);
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() { //TODO: Add to class diagram
+        onBackPressed();
+        return true;
     }
 }

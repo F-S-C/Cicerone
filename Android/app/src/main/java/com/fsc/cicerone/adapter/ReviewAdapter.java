@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,8 +25,8 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
     private List<? extends Review> mData;
+    private Context context;
     private LayoutInflater mInflater;
-
 
     /**
      * Constructor.
@@ -36,6 +37,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public ReviewAdapter(Context context, List<? extends Review> list) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
+        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -57,11 +59,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         //TODO Reviewer profile image
 
         holder.itemView.setOnClickListener(v -> {
-            Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("reviewed_user", mData.get(position).getAuthor().getUsername());
-            i.putExtras(bundle);
-            v.getContext().startActivity(i);
+            if (!mData.get(position).getAuthor().getUsername().equals("deleted_user")) {
+                Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("reviewed_user", mData.get(position).getAuthor().getUsername());
+                i.putExtras(bundle);
+                v.getContext().startActivity(i);
+            } else {
+                Toast.makeText(context, context.getString(R.string.warning_deleted_user), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -78,7 +84,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView reviewerUsername;
         TextView reviewDescription;
         RatingBar ratingBar;
