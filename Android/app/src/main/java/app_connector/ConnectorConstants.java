@@ -12,7 +12,7 @@ public final class ConnectorConstants {
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private static final String SERVER_URL = "https://fscgroup.ddns.net";
-    private static final String DB_CONNECTOR_FOLDER = "/db_connector";
+    private static final String DB_CONNECTOR_FOLDER = "/db_interface";
 
 
     /**
@@ -27,32 +27,32 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the registered_user table.
      */
-    public static final String REGISTERED_USER = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetRegisteredUser.php";
+    public static final String REGISTERED_USER = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestRegisteredUser.php";
 
     /**
      * URL of the server-side connector for the report JOIN report_details query.
      */
-    public static final String REPORT_FRAGMENT = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetReportJoinReportDetails.php";
+    public static final String REPORT_FRAGMENT = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestReportJoinReportDetails.php";
 
     /**
      * URL of the server-side connector for the itinerary table.
      */
-    public static final String REQUEST_ITINERARY = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetItinerary.php";
+    public static final String REQUEST_ITINERARY = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestItinerary.php";
 
     /**
      * URL of the server-side connector for the itinerary table.
      */
-    public static final String REQUEST_ACTIVE_ITINERARY = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetActiveItinerary.php";
+    public static final String REQUEST_ACTIVE_ITINERARY = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestActiveItinerary.php";
 
     /**
      * URL of the server-side connector for the itinerary_review table.
      */
-    public static final String ITINERARY_REVIEW = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetItineraryReview.php";
+    public static final String ITINERARY_REVIEW = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestItineraryReview.php";
 
     /**
      * URL of the server-side connector for the itinerary_review table.
      */
-    public static final String REQUEST_RESERVATION = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetReservation.php";
+    public static final String REQUEST_RESERVATION = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestReservation.php";
 
     /**
      * URL of the server-side connector for the update of registered_user table.
@@ -92,22 +92,22 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the wishlist table.
      */
-    public static final String REQUEST_WISHLIST = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetWishlist.php";
+    public static final String REQUEST_WISHLIST = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestWishlist.php";
 
     /**
      * URL of the server-side connector for the wishlist table.
      */
-    public static final String SEARCH_WISHLIST = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetWishlist.php"; //TODO: remove from class?
+    public static final String SEARCH_WISHLIST = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestWishlist.php"; //TODO: remove from class?
 
     /**
      * URL of the server-side connector for the user_review table.
      */
-    public static final String REQUEST_USER_REVIEW = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetUserReview.php";
+    public static final String REQUEST_USER_REVIEW = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestUserReview.php";
 
     /**
      * URL of the server-side connector for the user_review table.
      */
-    public static final String REQUEST_ITINERARY_REVIEW = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetItineraryReview.php";
+    public static final String REQUEST_ITINERARY_REVIEW = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestItineraryReview.php";
 
     /**
      * URL of the server-side connector for the user_review table
@@ -142,7 +142,7 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the document table.
      */
-    public static final String REQUEST_DOCUMENT = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetDocument.php";
+    public static final String REQUEST_DOCUMENT = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestDocument.php";
 
     /**
      * URL of the server-side connector for the document table.
@@ -162,7 +162,7 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the languages table.
      */
-    public static final String REQUEST_LANGUAGES = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetLanguage.php";
+    public static final String REQUEST_LANGUAGES = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestLanguage.php";
 
     /**
      * URL of the server-side connector for the user_language table.
@@ -197,7 +197,7 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the reservations and itineraries details table.
      */
-    public static final String REQUEST_RESERVATION_JOIN_ITINERARY = SERVER_URL + DB_CONNECTOR_FOLDER + "/GetItineraryJoinReservation.php";
+    public static final String REQUEST_RESERVATION_JOIN_ITINERARY = SERVER_URL + DB_CONNECTOR_FOLDER + "/DoRequestItineraryJoinReservation.php";
 
     /**
      * URL of the server-side connector for the report details table.

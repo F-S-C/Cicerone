@@ -69,7 +69,7 @@ public class CiceroneItineraryListFragment extends Fragment {
 
     private void requireData(Map<String, Object> parameters, RecyclerView recyclerView) {
         SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener(list -> {
                     adapter = new AdminItineraryAdapter(getActivity(), list);
                     recyclerView.setAdapter(adapter);

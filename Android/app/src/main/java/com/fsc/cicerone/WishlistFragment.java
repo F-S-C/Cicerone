@@ -72,7 +72,7 @@ public class WishlistFragment extends Fragment {
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Wishlist> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class)) //TODO: Check)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
                 .setOnEndConnectionListener(list -> {
                     progressBar.setVisibility(View.GONE);
@@ -97,7 +97,7 @@ public class WishlistFragment extends Fragment {
 
     private void clearWish(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.CLEAR_WISHLIST)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     Log.e("p", result.toJSONObject().toString());
                     if (result.getResult()) {

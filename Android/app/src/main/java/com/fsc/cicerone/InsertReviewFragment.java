@@ -84,7 +84,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void requestReview(Map<String, Object> parameters) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.REQUEST_FOR_REVIEW)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
 
                     if (result.getResult()) {
@@ -138,7 +138,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void checkReview(Map<String, Object> parameters) {
         SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener(list -> {
                     message.setVisibility(View.GONE);
                     if (!list.isEmpty()) {
@@ -163,7 +163,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void submitReview(Map<String, Object> sendparam) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_USER_REVIEW)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     Log.e("p", result.toJSONObject().toString());
                     if (result.getResult()) {
@@ -189,7 +189,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void deleteReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_USER_REVIEW)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     Log.e("p", result.toJSONObject().toString());
                     if (result.getResult()) {
@@ -210,7 +210,7 @@ public class InsertReviewFragment extends Fragment {
 
     private void updateReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_USER_REVIEW)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     Log.e("p", result.toJSONObject().toString());
                     if (result.getResult()) {

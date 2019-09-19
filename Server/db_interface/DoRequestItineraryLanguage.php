@@ -1,8 +1,10 @@
 <?php
 
-namespace db_connector;
+namespace db_interface;
 
-require_once("RequestItineraryLanguage.php");
+use db_connector\RequestItineraryLanguage;
+
+require_once("../db_connector/RequestItineraryLanguage.php");
 
 $connector = new RequestItineraryLanguage($_POST['language_code'], $_POST['itinerary_code']);
 print $connector->get_content();

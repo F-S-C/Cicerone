@@ -45,11 +45,11 @@ public class UsersListFragment extends Fragment {
     private void requireData(View view, RecyclerView recyclerView) {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
                 .setOnEndConnectionListener(list -> {
                     progressBar.setVisibility(View.GONE);
-                    adapter = new UserListAdapter(view.getContext(), list);
+                    adapter = new UserListAdapter(getActivity(), list);
                     recyclerView.setAdapter(adapter);
                 })
                 .build();

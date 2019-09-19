@@ -1,5 +1,6 @@
 package app_connector;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -95,7 +96,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
 
         @Override
-        public Builder setContext(Context context) {
+        public Builder setContext(Activity context) {
             return (Builder) super.setContext(context);
         }
 

@@ -61,7 +61,7 @@ public class SelectedItineraryReviewFragment extends Fragment {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
                     message.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);

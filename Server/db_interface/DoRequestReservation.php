@@ -1,8 +1,10 @@
 <?php
 
-namespace db_connector;
+namespace db_interface;
 
-require_once("RequestReservation.php");
+use db_connector\RequestReservation;
+
+require_once("../db_connector/RequestReservation.php");
 
 $connector = new RequestReservation($_POST['username'], $_POST['booked_itinerary']);
 print $connector->get_content();

@@ -1,8 +1,10 @@
 <?php
 
-namespace db_connector;
+namespace db_interface;
 
-require_once("RequestItineraryReview.php");
+use db_connector\RequestItineraryReview;
+
+require_once("../db_connector/RequestItineraryReview.php");
 
 $connector = new RequestItineraryReview($_POST['username'], $_POST['reviewed_itinerary']);
 print $connector->get_content();

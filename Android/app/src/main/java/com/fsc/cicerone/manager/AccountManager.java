@@ -1,5 +1,6 @@
 package com.fsc.cicerone.manager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
@@ -80,7 +81,7 @@ public abstract class AccountManager {
      * @param onStart  A function to be executed before the login attempt.
      * @param onEnd    A function to be executed after the login attempt.
      */
-    public static void attemptLogin(Context context, String username, String password, Runnable onStart, RunnableUsingBusinessEntity onEnd) {
+    public static void attemptLogin(Activity context, String username, String password, Runnable onStart, RunnableUsingBusinessEntity onEnd) {
         Map<String, Object> params = new HashMap<>(2);
         params.put("username", username);
         params.put("password", password);
@@ -125,7 +126,7 @@ public abstract class AccountManager {
     /**
      * Delete the current logged account from the system.
      */
-    public static void deleteCurrentAccount(Context context) {
+    public static void deleteCurrentAccount(Activity context) {
         if (!isLogged())
             return;
 
@@ -158,7 +159,7 @@ public abstract class AccountManager {
      * @param user   The username to verify.
      * @param result A function to be executed after the check.
      */
-    public static void checkIfUsernameExists(Context context, String user, BooleanRunnable result) {
+    public static void checkIfUsernameExists(Activity context, String user, BooleanRunnable result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put("username", user);
         SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
@@ -175,7 +176,7 @@ public abstract class AccountManager {
      * @param email  The email to verify.
      * @param result A function to be executed after the check.
      */
-    public static void checkIfEmailExists(Context context, String email, BooleanRunnable result) {
+    public static void checkIfEmailExists(Activity context, String email, BooleanRunnable result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put("email", email);
         SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
@@ -192,7 +193,7 @@ public abstract class AccountManager {
      * @param user     User to insert in the database.
      * @param callback A function to be executed after the insert attempt.
      */
-    public static void insertUser(Context context, User user, BooleanRunnable callback) {
+    public static void insertUser(Activity context, User user, BooleanRunnable callback) {
         Log.i("USERDATA", user.toJSONObject().toString());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_USER)
                 .setContext(context)
@@ -212,7 +213,7 @@ public abstract class AccountManager {
      * @param document Document to insert in the database.
      * @param callback A function to be executed after the insert attempt.
      */
-    public static void insertUserDocument(Context context, String username, Document document, BooleanRunnable callback) {
+    public static void insertUserDocument(Activity context, String username, Document document, BooleanRunnable callback) {
         Map<String, Object> doc = SendInPostConnector.paramsFromJSONObject(document.toJSONObject());
         doc.put("username", username);
         Log.i("DOCUMENT", doc.toString());
@@ -235,7 +236,7 @@ public abstract class AccountManager {
      * @param t        The TextView to be set with the earnings.
      * @param c        The application context.
      */
-    public static void userAvgEarnings(Context context, String username, TextView t, Context c) {
+    public static void userAvgEarnings(Activity context, String username, TextView t, Context c) {
         Map<String, Object> user = new HashMap<>(1);
         user.put("cicerone", username);
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
@@ -256,7 +257,7 @@ public abstract class AccountManager {
         connector.execute();
     }
 
-    public static void sendEmailWithContacts(Context context, Itinerary itinerary, User deliveryToUser, BooleanRunnable callback) {
+    public static void sendEmailWithContacts(Activity context, Itinerary itinerary, User deliveryToUser, BooleanRunnable callback) {
         Map<String, Object> data = new HashMap<>(3);
         data.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         data.put("itinerary_code", itinerary.getCode());

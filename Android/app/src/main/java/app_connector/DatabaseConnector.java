@@ -1,8 +1,7 @@
 package app_connector;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.AsyncTask;
-import android.os.Process;
 import android.util.Log;
 
 import com.fsc.cicerone.R;
@@ -47,7 +46,7 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
     private OnEndConnectionListener<T> onEndConnectionListener;
 
     private BusinessEntityBuilder<T> builder;
-    private WeakReference<Context> context;
+    private WeakReference<Activity> context;
 
     private Exception error = null;
 
@@ -124,7 +123,7 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
                 .setMessage(error.getMessage())
                 .setPositiveButton(context.get().getString(R.string.ok), null)
                 .setNegativeButton("Close app", (dialog, which) -> {
-                    Process.killProcess(Process.myPid());
+                    context.get().finishAndRemoveTask();
                     System.exit(1);
                 })
                 .show();
@@ -145,7 +144,7 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
         private OnEndConnectionListener<BuilderType> onEndConnectionListener = null;
 
         private final BusinessEntityBuilder<BuilderType> builder;
-        private WeakReference<Context> context = null;
+        private WeakReference<Activity> context = null;
 
         Builder(String url, BusinessEntityBuilder<BuilderType> builder) {
             this.url = url;
@@ -162,7 +161,7 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
             return this;
         }
 
-        public Builder<BuilderType> setContext(Context context) {
+        public Builder<BuilderType> setContext(Activity context) {
             this.context = context != null ? new WeakReference<>(context) : null;
             return this;
         }
