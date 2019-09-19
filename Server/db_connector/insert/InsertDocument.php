@@ -1,7 +1,6 @@
 <?php
 
-
-namespace db_connector;
+namespace db_connector\insert;
 
 require_once "InsertConnector.php";
 
@@ -15,11 +14,3 @@ class InsertDocument extends InsertConnector
     protected const COLUMNS_TYPE = "ssss";
     protected const TABLE_NAME = "document";
 }
-
-$connector = new InsertDocument();
-$connector->add_value(array(strtolower($_POST['username']),
-    $_POST['document_number'],
-    $_POST['document_type'],
-    $_POST['expiry_date']
-));
-print $connector->get_content();

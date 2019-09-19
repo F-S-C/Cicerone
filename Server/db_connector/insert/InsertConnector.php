@@ -1,13 +1,13 @@
 <?php
 
 
-namespace db_connector;
+namespace db_connector\insert;
 
+use db_connector\BooleanConnector;
 use Exception;
-use InvalidArgumentException;
 use mysqli_sql_exception;
 
-require_once "BooleanConnector.php";
+require_once "../BooleanConnector.php";
 
 /**
  * A generic connector used to add data to a table in a database.

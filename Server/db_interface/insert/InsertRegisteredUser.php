@@ -1,19 +1,10 @@
 <?php
 
-namespace db_connector;
+namespace db_interface\insert;
 
-require_once "InsertConnector.php";
+use db_connector\insert\InsertRegisteredUser;
 
-/**
- * Insert a new user.
- * @package db_connector
- */
-class InsertRegisteredUser extends InsertConnector
-{
-    protected const COLUMNS = "username, tax_code, name, surname, password, email, user_type, cellphone, birth_date, sex";
-    protected const COLUMNS_TYPE = "ssssssisss";
-    protected const TABLE_NAME = "registered_user";
-}
+require_once "../../db_connector/insert/InsertRegisteredUser.php";
 
 $connector = new InsertRegisteredUser();
 $connector->add_value(array(strtolower($_POST['username']),

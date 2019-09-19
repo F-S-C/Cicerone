@@ -1,6 +1,6 @@
 <?php
 
-namespace db_connector;
+namespace db_connector\insert;
 
 require_once "InsertConnector.php";
 
@@ -14,7 +14,3 @@ class InsertReport extends InsertConnector
     protected const COLUMNS_TYPE = "ss";
     protected const TABLE_NAME = "report";
 }
-
-$connector = new InsertReport();
-$connector->add_value(array(strtolower($_POST['username']), strtolower($_POST['reported_user'])));
-print $connector->get_content();

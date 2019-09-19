@@ -1,7 +1,6 @@
 <?php
 
-
-namespace db_connector;
+namespace db_connector\insert;
 
 require_once "InsertConnector.php";
 
@@ -15,7 +14,3 @@ class InsertWishlist extends InsertConnector
     protected const COLUMNS_TYPE = "si";
     protected const TABLE_NAME = "wishlist";
 }
-
-$connector = new InsertWishlist();
-$connector->add_value(array(strtolower($_POST['username']), $_POST['itinerary_in_wishlist']));
-print $connector->get_content();

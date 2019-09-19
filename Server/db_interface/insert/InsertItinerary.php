@@ -1,20 +1,10 @@
 <?php
 
-namespace db_connector;
+namespace db_interface\insert;
 
-require_once "InsertConnector.php";
+use db_connector\insert\InsertItinerary;
 
-/**
- * Insert an itinerary.
- * @package db_connector
- */
-class InsertItinerary extends InsertConnector
-{
-    protected const COLUMNS = "title, description, beginning_date, ending_date, end_reservations_date, maximum_participants_number, minimum_participants_number, location, repetitions_per_day, duration, username, full_price, reduced_price, image_url";
-    protected const COLUMNS_TYPE = "sssssiisissdds";
-    //TODO: Add image url into query
-    protected const TABLE_NAME = "itinerary";
-}
+require_once "../../db_connector/insert/InsertItinerary.php";
 
 $connector = new InsertItinerary();
 $connector->add_value(array($_POST['title'],
