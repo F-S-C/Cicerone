@@ -57,6 +57,3 @@ class DeleteReservation extends DeleteConnector
         return json_encode($to_return);
     }
 }
-
-$connector = new DeleteReservation($_POST['username'], $_POST['booked_itinerary']);
-print $connector->get_content();

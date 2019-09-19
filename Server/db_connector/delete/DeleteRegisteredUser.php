@@ -166,6 +166,3 @@ class DeleteRegisteredUser extends DeleteConnector
 
 
 }
-
-$connector = new DeleteRegisteredUser($_POST['username']);
-print $connector->get_content();

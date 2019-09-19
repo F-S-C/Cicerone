@@ -63,6 +63,3 @@ class CheckIfUserCanReviewUser extends BooleanConnector
 
 
 }
-
-$connector = new CheckIfUserCanReviewUser($_POST['username'], $_POST['reviewed_user']);
-print $connector->get_content();

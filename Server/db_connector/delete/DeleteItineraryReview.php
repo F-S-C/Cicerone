@@ -57,6 +57,3 @@ class DeleteItineraryReview extends DeleteConnector
         return json_encode($to_return);
     }
 }
-
-$connector = new DeleteItineraryReview($_POST['username'], $_POST['reviewed_itinerary']);
-print $connector->get_content();

@@ -57,6 +57,3 @@ class DeleteUserReview extends DeleteConnector
         return json_encode($to_return);
     }
 }
-
-$connector = new DeleteUserReview($_POST['username'], $_POST['reviewed_user']);
-print $connector->get_content();

@@ -57,6 +57,3 @@ class DeleteWishlist extends DeleteConnector
         return json_encode($to_return);
     }
 }
-
-$connector = new DeleteWishlist($_POST['username'], $_POST['itinerary_in_wishlist']);
-print $connector->get_content();
