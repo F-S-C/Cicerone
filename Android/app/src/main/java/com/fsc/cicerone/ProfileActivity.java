@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
@@ -62,6 +63,9 @@ public class ProfileActivity extends AppCompatActivity {
         String nick = "@" + Objects.requireNonNull(params.get("username")).toString();
         username.setText(nick);
         getData(params);
+
+        if(!AccountManager.isLogged())
+            tabLayout.removeTabAt(1);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
