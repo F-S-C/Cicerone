@@ -137,12 +137,6 @@ public class ItineraryFragment extends Fragment {
     }
 
     private void getParticipations(Map<String, Object> parameters, RecyclerView recyclerView) {
-        // RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(context)
-                .setOnEndConnectionListener(list -> {
-                    // progressBar.setVisibility(View.GONE);
-                    if (!list.isEmpty())
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
