@@ -2,6 +2,7 @@ package com.fsc.cicerone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -83,9 +84,14 @@ public class MainActivity extends AppCompatActivity {
                     toReturn = true;
                     break;
                 case R.id.navigation_favorites:
+                    if(AccountManager.isLogged()){
                     changeCurrentFragment(wishlistFragment);
                     supportActionBar.setTitle(getString(R.string.wishlist));
                     wishlistFragment.forceRefresh();
+                    }
+                    else{
+                        Toast.makeText(this, R.string.access_denied, Toast.LENGTH_SHORT).show();
+                    }
                     toReturn = true;
                     break;
                 case R.id.navigation_discover:
