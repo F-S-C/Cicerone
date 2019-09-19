@@ -67,7 +67,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void skipLogin(View view) {
-        Toast.makeText(this, "Sorry, Work In Progress", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
     public void goToSignUpPage(View view) {

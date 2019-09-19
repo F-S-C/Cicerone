@@ -1,5 +1,6 @@
 package com.fsc.cicerone;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.fsc.cicerone.manager.AccountManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -65,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         navView = findViewById(R.id.bottom_navigation);
+        if(AccountManager.isLogged()){
+            navView.getMenu().removeItem(R.id.navigation_login);
+        }
+        else{
+            navView.getMenu().removeItem(R.id.navigation_profile);
+        }
         navView.setOnNavigationItemSelectedListener(item -> {
             ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
             boolean toReturn = false;
@@ -86,9 +94,12 @@ public class MainActivity extends AppCompatActivity {
                     toReturn = true;
                     break;
                 case R.id.navigation_profile:
-                    changeCurrentFragment(profileFragment);
-                    supportActionBar.setTitle(getString(R.string.account));
+                        changeCurrentFragment(profileFragment);
+                        supportActionBar.setTitle(getString(R.string.account));
                     toReturn = true;
+                    break;
+                case R.id.navigation_login:
+                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
                     break;
                 default:
                     break;
