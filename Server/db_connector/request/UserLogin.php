@@ -1,8 +1,10 @@
 <?php
 
-namespace db_connector;
+namespace db_connector\request;
 
-require_once "BooleanConnector.php";
+use db_connector\BooleanConnector;
+
+require_once "../BooleanConnector.php";
 
 /**
  * A special connector to log the user in.
@@ -58,6 +60,3 @@ class UserLogin extends BooleanConnector
         return json_encode($to_return);
     }
 }
-
-$connector = new UserLogin($_POST['username'], $_POST['password']);
-print $connector->get_content();
