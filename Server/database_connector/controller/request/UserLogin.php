@@ -4,7 +4,7 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\BooleanConnector;
 
-require_once "../BooleanConnector.php";
+require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
 
 /**
  * A special connector to log the user in.

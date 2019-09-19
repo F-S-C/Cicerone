@@ -4,7 +4,7 @@ namespace database_connector\view\update;
 
 use controller\update\UpdateDocument;
 
-require_once "../../controller/update/UpdateDocument.php";
+require_once "/membri/fsc/database_connector/controller/update/UpdateDocument.php";
 
 $connector = new UpdateDocument($_POST['username']);
 $connector->add_value("document_number", $_POST['document_number'], "s");

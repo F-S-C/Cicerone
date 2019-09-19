@@ -4,7 +4,7 @@ namespace database_connector\view\download;
 
 use database_connector\controller\download\UserDataDownloader;
 
-require_once "../../controller/download/UserDataDownloader.php";
+require_once "/membri/fsc/database_connector/controller/download/UserDataDownloader.php";
 
 $user = strtolower($_GET['username']);
 $pass = $_GET['password'];
