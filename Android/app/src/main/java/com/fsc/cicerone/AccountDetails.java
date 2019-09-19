@@ -31,7 +31,7 @@ public class AccountDetails extends Fragment {
 
 
 
-    AccountDetails() {
+     public AccountDetails() {
         // required empty constructor
     }
 
