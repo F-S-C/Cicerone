@@ -2,7 +2,7 @@
 
 namespace db_connector;
 
-require_once("InsertConnector.php");
+require_once "InsertConnector.php";
 
 /**
  * Insert an itinerary.

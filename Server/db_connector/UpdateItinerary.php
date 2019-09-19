@@ -2,7 +2,7 @@
 
 namespace db_connector;
 
-require_once("UpdateConnector.php");
+require_once "UpdateConnector.php";
 
 /**
  * Update an itinerary.

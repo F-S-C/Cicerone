@@ -2,8 +2,8 @@
 
 namespace db_connector;
 
-require_once("JsonConnector.php");
-require_once("RequestRegisteredUser.php");
+require_once "JsonConnector.php";
+require_once "RequestRegisteredUser.php";
 
 /**
  * Request all the itineraries that match a set of criteria.

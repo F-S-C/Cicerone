@@ -5,7 +5,7 @@ namespace db_connector;
 use Exception;
 use mysqli_sql_exception;
 
-require_once("DatabaseConnector.php");
+require_once "DatabaseConnector.php";
 
 /**
  * A type of connector that fetches data from a Database and converts the results of the interrogation to the

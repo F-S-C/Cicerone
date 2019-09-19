@@ -3,8 +3,8 @@
 
 namespace db_connector;
 
-require_once("JsonConnector.php");
-require_once("RequestRegisteredUser.php");
+require_once "JsonConnector.php";
+require_once "RequestRegisteredUser.php";
 
 /**
  * Request the reports to the admin.

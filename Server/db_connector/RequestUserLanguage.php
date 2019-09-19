@@ -3,7 +3,7 @@
 
 namespace db_connector;
 
-require_once("JsonConnector.php");
+require_once "JsonConnector.php";
 
 /**
  * Request the languages that a user speaks.

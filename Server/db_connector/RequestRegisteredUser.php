@@ -2,7 +2,7 @@
 
 namespace db_connector;
 
-require_once("JsonConnector.php");
+require_once "JsonConnector.php";
 
 /**
  * Get all the information about a user.

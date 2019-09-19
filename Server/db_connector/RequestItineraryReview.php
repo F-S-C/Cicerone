@@ -3,9 +3,9 @@
 
 namespace db_connector;
 
-require_once("JsonConnector.php");
-require_once("RequestRegisteredUser.php");
-require_once("RequestItinerary.php");
+require_once "JsonConnector.php";
+require_once "RequestRegisteredUser.php";
+require_once "RequestItinerary.php";
 
 /**
  * Request all reviews for an itinerary.

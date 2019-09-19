@@ -2,7 +2,7 @@
 
 namespace db_connector;
 
-require_once("BooleanConnector.php");
+require_once "BooleanConnector.php";
 
 /**
  * A generic connector that deletes data from a database.

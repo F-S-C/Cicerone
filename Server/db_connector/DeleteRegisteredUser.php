@@ -6,7 +6,7 @@ namespace db_connector;
 use Exception;
 use mysqli_sql_exception;
 
-require_once("DeleteConnector.php");
+require_once "DeleteConnector.php";
 
 
 class DeleteRegisteredUser extends DeleteConnector

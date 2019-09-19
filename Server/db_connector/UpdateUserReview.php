@@ -6,7 +6,7 @@ use Exception;
 use InvalidArgumentException;
 use mysqli_sql_exception;
 
-require_once("UpdateConnector.php");
+require_once "UpdateConnector.php";
 
 /**
  * Update a user's review.

@@ -3,7 +3,7 @@
 
 namespace db_connector;
 
-require_once("DatabaseConnector.php");
+require_once "DatabaseConnector.php";
 
 /**
  * A generic connector to a database that returns a boolean value (true or false) and a message.

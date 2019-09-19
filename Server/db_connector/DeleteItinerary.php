@@ -2,7 +2,7 @@
 
 namespace db_connector;
 
-require_once("DeleteConnector.php");
+require_once "DeleteConnector.php";
 
 /**
  * A connector that deletes an itinerary.

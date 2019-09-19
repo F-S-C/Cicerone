@@ -10,8 +10,8 @@ TODO:
 
 namespace db_connector;
 
-require_once("utilities/TableCreator.php");
-require_once("DatabaseConnector.php");
+require_once "utilities/TableCreator.php";
+require_once "DatabaseConnector.php";
 
 use db_connector\utilities\TableCreator as TableCreator;
 

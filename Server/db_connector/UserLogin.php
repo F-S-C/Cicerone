@@ -2,7 +2,7 @@
 
 namespace db_connector;
 
-require_once("BooleanConnector.php");
+require_once "BooleanConnector.php";
 
 /**
  * A special connector to log the user in.

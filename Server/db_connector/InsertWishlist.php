@@ -3,7 +3,7 @@
 
 namespace db_connector;
 
-require_once("InsertConnector.php");
+require_once "InsertConnector.php";
 
 /**
  * Insert an itinerary in a user's wishlist.

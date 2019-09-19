@@ -2,9 +2,9 @@
 
 namespace db_connector;
 
-require_once("JsonConnector.php");
-require_once("RequestItinerary.php");
-require_once("RequestRegisteredUser.php");
+require_once "JsonConnector.php";
+require_once "RequestItinerary.php";
+require_once "RequestRegisteredUser.php";
 
 /**
  * Request all the itineraries from a wishlist of a user.

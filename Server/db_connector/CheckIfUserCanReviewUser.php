@@ -2,7 +2,7 @@
 
 namespace db_connector;
 
-require_once("BooleanConnector.php");
+require_once "BooleanConnector.php";
 
 /**
  * Request for control over the existence of a possible connection between the possible reviewer and the possible reviewed.

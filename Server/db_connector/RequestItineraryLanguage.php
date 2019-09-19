@@ -5,7 +5,7 @@ namespace db_connector;
 
 use mysqli_sql_exception;
 
-require_once("JsonConnector.php");
+require_once "JsonConnector.php";
 
 /**
  * Request the languages in which an itinerary is available.
