@@ -203,4 +203,5 @@
     <string name="report_code">Codice segnalazione</string>
     <string name="report_title">Titolo segnalazione</string>
     <string name="access_denied">Accesso negato.</string>
+    <string name="doc_not_exists">Documento: Nessun documento trovato.</string>
 </resources>

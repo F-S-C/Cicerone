@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         final Class activityToOpenIfLogged = MainActivity.class;
         final Class activityToOpenIfNotLogged = LoginActivity.class;
         final Class activityToOpenIfLoggedAdmin = AdminMainActivity.class;
-        
+
         SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         String latestLoggedUserCredentials = preferences.getString("session", "");
 
@@ -34,14 +34,13 @@ public class SplashActivity extends AppCompatActivity {
                     AccountManager.attemptLogin(this, currentLoggedUser.getString("username"), currentLoggedUser.getString("password"), () -> {
                         // Do nothing
                     }, (result, success) -> {
-                        if(AccountManager.getCurrentLoggedUser().getUserType()== UserType.ADMIN){
-                            Intent intent = new Intent(SplashActivity.this, (success) ? activityToOpenIfLoggedAdmin : activityToOpenIfNotLogged);
-                            startActivity(intent);
-                        }
-                        else {
-                            Intent intent = new Intent(SplashActivity.this, (success) ? activityToOpenIfLogged : activityToOpenIfNotLogged);
-                            startActivity(intent);
-                        }
+                        Intent intent = new Intent(SplashActivity.this,
+                                (success) ?
+                                        (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) ?
+                                                activityToOpenIfLoggedAdmin :
+                                                activityToOpenIfLogged :
+                                        activityToOpenIfNotLogged);
+                        startActivity(intent);
                         finish();
                     });
                 }

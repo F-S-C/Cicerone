@@ -87,7 +87,7 @@ public class InsertReportFragment extends Fragment {
 
     public void setUsersInSpinner(Spinner users, String currentLoggedUser) {
         GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener(list -> {
                     List<String> cleanList = new ArrayList<>();
 
@@ -107,11 +107,12 @@ public class InsertReportFragment extends Fragment {
 
     public void sendToTableReport(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
                         Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
                     }
+                    Log.e("REPORT", result.getMessage());
                 })
                 .setObjectToSend(param)
                 .build();
@@ -120,7 +121,7 @@ public class InsertReportFragment extends Fragment {
 
     public void sendToTableReportDetails(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT_DETAILS)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> Log.d("sendToTableReportDetail", String.valueOf(result.getResult())))
                 .setObjectToSend(param)
                 .build();

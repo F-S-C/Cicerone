@@ -1,5 +1,6 @@
 package com.fsc.cicerone.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ import app_connector.SendInPostConnector;
  */
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
-    private final Context context;
+    private final Activity context;
     private List<User> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener = null;
@@ -42,7 +43,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
      * @param context The parent Context.
      * @param list    The array of JSON Objects got from server.
      */
-    public UserListAdapter(Context context, List<User> list) {
+    public UserListAdapter(Activity context, List<User> list) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
         this.context = context;

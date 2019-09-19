@@ -1,5 +1,6 @@
 package app_connector;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -169,7 +170,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
         }
 
         @Override
-        public Builder<BuilderType> setContext(Context context) {
+        public Builder<BuilderType> setContext(Activity context) {
             return (Builder<BuilderType>) super.setContext(context);
         }
 

@@ -9,7 +9,7 @@
     </style>
 
     <!-- Splash screen theme. -->
-    <style name="SplashTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_theme</item>
     </style>
 
@@ -20,6 +20,12 @@
         <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="AppTheme.DarkOutlinedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+        <item name="android:textColorHint">@color/colorTransparentWhite</item>
+        <item name="boxBackgroundColor">@color/editTextBackground</item>
+        <item name="endIconTint">@color/colorWhite</item>
     </style>
 
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem"></style>

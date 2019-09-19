@@ -121,11 +121,9 @@ public class ItineraryFragment extends Fragment {
 
     private void getMyItineraries(Map<String, Object> parameters, RecyclerView recyclerView) {
         // TODO: Test and check if the new adapter works as expected.
-        // RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
                 .setOnEndConnectionListener(jsonArray -> {
-                    // progressBar.setVisibility(View.GONE);
                     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                     while (recyclerView.getItemDecorationCount() > 0) {
                         recyclerView.removeItemDecorationAt(0);
@@ -145,6 +143,10 @@ public class ItineraryFragment extends Fragment {
                 .setOnEndConnectionListener(list -> {
                     // progressBar.setVisibility(View.GONE);
                     if (!list.isEmpty())
+        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    if (list.isEmpty())
                         message.setVisibility(View.VISIBLE);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),

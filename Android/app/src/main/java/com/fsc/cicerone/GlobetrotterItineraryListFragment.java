@@ -75,6 +75,7 @@ public class GlobetrotterItineraryListFragment extends Fragment {
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         TextView message = view.findViewById(R.id.no_itinerary_history);
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
                 .setOnStartConnectionListener(() -> message.setVisibility(View.GONE))
                 .setOnEndConnectionListener(list -> {
                     List<Reservation> filteredList = new ArrayList<>(list.size());

@@ -21,13 +21,11 @@ import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class InsertItineraryReviewFragment extends Fragment {
@@ -81,7 +79,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void requestReview(Map<String, Object> parameters) {
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
                     submitReview.setVisibility(View.GONE);
                     updateReview.setVisibility(View.GONE);
@@ -162,7 +160,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void checkReview(Map<String, Object> parameters) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener(list -> {
                     message.setVisibility(View.GONE);
                     if (!list.isEmpty()) {
@@ -184,13 +182,13 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void submitReview(Map<String, Object> sendParam) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY_REVIEW)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
                         Toast.makeText(getActivity(),
                                 InsertItineraryReviewFragment.this.getString(R.string.added_review),
                                 Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                        Intent i = new Intent(getActivity(), ItineraryReviewActivity.class);
                         Bundle b = new Bundle();
                         b.putString("reviewed_itinerary",
                                 Objects.requireNonNull(sendParam.get("reviewed_itinerary")).toString());
@@ -211,13 +209,13 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void deleteReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY_REVIEW)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
                         Toast.makeText(getActivity(),
                                 InsertItineraryReviewFragment.this.getString(R.string.deleted_review),
                                 Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                        Intent i = new Intent(getActivity(), ItineraryReviewActivity.class);
                         Bundle b = new Bundle();
                         b.putString("reviewed_itinerary",
                                 Objects.requireNonNull(param.get("reviewed_itinerary")).toString());
@@ -234,7 +232,7 @@ public class InsertItineraryReviewFragment extends Fragment {
 
     private void updateReview(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY_REVIEW)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     Log.e("p", result.toJSONObject().toString());
                     if (result.getResult()) {
@@ -242,7 +240,7 @@ public class InsertItineraryReviewFragment extends Fragment {
                                 InsertItineraryReviewFragment.this.getString(R.string.updated_review),
                                 Toast.LENGTH_SHORT).show();
 
-                        Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                        Intent i = new Intent(getActivity(), ItineraryReviewActivity.class);
                         Bundle b = new Bundle();
                         b.putString("reviewed_itinerary",
                                 Objects.requireNonNull(param.get("reviewed_itinerary")).toString());

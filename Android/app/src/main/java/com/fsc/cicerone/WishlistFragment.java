@@ -75,7 +75,7 @@ public class WishlistFragment extends Fragment {
 
     private void requireData(Map<String, Object> parameters) {
         SendInPostConnector<Wishlist> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class)) //TODO: Check
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
                 .setOnEndConnectionListener(list -> {
                     swipeRefreshLayout.setRefreshing(false);
@@ -99,7 +99,7 @@ public class WishlistFragment extends Fragment {
 
     private void clearWish(Map<String, Object> parameters) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.CLEAR_WISHLIST)
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     Log.e("p", result.toJSONObject().toString());
                     if (result.getResult()) {

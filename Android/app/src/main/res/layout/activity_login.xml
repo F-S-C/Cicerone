@@ -11,33 +11,6 @@
     android:padding="25dp"
     tools:context=".LoginActivity">
 
-    <RelativeLayout
-        android:id="@+id/loginProgressBarContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/rounded_rectangle"
-        android:elevation="8dp"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/loginProgressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/loginProgressBar"
-            android:text="@string/logging" />
-    </RelativeLayout>
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -55,67 +28,50 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/usernameInputContainer"
+                style="@style/AppTheme.DarkOutlinedTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:labelFor="@id/usernameInput"
-                android:text="@string/username"
-                android:textColor="@color/colorWhite" />
+                android:hint="@string/username">
 
-            <EditText
-                android:id="@+id/usernameInput"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/usernameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/colorWhite" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordInputContainer"
+                style="@style/AppTheme.DarkOutlinedTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_style"
-                android:ems="10"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:nextFocusForward="@id/passwordInput"
-                android:singleLine="true"
-                android:textColor="@color/colorWhite" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/passwordInput"
-                android:text="@string/password"
-                android:textColor="@color/colorWhite" />
-
-            <EditText
-                android:id="@+id/passwordInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_style"
-                android:ems="10"
+                android:layout_marginTop="20dp"
+                android:hint="@string/password"
                 android:imeOptions="actionDone"
-                android:importantForAutofill="no"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:textColor="@color/colorWhite" />
-        </LinearLayout>
+                app:endIconMode="password_toggle">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/loginButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:onClick="login"
-            android:text="@string/login"
-            android:textColor="@color/colorWhite" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColor="@color/colorWhite" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/forgotPasswordButton"
@@ -138,6 +94,15 @@
             android:text="@string/remember_me"
             android:textColor="@color/colorTransparentWhite" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:onClick="login"
+            android:text="@string/login"
+            android:textColor="@color/colorWhite" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -158,6 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/goToSignUpButton"
@@ -186,6 +152,34 @@
                 android:textAllCaps="true"
                 android:textColor="@color/colorTransparentWhite" />
         </LinearLayout>
+
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loginProgressBarContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rounded_rectangle"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/loginProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/loginProgressBar"
+            android:text="@string/logging" />
+    </RelativeLayout>
 
 </RelativeLayout>

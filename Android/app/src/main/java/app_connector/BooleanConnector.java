@@ -1,5 +1,6 @@
 package app_connector;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -44,7 +45,8 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
             try {
                 JSONObject jsonObject = new JSONObject(json);
                 result = jsonObject.getBoolean("result");
-                message = jsonObject.getString(result ? "message" : "error");
+                if (jsonObject.has(result ? "message" : "error"))
+                    message = jsonObject.getString(result ? "message" : "error");
             } catch (JSONException e) {
                 Log.e(ERROR_TAG, e.getMessage());
             }
@@ -55,7 +57,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
 
         public String getMessage() {
-            return message;
+            return message != null? message : "";
         }
 
         @Override
@@ -95,7 +97,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
 
         @Override
-        public Builder setContext(Context context) {
+        public Builder setContext(Activity context) {
             return (Builder) super.setContext(context);
         }
 

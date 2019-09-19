@@ -1,5 +1,6 @@
 package com.fsc.cicerone.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,7 @@ import app_connector.SendInPostConnector;
  */
 public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAdapter.ViewHolder> {
 
-    private final Context context;
+    private final Activity context;
     private List<Itinerary> mData;
     private LayoutInflater mInflater;
 
@@ -39,7 +40,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
      * @param context The parent Context.
      * @param list    The array of JSON Objects got from server.
      */
-    public AdminItineraryAdapter(Context context, List<Itinerary> list) {
+    public AdminItineraryAdapter(Activity context, List<Itinerary> list) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
         this.context = context;
