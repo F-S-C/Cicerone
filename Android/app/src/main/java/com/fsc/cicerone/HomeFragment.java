@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.GetDataConnector;
 
 
@@ -36,6 +34,7 @@ import app_connector.GetDataConnector;
 public class HomeFragment extends Fragment {
     private ItineraryAdapter adapter;
     private Activity context;
+    private TextView noActiveItineraries;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -48,6 +47,7 @@ public class HomeFragment extends Fragment {
         context = Objects.requireNonNull(getActivity());
         RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        noActiveItineraries = view.findViewById(R.id.noActiveItineraries);
 
         requireData(view, recyclerView);
 
@@ -70,8 +70,7 @@ public class HomeFragment extends Fragment {
                         adapter = new ItineraryAdapter(getActivity(), filteredList);
                         recyclerView.setAdapter(adapter);
                     } else {
-                        Toast.makeText(context, HomeFragment.this.getString(R.string.no_active_itineraries), Toast.LENGTH_SHORT).show();
-
+                                noActiveItineraries.setVisibility(View.VISIBLE);
                     }
                 })
                 .build();
