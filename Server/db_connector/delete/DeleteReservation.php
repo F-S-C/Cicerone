@@ -1,8 +1,10 @@
 <?php
 
-namespace db_connector;
+namespace db_connector\delete;
 
-require_once "DeleteConnector.php";
+use db_connector\DeleteConnector;
+
+require_once "../DeleteConnector.php";
 
 /**
  * A connector that deletes an reservation from the reservation table.

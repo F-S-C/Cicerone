@@ -1,36 +1,38 @@
 <?php
 
-namespace db_connector;
+namespace db_connector\delete;
 
-require_once "DeleteConnector.php";
+use db_connector\DeleteConnector;
+
+require_once "../DeleteConnector.php";
 
 /**
  * A connector that deletes an review from the user_review table.
  * @package db_connector
  */
-class DeleteUserReview extends DeleteConnector
+class DeleteItineraryReview extends DeleteConnector
 {
-    protected const TABLE_NAME = "user_review";
+    protected const TABLE_NAME = "itinerary_review";
     protected const ID_COLUMN = "username";
     protected const ID_COLUMN_TYPE = "s";
     /**
      * @var string The username of the reviewed user that will be updated.
      */
-    private $reviewed_user;
+    private $reviewed_itinerary;
 
     /**
-     * DeleteUserReview constructor.
+     * DeleteItineraryReview constructor.
      * @param string $username The author of the review.
-     * @param string $reviewed_user The username of the reviewed user.
-     * @warning If the username or the reviewed_user is not set, the connector will die with an error.
+     * @param string $reviewed_itinerary The code of the reviewed itinerary.
+     * @warning If the username or the reviewed_itinerary is not set, the connector will die with an error.
      */
-    public function __construct(string $username = null, string $reviewed_user = null)
+    public function __construct(string $username = null, string $reviewed_itinerary = null)
     {
-        if (!isset($username) || !isset($reviewed_user) || $reviewed_user == "" || $username == "") {
+        if (!isset($username) || !isset($reviewed_itinerary) || $reviewed_itinerary == "" || $username == "") {
             die(json_encode(self::get_false("Some required fields are missing.")));
         }
         parent::__construct(strtolower($username));
-        $this->reviewed_user = $reviewed_user;
+        $this->reviewed_itinerary = $reviewed_itinerary;
     }
 
     /**
@@ -40,9 +42,9 @@ class DeleteUserReview extends DeleteConnector
      */
     public function get_content(): string
     {
-        $query = "DELETE FROM " . $this::TABLE_NAME . " WHERE " . $this::ID_COLUMN . " = ? AND reviewed_user = ?";
+        $query = "DELETE FROM " . $this::TABLE_NAME . " WHERE " . $this::ID_COLUMN . " = ? AND reviewed_itinerary = ?";
         if ($statement = $this->connection->prepare($query)) {
-            $statement->bind_param($this::ID_COLUMN_TYPE . "s", $this->id, $this->reviewed_user);
+            $statement->bind_param($this::ID_COLUMN_TYPE . "s", $this->id, $this->reviewed_itinerary);
             if ($statement->execute()) {
                 $to_return = self::get_true();
             } else {
@@ -56,5 +58,5 @@ class DeleteUserReview extends DeleteConnector
     }
 }
 
-$connector = new DeleteUserReview($_POST['username'], $_POST['reviewed_user']);
+$connector = new DeleteItineraryReview($_POST['username'], $_POST['reviewed_itinerary']);
 print $connector->get_content();
