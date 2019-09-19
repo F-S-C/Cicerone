@@ -59,7 +59,7 @@ public class SelectedUserReviewFragment extends Fragment {
         RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
         SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
-                .setContext(getContext())
+                .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
                     message.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
