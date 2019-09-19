@@ -153,7 +153,7 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the document table.
      */
-    public static final String UPDATE_DOCUMENT = SERVER_URL + DB_CONNECTOR_FOLDER + UPDATE_SUBFOLDER + "/Updatecument.php";
+    public static final String UPDATE_DOCUMENT = SERVER_URL + DB_CONNECTOR_FOLDER + UPDATE_SUBFOLDER + "/UpdateDocument.php";
 
     /**
      * URL of the server-side connector for the report JOIN report_details query.
