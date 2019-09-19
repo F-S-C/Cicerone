@@ -81,7 +81,10 @@ public abstract class ItineraryManager {
 
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY)
                 .setContext(null)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) booleanResult -> result.accept(booleanResult.getResult()))
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) booleanResult -> {
+                    Log.e("CREATE_ITINERARY", booleanResult.getMessage());
+                    result.accept(booleanResult.getResult());
+                })
                 .setObjectToSend(SendInPostConnector.paramsFromJSONObject(itinerary.toJSONObject()))
                 .build();
 

@@ -30,12 +30,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The wishlist fragment (third tab).
      */
-    private final WishlistFragment wishlistFragment = new WishlistFragment();
+    private WishlistFragment wishlistFragment;
 
     /**
      * The profile fragment (fourth tab).
      */
-    private final Fragment profileFragment = new AccountDetails();
+    private Fragment profileFragment;
 
     /**
      * The fragment manager used to load, unload, show and hide the fragments.
@@ -68,12 +68,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         navView = findViewById(R.id.bottom_navigation);
-        if(AccountManager.isLogged()){
-            navView.getMenu().removeItem(R.id.navigation_login);
-        }
-        else{
-            navView.getMenu().removeItem(R.id.navigation_profile);
-        }
+        navView.getMenu().removeItem(AccountManager.isLogged() ? R.id.navigation_login : R.id.navigation_profile);
+
+        profileFragment = AccountManager.isLogged() ? new AccountDetails() : null;
+        wishlistFragment = AccountManager.isLogged() ? new WishlistFragment() : null;
+
         navView.setOnNavigationItemSelectedListener(item -> {
             ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
             boolean toReturn = false;
@@ -84,15 +83,14 @@ public class MainActivity extends AppCompatActivity {
                     toReturn = true;
                     break;
                 case R.id.navigation_favorites:
-                    if(AccountManager.isLogged()){
-                    changeCurrentFragment(wishlistFragment);
-                    supportActionBar.setTitle(getString(R.string.wishlist));
-                    wishlistFragment.forceRefresh();
-                    }
-                    else{
+                    if (AccountManager.isLogged()) {
+                        changeCurrentFragment(wishlistFragment);
+                        supportActionBar.setTitle(getString(R.string.wishlist));
+                        wishlistFragment.forceRefresh();
+                    } else {
                         Toast.makeText(this, R.string.access_denied, Toast.LENGTH_SHORT).show();
                     }
-                    toReturn = true;
+                    toReturn = AccountManager.isLogged();
                     break;
                 case R.id.navigation_discover:
                     changeCurrentFragment(discoverFragment);
@@ -100,12 +98,12 @@ public class MainActivity extends AppCompatActivity {
                     toReturn = true;
                     break;
                 case R.id.navigation_profile:
-                        changeCurrentFragment(profileFragment);
-                        supportActionBar.setTitle(getString(R.string.account));
+                    changeCurrentFragment(profileFragment);
+                    supportActionBar.setTitle(getString(R.string.account));
                     toReturn = true;
                     break;
                 case R.id.navigation_login:
-                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     break;
                 default:
                     break;
@@ -114,8 +112,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Instantiate all of the fragments for usability purposes.
-        fragmentManager.beginTransaction().add(R.id.main_container, profileFragment, "4").hide(profileFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.main_container, wishlistFragment, "3").hide(wishlistFragment).commit();
+        if (profileFragment != null)
+            fragmentManager.beginTransaction().add(R.id.main_container, profileFragment, "4").hide(profileFragment).commit();
+        if (wishlistFragment != null)
+            fragmentManager.beginTransaction().add(R.id.main_container, wishlistFragment, "3").hide(wishlistFragment).commit();
         fragmentManager.beginTransaction().add(R.id.main_container, discoverFragment, "2").hide(discoverFragment).commit();
         // The last one is shown to the user
         fragmentManager.beginTransaction().add(R.id.main_container, homeFragment, "1").commit();

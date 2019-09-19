@@ -3,7 +3,7 @@
 
 namespace database_connector\controller\request;
 
-use controller\JsonConnector;
+use database_connector\controller\JsonConnector;
 
 require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
 require_once "/membri/fsc/database_connector/controller/request/RequestRegisteredUser.php";
