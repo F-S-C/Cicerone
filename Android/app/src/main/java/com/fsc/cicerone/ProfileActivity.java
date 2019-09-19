@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,12 +35,25 @@ public class ProfileActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     Fragment fragment = null;
     FragmentManager fragmentManager;
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         frameLayout = findViewById(R.id.frame);
         fragment = new SelectedUserReviewFragment();

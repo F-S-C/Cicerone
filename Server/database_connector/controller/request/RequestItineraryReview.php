@@ -6,8 +6,8 @@ namespace database_connector\controller\request;
 use controller\JsonConnector;
 
 require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
-require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
-require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
+require_once "/membri/fsc/database_connector/controller/request/RequestRegisteredUser.php";
+require_once "/membri/fsc/database_connector/controller/request/RequestItinerary.php";
 
 /**
  * Request all reviews for an itinerary.

@@ -188,7 +188,7 @@ public class InsertItineraryReviewFragment extends Fragment {
                         Toast.makeText(getActivity(),
                                 InsertItineraryReviewFragment.this.getString(R.string.added_review),
                                 Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                        Intent i = new Intent(getActivity(), ItineraryReviewActivity.class);
                         Bundle b = new Bundle();
                         b.putString("reviewed_itinerary",
                                 Objects.requireNonNull(sendParam.get("reviewed_itinerary")).toString());
@@ -215,7 +215,7 @@ public class InsertItineraryReviewFragment extends Fragment {
                         Toast.makeText(getActivity(),
                                 InsertItineraryReviewFragment.this.getString(R.string.deleted_review),
                                 Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                        Intent i = new Intent(getActivity(), ItineraryReviewActivity.class);
                         Bundle b = new Bundle();
                         b.putString("reviewed_itinerary",
                                 Objects.requireNonNull(param.get("reviewed_itinerary")).toString());
@@ -240,7 +240,7 @@ public class InsertItineraryReviewFragment extends Fragment {
                                 InsertItineraryReviewFragment.this.getString(R.string.updated_review),
                                 Toast.LENGTH_SHORT).show();
 
-                        Intent i = new Intent(getActivity(), ItineraryReviewFragment.class);
+                        Intent i = new Intent(getActivity(), ItineraryReviewActivity.class);
                         Bundle b = new Bundle();
                         b.putString("reviewed_itinerary",
                                 Objects.requireNonNull(param.get("reviewed_itinerary")).toString());

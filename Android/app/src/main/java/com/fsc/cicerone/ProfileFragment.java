@@ -274,6 +274,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void switchToCicerone(Map<String, Object> parameters) {
+        parameters.put("user_type", UserType.CICERONE.toInt());
 
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
                 .setContext(context)

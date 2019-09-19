@@ -112,6 +112,7 @@ public class InsertReportFragment extends Fragment {
                     if (result.getResult()) {
                         Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
                     }
+                    Log.e("REPORT", result.getMessage());
                 })
                 .setObjectToSend(param)
                 .build();
