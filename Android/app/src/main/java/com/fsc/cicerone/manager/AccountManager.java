@@ -250,7 +250,7 @@ public abstract class AccountManager {
                             sum += reservation.getTotal();
                         }
                     }
-                    t.setText(c.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
+                    t.setText(context.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
                 })
                 .setObjectToSend(user)
                 .build();
