@@ -26,12 +26,10 @@ import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -142,7 +140,7 @@ public class ItineraryFragment extends Fragment {
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
-                    if (!list.isEmpty())
+                    if (list.isEmpty())
                         message.setVisibility(View.VISIBLE);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
