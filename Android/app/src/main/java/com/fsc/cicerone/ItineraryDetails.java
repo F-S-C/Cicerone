@@ -112,7 +112,10 @@ public class ItineraryDetails extends AppCompatActivity {
             object.put("itinerary_in_wishlist", itinerary.getCode());
             object.put("username", currentLoggedUser.getUsername());
             objectReview.put("reviewed_itinerary", itinerary.getCode());
-            checkWishlist(object);
+            if(AccountManager.isLogged())
+            {
+                checkWishlist(object);
+            }
             getDataFromServer(itinerary);
             getItineraryReviews(objectReview);
             object2.put(IT_CODE, Objects.requireNonNull(object.get("itinerary_in_wishlist")).toString());
@@ -130,7 +133,11 @@ public class ItineraryDetails extends AppCompatActivity {
                 return true;
             });
 
-            isReservated(object2);
+            if(AccountManager.isLogged())
+            {
+                isReservated(object2);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
