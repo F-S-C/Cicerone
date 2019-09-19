@@ -87,7 +87,7 @@ public class AdminDetailsUserFragment extends Fragment {
             user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
             if (user.getUserType() == UserType.CICERONE) {
                 avgEarn.setVisibility(View.VISIBLE);
-                AccountManager.userAvgEarnings(user.getUsername(), avgEarn, context);
+                AccountManager.userAvgEarnings(context, user.getUsername(), avgEarn);
             }
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
