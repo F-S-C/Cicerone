@@ -1,13 +1,14 @@
 <?php
 
 
-namespace db_connector;
+namespace db_connector\update;
 
+use db_connector\BooleanConnector;
 use Exception;
 use InvalidArgumentException;
 use mysqli_sql_exception;
 
-require_once "BooleanConnector.php";
+require_once "../BooleanConnector.php";
 
 /**
  * A generic connector to update a tuple in a table.

@@ -1,6 +1,6 @@
 <?php
 
-namespace db_connector;
+namespace db_connector\update;
 
 use Exception;
 use InvalidArgumentException;
@@ -9,33 +9,33 @@ use mysqli_sql_exception;
 require_once "UpdateConnector.php";
 
 /**
- * Update a itinerary review.
+ * Update a user's review.
  * @package db_connector
  */
-class UpdateItineraryReview extends UpdateConnector
+class UpdateUserReview extends UpdateConnector
 {
-    protected const TABLE_NAME = "itinerary_review";
+    protected const TABLE_NAME = "user_review";
     protected const ID_COLUMN = "username";
     protected const ID_COLUMN_TYPE = "s";
 
     /**
-     * @var string The code of the reviewed itinerary.
+     * @var string The username of the reviewed user that will be updated.
      */
-    private $reviewed_itinerary;
+    private $reviewed_user;
 
     /**
-     * UpdateItineraryReview constructor.
+     * UpdateUserReview constructor.
      * @param string $username The author of the review.
-     * @param string $reviewed_itinerary The code of the reviewed itinerary.
-     * @warning If the username or the reviewed_itinerary is not set, the connector will die with an error.
+     * @param string $reviewed_user The username of the reviewed user that will be updated.
+     * @warning If the username or the reviewed_user is not set, the connector will die with an error.
      */
-    public function __construct(string $username = null, string $reviewed_itinerary = null)
+    public function __construct(string $username = null, string $reviewed_user = null)
     {
-        if (!isset($username) || !isset($reviewed_itinerary) || $reviewed_itinerary == "" || $username == "") {
+        if (!isset($username) || !isset($reviewed_user) || $reviewed_user == "" || $username == "") {
             die(json_encode(self::get_false("Some required fields are missing.")));
         }
         parent::__construct(strtolower($username));
-        $this->reviewed_itinerary = strtolower($reviewed_itinerary);
+        $this->reviewed_user = strtolower($reviewed_user);
     }
 
     /**
@@ -50,7 +50,7 @@ class UpdateItineraryReview extends UpdateConnector
             $query .= $key . " = ?, ";
         }
         $query = substr($query, 0, -2);
-        $query .= " WHERE " . $this::ID_COLUMN . " = ? AND reviewed_itinerary = ?";
+        $query .= " WHERE " . $this::ID_COLUMN . " = ? AND reviewed_user = ?";
 
         try {
             // Put both types and data in the same order, in order to use them in the prepared statement.
@@ -64,7 +64,7 @@ class UpdateItineraryReview extends UpdateConnector
                 array_push($data, $value);
             }
             $ordered_types .= $this::ID_COLUMN_TYPE . "s";
-            array_push($data, $this->id, $this->reviewed_itinerary);
+            array_push($data, $this->id, $this->reviewed_user);
 
             if (!isset($this->id)) {
                 throw new InvalidArgumentException("Some required fields are missing!");
@@ -87,8 +87,3 @@ class UpdateItineraryReview extends UpdateConnector
         return json_encode($to_return);
     }
 }
-
-$connector = new UpdateItineraryReview($_POST['username'], $_POST['reviewed_itinerary']);
-$connector->add_value("feedback", $_POST['feedback'], "i");
-$connector->add_value("description", $_POST['description'], "s");
-print $connector->get_content();

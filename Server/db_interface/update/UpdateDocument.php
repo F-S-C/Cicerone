@@ -1,19 +1,10 @@
 <?php
 
-namespace db_connector;
+namespace db_interface\update;
 
-require_once "UpdateConnector.php";
+use db_connector\update\UpdateDocument;
 
-/**
- * Update a document.
- * @package db_connector
- */
-class UpdateDocument extends UpdateConnector
-{
-    protected const TABLE_NAME = "document";
-    protected const ID_COLUMN = "username";
-    protected const ID_COLUMN_TYPE = "s";
-}
+require_once "../../db_connector/update/UpdateDocument.php";
 
 $connector = new UpdateDocument($_POST['username']);
 $connector->add_value("document_number", $_POST['document_number'], "s");

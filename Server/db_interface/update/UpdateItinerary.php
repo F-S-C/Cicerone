@@ -1,19 +1,10 @@
 <?php
 
-namespace db_connector;
+namespace db_interface\update;
 
-require_once "UpdateConnector.php";
+use db_connector\update\UpdateItinerary;
 
-/**
- * Update an itinerary.
- * @package db_connector
- */
-class UpdateItinerary extends UpdateConnector
-{
-    protected const TABLE_NAME = "itinerary";
-    protected const ID_COLUMN = "itinerary_code";
-    protected const ID_COLUMN_TYPE = "i";
-}
+require_once "../../db_connector/update/UpdateItinerary.php";
 
 $connector = new UpdateItinerary($_POST['itinerary_code']);
 $connector->add_value("title", $_POST['title'], "s");
