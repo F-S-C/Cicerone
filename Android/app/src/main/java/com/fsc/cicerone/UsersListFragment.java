@@ -54,7 +54,7 @@ public class UsersListFragment extends Fragment {
                 .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
                 .setOnEndConnectionListener(list -> {
                     swipeRefreshLayout.setRefreshing(false);
-                    adapter = new UserListAdapter(getContext(), list);
+                    adapter = new UserListAdapter(getActivity(), list);
                     recyclerView.setAdapter(adapter);
                 })
                 .build();
