@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.BusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -252,7 +254,7 @@ public abstract class AccountManager {
         connector.execute();
     }
 
-    public static void sendEmailWithContacts(Activity context, Itinerary itinerary, User deliveryToUser, BooleanRunnable callback) {
+    public static void sendEmailWithContacts(Activity context, Itinerary itinerary, User deliveryToUser, @Nullable BooleanRunnable callback) {
         Map<String, Object> data = new HashMap<>(3);
         data.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         data.put("itinerary_code", itinerary.getCode());
@@ -261,7 +263,7 @@ public abstract class AccountManager {
                 ConnectorConstants.EMAIL_SENDER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    callback.accept(result.getResult());
+                    if(callback != null) callback.accept(result.getResult());
                     if (result.getResult()) {
                         Log.i("SEND OK", "true");
                     } else {

@@ -76,13 +76,11 @@ public abstract class ReservationManager {
      */
     public static void confirmReservation(Reservation reservation) {
         reservation.setConfirmationDate(new Date());
-        AccountManager.sendEmailWithContacts(null, reservation.getItinerary(), reservation.getClient(), result -> {
-            if (result) {
-                BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_RESERVATION).build();
-                connector.setObjectToSend(SendInPostConnector.paramsFromJSONObject(reservation.toJSONObject()));
-                connector.execute();
-            }
-        });
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_RESERVATION)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> AccountManager.sendEmailWithContacts(null, reservation.getItinerary(), reservation.getClient(), null))
+                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(reservation.toJSONObject()))
+                .build()
+                .execute();
     }
 
     /**
