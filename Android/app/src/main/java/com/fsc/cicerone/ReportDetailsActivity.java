@@ -54,9 +54,10 @@ public class ReportDetailsActivity extends AppCompatActivity {
         // Extract the data
         parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
         getReportFromServer(parameters);
-        cancButton.setEnabled(false);
-        cancButton.setVisibility(View.GONE);
-        cancButton.setOnClickListener(view -> deleteReport(parameters));
+        cancButton.setOnClickListener(view ->{
+            deleteReport(parameters);
+            cancButton.setEnabled(false);
+        });
     }
 
     @Override
@@ -83,12 +84,15 @@ public class ReportDetailsActivity extends AppCompatActivity {
                             break;
                         case CLOSED:
                             statusText += getString(R.string.closed);
+                            cancButton.setVisibility(View.GONE);
                             break;
                         case PENDING:
                             statusText += getString(R.string.pending);
+                            cancButton.setVisibility(View.GONE);
                             break;
                         case CANCELED:
                             statusText += getString(R.string.canceled);
+                            cancButton.setVisibility(View.GONE);
                             break;
                         default:
                             break;
@@ -109,7 +113,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
     }
 
     private void deleteReport(Map<String, Object> params) {
-        params.put("state", ReportStatus.toInt(ReportStatus.CLOSED));
+        params.put("state", ReportStatus.toInt(ReportStatus.CANCELED));
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(this)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
