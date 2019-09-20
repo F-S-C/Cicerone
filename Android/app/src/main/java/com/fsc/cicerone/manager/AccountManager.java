@@ -1,7 +1,6 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -13,15 +12,11 @@ import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONException;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**

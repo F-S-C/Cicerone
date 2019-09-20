@@ -15,13 +15,11 @@ import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class ReportDetailsActivity extends AppCompatActivity {
