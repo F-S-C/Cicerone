@@ -6,7 +6,7 @@ use Exception;
 use InvalidArgumentException;
 use mysqli_sql_exception;
 
-require_once "UpdateConnector.php";
+require_once "/membri/fsc/database_connector/controller/update/UpdateConnector.php";
 
 /**
  * Update a itinerary review.

@@ -1,6 +1,6 @@
 <?php
 
-namespace controller\request;
+namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 use mysqli_sql_exception;

@@ -5,7 +5,9 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 
-require_once "../JsonConnector.php";
+require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
+require_once "/membri/fsc/database_connector/controller/request/RequestRegisteredUser.php";
+require_once "/membri/fsc/database_connector/controller/request/RequestItinerary.php";
 
 /**
  * Request a reservation for an itinerary.
@@ -51,7 +53,14 @@ class RequestReservation extends JsonConnector
         }
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
-        return $this->execute_query($query, $data, $types);
+        $to_return = $this->execute_query($query, $data, $types);
+
+        foreach ($to_return as &$row) {
+            $row["username"] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
+            $row["booked_itinerary"] = $this->get_from_connector(new RequestItinerary(null, null, null, null, $row["booked_itinerary"]))[0];
+        }
+
+        return $to_return;
     }
 
 

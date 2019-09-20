@@ -4,9 +4,9 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 
-require_once "../JsonConnector.php";
-require_once "RequestItinerary.php";
-require_once "RequestRegisteredUser.php";
+require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
+require_once "/membri/fsc/database_connector/controller/request/RequestRegisteredUser.php";
+require_once "/membri/fsc/database_connector/controller/request/RequestItinerary.php";
 
 /**
  * Request the itineraries in a reservation alongside with some their information.

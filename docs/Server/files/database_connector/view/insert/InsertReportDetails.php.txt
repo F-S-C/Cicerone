@@ -4,7 +4,7 @@ namespace database_connector\view\insert;
 
 use database_connector\controller\insert\InsertReportDetails;
 
-require_once "../../controller/insert/InsertReportDetails.php";
+require_once "/membri/fsc/database_connector/controller/insert/InsertReportDetails.php";
 
 $connector = new InsertReportDetails();
 $connector->add_value(array($_POST['report_code'],

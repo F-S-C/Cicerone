@@ -4,7 +4,7 @@ namespace database_connector\view\insert;
 
 use database_connector\controller\insert\InsertRegisteredUser;
 
-require_once "../../controller/insert/InsertRegisteredUser.php";
+require_once "/membri/fsc/database_connector/controller/insert/InsertRegisteredUser.php";
 
 $connector = new InsertRegisteredUser();
 $connector->add_value(array(strtolower($_POST['username']),

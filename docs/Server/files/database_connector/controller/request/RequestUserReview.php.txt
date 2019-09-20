@@ -4,8 +4,8 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 
-require_once "../JsonConnector.php";
-require_once "RequestRegisteredUser.php";
+require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
+require_once "/membri/fsc/database_connector/controller/request/RequestRegisteredUser.php";
 
 /**
  * Request the reviews written or received by a user.

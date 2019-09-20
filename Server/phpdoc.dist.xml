@@ -19,6 +19,6 @@
         <target>output</target>
     </transformer>
     <transformations>
-        <template name="responsive-twig" />
+        <template name="responsive" />
     </transformations>
 </phpdocumentor>

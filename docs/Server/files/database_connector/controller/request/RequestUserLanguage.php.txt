@@ -5,7 +5,7 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 
-require_once "../JsonConnector.php";
+require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
 
 /**
  * Request the languages that a user speaks.

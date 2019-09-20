@@ -4,7 +4,7 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 
-require_once "../JsonConnector.php";
+require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
 
 /**
  * Get all the information about a user.
@@ -42,16 +42,15 @@ class RequestRegisteredUser extends JsonConnector
             array_push($conditions, "username = ?");
             array_push($data, $this->username);
             $types .= "s";
-        }
-        if (!isset($this->username) || $this->username != "admin") {
+        } else {
             array_push($conditions, "username <> 'admin'");
+            array_push($conditions, "username <> 'deleted_user'");
         }
         if (isset($this->email)) {
             array_push($conditions, "email = ?");
             array_push($data, $this->email);
             $types .= "s";
         }
-        array_push($conditions, "username <> 'deleted_user'");
 
         $query .= $this->create_SQL_WHERE_clause($conditions);
 

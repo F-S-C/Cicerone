@@ -2,7 +2,7 @@
 
 namespace database_connector\controller\update;
 
-require_once "UpdateConnector.php";
+require_once "/membri/fsc/database_connector/controller/update/UpdateConnector.php";
 
 /**
  * Update details of the report.

@@ -10,8 +10,8 @@ TODO:
 
 namespace database_connector\controller\download;
 
-require_once "../utilities/TableCreator.php";
-require_once "../DatabaseConnector.php";
+require_once "/membri/fsc/database_connector/controller/utilities/TableCreator.php";
+require_once "/membri/fsc/database_connector/controller/utilities/TableCreator.php";
 
 use database_connector\controller\DatabaseConnector;
 use database_connector\controller\request\UserLogin;

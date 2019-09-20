@@ -1,6 +1,6 @@
 <?php
 
-namespace controller\delete;
+namespace database_connector\controller\delete;
 
 use database_connector\controller\DeleteConnector;
 
