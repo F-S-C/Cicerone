@@ -134,7 +134,7 @@ public abstract class AccountManager {
                         Log.e("DELETE_USER_ERROR", result.getMessage());
                     }
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(currentLoggedUser.getCredentials()))
+                .setObjectToSend(SendInPostConnector.paramsFromObject(currentLoggedUser.getCredentials()))
                 .build();
         connector.execute();
 
@@ -199,7 +199,7 @@ public abstract class AccountManager {
                     if (!result.getResult())
                         Log.e("ERROR INSERT USER", result.getMessage());
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(user.toJSONObject())).build();
+                .setObjectToSend(SendInPostConnector.paramsFromObject(user)).build();
         connector.execute();
     }
 
@@ -211,7 +211,7 @@ public abstract class AccountManager {
      * @param callback A function to be executed after the insert attempt.
      */
     public static void insertUserDocument(Activity context, String username, Document document, BooleanRunnable callback) {
-        Map<String, Object> doc = SendInPostConnector.paramsFromJSONObject(document.toJSONObject());
+        Map<String, Object> doc = SendInPostConnector.paramsFromObject(document);
         doc.put("username", username);
         Log.i("DOCUMENT", doc.toString());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_DOCUMENT)

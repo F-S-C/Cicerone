@@ -1,7 +1,5 @@
 package com.fsc.cicerone.manager;
 
-import android.util.Log;
-
 import com.fsc.cicerone.model.Itinerary;
 
 import java.text.ParseException;
@@ -80,7 +78,7 @@ public abstract class ItineraryManager {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY)
                 .setContext(null)
                 .setOnEndConnectionListener(result)
-                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(itinerary.toJSONObject()))
+                .setObjectToSend(SendInPostConnector.paramsFromObject(itinerary))
                 .build();
 
         connector.execute();

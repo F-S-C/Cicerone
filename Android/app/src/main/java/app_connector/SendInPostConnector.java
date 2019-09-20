@@ -1,12 +1,17 @@
 package app_connector;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.ItineraryReview;
+import com.fsc.cicerone.model.Report;
+import com.fsc.cicerone.model.Reservation;
+import com.fsc.cicerone.model.Review;
+import com.fsc.cicerone.model.UserReview;
+import com.fsc.cicerone.model.Wishlist;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,7 +133,8 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
         return stringBuilder.toString();
     }
 
-    public static Map<String, Object> paramsFromJSONObject(final JSONObject jsonObject) {
+    public static Map<String, Object> paramsFromObject(final BusinessEntity entity) {
+        JSONObject jsonObject = entity.toJSONObject();
         Map<String, Object> mapData = new HashMap<>(jsonObject.length());
         Iterator<String> keysItr = jsonObject.keys();
         while (keysItr.hasNext()) {
@@ -136,15 +142,48 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
                 String key = keysItr.next();
                 Object value = jsonObject.get(key);
 
-//                if (value instanceof JSONObject) {
-//                    value = paramsFromJSONObject((JSONObject) value);
-//                }
+                mapData.put(key, value);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (entity instanceof Itinerary) {
+            mapData.put("username", ((Itinerary) entity).getCicerone().getUsername());
+        } else if (entity instanceof Report) {
+            mapData.put("username", ((Report) entity).getAuthor().getUsername());
+            mapData.put("reported_user", ((Report) entity).getReportedUser().getUsername());
+        } else if (entity instanceof Review) {
+            mapData.put("username", ((Review) entity).getAuthor().getUsername());
+            if (entity instanceof ItineraryReview) {
+                mapData.put("reviewed_itinerary", ((ItineraryReview) entity).getReviewedItinerary().getCode());
+            } else if (entity instanceof UserReview) {
+                mapData.put("reviewed_user", ((UserReview) entity).getReviewedUser().getUsername());
+            }
+        } else if (entity instanceof Reservation) {
+            mapData.put("booked_itinerary", ((Reservation) entity).getItinerary().getCode());
+            mapData.put("username", ((Reservation) entity).getClient().getUsername());
+        } else if (entity instanceof Wishlist) {
+            mapData.put("username", ((Wishlist) entity).getUser().getUsername());
+            mapData.put("itinerary_in_wishlist", ((Wishlist) entity).getItinerary().getCode());
+        } // else if(entity instance of OtherTypes) ...
+
+        return mapData;
+    }
+    public static Map<String, Object> paramsFromObject(final JSONObject jsonObject) {
+        Map<String, Object> mapData = new HashMap<>(jsonObject.length());
+        Iterator<String> keysItr = jsonObject.keys();
+        while (keysItr.hasNext()) {
+            try {
+                String key = keysItr.next();
+                Object value = jsonObject.get(key);
 
                 mapData.put(key, value);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+
         return mapData;
     }
 

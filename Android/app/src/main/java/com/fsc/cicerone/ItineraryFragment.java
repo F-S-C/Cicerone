@@ -69,7 +69,7 @@ public class ItineraryFragment extends Fragment {
         message = view.findViewById(R.id.noItineraries);
 
         final Map<String, Object> parameters = SendInPostConnector
-                .paramsFromJSONObject(currentLoggedUser.getCredentials());
+                .paramsFromObject(currentLoggedUser.getCredentials());
         parameters.remove("password");
         if (currentLoggedUser.getUserType() == UserType.CICERONE) {
             participations.setVisibility(View.VISIBLE);
