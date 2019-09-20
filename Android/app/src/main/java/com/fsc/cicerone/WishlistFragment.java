@@ -1,7 +1,6 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,12 +100,8 @@ public class WishlistFragment extends Fragment {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.CLEAR_WISHLIST)
                 .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    Log.e("p", result.toJSONObject().toString());
                     if (result.getResult()) {
-                        //Intent i = new Intent(getActivity(), MainActivity.class);
-                        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
-                        //startActivity(i);
                         requireData(parameters);
                     }
                 })
