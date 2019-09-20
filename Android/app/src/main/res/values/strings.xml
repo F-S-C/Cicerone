@@ -226,4 +226,5 @@
     <string name="report_title">Report title</string>
     <string name="report_code">Report code</string>
     <string name="doc_not_exists">Document: No documents found.</string>
+    <string name="no_create_itinerary">You have not created any itinerary.</string>
 </resources>
