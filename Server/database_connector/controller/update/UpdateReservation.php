@@ -44,6 +44,10 @@ class UpdateReservation extends UpdateConnector
      */
     public function get_content(): string
     {
+        if (sizeof($this->values_to_update) == 0) {
+            return json_encode(self::get_false("No values to update"));
+        }
+
         $query = "UPDATE " . $this::TABLE_NAME . " SET ";
         foreach ($this->values_to_update as $key => $value) {
             $query .= $key . " = ?, ";

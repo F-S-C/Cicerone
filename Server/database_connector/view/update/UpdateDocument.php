@@ -2,7 +2,7 @@
 
 namespace database_connector\view\update;
 
-use controller\update\UpdateDocument;
+use database_connector\controller\update\UpdateDocument;
 
 require_once "/membri/fsc/database_connector/controller/update/UpdateDocument.php";
 

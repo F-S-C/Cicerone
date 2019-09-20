@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -135,9 +136,9 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
                 String key = keysItr.next();
                 Object value = jsonObject.get(key);
 
-                if (value instanceof JSONObject) {
-                    value = paramsFromJSONObject((JSONObject) value);
-                }
+//                if (value instanceof JSONObject) {
+//                    value = paramsFromJSONObject((JSONObject) value);
+//                }
 
                 mapData.put(key, value);
             } catch (JSONException e) {
