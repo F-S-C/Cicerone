@@ -88,7 +88,7 @@ public class ReservationFragment extends Fragment {
                         adapter = new ReservationAdapter(getActivity(), filtered);
                         recyclerView.setAdapter(adapter);
                     } else {
-                        message.setVisibility(View.GONE);
+                        message.setVisibility(View.VISIBLE);
                     }
                 })
                 .setObjectToSend(parameters)
