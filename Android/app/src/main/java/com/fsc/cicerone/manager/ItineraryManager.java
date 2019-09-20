@@ -42,7 +42,7 @@ public abstract class ItineraryManager {
      * @param url         The URL of the image of the itinerary.
      * @return The new itinerary.
      */
-    public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url, AccountManager.BooleanRunnable result) {
+    public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url, BooleanConnector.OnEndConnectionListener result) {
         SimpleDateFormat in = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date beginningDate;
         Date endingDate;
@@ -81,7 +81,7 @@ public abstract class ItineraryManager {
 
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY)
                 .setContext(null)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) booleanResult -> result.accept(booleanResult.getResult()))
+                .setOnEndConnectionListener(result)
                 .setObjectToSend(SendInPostConnector.paramsFromJSONObject(itinerary.toJSONObject()))
                 .build();
 

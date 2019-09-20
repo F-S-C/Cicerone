@@ -493,7 +493,7 @@ public class Itinerary extends BusinessEntity {
     }
 
     public static class Builder { //TODO: Add to class diagram (if not there)
-        private User cicerone;
+        private final User cicerone;
         private String title;
         private String description;
         private Date beginningDate;
