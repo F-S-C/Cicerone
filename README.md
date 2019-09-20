@@ -52,7 +52,7 @@ In this repository there are:
 
 - The system source code
 - The online documentation
-- The static "brochure" website
+- The static "brochure" website ([go to the website](https://f-s-c.github.io/Cicerone/))
 
 Visit the subsection ['the structure of this repository'](#the-structure-of-this-repository) to get more information on the organization of this repository and on the files that are in it.
 
