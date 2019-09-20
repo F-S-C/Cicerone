@@ -6,7 +6,6 @@ require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
 
 /**
  * A generic connector that deletes data from a database.
- * @package database_connector\controller
  */
 abstract class DeleteConnector extends BooleanConnector
 {

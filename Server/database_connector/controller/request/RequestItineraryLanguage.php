@@ -9,7 +9,6 @@ require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
 
 /**
  * Request the languages in which an itinerary is available.
- * @package database_connector\controller\request
  */
 class RequestItineraryLanguage extends JsonConnector
 {

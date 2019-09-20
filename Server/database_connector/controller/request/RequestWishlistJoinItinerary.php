@@ -9,7 +9,6 @@ require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
 
 /**
  * Request the itineraries in a wishlist alongside with all their information.
- * @package database_connector\controller\request
  */
 class RequestWishlistJoinItinerary extends JsonConnector
 {

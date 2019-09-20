@@ -8,7 +8,6 @@ require_once "/membri/fsc/database_connector/controller/DeleteConnector.php";
 
 /**
  * A connector that deletes an review from the user_review table.
- * @package database_connector\controller\delete
  */
 class DeleteItineraryReview extends DeleteConnector
 {

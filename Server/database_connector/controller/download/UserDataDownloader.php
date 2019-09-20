@@ -19,7 +19,6 @@ use database_connector\controller\utilities\TableCreator as TableCreator;
 
 /**
  * Download all the stored data regarding a user.
- * @package database_connector\controller\download
  */
 class UserDataDownloader extends DatabaseConnector
 {

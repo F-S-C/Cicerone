@@ -4,7 +4,6 @@ namespace img_uploader;
 
 /**
  * Class Uploader. It takes care of creating the image file from a base64 string.
- * @package img_uploader
  */
 class Uploader
 {

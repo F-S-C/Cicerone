@@ -9,7 +9,6 @@ require_once "/membri/fsc/database_connector/controller/request/RequestRegistere
 
 /**
  * Request the reviews written or received by a user.
- * @package database_connector\controller\request
  */
 class RequestUserReview extends JsonConnector
 {

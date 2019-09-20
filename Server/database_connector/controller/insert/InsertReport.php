@@ -6,7 +6,6 @@ require_once "/membri/fsc/database_connector/controller/insert/InsertConnector.p
 
 /**
  * Insert a report for the admin.
- * @package database_connector\controller\insert
  */
 class InsertReport extends InsertConnector
 {

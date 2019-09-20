@@ -8,7 +8,6 @@ require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
 
 /**
  * A special connector to log the user in.
- * @package database_connector\controller\request
  */
 class UserLogin extends BooleanConnector
 {

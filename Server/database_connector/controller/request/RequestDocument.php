@@ -8,7 +8,6 @@ require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
 
 /**
  * Request all the documents for a user.
- * @package database_connector\controller\request
  */
 class RequestDocument extends JsonConnector
 {

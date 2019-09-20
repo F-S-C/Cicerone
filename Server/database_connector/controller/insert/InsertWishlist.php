@@ -6,7 +6,6 @@ require_once "/membri/fsc/database_connector/controller/insert/InsertConnector.p
 
 /**
  * Insert an itinerary in a user's wishlist.
- * @package database_connector\controller\insert
  */
 class InsertWishlist extends InsertConnector
 {

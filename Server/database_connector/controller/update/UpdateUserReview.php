@@ -10,7 +10,6 @@ require_once "/membri/fsc/database_connector/controller/update/UpdateConnector.p
 
 /**
  * Update a user's review.
- * @package database_connector\controller\update
  */
 class UpdateUserReview extends UpdateConnector
 {

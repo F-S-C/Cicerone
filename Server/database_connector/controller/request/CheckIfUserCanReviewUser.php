@@ -8,7 +8,6 @@ require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
 
 /**
  * Request for control over the existence of a possible connection between the possible reviewer and the possible reviewed.
- * @package database_connector\controller\request
  */
 class CheckIfUserCanReviewUser extends BooleanConnector
 {
