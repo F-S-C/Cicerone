@@ -95,7 +95,7 @@ public abstract class ItineraryManager {
         new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) finish();
+                    if (result.getResult()) context.finish();
                 })
                 .setObjectToSend(params)
                 .build()
