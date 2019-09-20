@@ -1,6 +1,5 @@
 package com.fsc.cicerone;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +50,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         // Extract the data
         parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
+        cancButton.setVisibility(View.GONE);
         getReportFromServer(parameters);
         cancButton.setOnClickListener(view ->{
             deleteReport(parameters);
@@ -60,9 +60,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(this, MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i);
+        super.onBackPressed();
     }
 
     private void getReportFromServer(Map<String, Object> params) {
@@ -116,8 +114,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
                 .setContext(this)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.report_canceled),
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
                         params.remove("state");
                         getReportFromServer(params);
                     }
