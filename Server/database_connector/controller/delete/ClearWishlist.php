@@ -2,8 +2,6 @@
 
 namespace database_connector\controller\delete;
 
-use database_connector\controller\DeleteConnector;
-
 require_once "/membri/fsc/database_connector/controller/DeleteConnector.php";
 
 /**

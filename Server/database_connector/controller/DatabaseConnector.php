@@ -43,7 +43,9 @@ abstract class DatabaseConnector
      */
     public function __destruct()
     {
-        $this->connection->close();
+        if (isset($this->connection)) {
+            $this->connection->close();
+        }
     }
 
     /**

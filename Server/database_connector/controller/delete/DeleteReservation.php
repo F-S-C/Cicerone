@@ -2,9 +2,7 @@
 
 namespace database_connector\controller\delete;
 
-use database_connector\controller\DeleteConnector;
-
-require_once "/membri/fsc/database_connector/controller/DeleteConnector.php";
+require_once "/membri/fsc/database_connector/controller/delete/DeleteConnector.php";
 
 /**
  * A connector that deletes an reservation from the reservation table.
@@ -25,7 +23,7 @@ class DeleteReservation extends DeleteConnector
      * @param int $itinerary The code of the booked itinerary.
      * @warning If the username or the itinerary is not set, the connector will die with an error.
      */
-    public function __construct(string $username = null, int $itinerary = null)
+    public function __construct(string $username, int $itinerary)
     {
         if (!isset($username) || !isset($itinerary) || $itinerary == "" || $username == "") {
             die(json_encode(self::get_false("Some required fields are missing.")));

@@ -1,6 +1,8 @@
 <?php
 
-namespace database_connector\controller;
+namespace database_connector\controller\delete;
+
+use database_connector\controller\BooleanConnector;
 
 require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
 

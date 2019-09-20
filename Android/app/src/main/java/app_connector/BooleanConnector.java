@@ -48,7 +48,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
                 if (jsonObject.has(result ? "message" : "error"))
                     message = jsonObject.getString(result ? "message" : "error");
             } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
+                Log.e(ERROR_TAG, e.getMessage() + " (trying to parse " + json + ")");
             }
         }
 

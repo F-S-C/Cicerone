@@ -9,10 +9,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
@@ -28,7 +28,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.SendInPostConnector;
 
@@ -48,6 +47,8 @@ public class ItineraryManagement extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
+
+    private Itinerary itinerary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,6 @@ public class ItineraryManagement extends AppCompatActivity {
         Button deleteItinerary = findViewById(R.id.deleteItinerary);
         Button updateItinerary = findViewById(R.id.editItinerary);
 
-        final Itinerary itinerary;
         final Map<String, Object> code = new HashMap<>();
         try {
             //Get the bundle
@@ -81,14 +81,14 @@ public class ItineraryManagement extends AppCompatActivity {
             //Extract the data…
             itinerary = new Itinerary(new JSONObject(s));
 
-            code.put("reviewed_itinerary", String.valueOf(itinerary.getCode()));
-            code.put("itinerary_code", String.valueOf(itinerary.getCode()));
+            code.put("reviewed_itinerary", itinerary.getCode());
+            code.put("itinerary_code", itinerary.getCode());
             getDataFromServer(itinerary);
             getItineraryReviews(code);
             deleteItinerary.setOnClickListener(v -> new MaterialAlertDialogBuilder(ItineraryManagement.this).
                     setTitle(getString(R.string.are_you_sure))
                     .setMessage(getString(R.string.confirm_delete))
-                    .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteItineraryFromServer(code)))
+                    .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteItineraryFromServer()))
                     .setNegativeButton(getString(R.string.no), null)
                     .show());
 
@@ -157,20 +157,8 @@ public class ItineraryManagement extends AppCompatActivity {
         connector.execute();
     }
 
-    public void deleteItineraryFromServer(Map<String, Object> itCode) {
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
-                .setContext(this)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) {
-                        Intent i = new Intent(ItineraryManagement.this, MainActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        Toast.makeText(ItineraryManagement.this, getString(R.string.itinerary_deleted), Toast.LENGTH_LONG).show();
-                        startActivity(i);
-                    }
-                })
-                .setObjectToSend(itCode)
-                .build();
-        connector.execute();
+    public void deleteItineraryFromServer() {
+        ItineraryManager.deleteItinerary(this, itinerary.getCode());
     }
 }
 

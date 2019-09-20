@@ -1,11 +1,15 @@
 package com.fsc.cicerone.manager;
 
+import android.app.Activity;
+
 import com.fsc.cicerone.model.Itinerary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
@@ -85,5 +89,17 @@ public abstract class ItineraryManager {
         return itinerary;
     }
 
+    public static void deleteItinerary(Activity context, int code){
+        Map<String, Object> params = new HashMap<>(1);
+        params.put("itinerary_code", code);
+        new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) finish();
+                })
+                .setObjectToSend(params)
+                .build()
+                .execute();
+    }
 
 }
