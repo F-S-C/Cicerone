@@ -4,8 +4,6 @@ import android.util.Log;
 
 import com.fsc.cicerone.model.Itinerary;
 
-import org.json.JSONException;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

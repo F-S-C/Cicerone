@@ -1,7 +1,6 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -13,15 +12,11 @@ import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONException;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -232,11 +227,11 @@ public abstract class AccountManager {
     /**
      * Gets the average earnings of a user.
      *
+     * @param context  The application context.
      * @param username The username.
      * @param t        The TextView to be set with the earnings.
-     * @param c        The application context.
      */
-    public static void userAvgEarnings(Activity context, String username, TextView t, Context c) {
+    public static void userAvgEarnings(Activity context, String username, TextView t) {
         Map<String, Object> user = new HashMap<>(1);
         user.put("cicerone", username);
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
@@ -250,7 +245,7 @@ public abstract class AccountManager {
                             sum += reservation.getTotal();
                         }
                     }
-                    t.setText(c.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
+                    t.setText(context.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
                 })
                 .setObjectToSend(user)
                 .build();

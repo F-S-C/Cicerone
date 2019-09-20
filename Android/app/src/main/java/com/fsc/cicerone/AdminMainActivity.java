@@ -138,7 +138,7 @@ public class AdminMainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp() { //TODO: Add to class diagram
+    public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }

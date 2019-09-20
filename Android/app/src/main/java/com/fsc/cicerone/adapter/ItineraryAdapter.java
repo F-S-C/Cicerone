@@ -75,7 +75,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
             if (mData.get(position).getCicerone().equals(AccountManager.getCurrentLoggedUser())) {
                 i = new Intent().setClass(v.getContext(), ItineraryManagement.class);
             } else {
-                if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
+                if (AccountManager.isLogged() && AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
                     i = new Intent().setClass(v.getContext(), AdminItineraryDetails.class);
                 } else {
                     i = new Intent().setClass(v.getContext(), ItineraryDetails.class);
@@ -99,7 +99,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder { //TODO: Add to class diagram
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;

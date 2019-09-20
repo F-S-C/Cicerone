@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
@@ -18,12 +19,10 @@ import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -76,6 +75,9 @@ public class ProfileActivity extends AppCompatActivity {
         String nick = "@" + Objects.requireNonNull(params.get("username")).toString();
         username.setText(nick);
         getData(params);
+
+        if(!AccountManager.isLogged())
+            tabLayout.removeTabAt(1);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

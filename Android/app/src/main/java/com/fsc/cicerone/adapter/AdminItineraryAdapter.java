@@ -1,7 +1,6 @@
 package com.fsc.cicerone.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +83,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add in class diagram
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;

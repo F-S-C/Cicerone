@@ -1,9 +1,7 @@
 package com.fsc.cicerone.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +18,11 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -109,7 +101,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //TODO: Add to class diagram
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView usr;
         TextView usrType;

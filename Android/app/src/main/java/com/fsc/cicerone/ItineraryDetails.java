@@ -2,6 +2,8 @@ package com.fsc.cicerone;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -95,6 +97,13 @@ public class ItineraryDetails extends AppCompatActivity {
         rPrice = findViewById(R.id.rPrice);
         Map<String, Object> object = new HashMap<>();
         object2 = new HashMap<>();
+
+        if (!AccountManager.isLogged()) {
+            modifyWishlistButton.setEnabled(false);
+            modifyWishlistButton.setBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
+            requestReservation.setEnabled(false);
+        }
+
         Map<String, Object> objectReview = new HashMap<>();
         Bundle bundle = getIntent().getExtras();
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
@@ -112,15 +121,14 @@ public class ItineraryDetails extends AppCompatActivity {
 
             supportActionBar.setTitle(itinerary.getTitle());
 
-            object.put("itinerary_in_wishlist", itinerary.getCode());
-            object.put("username", currentLoggedUser.getUsername());
-            objectReview.put("reviewed_itinerary", itinerary.getCode());
-            checkWishlist(object);
+            if (AccountManager.isLogged()) {
+                object.put("itinerary_in_wishlist", itinerary.getCode());
+                object.put("username", currentLoggedUser.getUsername());
+                objectReview.put("reviewed_itinerary", itinerary.getCode());
+                checkWishlist(object);
+            }
             getDataFromServer(itinerary);
             getItineraryReviews(objectReview);
-            object2.put(IT_CODE, Objects.requireNonNull(object.get("itinerary_in_wishlist")).toString());
-            object2.put("username", currentLoggedUser.getUsername());
-            object2.put("booked_itinerary", itinerary.getCode());
 
             review.setOnTouchListener((v, event) -> {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -133,7 +141,13 @@ public class ItineraryDetails extends AppCompatActivity {
                 return true;
             });
 
-            isReservated(object2);
+            if (AccountManager.isLogged()) {
+                object2.put(IT_CODE, Objects.requireNonNull(object.get("itinerary_in_wishlist")).toString());
+                object2.put("username", currentLoggedUser.getUsername());
+                object2.put("booked_itinerary", itinerary.getCode());
+                isReservated(object2);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

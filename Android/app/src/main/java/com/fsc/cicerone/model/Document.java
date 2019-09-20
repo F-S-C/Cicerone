@@ -17,7 +17,7 @@ import app_connector.ConnectorConstants;
 public class Document extends BusinessEntity {
     private String number;
     private String type;
-    private Date expirationDate; //TODO: Update class diagram (also setter/getter)
+    private Date expirationDate;
 
     /**
      * Default empty constructor.
