@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.User;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.Objects;
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.GetDataConnector;
+import app_connector.SendInPostConnector;
 
 
 public class InsertReportFragment extends Fragment {
@@ -60,16 +62,14 @@ public class InsertReportFragment extends Fragment {
 
         sendReport.setOnClickListener(v -> {
             if (object.getText().toString().equals("") || body.getText().toString().equals("")) {
-                Toast.makeText(InsertReportFragment.this.getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
             } else {
                 param.put("reported_user", users.getSelectedItem().toString());
                 param.put("report_body", body.getText().toString());
                 param.put("state", "1");
                 param.put("object", object.getText().toString());
 
-                InsertReportFragment.this.sendToTableReport(param);
-                InsertReportFragment.this.sendToTableReportDetails(param);
+                sendToTableReport(param);
 
                 fragment = new ReportFragment();
                 fragmentManager = getFragmentManager();
@@ -108,9 +108,16 @@ public class InsertReportFragment extends Fragment {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
                 .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) {
-                        Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
-                    }
+                    if(result.getResult())
+                        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
+                            .setContext(getActivity())
+                            .setOnEndConnectionListener(list -> {
+                                param.put("report_code", list.get(0).getCode());
+                                sendToTableReportDetails(param);
+                            })
+                            .setObjectToSend(param)
+                            .build()
+                            .execute();
                     Log.e("REPORT", result.getMessage());
                 })
                 .setObjectToSend(param)
@@ -121,7 +128,11 @@ public class InsertReportFragment extends Fragment {
     public void sendToTableReportDetails(Map<String, Object> param) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT_DETAILS)
                 .setContext(getActivity())
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> Log.d("sendToTableReportDetail", String.valueOf(result.getResult())))
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        Toast.makeText(getActivity(), getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .setObjectToSend(param)
                 .build();
         connector.execute();
