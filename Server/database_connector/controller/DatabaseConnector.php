@@ -9,7 +9,6 @@ use mysqli_sql_exception;
 
 /**
  * A generic connector to a database.
- * @package database_connector\controller
  */
 abstract class DatabaseConnector
 {
@@ -44,7 +43,9 @@ abstract class DatabaseConnector
      */
     public function __destruct()
     {
-        $this->connection->close();
+        if (isset($this->connection)) {
+            $this->connection->close();
+        }
     }
 
     /**

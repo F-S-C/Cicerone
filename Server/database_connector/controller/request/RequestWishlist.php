@@ -10,7 +10,6 @@ require_once "/membri/fsc/database_connector/controller/request/RequestItinerary
 
 /**
  * Request all the itineraries from a wishlist of a user.
- * @package database_connector\controller\request
  */
 class RequestWishlist extends JsonConnector
 {

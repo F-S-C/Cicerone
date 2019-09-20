@@ -10,7 +10,6 @@ require_once "/membri/fsc/database_connector/controller/DatabaseConnector.php";
 /**
  * A type of connector that fetches data from a Database and converts the results of the interrogation to the
  * JSON format.
- * @package database_connector\controller
  */
 abstract class JsonConnector extends DatabaseConnector
 {

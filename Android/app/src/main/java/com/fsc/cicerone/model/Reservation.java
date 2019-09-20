@@ -157,7 +157,7 @@ public class Reservation extends BusinessEntity {
         }
     }
 
-    private Reservation(Builder builder) { //TODO: Add to class diagram (if not there)
+    private Reservation(Builder builder) {
         this.client = builder.client;
         this.itinerary = builder.itinerary;
         this.numberOfAdults = builder.numberOfAdults;

@@ -15,13 +15,11 @@ import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 public class ReportDetailsActivity extends AppCompatActivity {
@@ -118,7 +116,8 @@ public class ReportDetailsActivity extends AppCompatActivity {
                 .setContext(this)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.report_canceled),
+                                Toast.LENGTH_SHORT).show();
                         params.remove("state");
                         getReportFromServer(params);
                     }

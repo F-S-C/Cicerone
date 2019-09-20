@@ -1,9 +1,10 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.BusinessEntity;
@@ -13,15 +14,11 @@ import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONException;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -137,7 +134,7 @@ public abstract class AccountManager {
                         Log.e("DELETE_USER_ERROR", result.getMessage());
                     }
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(currentLoggedUser.getCredentials()))
+                .setObjectToSend(SendInPostConnector.paramsFromObject(currentLoggedUser.getCredentials()))
                 .build();
         connector.execute();
 
@@ -202,7 +199,7 @@ public abstract class AccountManager {
                     if (!result.getResult())
                         Log.e("ERROR INSERT USER", result.getMessage());
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(user.toJSONObject())).build();
+                .setObjectToSend(SendInPostConnector.paramsFromObject(user)).build();
         connector.execute();
     }
 
@@ -214,7 +211,7 @@ public abstract class AccountManager {
      * @param callback A function to be executed after the insert attempt.
      */
     public static void insertUserDocument(Activity context, String username, Document document, BooleanRunnable callback) {
-        Map<String, Object> doc = SendInPostConnector.paramsFromJSONObject(document.toJSONObject());
+        Map<String, Object> doc = SendInPostConnector.paramsFromObject(document);
         doc.put("username", username);
         Log.i("DOCUMENT", doc.toString());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_DOCUMENT)
@@ -232,11 +229,11 @@ public abstract class AccountManager {
     /**
      * Gets the average earnings of a user.
      *
+     * @param context  The application context.
      * @param username The username.
      * @param t        The TextView to be set with the earnings.
-     * @param c        The application context.
      */
-    public static void userAvgEarnings(Activity context, String username, TextView t, Context c) {
+    public static void userAvgEarnings(Activity context, String username, TextView t) {
         Map<String, Object> user = new HashMap<>(1);
         user.put("cicerone", username);
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
@@ -250,14 +247,14 @@ public abstract class AccountManager {
                             sum += reservation.getTotal();
                         }
                     }
-                    t.setText(c.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
+                    t.setText(context.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
                 })
                 .setObjectToSend(user)
                 .build();
         connector.execute();
     }
 
-    public static void sendEmailWithContacts(Activity context, Itinerary itinerary, User deliveryToUser, BooleanRunnable callback) {
+    public static void sendEmailWithContacts(Activity context, Itinerary itinerary, User deliveryToUser, @Nullable BooleanRunnable callback) {
         Map<String, Object> data = new HashMap<>(3);
         data.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         data.put("itinerary_code", itinerary.getCode());
@@ -266,7 +263,7 @@ public abstract class AccountManager {
                 ConnectorConstants.EMAIL_SENDER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    callback.accept(result.getResult());
+                    if(callback != null) callback.accept(result.getResult());
                     if (result.getResult()) {
                         Log.i("SEND OK", "true");
                     } else {

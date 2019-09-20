@@ -492,8 +492,8 @@ public class Itinerary extends BusinessEntity {
         imageUrl = builder.imageUrl;
     }
 
-    public static class Builder { //TODO: Add to class diagram (if not there)
-        private User cicerone;
+    public static class Builder {
+        private final User cicerone; // TODO: Update class diagram
         private String title;
         private String description;
         private Date beginningDate;

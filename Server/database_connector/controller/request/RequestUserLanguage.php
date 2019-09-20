@@ -9,7 +9,6 @@ require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
 
 /**
  * Request the languages that a user speaks.
- * @package database_connector\controller\request
  */
 class RequestUserLanguage extends JsonConnector
 {

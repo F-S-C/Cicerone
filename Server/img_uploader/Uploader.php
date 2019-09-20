@@ -4,12 +4,11 @@ namespace img_uploader;
 
 /**
  * Class Uploader. It takes care of creating the image file from a base64 string.
- * @package img_uploader
  */
 class Uploader
 {
     /** @var string The upload path on the server. */
-    protected const UPLOAD_PATH = "../images/";
+    protected const UPLOAD_PATH = "/membri/fsc/images/";
 
     /**
      * @var mixed The image string.

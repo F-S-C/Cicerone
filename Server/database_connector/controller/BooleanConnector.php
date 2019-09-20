@@ -8,7 +8,6 @@ require_once "/membri/fsc/database_connector/controller/DatabaseConnector.php";
 /**
  * A generic connector to a database that returns a boolean value (true or false) and a message.
  * The answer is provided in an associative array format.
- * @package database_connector\controller
  */
 abstract class BooleanConnector extends DatabaseConnector
 {

@@ -11,7 +11,6 @@ require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
 
 /**
  * A generic connector used to add data to a table in a database.
- * @package database_connector\controller\insert
  */
 abstract class InsertConnector extends BooleanConnector
 {

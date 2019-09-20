@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -42,7 +41,6 @@ import app_connector.SendInPostConnector;
 public class AdminDetailsUserFragment extends Fragment {
 
     private static final String ERROR_TAG = "ERROR IN " + AdminDetailsUserFragment.class.getName();
-    //    private Map<String, Object> parameters = new HashMap<>(); //TODO: Remove from class diagram
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
@@ -85,7 +83,7 @@ public class AdminDetailsUserFragment extends Fragment {
             user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
             if (user.getUserType() == UserType.CICERONE) {
                 avgEarn.setVisibility(View.VISIBLE);
-                AccountManager.userAvgEarnings(context, user.getUsername(), avgEarn, context);
+                AccountManager.userAvgEarnings(context, user.getUsername(), avgEarn);
             }
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());

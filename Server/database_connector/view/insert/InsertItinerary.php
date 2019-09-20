@@ -17,7 +17,7 @@ $connector->add_value(array($_POST['title'],
     $_POST['location'],
     $_POST['repetitions_per_day'],
     $_POST['duration'],
-    strtolower(json_decode($_POST['username'], true)["username"]),
+    strtolower($_POST['username']),
     $_POST['full_price'],
     $_POST['reduced_price'],
     $_POST['image_url']

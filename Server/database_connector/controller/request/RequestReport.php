@@ -10,7 +10,6 @@ require_once "/membri/fsc/database_connector/controller/request/RequestRegistere
 
 /**
  * Request the reports to the admin.
- * @package database_connector\controller\request
  */
 class RequestReport extends JsonConnector
 {

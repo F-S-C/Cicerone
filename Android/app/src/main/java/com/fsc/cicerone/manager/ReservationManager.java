@@ -11,7 +11,6 @@ import java.util.Date;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.GetDataConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -61,7 +60,7 @@ public abstract class ReservationManager {
                     if (!result.getResult())
                         Log.e("INSERT_RESERVATION_ERR", result.getMessage()); //TODO: Send email to cicerone (IF-34)?
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(reservation.toJSONObject()))
+                .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
                 .build();
         connector.execute();
 
@@ -76,13 +75,14 @@ public abstract class ReservationManager {
      */
     public static void confirmReservation(Reservation reservation) {
         reservation.setConfirmationDate(new Date());
-        AccountManager.sendEmailWithContacts(null, reservation.getItinerary(), reservation.getClient(), result -> {
-            if (result) {
-                BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_RESERVATION).build();
-                connector.setObjectToSend(SendInPostConnector.paramsFromJSONObject(reservation.toJSONObject()));
-                connector.execute();
-            }
-        });
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_RESERVATION)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    Log.d("CONFIRM_RESERVATION", result.getResult() + ": " + result.getMessage());
+                    AccountManager.sendEmailWithContacts(null, reservation.getItinerary(), reservation.getClient(), null);
+                })
+                .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
+                .build()
+                .execute();
     }
 
     /**
@@ -107,7 +107,7 @@ public abstract class ReservationManager {
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (callback != null) callback.run(result);
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(reservation.toJSONObject()))
+                .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
                 .build();
         connector.execute();
     }

@@ -10,7 +10,6 @@ require_once "/membri/fsc/database_connector/controller/request/RequestItinerary
 
 /**
  * Request the itineraries in a reservation alongside with some their information.
- * @package database_connector\controller\request
  */
 class RequestItineraryJoinReservation extends JsonConnector
 {

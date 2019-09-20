@@ -6,7 +6,6 @@ require_once "/membri/fsc/database_connector/controller/insert/InsertConnector.p
 
 /**
  * Insert a reservation for an itinerary.
- * @package database_connector\controller\insert
  */
 class InsertReservation extends InsertConnector
 {

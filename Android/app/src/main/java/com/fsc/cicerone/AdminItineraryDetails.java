@@ -44,7 +44,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
-    private Itinerary itinerary; //TODO: Add to class diagram
+    private Itinerary itinerary;
 
 
     @Override
@@ -127,7 +127,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
     }
 
     public void goToAuthor(View view) {
-        Intent i = new Intent().setClass(view.getContext(), AdminUserProfile.class);//TODO if-41
+        Intent i = new Intent().setClass(view.getContext(), AdminUserProfile.class);
         Bundle bundle = new Bundle();
         bundle.putString("user", itinerary.getCicerone().toJSONObject().toString());
         i.putExtras(bundle);

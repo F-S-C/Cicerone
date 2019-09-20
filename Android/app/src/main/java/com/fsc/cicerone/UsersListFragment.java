@@ -17,11 +17,9 @@ import com.fsc.cicerone.adapter.UserListAdapter;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 
-import java.util.List;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.GetDataConnector;
 
 public class UsersListFragment extends Fragment {

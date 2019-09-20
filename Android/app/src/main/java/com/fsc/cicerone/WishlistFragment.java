@@ -73,7 +73,7 @@ public class WishlistFragment extends Fragment {
     }
 
     private void requireData(Map<String, Object> parameters) {
-        SendInPostConnector<Wishlist> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class)) //TODO: Check)
+        SendInPostConnector<Wishlist> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class)) //TODO: Check
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
                 .setOnEndConnectionListener(list -> {
@@ -104,6 +104,7 @@ public class WishlistFragment extends Fragment {
                         Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
                         requireData(parameters);
                     }
+
                 })
                 .setObjectToSend(parameters)
                 .build();

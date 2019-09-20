@@ -1,15 +1,15 @@
 package com.fsc.cicerone.manager;
 
-import android.util.Log;
+import android.app.Activity;
 
 import com.fsc.cicerone.model.Itinerary;
-
-import org.json.JSONException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
@@ -42,7 +42,7 @@ public abstract class ItineraryManager {
      * @param url         The URL of the image of the itinerary.
      * @return The new itinerary.
      */
-    public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url, AccountManager.BooleanRunnable result) {
+    public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url, BooleanConnector.OnEndConnectionListener result) {
         SimpleDateFormat in = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date beginningDate;
         Date endingDate;
@@ -81,13 +81,25 @@ public abstract class ItineraryManager {
 
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY)
                 .setContext(null)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) booleanResult -> result.accept(booleanResult.getResult()))
-                .setObjectToSend(SendInPostConnector.paramsFromJSONObject(itinerary.toJSONObject()))
+                .setOnEndConnectionListener(result)
+                .setObjectToSend(SendInPostConnector.paramsFromObject(itinerary))
                 .build();
 
         connector.execute();
         return itinerary;
     }
 
+    public static void deleteItinerary(Activity context, int code){
+        Map<String, Object> params = new HashMap<>(1);
+        params.put("itinerary_code", code);
+        new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) context.finish();
+                })
+                .setObjectToSend(params)
+                .build()
+                .execute();
+    }
 
 }

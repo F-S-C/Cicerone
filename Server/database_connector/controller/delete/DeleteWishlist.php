@@ -2,13 +2,11 @@
 
 namespace database_connector\controller\delete;
 
-use database_connector\controller\DeleteConnector;
 
-require_once "/membri/fsc/database_connector/controller/DeleteConnector.php";
+require_once "/membri/fsc/database_connector/controller/delete/DeleteConnector.php";
 
 /**
  * A connector that deletes an itinerary from a wishlist.
- * @package database_connector\controller\delete
  */
 class DeleteWishlist extends DeleteConnector
 {

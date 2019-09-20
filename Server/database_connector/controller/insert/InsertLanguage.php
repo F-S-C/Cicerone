@@ -6,7 +6,6 @@ require_once "/membri/fsc/database_connector/controller/insert/InsertConnector.p
 
 /**
  * Insert a language.
- * @package database_connector\controller\insert
  */
 class InsertLanguage extends InsertConnector
 {

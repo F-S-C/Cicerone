@@ -6,7 +6,6 @@ require_once "/membri/fsc/database_connector/controller/insert/InsertConnector.p
 
 /**
  * Insert a new user.
- * @package database_connector\controller\insert
  */
 class InsertRegisteredUser extends InsertConnector
 {

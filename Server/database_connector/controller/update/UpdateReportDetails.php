@@ -6,7 +6,6 @@ require_once "/membri/fsc/database_connector/controller/update/UpdateConnector.p
 
 /**
  * Update details of the report.
- * @package database_connector\controller\update
  */
 class UpdateReportDetails extends UpdateConnector
 {

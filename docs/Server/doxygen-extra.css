@@ -1,0 +1,9 @@
+#projectlogo {
+    vertical-align: middle;
+    padding-right: 8px;
+}
+
+#projectlogo img {
+    height: 40px;
+    width: 40px;
+}
