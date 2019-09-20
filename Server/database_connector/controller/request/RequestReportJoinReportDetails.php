@@ -10,7 +10,6 @@ require_once "/membri/fsc/database_connector/controller/request/RequestRegistere
 
 /**
  * Request the basic report information and the details of the report.
- * @package database_connector\controller\request
  */
 class RequestReportJoinReportDetails extends JsonConnector
 {

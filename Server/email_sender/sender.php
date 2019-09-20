@@ -11,7 +11,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Send an e-mail to a given user.
- * @package email_sender
  */
 class Sender
 {

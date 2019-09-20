@@ -11,7 +11,6 @@ require_once "/membri/fsc/database_connector/controller/request/RequestItinerary
 
 /**
  * Request all reviews for an itinerary.
- * @package database_connector\controller\request
  */
 class RequestItineraryReview extends JsonConnector
 {

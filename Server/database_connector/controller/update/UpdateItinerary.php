@@ -6,7 +6,6 @@ require_once "/membri/fsc/database_connector/controller/update/UpdateConnector.p
 
 /**
  * Update an itinerary.
- * @package database_connector\controller\update
  */
 class UpdateItinerary extends UpdateConnector
 {

@@ -327,13 +327,13 @@ public class ItineraryCreation extends AppCompatActivity {
                         Float.parseFloat(fullPrice.getText().toString()),
                         Float.parseFloat(reducedPrice.getText().toString()),
                         null, insStatus -> {
-                            if (insStatus) {
+                            if (insStatus.getResult()) {
                                 Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(i);
                             } else {
-                                Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -497,13 +497,13 @@ public class ItineraryCreation extends AppCompatActivity {
                             Float.parseFloat(fullPrice.getText().toString()),
                             Float.parseFloat(reducedPrice.getText().toString()),
                             imgURL, insStatus -> {
-                                if (insStatus) {
+                                if (insStatus.getResult()) {
                                     Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
                                     Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
                                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(i);
                                 } else {
-                                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                 } else {

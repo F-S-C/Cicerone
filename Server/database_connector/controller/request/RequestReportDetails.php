@@ -9,7 +9,6 @@ require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
 
 /**
  * Request the details for a report.
- * @package database_connector\controller\request
  */
 class RequestReportDetails extends JsonConnector
 {

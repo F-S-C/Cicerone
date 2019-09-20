@@ -12,7 +12,6 @@ require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
 
 /**
  * A generic connector to update a tuple in a table.
- * @package database_connector\controller\update
  */
 abstract class UpdateConnector extends BooleanConnector
 {

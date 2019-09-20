@@ -1,6 +1,6 @@
 <?php
 
-namespace controller\delete;
+namespace database_connector\controller\delete;
 
 use database_connector\controller\DeleteConnector;
 
@@ -8,7 +8,6 @@ require_once "/membri/fsc/database_connector/controller/DeleteConnector.php";
 
 /**
  * A connector that deletes an reservation from the reservation table.
- * @package database_connector\controller\delete
  */
 class DeleteReservation extends DeleteConnector
 {

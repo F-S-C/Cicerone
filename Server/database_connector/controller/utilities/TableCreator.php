@@ -4,7 +4,6 @@ namespace database_connector\controller\utilities;
 
 /**
  * Utility class for the creation of HTML tables.
- * @package database_connector\controller\utilities
  */
 class TableCreator
 {

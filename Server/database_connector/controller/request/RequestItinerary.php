@@ -9,7 +9,6 @@ require_once "/membri/fsc/database_connector/controller/request/RequestRegistere
 
 /**
  * Request all the itineraries that match a set of criteria.
- * @package database_connector\controller\request
  */
 class RequestItinerary extends JsonConnector
 {

@@ -8,7 +8,6 @@ require_once "/membri/fsc/database_connector/controller/DeleteConnector.php";
 
 /**
  * A connector that deletes an itinerary from a wishlist.
- * @package database_connector\controller\delete
  */
 class DeleteWishlist extends DeleteConnector
 {
