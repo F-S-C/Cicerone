@@ -26,6 +26,8 @@ import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -140,12 +142,18 @@ public class ItineraryFragment extends Fragment {
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
-                    if (list.isEmpty())
+                    List<Reservation> filtered = new ArrayList<>(list.size());
+                    for (Reservation reservation : list) {
+                        if (reservation.isConfirmed()) {
+                            filtered.add(reservation);
+                        }
+                    }
+                    if (filtered.isEmpty())
                         message.setVisibility(View.VISIBLE);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                             DividerItemDecoration.VERTICAL));
-                    adapter2 = new ReservationAdapter(getActivity(), list, R.layout.participation_list);
+                    adapter2 = new ReservationAdapter(getActivity(), filtered, R.layout.participation_list);
                     recyclerView.setAdapter(adapter2);
                 })
                 .setObjectToSend(parameters)

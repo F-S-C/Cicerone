@@ -20,6 +20,7 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,8 +78,14 @@ public class ReservationFragment extends Fragment {
                 })
                 .setOnEndConnectionListener(list -> {
                     progressBar.setVisibility(View.GONE);
-                    if (!list.isEmpty()) {
-                        adapter = new ReservationAdapter(getActivity(), list);
+                    List<Reservation> filtered = new ArrayList<>(list.size());
+                    for(Reservation reservation : list){
+                        if (!reservation.isConfirmed()){
+                            filtered.add(reservation);
+                        }
+                    }
+                    if (!filtered.isEmpty()) {
+                        adapter = new ReservationAdapter(getActivity(), filtered);
                         recyclerView.setAdapter(adapter);
                     } else {
                         message.setVisibility(View.GONE);

@@ -42,12 +42,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     public ReservationAdapter(Context context, List<Reservation> list) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        this.mData = new ArrayList<>(list.size());
-        for(Reservation reservation : list){
-            if (!reservation.isConfirmed()){
-                this.mData.add(reservation);
-            }
-        }
+        this.mData = list;
     }
 
 
@@ -55,12 +50,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.layout = layout;
-        this.mData = new ArrayList<>(list.size());
-        for(Reservation reservation : list){
-            if (reservation.isConfirmed()){
-                this.mData.add(reservation);
-            }
-        }
+        this.mData = list;
     }
 
     // inflates the row layout from xml when needed
