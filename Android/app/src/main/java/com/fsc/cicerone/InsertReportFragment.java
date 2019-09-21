@@ -98,35 +98,11 @@ public class InsertReportFragment extends Fragment {
     }
 
     public void sendToTableReport(Map<String, Object> param) {
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
+        new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
                 .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if(result.getResult())
-                    {
-                        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_REPORT, BusinessEntityBuilder.getFactory(Report.class))
-                                .setContext(getActivity())
-                                .setOnEndConnectionListener(list -> {
-                                    param.put("report_code", list.get(list.size() -1 ).getCode());
-                                    Log.e("size", String.valueOf(list.size()));
-                                    sendToTableReportDetails(param);
-                                })
-                                .setObjectToSend(param)
-                                .build()
-                                .execute();
-                    }
-
-                })
-                .setObjectToSend(param)
-                .build();
-        connector.execute();
-    }
-
-    public void sendToTableReportDetails(Map<String, Object> param) {
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT_DETAILS)
-                .setContext(getActivity())
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) {
-                        Toast.makeText(getActivity() , getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
+                    if (result.getResult()){
+                        Toast.makeText(getActivity(), getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
                         fragment = new ReportFragment();
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
@@ -134,10 +110,11 @@ public class InsertReportFragment extends Fragment {
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         fragmentTransaction.commit();
                     }
+                    Log.e("REPORT", result.getMessage());
                 })
                 .setObjectToSend(param)
-                .build();
-        connector.execute();
+                .build()
+                .execute();
     }
 
 

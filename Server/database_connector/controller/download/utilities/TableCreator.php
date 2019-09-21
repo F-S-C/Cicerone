@@ -1,6 +1,6 @@
 <?php
 
-namespace database_connector\controller\utilities;
+namespace database_connector\controller\download\utilities;
 
 /**
  * Utility class for the creation of HTML tables.

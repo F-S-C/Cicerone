@@ -3,9 +3,9 @@
 
 namespace email_sender;
 
-require '../PHPMailer/src/Exception.php';
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
+require '/membri/fsc/email_sender/PHPMailer/src/Exception.php';
+require '/membri/fsc/email_sender/PHPMailer/src/PHPMailer.php';
+require '/membri/fsc/email_sender/PHPMailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -24,7 +24,7 @@ class Sender
     protected const DB_P = "89n@W[";
 
     /** @var string The database's name. */
-    protected const DB_NAME = "cicerone";
+    protected const DB_NAME = "my_fsc";
 
     /** @var string The email filename. */
     protected const EMAIL_FILENAME = "./mail.php";

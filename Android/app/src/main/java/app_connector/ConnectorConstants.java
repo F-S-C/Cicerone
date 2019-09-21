@@ -216,11 +216,6 @@ public final class ConnectorConstants {
     public static final String INSERT_REPORT = SERVER_URL + DB_CONNECTOR_FOLDER + INSERT_SUBFOLDER + "/InsertReport.php";
 
     /**
-     * URL of the server-side connector for the report details table.
-     */
-    public static final String INSERT_REPORT_DETAILS = SERVER_URL + DB_CONNECTOR_FOLDER + INSERT_SUBFOLDER + "/InsertReportDetails.php";
-
-    /**
      * URL of the server-side connector for updating a reservation.
      */
     public static final String UPDATE_RESERVATION = SERVER_URL + DB_CONNECTOR_FOLDER + UPDATE_SUBFOLDER + "/UpdateReservation.php";
