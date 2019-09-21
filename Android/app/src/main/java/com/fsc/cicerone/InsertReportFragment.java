@@ -105,37 +105,16 @@ public class InsertReportFragment extends Fragment {
     }
 
     public void sendToTableReport(Map<String, Object> param) {
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
+        new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
                 .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if(result.getResult())
-                        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
-                            .setContext(getActivity())
-                            .setOnEndConnectionListener(list -> {
-                                param.put("report_code", list.get(0).getCode());
-                                sendToTableReportDetails(param);
-                            })
-                            .setObjectToSend(param)
-                            .build()
-                            .execute();
+                    if (result.getResult())
+                        Toast.makeText(getActivity(), getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
                     Log.e("REPORT", result.getMessage());
                 })
                 .setObjectToSend(param)
-                .build();
-        connector.execute();
-    }
-
-    public void sendToTableReportDetails(Map<String, Object> param) {
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT_DETAILS)
-                .setContext(getActivity())
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) {
-                        Toast.makeText(getActivity(), getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setObjectToSend(param)
-                .build();
-        connector.execute();
+                .build()
+                .execute();
     }
 
 
