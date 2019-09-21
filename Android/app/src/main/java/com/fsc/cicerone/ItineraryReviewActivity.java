@@ -43,6 +43,7 @@ public class ItineraryReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_itinerary_review_fragment);
 
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(getString(R.string.review_itinerary));
         if(actionBar != null){
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);

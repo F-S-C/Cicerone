@@ -60,7 +60,7 @@
                     style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/flight_takeoff"
+                    android:drawableStart="@drawable/flight_land"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:text="@string/ending_date" />
