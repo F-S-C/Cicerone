@@ -57,7 +57,7 @@ public class Document extends BusinessEntity {
 
     public Document(JSONObject jsonObject) {
         try {
-            number = jsonObject.getString("number");
+            number = jsonObject.getString("document_number");
         } catch (JSONException e) {
             number = "";
         }
