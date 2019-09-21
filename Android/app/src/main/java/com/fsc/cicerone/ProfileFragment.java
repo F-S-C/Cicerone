@@ -54,7 +54,6 @@ import java.util.TimeZone;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -94,7 +93,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         context = Objects.requireNonNull(getActivity());
-        View view = inflater.inflate(R.layout.activity_profile_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         name = view.findViewById(R.id.name);
