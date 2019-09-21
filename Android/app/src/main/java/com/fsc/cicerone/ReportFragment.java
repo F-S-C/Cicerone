@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReportAdapter;
 import com.fsc.cicerone.manager.AccountManager;
@@ -37,6 +37,8 @@ public class ReportFragment extends Fragment {
     Fragment fragment = null;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     /**
      * Empty Constructor
@@ -51,6 +53,7 @@ public class ReportFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_report_fragment, container, false);
         Button insertReport = view.findViewById(R.id.newReport);
+        swipeRefreshLayout = view.findViewById(R.id.report_swipe_to_refresh);
 
 
         final Map<String, Object> parameters = new HashMap<>(1); //Connection params
@@ -62,6 +65,9 @@ public class ReportFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.report_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+
+        swipeRefreshLayout.setOnRefreshListener( () -> requireData(view,parameters,recyclerView));
+
         requireData(view, parameters, recyclerView);
 
         insertReport.setOnClickListener(v -> {
@@ -78,12 +84,11 @@ public class ReportFragment extends Fragment {
 
 
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
-        RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         SendInPostConnector<Report> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(getActivity())
-                .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
+                .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
                 .setOnEndConnectionListener(list -> {
-                    progressBar.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                     adapter = new ReportAdapter(getActivity(), list);
                     recyclerView.setAdapter(adapter);
                 })
