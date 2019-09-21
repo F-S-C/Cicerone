@@ -138,7 +138,7 @@
 											<div align="center" class="img-container left fixedwidth"
 												style="padding-right: 5<px;padding-left: 0px;">
 												<div style="font-size:1px;line-height:10px"> </div><img alt="Image"
-													border="0" class="left fixedwidth" src="https://fscgroup.ddns.net/email_sender/include/cicerone.png"
+													border="0" class="left fixedwidth" src="https://fsc.altervista.org/email_sender/include/cicerone.png"
 													style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 20%; max-width: 157px; display: block;"
 													title="Image" width="157" />
 												<div style="font-size:1px;line-height:10px"> </div>
@@ -183,7 +183,7 @@
 												style="padding-right: 0px;padding-left: 0px;">
 												<img
 													align="center" alt="Image" border="0" class="center fixedwidth"
-													src="https://fscgroup.ddns.net/email_sender/include/friends.png"
+													src="https://fsc.altervista.org/email_sender/include/friends.png"
 													style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 700px; display: block;"
 													title="Image" width="700" />
 											</div>

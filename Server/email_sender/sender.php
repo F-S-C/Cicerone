@@ -3,9 +3,9 @@
 
 namespace email_sender;
 
-require '../PHPMailer/src/Exception.php';
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
+require '/membri/fsc/email_sender/PHPMailer/src/Exception.php';
+require '/membri/fsc/email_sender/PHPMailer/src/PHPMailer.php';
+require '/membri/fsc/email_sender/PHPMailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
