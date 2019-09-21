@@ -29,6 +29,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -262,7 +264,6 @@ public class ProfileFragment extends Fragment {
                     if (list.isEmpty())
                         return;
                     Document data = list.get(0);
-                    Log.e("NUM_DOC",data.toJSONObject().toString());
                     documentNumber.setText(data.getNumber());
                     documentType.setText(data.getType());
                     documentExpiryDate.setText(outputFormat.format(data.getExpirationDate()));
@@ -358,9 +359,12 @@ public class ProfileFragment extends Fragment {
                         Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
                     Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
                     user.setCurrentDocument(newUserDoc);
-                    Intent i = new Intent(getActivity(), SplashActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
+                    ProfileFragment fragment = new ProfileFragment();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
+                    fragmentTransaction.replace(R.id.frame, fragment);
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
                 })
                 .setObjectToSend(documentData)
                 .build();
