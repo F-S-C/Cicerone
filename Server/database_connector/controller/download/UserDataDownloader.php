@@ -10,12 +10,12 @@ TODO:
 
 namespace database_connector\controller\download;
 
-require_once "/membri/fsc/database_connector/controller/utilities/TableCreator.php";
-require_once "/membri/fsc/database_connector/controller/utilities/TableCreator.php";
+require_once "/membri/fsc/database_connector/controller/DatabaseConnector.php";
+require_once "/membri/fsc/database_connector/controller/download/utilities/TableCreator.php";
 
 use database_connector\controller\DatabaseConnector;
+use database_connector\controller\download\utilities\TableCreator;
 use database_connector\controller\request\UserLogin;
-use database_connector\controller\utilities\TableCreator as TableCreator;
 
 /**
  * Download all the stored data regarding a user.
