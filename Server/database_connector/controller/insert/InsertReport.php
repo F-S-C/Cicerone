@@ -23,21 +23,25 @@ class InsertReport extends InsertConnector
         }
 
         $result = json_decode(parent::get_content(), true);
-        if (!$result[self::RESULT_KEY])
+        if (!$result[self::RESULT_KEY]) {
+            $result["error"] = $result["error"] . " (in main)";
             die(json_encode($result));
+        }
 
         $id = $this->connection->insert_id;
 
         $connector = new InsertReportDetails();
         foreach ($for_details as &$row) {
-            array_push($id, $row);
+            array_unshift($row, $id);
             $connector->add_value($row);
         }
 
         $result = json_decode($connector->get_content(), true);
         if (!$result[self::RESULT_KEY]) {
-            $params = array($id);
-            $this->execute_query("DELETE FROM report WHERE report_code = ?", $params, "i");
+            $prepared = $this->connection->prepare("DELETE FROM report WHERE report_code = ?");
+            $prepared->bind_param("i", $id);
+            $prepared->execute();
+            $result["error"] = $result["error"] . " (in details)";
             die(json_encode($result));
         }
 
