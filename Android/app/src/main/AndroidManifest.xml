@@ -23,7 +23,7 @@
         <activity
             android:name=".ChangePassword"
             android:label="@string/change_password" />
-        <activity android:name=".Wishlist" />
+        <activity android:name=".WishlistFragment" />
         <activity android:name=".ItineraryUpdate" />
         <activity
             android:name=".MainActivity"
@@ -35,9 +35,11 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".ItineraryManagement" />
+        <activity android:name=".ItineraryManagement" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ItineraryDetails" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ItineraryCreation" />
+        <activity
+            android:name=".ItineraryCreation"
+            android:label="@string/create_itinerary" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
         <activity
