@@ -47,7 +47,7 @@ public class AdminDetailsUserFragment extends Fragment {
     private TextView documentNotFound;
     private String data;
     private DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-
+    private Button removeUser;
     private Activity context;
 
     /**
@@ -74,7 +74,7 @@ public class AdminDetailsUserFragment extends Fragment {
         documentExpiryDate = view.findViewById(R.id.dateEx_user_admin);
         TextView avgEarn = view.findViewById(R.id.avg_earn);
         TextView sex = view.findViewById(R.id.sex_user_admin);
-        Button removeUser = view.findViewById(R.id.remove_user_admin);
+        removeUser = view.findViewById(R.id.remove_user_admin);
         documentNotFound = view.findViewById(R.id.document_not_exists);
         Bundle bundle = getArguments();
 
@@ -157,6 +157,7 @@ public class AdminDetailsUserFragment extends Fragment {
                     .setObjectToSend(parameters)
                     .build();
             connector.execute();
+            removeUser.setEnabled(false);
         };
         new MaterialAlertDialogBuilder(context)
                 .setTitle(context.getString(R.string.are_you_sure))
@@ -164,6 +165,8 @@ public class AdminDetailsUserFragment extends Fragment {
                 .setPositiveButton(context.getString(R.string.yes), positiveClickListener)
                 .setNegativeButton(context.getString(R.string.no), null)
                 .show();
+
+
     }
 
 
