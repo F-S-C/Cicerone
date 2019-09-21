@@ -263,6 +263,7 @@ public class ProfileFragment extends Fragment {
                     if (list.isEmpty())
                         return;
                     Document data = list.get(0);
+                    Log.e("NUM_DOC",data.toJSONObject().toString());
                     documentNumber.setText(data.getNumber());
                     documentType.setText(data.getType());
                     documentExpiryDate.setText(outputFormat.format(data.getExpirationDate()));
