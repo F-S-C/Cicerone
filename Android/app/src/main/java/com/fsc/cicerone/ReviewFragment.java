@@ -50,7 +50,6 @@ public class ReviewFragment extends Fragment {
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.review_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         requireData(view, parameters, recyclerView);
 
         return view;
