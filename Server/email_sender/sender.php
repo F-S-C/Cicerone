@@ -147,13 +147,15 @@ class Sender
      */
     private function sendEmail(){
         $mail = new PHPMailer;
-        $mail->isSMTP();                                     // Set mailer to use SMTP
-        $mail->Host = self::SMTP_HOST;                      // Specify main and backup server
-        $mail->Port = self::SMTP_PORT;                                   // Set the SMTP port
-        $mail->SMTPAuth = true;                              // Enable SMTP authentication
-        $mail->Username = self::SMTP_USERNAME;            // SMTP username
-        $mail->Password = self::SMTP_P;             // SMTP password
-        $mail->SMTPSecure = 'tls';                           // Enable encryption
+
+        // Decomment if SMTP
+//        $mail->isSMTP();                                     // Set mailer to use SMTP
+//        $mail->Host = self::SMTP_HOST;                      // Specify main and backup server
+//        $mail->Port = self::SMTP_PORT;                                   // Set the SMTP port
+//        $mail->SMTPAuth = true;                              // Enable SMTP authentication
+//        $mail->Username = self::SMTP_USERNAME;            // SMTP username
+//        $mail->Password = self::SMTP_P;             // SMTP password
+//        $mail->SMTPSecure = 'tls';                           // Enable encryption
 
         $mail->From = self::SMTP_USERNAME;
         $mail->FromName = self::SMTP_FROM_NAME;
