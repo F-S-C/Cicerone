@@ -1,5 +1,6 @@
 package com.fsc.cicerone;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +34,12 @@ import app_connector.SendInPostConnector;
  */
 public class ReportFragment extends Fragment {
 
+    public Activity context;
     RecyclerView.Adapter adapter;
     Fragment fragment = null;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    public static final String FRAGMENT_TAG = "ReportFragment";
 
     /**
      * Empty Constructor
@@ -51,6 +54,7 @@ public class ReportFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_report_fragment, container, false);
         Button insertReport = view.findViewById(R.id.newReport);
+        context = Objects.requireNonNull(getActivity());
 
 
         final Map<String, Object> parameters = new HashMap<>(1); //Connection params

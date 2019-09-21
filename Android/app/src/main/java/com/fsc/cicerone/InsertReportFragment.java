@@ -53,7 +53,6 @@ public class InsertReportFragment extends Fragment {
         Spinner users = view.findViewById(R.id.users);
         Button sendReport = view.findViewById(R.id.sendReport);
 
-
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
         Map<String, Object> param = new HashMap<>();
@@ -71,12 +70,6 @@ public class InsertReportFragment extends Fragment {
 
                 sendToTableReport(param);
 
-                fragment = new ReportFragment();
-                fragmentManager = getFragmentManager();
-                fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.commit();
             }
         });
 
@@ -109,16 +102,19 @@ public class InsertReportFragment extends Fragment {
                 .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if(result.getResult())
-                        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
-                            .setContext(getActivity())
-                            .setOnEndConnectionListener(list -> {
-                                param.put("report_code", list.get(0).getCode());
-                                sendToTableReportDetails(param);
-                            })
-                            .setObjectToSend(param)
-                            .build()
-                            .execute();
-                    Log.e("REPORT", result.getMessage());
+                    {
+                        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_REPORT, BusinessEntityBuilder.getFactory(Report.class))
+                                .setContext(getActivity())
+                                .setOnEndConnectionListener(list -> {
+                                    param.put("report_code", list.get(list.size() -1 ).getCode());
+                                    Log.e("size", String.valueOf(list.size()));
+                                    sendToTableReportDetails(param);
+                                })
+                                .setObjectToSend(param)
+                                .build()
+                                .execute();
+                    }
+
                 })
                 .setObjectToSend(param)
                 .build();
@@ -130,7 +126,13 @@ public class InsertReportFragment extends Fragment {
                 .setContext(getActivity())
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
-                        Toast.makeText(getActivity(), getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity() , getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
+                        fragment = new ReportFragment();
+                        fragmentManager = getFragmentManager();
+                        fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
+                        fragmentTransaction.replace(R.id.frame, fragment);
+                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        fragmentTransaction.commit();
                     }
                 })
                 .setObjectToSend(param)
