@@ -39,7 +39,7 @@
         <activity android:name=".ItineraryDetails" android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ItineraryCreation"
-            android:label="@string/create_itinerary" />
+            android:label="@string/create_itinerary"/>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
         <activity

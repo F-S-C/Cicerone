@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,6 +83,9 @@ public class ItineraryCreation extends AppCompatActivity {
         fullPrice = findViewById(R.id.inputFullPrice);
         submit = findViewById(R.id.submit);
         selectedImage = findViewById(R.id.itinerary_image);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 
         selectBeginningDate.setOnFocusChangeListener((v, hasFocus) -> {
@@ -521,6 +525,17 @@ public class ItineraryCreation extends AppCompatActivity {
             }
         };
         ImageSingleton.getInstance(ItineraryCreation.this).addToRequestQue(stringRequest);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
