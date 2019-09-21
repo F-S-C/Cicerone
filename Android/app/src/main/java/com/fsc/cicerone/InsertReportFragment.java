@@ -65,7 +65,7 @@ public class InsertReportFragment extends Fragment {
             } else {
                 param.put("reported_user", users.getSelectedItem().toString());
                 param.put("report_body", body.getText().toString());
-                param.put("state", "1");
+                param.put("state", "0");
                 param.put("object", object.getText().toString());
 
                 sendToTableReport(param);
