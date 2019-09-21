@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -32,7 +34,6 @@ import app_connector.ConnectorConstants;
 import app_connector.SendInPostConnector;
 
 public class ItineraryManagement extends AppCompatActivity {
-    private TextView itineraryTitle;
     private ImageView image;
     private TextView description;
     private TextView bDate;
@@ -47,6 +48,7 @@ public class ItineraryManagement extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
+    private ActionBar supportActionBar;
 
     private Itinerary itinerary;
 
@@ -54,7 +56,6 @@ public class ItineraryManagement extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_management);
-        itineraryTitle = findViewById(R.id.title);
         image = findViewById(R.id.image);
         description = findViewById(R.id.description);
         bDate = findViewById(R.id.beginningDate);
@@ -71,6 +72,12 @@ public class ItineraryManagement extends AppCompatActivity {
         rPrice = findViewById(R.id.rPrice);
         Button deleteItinerary = findViewById(R.id.deleteItinerary);
         Button updateItinerary = findViewById(R.id.editItinerary);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
 
         final Map<String, Object> code = new HashMap<>();
         try {
@@ -120,7 +127,7 @@ public class ItineraryManagement extends AppCompatActivity {
     public void getDataFromServer(Itinerary itinerary) {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
-        itineraryTitle.setText(itinerary.getTitle());
+        supportActionBar.setTitle(itinerary.getTitle());
         description.setText(itinerary.getDescription());
         Picasso.get().load(itinerary.getImageUrl()).into(image);
         author.setText(itinerary.getCicerone().getUsername());
@@ -159,6 +166,12 @@ public class ItineraryManagement extends AppCompatActivity {
 
     public void deleteItineraryFromServer() {
         ItineraryManager.deleteItinerary(this, itinerary.getCode());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
 
