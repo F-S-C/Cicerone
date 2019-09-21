@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
@@ -45,15 +46,23 @@ public class AdminItineraryDetails extends AppCompatActivity {
     private TextView fPrice;
     private TextView rPrice;
     private Itinerary itinerary;
+    private ActionBar supportActionBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_itinerary_details);
-        ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
-        supportActionBar.setTitle(getString(R.string.details_itinerary));
-        itineraryTitle = findViewById(R.id.title);
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        supportActionBar = getSupportActionBar();
+        if(supportActionBar!=null){
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayShowHomeEnabled(true);
+        }
+
         image = findViewById(R.id.image);
         description = findViewById(R.id.description);
         bDate = findViewById(R.id.beginningDate);
@@ -89,7 +98,7 @@ public class AdminItineraryDetails extends AppCompatActivity {
     public void getDataFromServer(Itinerary itinerary) {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
-        itineraryTitle.setText(itinerary.getTitle());
+        supportActionBar.setTitle(itinerary.getTitle());
         description.setText(itinerary.getDescription());
         Picasso.get().load(itinerary.getImageUrl()).into(image);
         author.setText(itinerary.getCicerone().getUsername());
@@ -132,5 +141,11 @@ public class AdminItineraryDetails extends AppCompatActivity {
         bundle.putString("user", itinerary.getCicerone().toJSONObject().toString());
         i.putExtras(bundle);
         view.getContext().startActivity(i);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

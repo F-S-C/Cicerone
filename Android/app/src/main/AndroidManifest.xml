@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GlobetrotterItineraryListFragment"></activity>
+        <activity android:name=".GlobetrotterItineraryListFragment"/>
         <activity android:name=".CiceroneItineraryListFragment" />
         <activity android:name=".AdminDetailsUserFragment" />
         <activity android:name=".ReservationFragment" />
@@ -17,7 +17,7 @@
         <activity android:name=".UsersListFragment" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".ItineraryReviewActivity" />
-        <activity android:name=".AdminItineraryDetails" />
+        <activity android:name=".AdminItineraryDetails" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".AdminReportDetailsActivity" />
         <activity android:name=".AdminMainActivity" />
         <activity
