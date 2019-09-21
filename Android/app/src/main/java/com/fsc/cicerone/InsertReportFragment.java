@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.User;
@@ -56,20 +57,13 @@ public class InsertReportFragment extends Fragment {
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        Map<String, Object> param = new HashMap<>();
-        param.put("username", currentLoggedUser.getUsername());
         setUsersInSpinner(users, currentLoggedUser.getUsername());
 
         sendReport.setOnClickListener(v -> {
             if (object.getText().toString().equals("") || body.getText().toString().equals("")) {
                 Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
             } else {
-                param.put("reported_user", users.getSelectedItem().toString());
-                param.put("report_body", body.getText().toString());
-                param.put("state", "1");
-                param.put("object", object.getText().toString());
-
-                sendToTableReport(param);
+                ReportManager.addNewReport(getActivity(), currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString());
 
                 fragment = new ReportFragment();
                 fragmentManager = getFragmentManager();
@@ -102,19 +96,6 @@ public class InsertReportFragment extends Fragment {
                 })
                 .build();
         connector.execute();
-    }
-
-    public void sendToTableReport(Map<String, Object> param) {
-        new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
-                .setContext(getActivity())
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult())
-                        Toast.makeText(getActivity(), getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
-                    Log.e("REPORT", result.getMessage());
-                })
-                .setObjectToSend(param)
-                .build()
-                .execute();
     }
 
 

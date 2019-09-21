@@ -19,10 +19,6 @@ import app_connector.SendInPostConnector;
  */
 public abstract class ReservationManager {
 
-    private interface RunnableUsingBooleanResult {
-        void run(BooleanConnector.BooleanResult result);
-    }
-
     private ReservationManager() {
         throw new IllegalStateException("Utility class");
     }
@@ -102,12 +98,10 @@ public abstract class ReservationManager {
      * @param reservation The reservation.
      * @param callback    A callback to be executed after the operation is completed.
      */
-    private static void deleteReservationFromServer(Reservation reservation, @Nullable RunnableUsingBooleanResult callback) {
+    private static void deleteReservationFromServer(Reservation reservation, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_RESERVATION)
                 .setContext(null)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (callback != null) callback.run(result);
-                })
+                .setOnEndConnectionListener(callback)
                 .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
                 .build();
         connector.execute();
