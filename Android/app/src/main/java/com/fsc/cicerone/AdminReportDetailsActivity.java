@@ -38,6 +38,10 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
         supportActionBar.setTitle(getString(R.string.report_details_title));
+        if(supportActionBar!=null){
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayShowHomeEnabled(true);
+        }
         setContentView(R.layout.activity_admin_report_details);
         takeChargeReport = findViewById(R.id.take_charge_report);
         closeReport = findViewById(R.id.close_report);
@@ -104,10 +108,9 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        Intent i = new Intent(this, AdminMainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i);
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     public void takeCharge(Map<String, Object> params) {

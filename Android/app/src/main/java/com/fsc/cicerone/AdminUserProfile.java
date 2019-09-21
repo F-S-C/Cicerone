@@ -32,11 +32,18 @@ public class AdminUserProfile extends AppCompatActivity {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_user_profile);
         ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        if(supportActionBar!=null){
+         supportActionBar.setDisplayHomeAsUpEnabled(true);
+         supportActionBar.setDisplayShowHomeEnabled(true);
+        }
+
         frameLayout = findViewById(R.id.frame_admin);
         fragment = new AdminDetailsUserFragment();
         supportActionBar.setTitle(getString(R.string.profile));
@@ -111,5 +118,9 @@ public class AdminUserProfile extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
