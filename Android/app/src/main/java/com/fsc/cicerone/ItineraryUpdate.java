@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.manager.AccountManager;
@@ -57,6 +58,11 @@ public class ItineraryUpdate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_update);
 
+        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        if(supportActionBar!=null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayShowHomeEnabled(true);
+        }
         Bundle bundle = getIntent().getExtras();
         Log.e("PROVAPROVA", Objects.requireNonNull(bundle).getString("itinerary"));
         Itinerary currentItinerary;
@@ -476,5 +482,12 @@ public class ItineraryUpdate extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 
 }
