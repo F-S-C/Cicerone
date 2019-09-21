@@ -70,7 +70,14 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
         holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
-        holder.globetrotter.setText(mData.get(position).getClient().getUsername());
+
+        //TODO: check if it works
+        //set TextView based on the layout. If layout is reservation_list, globetrotter must appear, otherwise, the cicerone.
+        if(layout == R.layout.reservation_list)
+            holder.globetrotter.setText(mData.get(position).getClient().getUsername());
+        else
+            holder.globetrotter.setText(mData.get(position).getItinerary().getCicerone().getUsername());
+
         holder.numberChildren.setText(String.valueOf(mData.get(position).getNumberOfChildren()));
         holder.numberAdults.setText(String.valueOf(mData.get(position).getNumberOfAdults()));
 
