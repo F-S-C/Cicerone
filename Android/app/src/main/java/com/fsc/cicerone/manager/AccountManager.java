@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.model.BusinessEntity;
+import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.functional_interfaces.RunnableUsingBusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
-import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
@@ -39,35 +37,6 @@ public abstract class AccountManager {
      */
     public static User getCurrentLoggedUser() {
         return currentLoggedUser;
-    }
-
-    /**
-     * An interface that emulates Java's
-     * <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Runnable.html">java.lang.Runnable</a>.
-     * It can be implemented by a lambda function.
-     */
-    public interface RunnableUsingBusinessEntity {
-        /**
-         * The method that will be called by the interface's users.
-         *
-         * @param result  The JSON Object to be used in the body.
-         * @param success Whether the previous operations were executed with success or not.
-         */
-        void run(BusinessEntity result, boolean success);
-    }
-
-    /**
-     * An interface that emulates Java's
-     * <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">java.util.function.Consumer&lt;Boolean&gt;</a>.
-     * It can be implemented by a lambda function.
-     */
-    public interface BooleanRunnable {
-        /**
-         * The method that will be called by the interface's users.
-         *
-         * @param success Whether the previous operations were executed with success or not.
-         */
-        void accept(boolean success);
     }
 
     /**
@@ -252,26 +221,5 @@ public abstract class AccountManager {
                 .setObjectToSend(user)
                 .build();
         connector.execute();
-    }
-
-    public static void sendEmailWithContacts(Activity context, Itinerary itinerary, User deliveryToUser, @Nullable BooleanRunnable callback) {
-        Map<String, Object> data = new HashMap<>(3);
-        data.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-        data.put("itinerary_code", itinerary.getCode());
-        data.put("recipient_email", deliveryToUser.getEmail());
-        BooleanConnector sendEmailConnector = new BooleanConnector.Builder(
-                ConnectorConstants.EMAIL_SENDER)
-                .setContext(context)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if(callback != null) callback.accept(result.getResult());
-                    if (result.getResult()) {
-                        Log.i("SEND OK", "true");
-                    } else {
-                        Log.e("SEND ERROR", result.getMessage());
-                    }
-                })
-                .setObjectToSend(data)
-                .build();
-        sendEmailConnector.execute();
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 
@@ -78,7 +79,7 @@ public abstract class ReservationManager {
         new BooleanConnector.Builder(ConnectorConstants.UPDATE_RESERVATION)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     Log.d("CONFIRM_RESERVATION", result.getResult() + ": " + result.getMessage());
-                    AccountManager.sendEmailWithContacts(null, reservation.getItinerary(), reservation.getClient(), null);
+                    Mailer.sendReservationConfirmationEmail(null, reservation, null);
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
                 .build()
