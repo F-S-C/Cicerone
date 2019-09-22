@@ -9,7 +9,7 @@ public class Review extends BusinessEntity {
     private final User author;
     private int feedback;
     private String description;
-    
+
     static final String ERROR_TAG = "REVIEW_ERROR";
 
     Review(JSONObject jsonObject) {
@@ -30,7 +30,7 @@ public class Review extends BusinessEntity {
         }
 
         try {
-            description=jsonObject.getString("description");
+            description = jsonObject.getString("description");
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             description = "Error loading description";
@@ -47,6 +47,16 @@ public class Review extends BusinessEntity {
 
     public String getDescription() {
         return description;
+    }
+
+    public Review setFeedback(int feedback) {
+        this.feedback = feedback;
+        return this;
+    }
+
+    public Review setDescription(String description) {
+        this.description = description;
+        return this;
     }
 
     @Override
@@ -67,7 +77,35 @@ public class Review extends BusinessEntity {
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }
-        return  jsonObject;
+        return jsonObject;
+    }
+
+    Review(Builder builder) {
+        this.author = builder.author;
+        this.feedback = builder.feedback;
+        this.description = builder.description;
+    }
+
+    public abstract class Builder {
+        private final User author;
+        private int feedback;
+        private String description;
+
+        Builder(User author) {
+            this.author = author;
+        }
+
+        public Builder setFeedback(int feedback) {
+            this.feedback = feedback;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public abstract Review build();
     }
 
     public void setDescription(String description) {

@@ -35,4 +35,33 @@ public class ItineraryReview extends Review {
         }
         return object;
     }
+
+    private ItineraryReview(Builder builder) {
+        super(builder);
+        reviewedItinerary = builder.reviewedItinerary;
+    }
+
+    public class Builder extends Review.Builder {
+        private final Itinerary reviewedItinerary;
+
+        public Builder(User author, Itinerary reviewedItinerary) {
+            super(author);
+            this.reviewedItinerary = reviewedItinerary;
+        }
+
+        @Override
+        public Builder setFeedback(int feedback) {
+            return (Builder) super.setFeedback(feedback);
+        }
+
+        @Override
+        public Builder setDescription(String description) {
+            return (Builder) super.setDescription(description);
+        }
+
+        @Override
+        public ItineraryReview build() {
+            return new ItineraryReview(this);
+        }
+    }
 }
