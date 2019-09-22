@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
                         if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
                             filteredList.add(itinerary);
                     }
-                    adapter = new ItineraryAdapter(getActivity(), filteredList);
+                    adapter = new ItineraryAdapter(getActivity(), filteredList,this);
                     recyclerView.setAdapter(adapter);
                     if (!filteredList.isEmpty()) {
 
