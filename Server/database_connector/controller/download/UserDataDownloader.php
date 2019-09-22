@@ -11,6 +11,7 @@ TODO:
 namespace database_connector\controller\download;
 
 require_once "/membri/fsc/database_connector/controller/DatabaseConnector.php";
+require_once "/membri/fsc/database_connector/controller/request/UserLogin.php";
 require_once "/membri/fsc/database_connector/controller/download/utilities/TableCreator.php";
 
 use database_connector\controller\DatabaseConnector;

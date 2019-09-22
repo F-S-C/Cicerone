@@ -1,7 +1,6 @@
 package com.fsc.cicerone;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -112,7 +111,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
     }
 
     private void deleteReport(Map<String, Object> params) {
-        params.put("state", ReportStatus.toInt(ReportStatus.CANCELED));
+        params.put("state", ReportStatus.CLOSED.toInt());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(this)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {

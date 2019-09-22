@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,6 +47,8 @@ public class AdminMainActivity extends AppCompatActivity {
      */
     private BottomNavigationView navView;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     /**
      * Create the activity and load the layout.
@@ -62,6 +65,16 @@ public class AdminMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_main);
         ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
         supportActionBar.setTitle(getString(R.string.active_itineraries));
+
+        swipeRefreshLayout = findViewById(R.id.admin_main_swipe_refresh);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (activeFragment instanceof Refreshable) {
+                ((Refreshable) activeFragment).refresh(swipeRefreshLayout);
+            } else {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         navView = findViewById(R.id.bottom_navigation_admin);
         navView.setOnNavigationItemSelectedListener(item -> {

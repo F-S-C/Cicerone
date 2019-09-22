@@ -364,20 +364,33 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:layout_marginTop="@dimen/material_card_spacing"
-                    android:id="@+id/requestReservation"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/primary_button_style"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="askForReservation"
-                    android:text="@string/request_reservation"
-                    android:textColor="@color/colorWhite" />
+            <Button
+                android:id="@+id/requestReservation"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/material_card_spacing"
+                android:background="@drawable/primary_button_style"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="askForReservation"
+                android:text="@string/request_reservation"
+                android:textColor="@color/colorWhite" />
 
-            </LinearLayout>
+            <Button
+                android:id="@+id/insertReview"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/material_card_spacing"
+                android:text="@string/add_review" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reviewList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

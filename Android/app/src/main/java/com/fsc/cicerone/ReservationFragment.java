@@ -5,20 +5,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReservationAdapter;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Reservation;
-import com.fsc.cicerone.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +33,12 @@ import app_connector.SendInPostConnector;
  * Class that contains the elements of the TAB Reservation on the account
  * details page.
  */
-public class ReservationFragment extends Fragment {
+public class ReservationFragment extends Fragment implements Refreshable {
 
     ReservationAdapter adapter;
     private Activity context;
-
-    // private static final String ERROR_TAG = "ERROR IN " +
-    // ReservationFragment.class.getName();
+    private RecyclerView recyclerView;
+    private TextView message;
 
     /**
      * Empty constructor
@@ -52,34 +51,39 @@ public class ReservationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_reservation_fragment, container, false);
         context = Objects.requireNonNull(getActivity());
-        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        final Map<String, Object> parameters = new HashMap<>(1);
-        parameters.put("cicerone", currentLoggedUser.getUsername());
+        message = view.findViewById(R.id.noReservation);
         // set up the RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.reservation_list);
+        recyclerView = view.findViewById(R.id.reservation_list);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(
-                new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        requireData(view, parameters, recyclerView);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        refresh();
 
         return view;
     }
 
-    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
-        RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        TextView message = view.findViewById(R.id.noReservation);
+    @Override
+    public void refresh() {
+        refresh(null);
+    }
+
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("cicerone", AccountManager.getCurrentLoggedUser().getUsername());
+
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(context)
                 .setOnStartConnectionListener(() -> {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
                     message.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
                 })
                 .setOnEndConnectionListener(list -> {
-                    progressBar.setVisibility(View.GONE);
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
                     List<Reservation> filtered = new ArrayList<>(list.size());
-                    for(Reservation reservation : list){
-                        if (!reservation.isConfirmed()){
+                    for (Reservation reservation : list) {
+                        if (!reservation.isConfirmed()) {
                             filtered.add(reservation);
                         }
                     }

@@ -207,4 +207,6 @@
     <string name="no_create_itinerary">Non hai creato nessun itinerario.</string>
     <string name="review_itinerary">Recensioni itinerario.</string>
     <string name="participators_list">Participators list</string>
+    <string name="add_review">Scrivi recensione</string>
+    <string name="updateReview">Aggiorna recensione</string>
 </resources>

@@ -117,7 +117,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     public void takeCharge(Map<String, Object> params) {
         params.put("object", reportTitle.getText().toString());
         params.put("report_body", bodyText.getText().toString());
-        params.put("state", ReportStatus.toInt(ReportStatus.PENDING));
+        params.put("state", ReportStatus.PENDING.toInt());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(this)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
@@ -136,7 +136,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     public void close(Map<String, Object> params) {
         params.put("object", reportTitle.getText().toString());
         params.put("report_body", bodyText.getText().toString());
-        params.put("state", ReportStatus.toInt(ReportStatus.CLOSED));
+        params.put("state", ReportStatus.CLOSED.toInt());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(this)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {

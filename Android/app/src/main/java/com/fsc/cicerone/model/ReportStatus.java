@@ -33,12 +33,11 @@ public enum ReportStatus {
     }
 
     /**
-     * @param state The report status.
      * @return The integer that corresponding to the enum type.
      */
     @NonNull
-    public static Integer toInt(ReportStatus state) {
-        switch (state) {
+    public Integer toInt() {
+        switch (this) {
             case OPEN:
                 return 0;
             case PENDING:
