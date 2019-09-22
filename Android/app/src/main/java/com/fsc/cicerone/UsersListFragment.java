@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,11 +23,13 @@ import java.util.Objects;
 import app_connector.ConnectorConstants;
 import app_connector.GetDataConnector;
 
-public class UsersListFragment extends Fragment {
+public class UsersListFragment extends Fragment implements Refreshable {
 
     private UserListAdapter adapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
+
+    public UsersListFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -38,9 +41,6 @@ public class UsersListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-        swipeRefreshLayout = view.findViewById(R.id.admin_users_list_swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(this::requireData);
-
         requireData();
 
         return view;
@@ -49,9 +49,23 @@ public class UsersListFragment extends Fragment {
     private void requireData() {
         GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(getActivity())
-                .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
                 .setOnEndConnectionListener(list -> {
-                    swipeRefreshLayout.setRefreshing(false);
+                    adapter = new UserListAdapter(getActivity(), list);
+                    recyclerView.setAdapter(adapter);
+                })
+                .build();
+        connector.execute();
+    }
+
+    @Override
+    public void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(getActivity())
+                .setOnStartConnectionListener(() -> {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+                })
+                .setOnEndConnectionListener(list -> {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
                     adapter = new UserListAdapter(getActivity(), list);
                     recyclerView.setAdapter(adapter);
                 })

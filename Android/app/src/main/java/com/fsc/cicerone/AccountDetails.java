@@ -51,10 +51,8 @@ public class AccountDetails extends Fragment {
 
         SwipeRefreshLayout swipeRefreshLayout = holderView.findViewById(R.id.account_details_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (fragment instanceof ReportFragment) {
-                ((ReportFragment) fragment).requireData(swipeRefreshLayout);
-            } else if (fragment instanceof ReviewFragment) {
-                ((ReviewFragment) fragment).requireData(swipeRefreshLayout);
+            if (fragment instanceof Refreshable) {
+                ((Refreshable) fragment).requireData(swipeRefreshLayout);
             } else {
                 swipeRefreshLayout.setRefreshing(false);
             }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.UserReview;
 
+import java.sql.Ref;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +28,7 @@ import app_connector.SendInPostConnector;
 /**
  * Class that contains the elements of the TAB Review on the account details page.
  */
-public class ReviewFragment extends Fragment {
+public class ReviewFragment extends Fragment implements Refreshable {
 
     RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
@@ -47,6 +49,7 @@ public class ReviewFragment extends Fragment {
 
         // set up the RecyclerView
         recyclerView = view.findViewById(R.id.review_list);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         message = view.findViewById(R.id.noReview);
         requireData();
@@ -55,39 +58,22 @@ public class ReviewFragment extends Fragment {
     }
 
     private void requireData() {
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("reviewed_user", AccountManager.getCurrentLoggedUser().getUsername());
-
-        SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
-                .setContext(getActivity())
-                .setOnStartConnectionListener(() -> {
-                    message.setVisibility(View.GONE);
-                })
-                .setOnEndConnectionListener(list -> {
-                    if (!list.isEmpty()) {
-                        adapter = new ReviewAdapter(getActivity(), list);
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        message.setVisibility(View.VISIBLE);
-                    }
-                })
-                .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+        requireData(null);
     }
 
-    public void requireData(SwipeRefreshLayout swipeRefreshLayout) {
+    @Override
+    public void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("reviewed_user", AccountManager.getCurrentLoggedUser().getUsername());
 
-        SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
-                    swipeRefreshLayout.setRefreshing(true);
+                    if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
                     message.setVisibility(View.GONE);
                 })
                 .setOnEndConnectionListener(list -> {
-                    swipeRefreshLayout.setRefreshing(false);
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
                     if (!list.isEmpty()) {
                         adapter = new ReviewAdapter(getActivity(), list);
                         recyclerView.setAdapter(adapter);
@@ -96,7 +82,7 @@ public class ReviewFragment extends Fragment {
                     }
                 })
                 .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+                .build()
+                .execute();
     }
 }

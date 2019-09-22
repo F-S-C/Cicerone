@@ -37,7 +37,7 @@ import app_connector.SendInPostConnector;
 /**
  * Class that contains the elements of the TAB Report on the account details page.
  */
-public class ReportFragment extends Fragment {
+public class ReportFragment extends Fragment implements Refreshable {
 
     public Activity context;
     RecyclerView.Adapter adapter;
@@ -82,24 +82,11 @@ public class ReportFragment extends Fragment {
 
 
     private void requireData() {
-        final Map<String, Object> parameters = new HashMap<>(1); //Connection params
-        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-        // set up the RecyclerView
-        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-            parameters.remove("username");
-        }
-        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
-                .setContext(getActivity())
-                .setOnEndConnectionListener(list -> {
-                    adapter = new ReportAdapter(getActivity(), list, this);
-                    recyclerView.setAdapter(adapter);
-                })
-                .setObjectToSend(parameters)
-                .build()
-                .execute();
+        requireData(null);
     }
 
-    public void requireData(SwipeRefreshLayout swipeRefreshLayout) {
+    @Override
+    public void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         final Map<String, Object> parameters = new HashMap<>(1); //Connection params
         parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         // set up the RecyclerView
@@ -108,9 +95,11 @@ public class ReportFragment extends Fragment {
         }
         new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(getActivity())
-                .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
+                .setOnStartConnectionListener(() -> {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+                })
                 .setOnEndConnectionListener(list -> {
-                    swipeRefreshLayout.setRefreshing(false);
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
                     adapter = new ReportAdapter(getActivity(), list, this);
                     recyclerView.setAdapter(adapter);
                 })

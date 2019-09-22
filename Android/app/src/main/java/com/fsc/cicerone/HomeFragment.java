@@ -31,11 +31,11 @@ import app_connector.GetDataConnector;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements Refreshable {
     private ItineraryAdapter adapter;
     private Activity context;
     private TextView noActiveItineraries;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView recyclerView;
 
 
     public HomeFragment() {
@@ -47,35 +47,39 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         context = Objects.requireNonNull(getActivity());
-        RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
+        recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         noActiveItineraries = view.findViewById(R.id.noActiveItineraries);
-        swipeRefreshLayout = view.findViewById(R.id.HomeRoot);
-        swipeRefreshLayout.setOnRefreshListener(() -> requireData(view,recyclerView));
 
-        requireData(view, recyclerView);
+        requireData();
 
         return view;
     }
 
-    private void requireData(View view, RecyclerView recyclerView) {
+    private void requireData() {
+        requireData(null);
+    }
+
+    @Override
+    public void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         GetDataConnector<Itinerary> connector = new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
-                .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true) )
+                .setOnStartConnectionListener(() -> {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+                })
                 .setOnEndConnectionListener(list -> {
-                    swipeRefreshLayout.setRefreshing(false);
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
                     List<Itinerary> filteredList = new LinkedList<>();
                     for (Itinerary itinerary : list) {
                         if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
                             filteredList.add(itinerary);
                     }
-                    adapter = new ItineraryAdapter(getActivity(), filteredList,this);
+                    adapter = new ItineraryAdapter(getActivity(), filteredList, this);
                     recyclerView.setAdapter(adapter);
                     if (!filteredList.isEmpty()) {
-
                         noActiveItineraries.setVisibility(View.GONE);
                     } else {
-                                noActiveItineraries.setVisibility(View.VISIBLE);
+                        noActiveItineraries.setVisibility(View.VISIBLE);
                     }
                 })
                 .build();
