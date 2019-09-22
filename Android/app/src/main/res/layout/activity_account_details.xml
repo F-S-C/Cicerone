@@ -1,111 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/accountDetailsRoot"
     android:layout_width="match_parent"
+    android:id="@+id/account_details_swipe_refresh"
     android:layout_height="match_parent"
     tools:context=".AccountDetails">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/accountDetailsRoot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/layout_account_details"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/diagonal_linear_gradient">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/avatar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/avatar"
-                            app:srcCompat="@drawable/avatar" />
-
-                        <TextView
-                            android:id="@+id/name_surname"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/example_name"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="24sp" />
-
-                        <TextView
-                            android:id="@+id/username"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/username"
-                            android:textColor="@android:color/darker_gray" />
-
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/tabs"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            app:tabBackground="@android:color/transparent"
-                            app:tabIndicatorColor="@color/colorWhite">
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_account"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:icon="@drawable/account" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_report"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:icon="@drawable/reports" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_reviews"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:icon="@drawable/reviews" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_itinerary"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:icon="@drawable/itinerary" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_request_reservation"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:icon="@drawable/assign_reservation" />
-
-                        </com.google.android.material.tabs.TabLayout>
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/frame"
+                <LinearLayout
+                    android:id="@+id/layout_account_details"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="visible" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
-        </RelativeLayout>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/diagonal_linear_gradient">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</ScrollView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/avatar"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/avatar"
+                                app:srcCompat="@drawable/avatar" />
+
+                            <TextView
+                                android:id="@+id/name_surname"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/example_name"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/username"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/username"
+                                android:textColor="@android:color/darker_gray" />
+
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/tabs"
+                                style="@style/Widget.MaterialComponents.TabLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                app:tabBackground="@android:color/transparent"
+                                app:tabIndicatorColor="@color/colorWhite">
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:icon="@drawable/account" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:id="@+id/tab_report"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:icon="@drawable/reports" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:id="@+id/tab_reviews"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:icon="@drawable/reviews" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:id="@+id/tab_itinerary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:icon="@drawable/itinerary" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:id="@+id/tab_request_reservation"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:icon="@drawable/assign_reservation" />
+
+                            </com.google.android.material.tabs.TabLayout>
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

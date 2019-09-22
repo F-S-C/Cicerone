@@ -4,19 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 
 import java.util.HashMap;
@@ -31,6 +29,8 @@ import app_connector.SendInPostConnector;
 public class ReviewFragment extends Fragment {
 
     RecyclerView.Adapter adapter;
+    private RecyclerView recyclerView;
+    private TextView message;
 
     /**
      * Empty Constructor
@@ -44,28 +44,26 @@ public class ReviewFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
-        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("reviewed_user", currentLoggedUser.getUsername());
+
         // set up the RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.review_list);
+        recyclerView = view.findViewById(R.id.review_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        requireData(view, parameters, recyclerView);
+        message = view.findViewById(R.id.noReview);
+        requireData();
 
         return view;
     }
 
-    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
-        RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        TextView message = view.findViewById(R.id.noReview);
+    private void requireData() {
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("reviewed_user", AccountManager.getCurrentLoggedUser().getUsername());
+
         SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
-                    progressBar.setVisibility(View.VISIBLE);
                     message.setVisibility(View.GONE);
                 })
                 .setOnEndConnectionListener(list -> {
-                    progressBar.setVisibility(View.GONE);
                     if (!list.isEmpty()) {
                         adapter = new ReviewAdapter(getActivity(), list);
                         recyclerView.setAdapter(adapter);
@@ -78,4 +76,27 @@ public class ReviewFragment extends Fragment {
         connector.execute();
     }
 
+    public void requireData(SwipeRefreshLayout swipeRefreshLayout) {
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("reviewed_user", AccountManager.getCurrentLoggedUser().getUsername());
+
+        SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
+                .setContext(getActivity())
+                .setOnStartConnectionListener(() -> {
+                    swipeRefreshLayout.setRefreshing(true);
+                    message.setVisibility(View.GONE);
+                })
+                .setOnEndConnectionListener(list -> {
+                    swipeRefreshLayout.setRefreshing(false);
+                    if (!list.isEmpty()) {
+                        adapter = new ReviewAdapter(getActivity(), list);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        message.setVisibility(View.VISIBLE);
+                    }
+                })
+                .setObjectToSend(parameters)
+                .build();
+        connector.execute();
+    }
 }

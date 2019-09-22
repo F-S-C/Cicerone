@@ -11,8 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
@@ -30,8 +32,7 @@ public class AccountDetails extends Fragment {
     private View holderView;
 
 
-
-     public AccountDetails() {
+    public AccountDetails() {
         // required empty constructor
     }
 
@@ -47,6 +48,17 @@ public class AccountDetails extends Fragment {
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
         tabLayout = holderView.findViewById(R.id.tabs);
+
+        SwipeRefreshLayout swipeRefreshLayout = holderView.findViewById(R.id.account_details_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (fragment instanceof ReportFragment) {
+                ((ReportFragment) fragment).requireData(swipeRefreshLayout);
+            } else if (fragment instanceof ReviewFragment) {
+                ((ReviewFragment) fragment).requireData(swipeRefreshLayout);
+            } else {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         /* Set TextView username */
         TextView usernameText = holderView.findViewById(R.id.username);

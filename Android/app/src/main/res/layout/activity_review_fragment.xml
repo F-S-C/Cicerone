@@ -7,32 +7,6 @@
     android:background="@color/colorWhite"
     tools:context=".ReviewFragment">
 
-    <RelativeLayout
-        android:id="@+id/progressContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
-        android:gravity="center"
-        android:padding="15dp"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/loginProgressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true" />
-
-        <TextView
-            android:id="@+id/loadingText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/loginProgressBar"
-            android:text="@string/loading" />
-    </RelativeLayout>
-
     <TextView
         android:id="@+id/noReview"
         android:layout_width="match_parent"

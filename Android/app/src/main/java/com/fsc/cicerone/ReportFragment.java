@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReportAdapter;
 import com.fsc.cicerone.manager.AccountManager;
@@ -30,6 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
+import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -43,7 +45,6 @@ public class ReportFragment extends Fragment {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private RecyclerView recyclerView;
-    private RelativeLayout progressBar;
     public static final int RESULT_SHOULD_REPORT_BE_RELOADED = 1030;
 
     /**
@@ -61,8 +62,8 @@ public class ReportFragment extends Fragment {
         Button insertReport = view.findViewById(R.id.newReport);
         context = Objects.requireNonNull(getActivity());
 
-        progressBar = view.findViewById(R.id.progressContainer);
         recyclerView = view.findViewById(R.id.report_list);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         requireData();
@@ -80,7 +81,7 @@ public class ReportFragment extends Fragment {
     }
 
 
-    public void requireData() {
+    private void requireData() {
         final Map<String, Object> parameters = new HashMap<>(1); //Connection params
         parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         // set up the RecyclerView
@@ -89,9 +90,27 @@ public class ReportFragment extends Fragment {
         }
         new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(getActivity())
-                .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
                 .setOnEndConnectionListener(list -> {
-                    progressBar.setVisibility(View.GONE);
+                    adapter = new ReportAdapter(getActivity(), list, this);
+                    recyclerView.setAdapter(adapter);
+                })
+                .setObjectToSend(parameters)
+                .build()
+                .execute();
+    }
+
+    public void requireData(SwipeRefreshLayout swipeRefreshLayout) {
+        final Map<String, Object> parameters = new HashMap<>(1); //Connection params
+        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+        // set up the RecyclerView
+        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
+            parameters.remove("username");
+        }
+        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
+                .setContext(getActivity())
+                .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
+                .setOnEndConnectionListener(list -> {
+                    swipeRefreshLayout.setRefreshing(false);
                     adapter = new ReportAdapter(getActivity(), list, this);
                     recyclerView.setAdapter(adapter);
                 })
