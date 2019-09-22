@@ -23,7 +23,7 @@ import java.util.Objects;
 /**
  * Class that specifying the account detail page
  */
-public class AccountDetails extends Fragment {
+public class AccountDetails extends Fragment implements Refreshable {
 
     private TabLayout tabLayout;
     private Fragment fragment = null;
@@ -47,15 +47,6 @@ public class AccountDetails extends Fragment {
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
         tabLayout = holderView.findViewById(R.id.tabs);
-
-        SwipeRefreshLayout swipeRefreshLayout = holderView.findViewById(R.id.account_details_swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (fragment instanceof Refreshable) {
-                ((Refreshable) fragment).refresh(swipeRefreshLayout);
-            } else {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
         /* Set TextView username */
         TextView usernameText = holderView.findViewById(R.id.username);
@@ -115,6 +106,15 @@ public class AccountDetails extends Fragment {
         nameSurnameTextView.setText(nameSurname);
         if (currentLoggedUser.getUserType() == UserType.GLOBETROTTER) {
             tabLayout.removeTabAt(4);
+        }
+    }
+
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        if (fragment instanceof Refreshable) {
+            ((Refreshable) fragment).refresh(swipeRefreshLayout);
+        } else {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
         }
     }
 }
