@@ -44,6 +44,13 @@ class DeleteRegisteredUser extends DeleteConnector
      */
     private function update_itineraries(): void
     {
+        // First, remove the user's itinerary from everyone wishlist
+        $query = "DELETE FROM wishlist WHERE itinerary_in_wishlist IN (SELECT itinerary_code FROM itinerary WHERE username = ?)";
+        if ($statement = $this->connection->prepare($query)) {
+            $statement->bind_param($this::ID_COLUMN_TYPE . "s", $this->id);
+            $statement->execute();
+        }
+
         $query = "UPDATE itinerary SET username = 'deleted_user' WHERE username = ?";
         $this->execute_query($query);
     }

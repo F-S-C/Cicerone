@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     if (AccountManager.isLogged()) {
                         changeCurrentFragment(wishlistFragment);
                         supportActionBar.setTitle(getString(R.string.wishlist));
-                        wishlistFragment.forceRefresh();
+                        wishlistFragment.refreshData();
                     } else {
                         Toast.makeText(this, R.string.access_denied, Toast.LENGTH_SHORT).show();
                     }

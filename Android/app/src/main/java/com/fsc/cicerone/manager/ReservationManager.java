@@ -1,14 +1,21 @@
 package com.fsc.cicerone.manager;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.ItineraryDetails;
+import com.fsc.cicerone.R;
+import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.mailer.Mailer;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
@@ -105,5 +112,22 @@ public abstract class ReservationManager {
                 .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
                 .build();
         connector.execute();
+    }
+
+    public static void isReserved(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+        if (AccountManager.isLogged()) {
+            Map<String, Object> params = new HashMap<>(2);
+            params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            params.put("booked_itinerary", itinerary.getCode());
+
+            new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
+                    .setContext(context)
+                    .setOnEndConnectionListener(list -> {
+                        if (callback != null) callback.accept(!list.isEmpty());
+                    })
+                    .setObjectToSend(params)
+                    .build()
+                    .execute();
+        }
     }
 }
