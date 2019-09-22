@@ -206,4 +206,5 @@
     <string name="doc_not_exists">Documento: Nessun documento trovato.</string>
     <string name="no_create_itinerary">Non hai creato nessun itinerario.</string>
     <string name="review_itinerary">Recensioni itinerario.</string>
+    <string name="participators_list">Participators list</string>
 </resources>
