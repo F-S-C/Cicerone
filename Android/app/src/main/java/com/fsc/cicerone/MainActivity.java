@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         navView.getMenu().removeItem(AccountManager.isLogged() ? R.id.navigation_login : R.id.navigation_profile);
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.main_activity_swipe_refresh);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (activeFragment instanceof Refreshable) {
                 ((Refreshable) activeFragment).refresh(swipeRefreshLayout);
