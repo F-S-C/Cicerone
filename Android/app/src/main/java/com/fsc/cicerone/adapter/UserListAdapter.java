@@ -2,6 +2,7 @@ package com.fsc.cicerone.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.AdminUserProfile;
+import com.fsc.cicerone.ProfileActivity;
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
@@ -81,9 +84,22 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
-            i = new Intent().setClass(v.getContext(), AdminUserProfile.class);
-            i.putExtra("user", mData.get(position).toJSONObject().toString());
-            v.getContext().startActivity(i);
+            if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN)
+            {
+                i = new Intent(v.getContext(), AdminUserProfile.class);
+                i.putExtra("user", mData.get(position).toJSONObject().toString());
+                v.getContext().startActivity(i);
+            }
+            else
+            {
+                 i = new Intent().setClass(v.getContext(), ProfileActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("reviewed_user", mData.get(position).getUsername());
+                i.putExtras(bundle);
+                v.getContext().startActivity(i);
+            }
+
+
         });
 
     }//END onBindViewHolder

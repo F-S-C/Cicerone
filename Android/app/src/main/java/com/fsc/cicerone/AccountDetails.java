@@ -117,4 +117,6 @@ public class AccountDetails extends Fragment implements Refreshable {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
         }
     }
+
+
 }

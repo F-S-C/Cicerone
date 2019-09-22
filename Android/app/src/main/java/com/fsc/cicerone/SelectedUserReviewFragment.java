@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,16 +55,13 @@ public class SelectedUserReviewFragment extends Fragment {
     }
 
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
-        RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
         TextView message = view.findViewById(R.id.noReview);
         SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
                     message.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
                 })
                 .setOnEndConnectionListener(list -> {
-                    progressBar.setVisibility(View.GONE);
                     if (!list.isEmpty()) {
                         adapter = new ReviewAdapter(getActivity(), list);
                         recyclerView.setAdapter(adapter);

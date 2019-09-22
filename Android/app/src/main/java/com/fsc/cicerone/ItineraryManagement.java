@@ -53,7 +53,7 @@ public class ItineraryManagement extends AppCompatActivity {
     private TextView fPrice;
     private TextView rPrice;
     private ActionBar supportActionBar;
-    Fragment fragment = null;
+    private Fragment fragment = new UsersListFragment();
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
 
@@ -95,6 +95,7 @@ public class ItineraryManagement extends AppCompatActivity {
         try {
             //Get the bundle
             Bundle bundle = getIntent().getExtras();
+            fragment.setArguments(bundle);
             String s = Objects.requireNonNull(bundle).getString("itinerary");
 
             //Extract the data…
@@ -188,7 +189,7 @@ public class ItineraryManagement extends AppCompatActivity {
 
     public void participatorsList (View view)
     {
-        fragment = new UsersListFragment();
+
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
         fragmentTransaction.replace(R.id.it_management_root, fragment);
