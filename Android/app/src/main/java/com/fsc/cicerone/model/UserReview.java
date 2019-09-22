@@ -35,4 +35,33 @@ public class UserReview extends Review {
         }
         return object;
     }
+
+    private UserReview(Builder builder) {
+        super(builder);
+        reviewedUser = builder.reviewedUser;
+    }
+
+    public class Builder extends Review.Builder {
+        private final User reviewedUser;
+
+        public Builder(User author, User reviewedUser) {
+            super(author);
+            this.reviewedUser = reviewedUser;
+        }
+
+        @Override
+        public Builder setFeedback(int feedback) {
+            return (Builder) super.setFeedback(feedback);
+        }
+
+        @Override
+        public Builder setDescription(String description) {
+            return (Builder) super.setDescription(description);
+        }
+
+        @Override
+        public UserReview build() {
+            return new UserReview(this);
+        }
+    }
 }

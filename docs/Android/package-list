@@ -1,5 +1,7 @@
 app_connector
 com.fsc.cicerone
 com.fsc.cicerone.adapter
+com.fsc.cicerone.functional_interfaces
+com.fsc.cicerone.mailer
 com.fsc.cicerone.manager
 com.fsc.cicerone.model
