@@ -29,10 +29,7 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.fsc.cicerone.model.Reservation;
-import com.fsc.cicerone.model.Review;
-import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
-import com.fsc.cicerone.model.Wishlist;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
@@ -48,6 +45,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.SendInPostConnector;
 
@@ -62,7 +60,6 @@ public class ItineraryDetails extends AppCompatActivity {
     private TextView eDate;
     private TextView rDate;
     private TextView location;
-    private RatingBar review;
     private TextView author;
     private TextView minP;
     private TextView maxP;
@@ -70,9 +67,6 @@ public class ItineraryDetails extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
-
-    private Map<String, Object> object2;
-    private Map<String, Object> parameters;
 
     private boolean isInWishlist;
     private RatingBar avgReview;
@@ -101,7 +95,6 @@ public class ItineraryDetails extends AppCompatActivity {
         bDate = findViewById(R.id.beginningDate);
         eDate = findViewById(R.id.endingDate);
         rDate = findViewById(R.id.reservationDate);
-        review = findViewById(R.id.itineraryReview);
         author = findViewById(R.id.author);
         minP = findViewById(R.id.minP);
         maxP = findViewById(R.id.maxP);
@@ -111,9 +104,7 @@ public class ItineraryDetails extends AppCompatActivity {
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
         avgReview = findViewById(R.id.itineraryReview);
-        Map<String, Object> object = new HashMap<>();
-        object2 = new HashMap<>();
-        parameters = new HashMap<>();
+        Map<String, Object> parameters = new HashMap<>();
 
         if (!AccountManager.isLogged()) {
             modifyWishlistButton.setEnabled(false);
@@ -149,19 +140,14 @@ public class ItineraryDetails extends AppCompatActivity {
 
             if (AccountManager.isLogged()) {
                 //itinerary for wishlist
-                object.put("itinerary_in_wishlist", itinerary.getCode());
-                object.put("username", currentLoggedUser.getUsername());
-                checkWishlist(object);
+                checkWishlist();
 
                 //itinerary for reservation
-                object2.put(IT_CODE, Objects.requireNonNull(object.get("itinerary_in_wishlist")).toString());
-                object2.put("username", currentLoggedUser.getUsername());
-                object2.put("booked_itinerary", itinerary.getCode());
-                isReservated(object2);
+                isReserved();
 
                 //itinerary for review
                 parameters.put("booked_itinerary", itinerary.getItineraryCode());
-                parameters.put("username",currentLoggedUser.getUsername());
+                parameters.put("username",AccountManager.getCurrentLoggedUser().getUsername());
                 parameters.put("itinerary",itinerary.getItineraryCode());
                 permissionReview(parameters);
             }
@@ -362,7 +348,6 @@ public class ItineraryDetails extends AppCompatActivity {
                 .setMessage(getString(R.string.review_dialog_message))
                 .setView(view)
                 .setPositiveButton(R.string.add_review, (dialog, id) -> {
-
                     itineraryReview.setDescription(descriptionReview.getText().toString());
                     itineraryReview.setFeedback((int) feedbackReview.getRating());
                     if (allFilled()) {
