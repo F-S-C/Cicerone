@@ -103,7 +103,6 @@ public class ReportFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("HERE-FRAGMENT", String.valueOf(requestCode));
         if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED) {
             if (resultCode == Activity.RESULT_OK)
                 requireData();

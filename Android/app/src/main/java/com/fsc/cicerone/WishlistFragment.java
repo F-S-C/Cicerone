@@ -1,6 +1,9 @@
 package com.fsc.cicerone;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +44,8 @@ public class WishlistFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    public static final int REQUEST_UPDATE_WISHLIST = 1031;
 
 
     @Nullable
@@ -83,7 +88,7 @@ public class WishlistFragment extends Fragment {
                     for (Wishlist item : list) {
                         itineraryList.add(item.getItinerary());
                     }
-                    adapter = new ItineraryAdapter(getActivity(), itineraryList);
+                    adapter = new ItineraryAdapter(getActivity(), itineraryList, WishlistFragment.this);
 
                     numberOfItinerariesTextView.setText(String.format(getString(R.string.wishlist_number), list.size()));
                     if (list.isEmpty())
@@ -116,5 +121,14 @@ public class WishlistFragment extends Fragment {
         parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         // set up the RecyclerView
         requireData(parameters);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED) {
+            if (resultCode == Activity.RESULT_OK)
+                forceRefresh();
+        }
     }
 }

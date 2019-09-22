@@ -1,5 +1,6 @@
 package com.fsc.cicerone;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -154,6 +155,7 @@ public class ItineraryDetails extends AppCompatActivity {
         }
 
         modifyWishlistButton.setOnClickListener(v -> {
+            setResult(Activity.RESULT_OK);
             if (isInWishlist) {
                 new MaterialAlertDialogBuilder(ItineraryDetails.this).
                         setTitle(getString(R.string.are_you_sure))
