@@ -128,7 +128,7 @@ public class Report extends BusinessEntity {
             Log.e(ERROR_TAG, e.getMessage());
         }
         try {
-            jsonObject.put("state", ReportStatus.toInt(status));
+            jsonObject.put("state", status.toInt());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }

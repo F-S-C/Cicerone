@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.User;
@@ -22,7 +23,7 @@ import java.util.Objects;
 /**
  * Class that specifying the account detail page
  */
-public class AccountDetails extends Fragment {
+public class AccountDetails extends Fragment implements Refreshable {
 
     private TabLayout tabLayout;
     private Fragment fragment = null;
@@ -30,8 +31,7 @@ public class AccountDetails extends Fragment {
     private View holderView;
 
 
-
-     public AccountDetails() {
+    public AccountDetails() {
         // required empty constructor
     }
 
@@ -106,6 +106,15 @@ public class AccountDetails extends Fragment {
         nameSurnameTextView.setText(nameSurname);
         if (currentLoggedUser.getUserType() == UserType.GLOBETROTTER) {
             tabLayout.removeTabAt(4);
+        }
+    }
+
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        if (fragment instanceof Refreshable) {
+            ((Refreshable) fragment).refresh(swipeRefreshLayout);
+        } else {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
         }
     }
 }

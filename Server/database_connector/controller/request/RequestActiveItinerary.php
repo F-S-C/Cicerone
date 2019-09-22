@@ -46,15 +46,20 @@ class RequestActiveItinerary extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT * FROM itinerary WHERE ending_date >= CURRENT_DATE";
+        $query = "SELECT * FROM itinerary";
 
         $conditions = array();
         $data = array();
         $types = "";
+        array_push($conditions, "ending_date >= CURRENT_DATE");
+
         if (isset($this->owner)) {
             array_push($conditions, "username = ?");
             array_push($data, $this->owner);
             $types .= "s";
+        } else {
+            array_push($conditions, "username NOT IN ('deleted_user', 'admin')");
+            $position = sizeof($conditions) - 1;
         }
         if (isset($this->location)) {
             array_push($conditions, "location = ?");
@@ -64,6 +69,9 @@ class RequestActiveItinerary extends JsonConnector
         if (isset($this->code)) {
             array_push($conditions, "itinerary_code = ?");
             array_push($data, $this->code);
+            if (isset($position)) {
+                array_splice($conditions, $position, 1);
+            }
             $types .= "i";
         }
         if (isset($this->beginning_date) || isset($this->ending_date)) {

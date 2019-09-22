@@ -111,7 +111,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
     }
 
     private void deleteReport(Map<String, Object> params) {
-        params.put("state", ReportStatus.toInt(ReportStatus.CANCELED));
+        params.put("state", ReportStatus.CLOSED.toInt());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(this)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {

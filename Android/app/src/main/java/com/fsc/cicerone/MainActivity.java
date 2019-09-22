@@ -8,6 +8,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -70,6 +71,16 @@ public class MainActivity extends AppCompatActivity {
         navView = findViewById(R.id.bottom_navigation);
         navView.getMenu().removeItem(AccountManager.isLogged() ? R.id.navigation_login : R.id.navigation_profile);
 
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.main_activity_swipe_refresh);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (activeFragment instanceof Refreshable) {
+                ((Refreshable) activeFragment).refresh(swipeRefreshLayout);
+            } else {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         profileFragment = AccountManager.isLogged() ? new AccountDetails() : null;
         wishlistFragment = AccountManager.isLogged() ? new WishlistFragment() : null;
 
@@ -86,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     if (AccountManager.isLogged()) {
                         changeCurrentFragment(wishlistFragment);
                         supportActionBar.setTitle(getString(R.string.wishlist));
-                        wishlistFragment.forceRefresh();
+                        wishlistFragment.refresh();
                     } else {
                         Toast.makeText(this, R.string.access_denied, Toast.LENGTH_SHORT).show();
                     }
