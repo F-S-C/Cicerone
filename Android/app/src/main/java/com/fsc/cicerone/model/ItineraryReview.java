@@ -50,6 +50,16 @@ public class ItineraryReview extends Review {
         }
 
         @Override
+        public Builder setFeedback(int feedback) {
+            return (Builder) super.setFeedback(feedback);
+        }
+
+        @Override
+        public Builder setDescription(String description) {
+            return (Builder) super.setDescription(description);
+        }
+
+        @Override
         public ItineraryReview build() {
             return new ItineraryReview(this);
         }

@@ -50,6 +50,16 @@ public class UserReview extends Review {
         }
 
         @Override
+        public Builder setFeedback(int feedback) {
+            return (Builder) super.setFeedback(feedback);
+        }
+
+        @Override
+        public Builder setDescription(String description) {
+            return (Builder) super.setDescription(description);
+        }
+
+        @Override
         public UserReview build() {
             return new UserReview(this);
         }
