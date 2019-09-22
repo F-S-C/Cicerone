@@ -26,6 +26,7 @@ import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserType;
 import com.fsc.cicerone.model.Wishlist;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -336,11 +337,16 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     public void goToAuthor(View view) {
-        Intent i = new Intent().setClass(view.getContext(), ProfileActivity.class);
+        if (itinerary.getCicerone().getUserType() != UserType.ADMIN) {
+            Toast.makeText(this, getString(R.string.warning_deleted_user), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent i = new Intent().setClass(this, ProfileActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("reviewed_user", author.getText().toString());
         i.putExtras(bundle);
-        view.getContext().startActivity(i);
+        startActivity(i);
     }
 
     @Override
