@@ -197,7 +197,7 @@ public class DiscoverFragment extends Fragment {
                         if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
                             filteredList.add(itinerary);
                     }
-                    ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList);
+                    ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList,this);
 
                     recyclerView.setAdapter(adapter);
                 })

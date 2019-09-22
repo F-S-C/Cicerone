@@ -135,7 +135,7 @@ public class ItineraryFragment extends Fragment {
                         while (recyclerView.getItemDecorationCount() > 0) {
                             recyclerView.removeItemDecorationAt(0);
                         }
-                        adapter = new ItineraryAdapter(getActivity(), jsonArray);
+                        adapter = new ItineraryAdapter(getActivity(), jsonArray,this);
                         recyclerView.setAdapter(adapter);
                     }
                 })

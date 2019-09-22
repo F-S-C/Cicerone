@@ -9,12 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.AdminItineraryDetails;
 import com.fsc.cicerone.ItineraryDetails;
 import com.fsc.cicerone.ItineraryManagement;
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.WishlistFragment;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.UserType;
@@ -33,6 +36,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     private final Context context;
     private List<Itinerary> mData;
     private LayoutInflater mInflater;
+    private Fragment fragment;
 
 
     /**
@@ -41,10 +45,11 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
      * @param context The parent Context.
      * @param list    The array of Itineraries objects in the wishlist.
      */
-    public ItineraryAdapter(Context context, List<Itinerary> list) {
+    public ItineraryAdapter(Context context, List<Itinerary> list, @Nullable Fragment fragment) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
         this.context = context;
+        this.fragment = fragment;
     }
 
     // inflates the row layout from xml when needed
@@ -76,13 +81,17 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
                 i = new Intent().setClass(v.getContext(), ItineraryManagement.class);
             } else {
                 if (AccountManager.isLogged() && AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                    i = new Intent().setClass(v.getContext(), AdminItineraryDetails.class);
+                    i = new Intent(context, AdminItineraryDetails.class);
                 } else {
-                    i = new Intent().setClass(v.getContext(), ItineraryDetails.class);
+                    i = new Intent(context, ItineraryDetails.class);
                 }
             }
             i.putExtra("itinerary", mData.get(position).toJSONObject().toString());
-            v.getContext().startActivity(i);
+            if (fragment != null) {
+                fragment.startActivityForResult(i, WishlistFragment.REQUEST_UPDATE_WISHLIST);
+            }else{
+                context.startActivity(i);
+            }
         });
     }
 
