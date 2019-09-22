@@ -7,7 +7,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +18,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -49,8 +51,10 @@ import app_connector.ConnectorConstants;
 import app_connector.SendInPostConnector;
 
 public class ItineraryDetails extends AppCompatActivity {
+    RecyclerView.Adapter adapter;
     private Button requestReservation;
     private FloatingActionButton modifyWishlistButton;
+    private Button addReview;
     private ImageView image;
     private TextView description;
     private TextView bDate;
@@ -67,6 +71,8 @@ public class ItineraryDetails extends AppCompatActivity {
     private TextView rPrice;
     private Map<String, Object> object2;
     private boolean isInWishlist;
+    private RatingBar itineraryReview;
+    private Map<String, Object> sendParam;
 
     private Itinerary itinerary;
 
@@ -83,6 +89,7 @@ public class ItineraryDetails extends AppCompatActivity {
         setContentView(R.layout.activity_itinerary_details);
         requestReservation = findViewById(R.id.requestReservation);
         modifyWishlistButton = findViewById(R.id.intoWishlist);
+        addReview = findViewById(R.id.insertReview);
         image = findViewById(R.id.image);
         description = findViewById(R.id.description);
         bDate = findViewById(R.id.beginningDate);
@@ -97,6 +104,7 @@ public class ItineraryDetails extends AppCompatActivity {
         duration = findViewById(R.id.duration);
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
+        itineraryReview = findViewById(R.id.itineraryReview);
         Map<String, Object> object = new HashMap<>();
         object2 = new HashMap<>();
 
@@ -116,6 +124,10 @@ public class ItineraryDetails extends AppCompatActivity {
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         supportActionBar.setDisplayShowHomeEnabled(true);
 
+        RecyclerView recyclerView = findViewById(R.id.reviewList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
 
         try {
             String s = Objects.requireNonNull(bundle).getString("itinerary");
@@ -131,17 +143,11 @@ public class ItineraryDetails extends AppCompatActivity {
             }
             getDataFromServer(itinerary);
             getItineraryReviews(objectReview);
+            final Map<String, Object> parameters = new HashMap<>(1);
+            parameters.put("reviewed_itinerary", itinerary.getItineraryCode());
+            Log.e("IT_CODE",parameters.toString());
+            requestDataForRecycleView(parameters, recyclerView);
 
-            review.setOnTouchListener((v, event) -> {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Intent i = new Intent().setClass(ItineraryDetails.this, ItineraryReviewActivity.class);
-                    i.putExtra("itinerary", itinerary.toJSONObject().toString());
-                    i.putExtra("rating", review.getRating());
-                    i.putExtra("reviewed_itinerary", itinerary.getCode());
-                    startActivity(i);
-                }
-                return true;
-            });
 
             if (AccountManager.isLogged()) {
                 object2.put(IT_CODE, Objects.requireNonNull(object.get("itinerary_in_wishlist")).toString());
@@ -167,6 +173,7 @@ public class ItineraryDetails extends AppCompatActivity {
                 addToWishlist(object);
             }
         });
+
     }
 
     public void addToWishlist(Map<String, Object> params) {
@@ -245,9 +252,9 @@ public class ItineraryDetails extends AppCompatActivity {
                             sum += itineraryReview.getFeedback();
                         }
                         float total = (float) sum / list.size();
-                        review.setRating(total);
+                        itineraryReview.setRating(total);
                     } else {
-                        review.setRating(0);
+                        itineraryReview.setRating(0);
                     }
                 })
                 .setObjectToSend(itineraryCode)
@@ -356,5 +363,25 @@ public class ItineraryDetails extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    private void requestDataForRecycleView(Map<String, Object>  parameters, RecyclerView recyclerView) {
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    Log.e("SIZE_LIST", String.valueOf(list.size()));
+                    if (!list.isEmpty()) {
+                        adapter = new ReviewAdapter(this, list);
+                        recyclerView.setAdapter(adapter);
+                    }
+                })
+                .setObjectToSend(parameters)
+                .build();
+        connector.execute();
+    }
+
+
+
+
+
 }
 
