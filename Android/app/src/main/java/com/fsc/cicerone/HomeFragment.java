@@ -51,17 +51,18 @@ public class HomeFragment extends Fragment implements Refreshable {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         noActiveItineraries = view.findViewById(R.id.noActiveItineraries);
 
-        requireData();
+        refresh();
 
         return view;
     }
 
-    private void requireData() {
-        requireData(null);
+    @Override
+    public void refresh() {
+        refresh(null);
     }
 
     @Override
-    public void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         GetDataConnector<Itinerary> connector = new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
                 .setOnStartConnectionListener(() -> {

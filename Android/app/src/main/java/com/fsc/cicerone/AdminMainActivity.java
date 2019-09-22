@@ -69,7 +69,7 @@ public class AdminMainActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.admin_main_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (activeFragment instanceof Refreshable) {
-                ((Refreshable) activeFragment).requireData(swipeRefreshLayout);
+                ((Refreshable) activeFragment).refresh(swipeRefreshLayout);
             } else {
                 swipeRefreshLayout.setRefreshing(false);
             }

@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
@@ -52,7 +51,7 @@ public class AccountDetails extends Fragment {
         SwipeRefreshLayout swipeRefreshLayout = holderView.findViewById(R.id.account_details_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (fragment instanceof Refreshable) {
-                ((Refreshable) fragment).requireData(swipeRefreshLayout);
+                ((Refreshable) fragment).refresh(swipeRefreshLayout);
             } else {
                 swipeRefreshLayout.setRefreshing(false);
             }

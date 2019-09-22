@@ -3,12 +3,10 @@ package com.fsc.cicerone;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +29,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -66,7 +63,7 @@ public class ReportFragment extends Fragment implements Refreshable {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        requireData();
+        refresh();
 
         insertReport.setOnClickListener(v -> {
             fragment = new InsertReportFragment();
@@ -81,12 +78,13 @@ public class ReportFragment extends Fragment implements Refreshable {
     }
 
 
-    private void requireData() {
-        requireData(null);
+    @Override
+    public void refresh() {
+        refresh(null);
     }
 
     @Override
-    public void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         final Map<String, Object> parameters = new HashMap<>(1); //Connection params
         parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         // set up the RecyclerView
@@ -113,7 +111,7 @@ public class ReportFragment extends Fragment implements Refreshable {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED) {
             if (resultCode == Activity.RESULT_OK)
-                requireData();
+                refresh();
         }
     }
 }

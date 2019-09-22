@@ -58,17 +58,18 @@ public class ReservationFragment extends Fragment implements Refreshable {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        requireData();
+        refresh();
 
         return view;
     }
 
-    private void requireData() {
-        requireData(null);
+    @Override
+    public void refresh() {
+        refresh(null);
     }
 
     @Override
-    public void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("cicerone", AccountManager.getCurrentLoggedUser().getUsername());
 

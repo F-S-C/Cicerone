@@ -18,7 +18,6 @@ import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.UserReview;
 
-import java.sql.Ref;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,17 +51,18 @@ public class ReviewFragment extends Fragment implements Refreshable {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         message = view.findViewById(R.id.noReview);
-        requireData();
+        refresh();
 
         return view;
     }
 
-    private void requireData() {
-        requireData(null);
+    @Override
+    public void refresh() {
+        refresh(null);
     }
 
     @Override
-    public void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("reviewed_user", AccountManager.getCurrentLoggedUser().getUsername());
 

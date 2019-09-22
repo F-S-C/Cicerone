@@ -41,24 +41,18 @@ public class UsersListFragment extends Fragment implements Refreshable {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-        requireData();
+        refresh();
 
         return view;
     }
 
-    private void requireData() {
-        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
-                .setContext(getActivity())
-                .setOnEndConnectionListener(list -> {
-                    adapter = new UserListAdapter(getActivity(), list);
-                    recyclerView.setAdapter(adapter);
-                })
-                .build();
-        connector.execute();
+    @Override
+    public void refresh() {
+        refresh(null);
     }
 
     @Override
-    public void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {

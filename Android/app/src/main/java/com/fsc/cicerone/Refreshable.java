@@ -4,8 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public interface Refreshable {
-    default void requireData(){
-        requireData(null);
+    default void refresh(){
+        refresh(null);
     }
-    void requireData(@Nullable SwipeRefreshLayout swipeRefreshLayout);
+    void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout);
 }
