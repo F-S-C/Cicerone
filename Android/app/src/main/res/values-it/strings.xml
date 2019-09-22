@@ -208,4 +208,5 @@
     <string name="review_itinerary">Recensioni itinerario.</string>
     <string name="add_review">Scrivi recensione</string>
     <string name="updateReview">Aggiorna recensione</string>
+    <string name="review_dialog_message">Inserire di seguito tutti i dettagli necessari a effettuare una recensione. Tutti i campi sono obbligatori.</string>
 </resources>

@@ -231,4 +231,5 @@
     <string name="review_itinerary">Reviews itinerary.</string>
     <string name="add_review">Add review</string>
     <string name="updateReview">Update review</string>
+    <string name="review_dialog_message">Please insert all the requested details to make for a review. All fields are required.</string>
 </resources>

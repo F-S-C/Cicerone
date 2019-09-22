@@ -5,9 +5,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
-
-public abstract class Review extends BusinessEntity {
+public class Review extends BusinessEntity {
     private final User author;
     private int feedback;
     private String description;
@@ -70,5 +68,41 @@ public abstract class Review extends BusinessEntity {
             Log.e(ERROR_TAG, e.getMessage());
         }
         return  jsonObject;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFeedback(int feedback) {
+        this.feedback = feedback;
+    }
+
+    private Review(Builder builder) {
+        this.author = builder.author;
+        this.feedback = builder.feedback;
+        this.description = builder.description;
+    }
+
+    public static abstract class Builder {
+        private final User author;
+        private int feedback;
+        private String description;
+
+        public Builder(User author) {
+            this.author = author;
+        }
+
+        public Builder feedback(int feedback) {
+            this.feedback = feedback >= 1 && feedback <= 5 ? feedback : 0;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+       public abstract Review build();
     }
 }
