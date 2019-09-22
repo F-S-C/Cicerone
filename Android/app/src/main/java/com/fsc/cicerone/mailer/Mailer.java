@@ -15,10 +15,6 @@ import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 
 public class Mailer {
-    public enum EmailKind {
-
-    }
-
     public static void sendReservationConfirmationEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback){
         Map<String, Object> data = new HashMap<>(3);
         data.put("username", reservation.getItinerary().getCicerone().getUsername());

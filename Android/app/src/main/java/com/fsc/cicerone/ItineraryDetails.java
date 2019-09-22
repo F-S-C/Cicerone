@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReservationManager;
+import com.fsc.cicerone.manager.WishlistManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
@@ -46,7 +47,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.SendInPostConnector;
 
@@ -69,7 +69,6 @@ public class ItineraryDetails extends AppCompatActivity {
     private TextView duration;
     private TextView fPrice;
     private TextView rPrice;
-    private Map<String, Object> object2;
     private boolean isInWishlist;
     private RatingBar itineraryReview;
     private Map<String, Object> sendParam;
@@ -77,7 +76,6 @@ public class ItineraryDetails extends AppCompatActivity {
     private Itinerary itinerary;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
-    private static final String IT_CODE = "itinerary_code";
 
     public ItineraryDetails() {
     }
@@ -105,8 +103,6 @@ public class ItineraryDetails extends AppCompatActivity {
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
         itineraryReview = findViewById(R.id.itineraryReview);
-        Map<String, Object> object = new HashMap<>();
-        object2 = new HashMap<>();
 
         if (!AccountManager.isLogged()) {
             modifyWishlistButton.setEnabled(false);
@@ -116,7 +112,6 @@ public class ItineraryDetails extends AppCompatActivity {
 
         Map<String, Object> objectReview = new HashMap<>();
         Bundle bundle = getIntent().getExtras();
-        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -135,12 +130,6 @@ public class ItineraryDetails extends AppCompatActivity {
 
             supportActionBar.setTitle(itinerary.getTitle());
 
-            if (AccountManager.isLogged()) {
-                object.put("itinerary_in_wishlist", itinerary.getCode());
-                object.put("username", currentLoggedUser.getUsername());
-                objectReview.put("reviewed_itinerary", itinerary.getCode());
-                checkWishlist(object);
-            }
             getDataFromServer(itinerary);
             getItineraryReviews(objectReview);
             final Map<String, Object> parameters = new HashMap<>(1);
@@ -150,10 +139,8 @@ public class ItineraryDetails extends AppCompatActivity {
 
 
             if (AccountManager.isLogged()) {
-                object2.put(IT_CODE, Objects.requireNonNull(object.get("itinerary_in_wishlist")).toString());
-                object2.put("username", currentLoggedUser.getUsername());
-                object2.put("booked_itinerary", itinerary.getCode());
-                isReservated(object2);
+                checkWishlist();
+                isReserved();
             }
 
         } catch (JSONException e) {
@@ -166,59 +153,40 @@ public class ItineraryDetails extends AppCompatActivity {
                 new MaterialAlertDialogBuilder(ItineraryDetails.this).
                         setTitle(getString(R.string.are_you_sure))
                         .setMessage(getString(R.string.confirm_delete))
-                        .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteFromWishlist(object)))
+                        .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteFromWishlist()))
                         .setNegativeButton(getString(R.string.no), null)
                         .show();
             } else {
-                addToWishlist(object);
+                addToWishlist();
             }
         });
 
     }
 
-    public void addToWishlist(Map<String, Object> params) {
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_WISHLIST)
-                .setContext(this)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    Log.e("p", result.toJSONObject().toString());
-                    if (result.getResult()) {
-                        Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                        checkWishlist(params);
-                    }
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
+    public void addToWishlist() {
+        WishlistManager.addToWishlist(this, itinerary, result -> {
+            if (result.getResult()) {
+                Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                checkWishlist();
+            }
+        });
     }
 
-    public void deleteFromWishlist(Map<String, Object> params) {
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_WISHLIST)
-                .setContext(this)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) {
-                        //Intent i = new Intent(ItineraryDetails.this, MainActivity.class);
-                        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show();
-                        //startActivity(i);
-                        checkWishlist(params);
-                    }
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
+    public void deleteFromWishlist() {
+        WishlistManager.removeFromWishlist(this, itinerary, result -> {
+            if (result.getResult()) {
+                Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show();
+                checkWishlist();
+            }
+        });
     }
 
 
-    public void checkWishlist(Map<String, Object> object) {
-        SendInPostConnector<Wishlist> connector = new SendInPostConnector.Builder<>(ConnectorConstants.SEARCH_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class))
-                .setContext(this)
-                .setOnEndConnectionListener(list -> {
-                    isInWishlist = !list.isEmpty();
-                    modifyWishlistButton.setImageResource(isInWishlist ? R.drawable.ic_favorite_black_24dp : R.drawable.ic_outline_favorite_border_24px);
-                })
-                .setObjectToSend(object)
-                .build();
-        connector.execute();
+    public void checkWishlist() {
+        WishlistManager.isInWishlist(this, itinerary, success -> {
+            isInWishlist = success;
+            modifyWishlistButton.setImageResource(isInWishlist ? R.drawable.ic_favorite_black_24dp : R.drawable.ic_outline_favorite_border_24px);
+        });
 
     }
 
@@ -262,21 +230,16 @@ public class ItineraryDetails extends AppCompatActivity {
         connector.execute();
     }
 
-    public void isReservated(Map<String, Object> reservation) {
-        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(this)
-                .setOnEndConnectionListener(list -> {
-                    if (!list.isEmpty()) {
-                        requestReservation.setText(getString(R.string.remove_reservation));
-                        requestReservation.setOnClickListener(ItineraryDetails.this::removeReservation);
-                    } else {
-                        requestReservation.setText(getString(R.string.request_reservation));
-                        requestReservation.setOnClickListener(ItineraryDetails.this::askForReservation);
-                    }
-                })
-                .setObjectToSend(reservation)
-                .build();
-        connector.execute();
+    public void isReserved() {
+        ReservationManager.isReserved(this, itinerary, success -> {
+            if (success) {
+                requestReservation.setText(getString(R.string.remove_reservation));
+                requestReservation.setOnClickListener(ItineraryDetails.this::removeReservation);
+            } else {
+                requestReservation.setText(getString(R.string.request_reservation));
+                requestReservation.setOnClickListener(ItineraryDetails.this::askForReservation);
+            }
+        });
     }
 
 
@@ -322,7 +285,7 @@ public class ItineraryDetails extends AppCompatActivity {
                     } catch (ParseException e) {
                         Log.e(ERROR_TAG, e.getMessage());
                     }
-                    isReservated(object2);
+                    isReserved();
                     Toast.makeText(ItineraryDetails.this, R.string.reservation_added, Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton(R.string.no, (dialog, id) -> {
@@ -339,7 +302,7 @@ public class ItineraryDetails extends AppCompatActivity {
                     ReservationManager.removeReservation(itinerary);
                     Toast.makeText(ItineraryDetails.this, R.string.reservation_removed, Toast.LENGTH_SHORT).show();
 
-                    isReservated(object2);
+                    isReserved();
                 })
                 .setNegativeButton(getString(R.string.no), null)
                 .show();
