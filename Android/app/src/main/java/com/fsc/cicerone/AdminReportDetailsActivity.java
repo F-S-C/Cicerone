@@ -1,5 +1,6 @@
 package com.fsc.cicerone;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -124,6 +125,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
                     if (result.getResult()) {
                         Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show();
                         getReportFromServer(params);
+                        setResult(Activity.RESULT_OK);
                     }
                 })
                 .setObjectToSend(params)
@@ -142,6 +144,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
                     if (result.getResult()) {
                         Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();
                         getReportFromServer(params);
+                        setResult(Activity.RESULT_OK);
                     }
                 })
                 .setObjectToSend(params)

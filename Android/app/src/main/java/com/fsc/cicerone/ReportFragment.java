@@ -1,7 +1,9 @@
 package com.fsc.cicerone;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -39,7 +42,9 @@ public class ReportFragment extends Fragment {
     Fragment fragment = null;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    public static final String FRAGMENT_TAG = "ReportFragment";
+    private RecyclerView recyclerView;
+    private RelativeLayout progressBar;
+    public static final int RESULT_SHOULD_REPORT_BE_RELOADED = 1030;
 
     /**
      * Empty Constructor
@@ -56,17 +61,11 @@ public class ReportFragment extends Fragment {
         Button insertReport = view.findViewById(R.id.newReport);
         context = Objects.requireNonNull(getActivity());
 
-
-        final Map<String, Object> parameters = new HashMap<>(1); //Connection params
-        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-        // set up the RecyclerView
-        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-            parameters.remove("username");
-        }
-        RecyclerView recyclerView = view.findViewById(R.id.report_list);
+        progressBar = view.findViewById(R.id.progressContainer);
+        recyclerView = view.findViewById(R.id.report_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        requireData(view, parameters, recyclerView);
+        requireData();
 
         insertReport.setOnClickListener(v -> {
             fragment = new InsertReportFragment();
@@ -81,20 +80,33 @@ public class ReportFragment extends Fragment {
     }
 
 
-    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
-        RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
-        SendInPostConnector<Report> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
+    public void requireData() {
+        final Map<String, Object> parameters = new HashMap<>(1); //Connection params
+        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+        // set up the RecyclerView
+        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
+            parameters.remove("username");
+        }
+        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
                 .setOnEndConnectionListener(list -> {
                     progressBar.setVisibility(View.GONE);
-                    adapter = new ReportAdapter(getActivity(), list);
+                    adapter = new ReportAdapter(getActivity(), list, this);
                     recyclerView.setAdapter(adapter);
                 })
                 .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+                .build()
+                .execute();
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("HERE-FRAGMENT", String.valueOf(requestCode));
+        if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED) {
+            if (resultCode == Activity.RESULT_OK)
+                requireData();
+        }
+    }
 }

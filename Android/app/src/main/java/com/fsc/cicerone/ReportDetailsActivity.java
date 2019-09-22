@@ -1,5 +1,7 @@
 package com.fsc.cicerone;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -52,7 +54,8 @@ public class ReportDetailsActivity extends AppCompatActivity {
         parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
         cancButton.setVisibility(View.GONE);
         getReportFromServer(parameters);
-        cancButton.setOnClickListener(view ->{
+
+        cancButton.setOnClickListener(view -> {
             deleteReport(parameters);
             cancButton.setEnabled(false);
         });
@@ -115,6 +118,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
                         Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
+                        setResult(Activity.RESULT_OK);
                         params.remove("state");
                         getReportFromServer(params);
                     }

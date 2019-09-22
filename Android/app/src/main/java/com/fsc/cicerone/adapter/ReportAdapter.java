@@ -1,9 +1,11 @@
 package com.fsc.cicerone.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fsc.cicerone.ReportFragment;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.AdminReportDetailsActivity;
 import com.fsc.cicerone.R;
@@ -28,14 +33,14 @@ import java.util.List;
  */
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder> {
 
-    private final Context context;
+    private final Activity context;
     private List<Report> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
     private Drawable reportCanceledImage;
     private Drawable reportClosedImage;
     private Drawable reportInProgressImage;
     private Drawable reportOpenImage;
+    Fragment fragment;
 
 
     /**
@@ -44,10 +49,11 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
      * @param context    The parent Context.
      * @param list       The list of reports to be shown.
      */
-    public ReportAdapter(Context context, List<Report> list) {
+    public ReportAdapter(Activity context, List<Report> list, Fragment fragment) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
         this.context = context;
+        this.fragment = fragment;
     }
 
     // inflates the row layout from xml when needed
@@ -87,14 +93,14 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                i = new Intent().setClass(v.getContext(), AdminReportDetailsActivity.class);
+                i = new Intent(context, AdminReportDetailsActivity.class);
             } else {
-                i = new Intent().setClass(v.getContext(), ReportDetailsActivity.class);
+                i = new Intent(context, ReportDetailsActivity.class);
             }
             Bundle bundle = new Bundle();
             bundle.putString("report_code", String.valueOf(mData.get(position).getCode()));
             i.putExtras(bundle);
-            v.getContext().startActivity(i);
+            fragment.startActivityForResult(i, ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED);
         });
     }
 
@@ -111,7 +117,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView object;
         TextView reportCode;
         ImageView status;
@@ -122,19 +128,6 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
             object = itemView.findViewById(R.id.object);
             reportCode = itemView.findViewById(R.id.report_code);
             status = itemView.findViewById(R.id.report_status);
-            itemView.setOnClickListener(this);
         }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
-    }
-
-    /**
-     * Item Click Listener for parent activity will implement this method to respond to click events.
-     */
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
     }
 }
