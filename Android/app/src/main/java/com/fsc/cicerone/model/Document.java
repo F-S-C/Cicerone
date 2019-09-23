@@ -41,6 +41,14 @@ public class Document extends BusinessEntity {
     public Document() {
     }
 
+    public Document(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    public Document(String json) {
+        super(json);
+    }
+
     /**
      * Create a new document by specifying its values.
      *
@@ -71,7 +79,8 @@ public class Document extends BusinessEntity {
         }
     }
 
-    public Document(JSONObject jsonObject) {
+    @Override
+    protected void loadFromJSONObject(JSONObject jsonObject) {
         try {
             number = jsonObject.getString("document_number");
         } catch (JSONException e) {

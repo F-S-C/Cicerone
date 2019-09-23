@@ -30,8 +30,8 @@ import app_connector.ConnectorConstants;
 
 public class Reservation extends BusinessEntity {
 
-    private final User client;
-    private final Itinerary itinerary;
+    private User client;
+    private Itinerary itinerary;
     private int numberOfAdults;
     private int numberOfChildren;
     private float total;
@@ -114,6 +114,15 @@ public class Reservation extends BusinessEntity {
     }
 
     public Reservation(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    public Reservation(String json) {
+        super(json);
+    }
+
+    @Override
+    protected void loadFromJSONObject(JSONObject jsonObject) {
         final String ERROR_TAG = "ERR_CREATE_RESERVATION";
 
         User tempClient;

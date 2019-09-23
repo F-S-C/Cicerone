@@ -23,12 +23,21 @@ import org.json.JSONObject;
 
 public class Wishlist extends BusinessEntity {
 
-    private final User user;
-    private final Itinerary itinerary;
+    private User user;
+    private Itinerary itinerary;
 
     private static final String ERROR_TAG = "WISHLIST_ERROR";
 
     public Wishlist(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    public Wishlist(String json) {
+        super(json);
+    }
+
+    @Override
+    protected void loadFromJSONObject(JSONObject jsonObject) {
         User tempUser;
         Itinerary tempItinerary;
 

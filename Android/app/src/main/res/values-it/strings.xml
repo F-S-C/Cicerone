@@ -212,7 +212,7 @@
     <string name="no_itineraries">Non stai partecipando a nessun itinerario.</string>
     <string name="no_created_itinerary">Non ha creato nessun itinerario.</string>
     <string name="reservation_added">Richiesta di partecipazione inoltrata.</string>
-    <string name="reservation_removed">Richiesta di partecipazione rimossa..</string>
+    <string name="reservation_removed">Richiesta di partecipazione rimossa.</string>
     <string name="itinerary_image">Immagine dell\'itinerario</string>
     <string name="create_itinerary">Crea itinerario</string>
     <string name="warning_deleted_user">Questo utente è stato eliminato dalla piattaforma.</string>

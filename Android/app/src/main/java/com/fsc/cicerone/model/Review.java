@@ -24,13 +24,22 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public abstract class Review extends BusinessEntity {
-    private final User author;
+    private User author;
     private int feedback;
     private String description;
 
     static final String ERROR_TAG = "REVIEW_ERROR";
 
     Review(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    Review(String json) {
+        super(json);
+    }
+
+    @Override
+    protected void loadFromJSONObject(JSONObject jsonObject) {
         User tempAuthor;
         try {
             tempAuthor = new User(jsonObject.getJSONObject("username"));

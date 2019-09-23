@@ -22,10 +22,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ItineraryReview extends Review {
-    private final Itinerary reviewedItinerary;
+    private Itinerary reviewedItinerary;
 
     public ItineraryReview(JSONObject jsonObject) {
         super(jsonObject);
+    }
+
+    public ItineraryReview(String json) {
+        super(json);
+    }
+
+    @Override
+    protected void loadFromJSONObject(JSONObject jsonObject) {
+        super.loadFromJSONObject(jsonObject);
 
         Itinerary tempReviewedUser;
         try {

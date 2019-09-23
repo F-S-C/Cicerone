@@ -48,12 +48,21 @@ public class Language extends BusinessEntity {
         this.name = name;
     }
 
+    public Language(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    public Language(String json) {
+        super(json);
+    }
+
     /**
      * Create a new language by using a JSONObject.
      *
      * @param language The language's code.
      */
-    public Language(JSONObject language) {
+    @Override
+    protected void loadFromJSONObject(JSONObject language) {
         try {
             this.code = language.getString("language_code");
         } catch (JSONException e) {

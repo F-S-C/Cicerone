@@ -16,21 +16,38 @@
 
 package com.fsc.cicerone.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public abstract class BusinessEntity {
 
-    protected BusinessEntity(){
-
+    protected BusinessEntity() {
     }
 
-    BusinessEntity(JSONObject jsonObject){
-        throw new UnsupportedOperationException("This method must be implemented");
+    protected BusinessEntity(JSONObject jsonObject) {
+        loadFromJSONObject(jsonObject);
+    }
+
+    protected BusinessEntity(String json) {
+        this();
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(json);
+        } catch (JSONException e) {
+            String errorMessage = e.getMessage() + " --- Trying to parse: \"" + json + "\"";
+            Log.e("JSON_PARSING_EXCEPTION", errorMessage);
+            jsonObject = new JSONObject();
+        }
+        loadFromJSONObject(jsonObject);
     }
 
     public abstract JSONObject toJSONObject();
+
+    protected abstract void loadFromJSONObject(JSONObject jsonObject);
 
     @NonNull
     @Override

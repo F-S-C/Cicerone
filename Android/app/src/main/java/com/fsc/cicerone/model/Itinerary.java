@@ -16,6 +16,8 @@
 
 package com.fsc.cicerone.model;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,6 +55,11 @@ public class Itinerary extends BusinessEntity {
         // Automatically set everything to a default value
     }
 
+    public Itinerary(String json) {
+        super(json);
+    }
+
+
     /**
      * Create a new Itinerary object based on a JSON Object.
      * The JSON Object <i>must</i> contain <i>at least</i> the following values:
@@ -77,9 +84,14 @@ public class Itinerary extends BusinessEntity {
      * }
      * </pre>
      *
-     * @param itinerary The JSON object from which data will be fetched.
+     * @param jsonObject The JSON object from which data will be fetched.
      */
-    public Itinerary(JSONObject itinerary) {
+    public Itinerary(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    @Override
+    protected void loadFromJSONObject(JSONObject itinerary) {
         try {
             itineraryCode = itinerary.getInt("itinerary_code");
         } catch (JSONException e) {

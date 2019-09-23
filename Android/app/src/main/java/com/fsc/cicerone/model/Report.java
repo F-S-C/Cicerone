@@ -22,16 +22,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Report extends BusinessEntity {
-    private final int code;
-    private final User author;
-    private final User reportedUser;
-    private final String object;
-    private final String body;
+    private int code;
+    private User author;
+    private User reportedUser;
+    private String object;
+    private String body;
     private ReportStatus status;
 
     private static final String ERROR_TAG = "REPORT_ERROR";
 
+    public Report(String json) {
+        super(json);
+    }
+
     public Report(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    @Override
+    protected void loadFromJSONObject(JSONObject jsonObject) {
         int tempCode;
         User tempAuthor;
         User tempReportedUser;

@@ -111,9 +111,20 @@ public class User extends BusinessEntity {
      * }
      * </pre>
      *
-     * @param user The JSON object from which data will be fetched.
+     * @param jsonObject The JSON object from which data will be fetched.
      */
-    public User(JSONObject user) {
+    public User(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    public User(String json) {
+        super(json);
+    }
+
+
+
+    @Override
+    protected void loadFromJSONObject(JSONObject user) {
         try {
             name = user.getString("name");
         } catch (JSONException e) {
