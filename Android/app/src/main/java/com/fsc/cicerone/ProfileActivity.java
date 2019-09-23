@@ -137,7 +137,7 @@ public class ProfileActivity extends AppCompatActivity {
             userType.setText(R.string.user_type_globetrotter);
         }
         ImageView imageView = findViewById(R.id.image_profile);
-        imageView.setImageResource(result.getSex().getAvatarResource());
+        imageView.setImageResource(reviewed_user.getSex().getAvatarResource());
     }
 
     private void avgReviewUser(User review_user){
