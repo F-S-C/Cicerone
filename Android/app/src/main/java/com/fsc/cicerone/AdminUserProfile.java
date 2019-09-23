@@ -56,10 +56,8 @@ public class AdminUserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_user_profile);
         ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
-        if(supportActionBar!=null){
-         supportActionBar.setDisplayHomeAsUpEnabled(true);
-         supportActionBar.setDisplayShowHomeEnabled(true);
-        }
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
 
         frameLayout = findViewById(R.id.frame_admin);
         fragment = new AdminDetailsUserFragment();

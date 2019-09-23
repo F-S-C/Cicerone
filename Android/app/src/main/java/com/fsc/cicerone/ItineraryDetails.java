@@ -98,10 +98,6 @@ public class ItineraryDetails extends AppCompatActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
 
-    public ItineraryDetails() {
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

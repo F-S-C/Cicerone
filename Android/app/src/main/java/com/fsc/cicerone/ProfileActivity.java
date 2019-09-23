@@ -126,11 +126,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void getData(User reviewed_user) {
-
-        username.setText("@" + reviewed_user.getUsername());
-        name.setText(String.format("%s%s %s", getString(R.string.name), getString(R.string.separator), reviewed_user.getName()));
-        surname.setText(String.format("%s%s %s", getString(R.string.surname), getString(R.string.separator), reviewed_user.getSurname()));
-        email.setText(String.format("%s%s %s", getString(R.string.email), getString(R.string.separator), reviewed_user.getEmail()));
+        final String LABEL_AND_CONTENT = "%s%s %s";
+        username.setText(String.format(getString(R.string.username_display), reviewed_user.getUsername()));
+        name.setText(String.format(LABEL_AND_CONTENT, getString(R.string.name), getString(R.string.separator), reviewed_user.getName()));
+        surname.setText(String.format(LABEL_AND_CONTENT, getString(R.string.surname), getString(R.string.separator), reviewed_user.getSurname()));
+        email.setText(String.format(LABEL_AND_CONTENT, getString(R.string.email), getString(R.string.separator), reviewed_user.getEmail()));
         if (reviewed_user.getUserType() == UserType.CICERONE) {
             userType.setText(R.string.user_type_cicerone);
         } else {

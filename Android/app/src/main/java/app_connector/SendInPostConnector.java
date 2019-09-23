@@ -164,24 +164,31 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
             }
         }
 
+        final String USERNAME_KEY = "username";
+        final String REPORTED_USER_KEY = "reported_user";
+        final String REVIEWED_USER_KEY = "reviewed_user";
+        final String REVIEWED_ITINERARY_KEY = "reviewed_itinerary";
+        final String BOOKED_ITINERARY_KEY = "booked_itinerary";
+        final String ITINERARY_IN_WISHLIST_KEY = "itinerary_in_wishlist";
+
         if (entity instanceof Itinerary) {
-            mapData.put("username", ((Itinerary) entity).getCicerone().getUsername());
+            mapData.put(USERNAME_KEY, ((Itinerary) entity).getCicerone().getUsername());
         } else if (entity instanceof Report) {
-            mapData.put("username", ((Report) entity).getAuthor().getUsername());
-            mapData.put("reported_user", ((Report) entity).getReportedUser().getUsername());
+            mapData.put(USERNAME_KEY, ((Report) entity).getAuthor().getUsername());
+            mapData.put(REPORTED_USER_KEY, ((Report) entity).getReportedUser().getUsername());
         } else if (entity instanceof Review) {
-            mapData.put("username", ((Review) entity).getAuthor().getUsername());
+            mapData.put(USERNAME_KEY, ((Review) entity).getAuthor().getUsername());
             if (entity instanceof ItineraryReview) {
-                mapData.put("reviewed_itinerary", ((ItineraryReview) entity).getReviewedItinerary().getCode());
+                mapData.put(REVIEWED_ITINERARY_KEY, ((ItineraryReview) entity).getReviewedItinerary().getCode());
             } else if (entity instanceof UserReview) {
-                mapData.put("reviewed_user", ((UserReview) entity).getReviewedUser().getUsername());
+                mapData.put(REVIEWED_USER_KEY, ((UserReview) entity).getReviewedUser().getUsername());
             }
         } else if (entity instanceof Reservation) {
-            mapData.put("booked_itinerary", ((Reservation) entity).getItinerary().getCode());
-            mapData.put("username", ((Reservation) entity).getClient().getUsername());
+            mapData.put(BOOKED_ITINERARY_KEY, ((Reservation) entity).getItinerary().getCode());
+            mapData.put(USERNAME_KEY, ((Reservation) entity).getClient().getUsername());
         } else if (entity instanceof Wishlist) {
-            mapData.put("username", ((Wishlist) entity).getUser().getUsername());
-            mapData.put("itinerary_in_wishlist", ((Wishlist) entity).getItinerary().getCode());
+            mapData.put(USERNAME_KEY, ((Wishlist) entity).getUser().getUsername());
+            mapData.put(ITINERARY_IN_WISHLIST_KEY, ((Wishlist) entity).getItinerary().getCode());
         } // else if(entity instance of OtherTypes) ...
 
         return mapData;

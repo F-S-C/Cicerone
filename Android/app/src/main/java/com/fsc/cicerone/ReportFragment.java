@@ -53,7 +53,6 @@ import app_connector.SendInPostConnector;
  */
 public class ReportFragment extends Fragment implements Refreshable {
 
-    public Activity context;
     RecyclerView.Adapter adapter;
     Fragment fragment = null;
     private RecyclerView recyclerView;
@@ -74,7 +73,6 @@ public class ReportFragment extends Fragment implements Refreshable {
 
         View view = inflater.inflate(R.layout.activity_report_fragment, container, false);
         Button insertReport = view.findViewById(R.id.newReport);
-        context = Objects.requireNonNull(getActivity());
 
         recyclerView = view.findViewById(R.id.report_list);
         recyclerView.setNestedScrollingEnabled(true);

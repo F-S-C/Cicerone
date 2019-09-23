@@ -75,10 +75,9 @@ public class ItineraryUpdate extends AppCompatActivity {
         setContentView(R.layout.activity_itinerary_update);
 
         final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
-        if(supportActionBar!=null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowHomeEnabled(true);
-        }
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
+
         Bundle bundle = getIntent().getExtras();
         Itinerary currentItinerary;
         try {
@@ -406,7 +405,7 @@ public class ItineraryUpdate extends AppCompatActivity {
     public void sendData(View view) throws JSONException, ParseException {
         Map<String, Object> params = new HashMap<>(14);
         boolean canSend = allFilled();
-        DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        DateFormat outputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
 
         if (canSend) {
             params.put("title", title.getText().toString());

@@ -78,9 +78,6 @@ public class ItineraryManagement extends AppCompatActivity {
 
     private Itinerary itinerary;
 
-    public ItineraryManagement() {
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

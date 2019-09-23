@@ -450,7 +450,7 @@ public class ItineraryCreation extends AppCompatActivity {
                 && !location.getText().toString().equals("")
                 && !fullPrice.getText().toString().equals("")
                 && !reducedPrice.getText().toString().equals("")
-                &&  bitmapImage != null;
+                && bitmapImage != null;
     }
 
     private void updateBeginningDate() {
@@ -498,8 +498,7 @@ public class ItineraryCreation extends AppCompatActivity {
     }
 
     private void uploadItineraryWithImage() {
-        if(bitmapImage != null)
-        {
+        if (bitmapImage != null) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, ConnectorConstants.IMAGE_UPLOADER, response -> {
                 try {
                     JSONObject result = new JSONObject(response);
@@ -549,10 +548,9 @@ public class ItineraryCreation extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

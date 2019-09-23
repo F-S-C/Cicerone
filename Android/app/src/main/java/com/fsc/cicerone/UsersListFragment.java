@@ -61,6 +61,7 @@ public class UsersListFragment extends Fragment implements Refreshable {
 
 
     public UsersListFragment() {
+        // Required empty constructor
     }
 
     @Override

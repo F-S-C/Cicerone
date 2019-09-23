@@ -52,6 +52,10 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         private boolean result;
         private String message;
 
+        private static final String RESULT_KEY = "result";
+        private static final String ERROR_KEY = "error";
+        private static final String MESSAGE_KEY = "message";
+
         public BooleanResult(boolean result, String message) {
             super();
             this.result = result;
@@ -69,9 +73,9 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         @Override
         protected void loadFromJSONObject(JSONObject jsonObject) {
             try {
-                result = jsonObject.getBoolean("result");
-                if (jsonObject.has(result ? "message" : "error"))
-                    message = jsonObject.getString(result ? "message" : "error");
+                result = jsonObject.getBoolean(RESULT_KEY);
+                if (jsonObject.has(result ? MESSAGE_KEY : ERROR_KEY))
+                    message = jsonObject.getString(result ? MESSAGE_KEY : ERROR_KEY);
             } catch (JSONException e) {
                 Log.e(ERROR_TAG, e.getMessage() + " (trying to parse " + jsonObject.toString() + ")");
             }
@@ -89,8 +93,8 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         public JSONObject toJSONObject() {
             JSONObject toReturn = new JSONObject();
             try {
-                toReturn.put("result", result);
-                toReturn.put(result ? "message" : "error", message);
+                toReturn.put(RESULT_KEY, result);
+                toReturn.put(result ? MESSAGE_KEY : ERROR_KEY, message);
             } catch (JSONException e) {
                 Log.e(ERROR_TAG, e.getMessage());
             }
