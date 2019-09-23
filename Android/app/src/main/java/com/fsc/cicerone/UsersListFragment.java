@@ -126,11 +126,8 @@ public class UsersListFragment extends Fragment implements Refreshable {
                     List<User> participators = new LinkedList<>();
                     for(Reservation reservation : list )
                     {
-                        Log.e("user",list.get(0).toString());
-
                         participators.add(reservation.getClient());
                     }
-                    Log.e("size",String.valueOf(participators.size()));
                     adapter = new UserListAdapter(getActivity(), participators);
                     recyclerView.setAdapter(adapter);
 
