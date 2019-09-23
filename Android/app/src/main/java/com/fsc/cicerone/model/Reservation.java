@@ -114,11 +114,11 @@ public class Reservation extends BusinessEntity {
     }
 
     public Reservation(JSONObject jsonObject) {
-        super(jsonObject);
+        loadFromJSONObject(jsonObject);
     }
 
     public Reservation(String json) {
-        super(json);
+        this(getJSONObject(json));
     }
 
     @Override

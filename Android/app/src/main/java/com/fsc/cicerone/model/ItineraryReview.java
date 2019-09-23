@@ -26,10 +26,11 @@ public class ItineraryReview extends Review {
 
     public ItineraryReview(JSONObject jsonObject) {
         super(jsonObject);
+        loadFromJSONObject(jsonObject);
     }
 
     public ItineraryReview(String json) {
-        super(json);
+        this(getJSONObject(json));
     }
 
     @Override

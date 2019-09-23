@@ -42,11 +42,11 @@ public class Document extends BusinessEntity {
     }
 
     public Document(JSONObject jsonObject) {
-        super(jsonObject);
+        loadFromJSONObject(jsonObject);
     }
 
     public Document(String json) {
-        super(json);
+        this(getJSONObject(json));
     }
 
     /**

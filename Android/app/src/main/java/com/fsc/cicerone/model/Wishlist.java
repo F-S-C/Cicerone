@@ -29,11 +29,11 @@ public class Wishlist extends BusinessEntity {
     private static final String ERROR_TAG = "WISHLIST_ERROR";
 
     public Wishlist(JSONObject jsonObject) {
-        super(jsonObject);
+        loadFromJSONObject(jsonObject);
     }
 
     public Wishlist(String json) {
-        super(json);
+        this(getJSONObject(json));
     }
 
     @Override

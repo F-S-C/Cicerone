@@ -49,11 +49,11 @@ public class Language extends BusinessEntity {
     }
 
     public Language(JSONObject jsonObject) {
-        super(jsonObject);
+        loadFromJSONObject(jsonObject);
     }
 
     public Language(String json) {
-        super(json);
+        this(getJSONObject(json));
     }
 
     /**

@@ -32,11 +32,11 @@ public class Report extends BusinessEntity {
     private static final String ERROR_TAG = "REPORT_ERROR";
 
     public Report(String json) {
-        super(json);
+        this(getJSONObject(json));
     }
 
     public Report(JSONObject jsonObject) {
-        super(jsonObject);
+        loadFromJSONObject(jsonObject);
     }
 
     @Override

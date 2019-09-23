@@ -31,11 +31,11 @@ public abstract class Review extends BusinessEntity {
     static final String ERROR_TAG = "REVIEW_ERROR";
 
     Review(JSONObject jsonObject) {
-        super(jsonObject);
+        loadFromJSONObject(jsonObject);
     }
 
     Review(String json) {
-        super(json);
+        this(getJSONObject(json));
     }
 
     @Override

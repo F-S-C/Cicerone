@@ -28,12 +28,17 @@ public abstract class BusinessEntity {
     protected BusinessEntity() {
     }
 
-    protected BusinessEntity(JSONObject jsonObject) {
+    public BusinessEntity(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
 
-    protected BusinessEntity(String json) {
-        this();
+    public BusinessEntity(String json) {
+        this.loadFromJSONObject(getJSONObject(json));
+    }
+
+    public abstract JSONObject toJSONObject();
+
+    protected static JSONObject getJSONObject(String json) {
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(json);
@@ -42,10 +47,8 @@ public abstract class BusinessEntity {
             Log.e("JSON_PARSING_EXCEPTION", errorMessage);
             jsonObject = new JSONObject();
         }
-        loadFromJSONObject(jsonObject);
+        return jsonObject;
     }
-
-    public abstract JSONObject toJSONObject();
 
     protected abstract void loadFromJSONObject(JSONObject jsonObject);
 

@@ -22,10 +22,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UserReview extends Review {
-    private final User reviewedUser;
+    private User reviewedUser;
 
-    public UserReview(JSONObject jsonObject) {
+    UserReview(JSONObject jsonObject) {
         super(jsonObject);
+        loadFromJSONObject(jsonObject);
+    }
+
+    UserReview(String json) {
+        this(getJSONObject(json));
+    }
+
+    @Override
+    protected void loadFromJSONObject(JSONObject jsonObject) {
+        super.loadFromJSONObject(jsonObject);
 
         User tempReviewedUser;
         try {

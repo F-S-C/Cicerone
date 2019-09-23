@@ -56,7 +56,7 @@ public class Itinerary extends BusinessEntity {
     }
 
     public Itinerary(String json) {
-        super(json);
+        this(getJSONObject(json));
     }
 
 
@@ -87,7 +87,7 @@ public class Itinerary extends BusinessEntity {
      * @param jsonObject The JSON object from which data will be fetched.
      */
     public Itinerary(JSONObject jsonObject) {
-        super(jsonObject);
+        loadFromJSONObject(jsonObject);
     }
 
     @Override

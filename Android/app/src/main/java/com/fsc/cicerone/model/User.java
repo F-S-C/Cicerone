@@ -114,11 +114,11 @@ public class User extends BusinessEntity {
      * @param jsonObject The JSON object from which data will be fetched.
      */
     public User(JSONObject jsonObject) {
-        super(jsonObject);
+        loadFromJSONObject(jsonObject);
     }
 
     public User(String json) {
-        super(json);
+        this(getJSONObject(json));
     }
 
 
