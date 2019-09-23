@@ -108,6 +108,9 @@ public class AdminItineraryDetails extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        ImageView imageView = findViewById(R.id.imageView2);
+        imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
     }
 
 

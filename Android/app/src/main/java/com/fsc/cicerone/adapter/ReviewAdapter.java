@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,7 +76,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.ratingBar.setRating(mData.get(position).getFeedback());
         holder.reviewerUsername.setText(mData.get(position).getAuthor().getUsername());
         holder.reviewDescription.setText(mData.get(position).getDescription());
-        //TODO Reviewer profile image
+        holder.imageView.setImageResource(mData.get(position).getAuthor().getSex().getAvatarResource());
 
         holder.itemView.setOnClickListener(v -> {
             if (!mData.get(position).getAuthor().getUsername().equals("deleted_user")) {
@@ -110,6 +111,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         TextView reviewerUsername;
         TextView reviewDescription;
         RatingBar ratingBar;
+        ImageView imageView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -117,6 +119,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             reviewerUsername = itemView.findViewById(R.id.reviewer_username);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             reviewDescription = itemView.findViewById(R.id.review_description);
+            imageView = itemView.findViewById(R.id.imageView2);
         }
     }
 }

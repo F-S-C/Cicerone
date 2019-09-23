@@ -129,6 +129,10 @@ public class ItineraryManagement extends AppCompatActivity {
             code.put("itinerary_code", itinerary.getCode());
             getDataFromServer(itinerary);
             getItineraryReviews(code);
+
+            ImageView imageView = findViewById(R.id.imageView2);
+            imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
+
             deleteItinerary.setOnClickListener(v -> new MaterialAlertDialogBuilder(ItineraryManagement.this).
                     setTitle(getString(R.string.are_you_sure))
                     .setMessage(getString(R.string.confirm_delete))

@@ -16,10 +16,12 @@
 
 package com.fsc.cicerone;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -70,6 +72,9 @@ public class AccountDetails extends Fragment implements Refreshable {
         String username = "@" + currentLoggedUser.getUsername();
         usernameText.setText(username);
         setNameSurname(currentLoggedUser); //Require data from server and set Name Surname
+
+        ImageView imageView = holderView.findViewById(R.id.avatar);
+        imageView.setImageResource(currentLoggedUser.getSex().getAvatarResource());
 
         /* TabLayout */
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

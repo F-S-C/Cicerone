@@ -41,7 +41,7 @@
                 android:layout_height="@dimen/avatar_image_size_in_list"
                 android:layout_gravity="center"
                 android:contentDescription="@string/profile_image"
-                android:src="@drawable/avatar" />
+                android:src="@drawable/avatar_male" />
 
             <TextView
                 android:id="@+id/reviewer_username"

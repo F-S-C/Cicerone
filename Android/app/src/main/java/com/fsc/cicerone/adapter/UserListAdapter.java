@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -96,19 +97,17 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 break;
         }
         holder.usrType.setText(typeName);
+        holder.imageView.setImageResource(mData.get(position).getSex().getAvatarResource());
         setAvgRating(usernameStr, holder);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
-            if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN)
-            {
+            if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
                 i = new Intent(v.getContext(), AdminUserProfile.class);
                 i.putExtra("user", mData.get(position).toJSONObject().toString());
                 v.getContext().startActivity(i);
-            }
-            else
-            {
-                 i = new Intent().setClass(v.getContext(), ProfileActivity.class);
+            } else {
+                i = new Intent().setClass(v.getContext(), ProfileActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("reviewed_user", mData.get(position).getUsername());
                 i.putExtras(bundle);
@@ -138,12 +137,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         TextView usr;
         TextView usrType;
         RatingBar avgRating;
+        ImageView imageView;
 
         ViewHolder(View itemView) {
             super(itemView);
             usr = itemView.findViewById(R.id.username);
             usrType = itemView.findViewById(R.id.usrType);
             avgRating = itemView.findViewById(R.id.ratingBar2);
+            imageView = itemView.findViewById(R.id.imageView2);
             itemView.setOnClickListener(this);
         }
 

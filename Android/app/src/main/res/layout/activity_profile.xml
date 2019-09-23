@@ -58,7 +58,7 @@
                             android:layout_width="95dp"
                             android:layout_height="95dp"
                             android:contentDescription="@string/image_profile"
-                            app:srcCompat="@drawable/avatar" />
+                            app:srcCompat="@drawable/avatar_male" />
 
                         <TextView
                             android:id="@+id/user_type_profile"

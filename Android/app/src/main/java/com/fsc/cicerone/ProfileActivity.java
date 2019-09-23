@@ -18,6 +18,7 @@ package com.fsc.cicerone;
 
 import android.os.Bundle;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -157,6 +158,9 @@ public class ProfileActivity extends AppCompatActivity {
                     } else {
                         userType.setText(R.string.user_type_globetrotter);
                     }
+
+                    ImageView imageView = findViewById(R.id.image_profile);
+                    imageView.setImageResource(result.getSex().getAvatarResource());
                 })
                 .setObjectToSend(parameters)
                 .build();

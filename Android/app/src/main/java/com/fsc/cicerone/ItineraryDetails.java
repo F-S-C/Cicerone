@@ -158,6 +158,9 @@ public class ItineraryDetails extends AppCompatActivity {
             //set the recycle view reference to review of the itinerary
             requestDataForRecycleView(objectReview, recyclerView);
 
+            ImageView imageView = findViewById(R.id.imageView2);
+            imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
+
             if (AccountManager.isLogged()) {
                 //itinerary for wishlist
                 checkWishlist();

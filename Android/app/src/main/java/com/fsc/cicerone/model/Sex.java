@@ -18,6 +18,8 @@ package com.fsc.cicerone.model;
 
 import androidx.annotation.NonNull;
 
+import com.fsc.cicerone.R;
+
 /**
  * The sexes available in Cicerone.
  */
@@ -116,5 +118,23 @@ public enum Sex {
                 toReturn = null;
         }
         return toReturn;
+    }
+
+    public int getAvatarResource() {
+        int resource;
+        switch (this) {
+            case MALE:
+                resource = R.drawable.avatar_male;
+                break;
+            case FEMALE:
+                resource = R.drawable.avatar_female;
+                break;
+            case OTHER:
+                resource = R.drawable.avatar_neutral;
+                break;
+            default:
+                throw new IllegalArgumentException("Sex not correct");
+        }
+        return resource;
     }
 }

@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fsc.cicerone.model.User;
@@ -82,6 +83,9 @@ public class AdminUserProfile extends AppCompatActivity {
 
         TextView username = findViewById(R.id.admin_username_profile);
         assert user != null;
+
+        ImageView imageView = findViewById(R.id.avatar);
+        imageView.setImageResource(user.getSex().getAvatarResource());
         String nick = "@" + user.getUsername();
         username.setText(nick);
         String nameSurname = user.getName() + " " + user.getSurname();
