@@ -123,6 +123,7 @@ public class ItineraryDetails extends AppCompatActivity {
         supportActionBar.setDisplayShowHomeEnabled(true);
 
         RecyclerView recyclerView = findViewById(R.id.reviewList);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         try {
@@ -191,7 +192,6 @@ public class ItineraryDetails extends AppCompatActivity {
         });
     }
 
-
     public void checkWishlist() {
         WishlistManager.isInWishlist(this, itinerary, success -> {
             isInWishlist = success;
@@ -199,7 +199,6 @@ public class ItineraryDetails extends AppCompatActivity {
         });
 
     }
-
 
     public void getDataFromServer(Itinerary itinerary) {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
@@ -261,6 +260,7 @@ public class ItineraryDetails extends AppCompatActivity {
                     if (!list.isEmpty()) {
                         review.put("reviewed_itinerary",Objects.requireNonNull(review.get("booked_itinerary")).toString());
                         isReviewed(review);
+
                     }
                 })
                 .setObjectToSend(review)
@@ -279,6 +279,7 @@ public class ItineraryDetails extends AppCompatActivity {
                        addReview.setOnClickListener(view -> ItineraryDetails.this.updateReview());
 
                    }else{
+                       itineraryReview = new ItineraryReview.Builder(AccountManager.getCurrentLoggedUser(), itinerary).build();
                        addReview.setEnabled(true);
                        addReview.setText(getString(R.string.add_review));
                        addReview.setOnClickListener(view -> ItineraryDetails.this.addReview());
@@ -334,8 +335,6 @@ public class ItineraryDetails extends AppCompatActivity {
                 .show();
     }
 
-
-
     private void addReview() {
         View view = getLayoutInflater().inflate(R.layout.dialog_new_review_itinerary, null);
         // Get a reference to all the fields in the dialog
@@ -343,14 +342,16 @@ public class ItineraryDetails extends AppCompatActivity {
         feedbackReview = view.findViewById(R.id.feedbackReview);
         descriptionReview.setText("");
         feedbackReview.setRating(0);
+
+
         new MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.add_review))
                 .setMessage(getString(R.string.review_dialog_message))
                 .setView(view)
                 .setPositiveButton(R.string.add_review, (dialog, id) -> {
-                    itineraryReview.setDescription(descriptionReview.getText().toString());
-                    itineraryReview.setFeedback((int) feedbackReview.getRating());
                     if (allFilled()) {
+                        itineraryReview.setFeedback((int) feedbackReview.getRating());
+                        itineraryReview.setDescription(descriptionReview.getText().toString());
                         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY_REVIEW)
                                 .setContext(this)
                                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {

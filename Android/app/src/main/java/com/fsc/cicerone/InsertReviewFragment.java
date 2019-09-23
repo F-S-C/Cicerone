@@ -89,8 +89,6 @@ public class InsertReviewFragment extends Fragment {
                     messageFeedback.setVisibility(View.GONE);
                 })
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    Log.e("message",result.getMessage());
-                    Log.e("porcodio","macheoh");
                     if (result.getResult()) {
                         descriptionReview.setVisibility(View.VISIBLE);
                         feedbackReview.setVisibility(View.VISIBLE);

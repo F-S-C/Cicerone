@@ -4,7 +4,6 @@ package com.fsc.cicerone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,7 +16,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
@@ -54,9 +56,7 @@ public class ItineraryManagement extends AppCompatActivity {
     private TextView rPrice;
     private ActionBar supportActionBar;
     private Fragment fragment = new UsersListFragment();
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-
+    private RecyclerView.Adapter adapter;
 
     private Itinerary itinerary;
 
@@ -66,6 +66,7 @@ public class ItineraryManagement extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_itinerary_management);
         image = findViewById(R.id.image);
         description = findViewById(R.id.description);
@@ -83,7 +84,11 @@ public class ItineraryManagement extends AppCompatActivity {
         rPrice = findViewById(R.id.rPrice);
         Button deleteItinerary = findViewById(R.id.deleteItinerary);
         Button updateItinerary = findViewById(R.id.editItinerary);
-        Button participatorBtn = findViewById(R.id.participatorsBtn);
+       // Button participatorBtn = findViewById(R.id.participatorsBtn);
+
+        RecyclerView recyclerView = findViewById(R.id.reviewList);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -102,6 +107,7 @@ public class ItineraryManagement extends AppCompatActivity {
             itinerary = new Itinerary(new JSONObject(s));
 
             code.put("reviewed_itinerary", itinerary.getCode());
+            requestDataForRecycleView(code, recyclerView);
             code.put("itinerary_code", itinerary.getCode());
             getDataFromServer(itinerary);
             getItineraryReviews(code);
@@ -117,17 +123,6 @@ public class ItineraryManagement extends AppCompatActivity {
                 Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
                 i.putExtras(bundle);
                 v.getContext().startActivity(i);
-            });
-
-            review.setOnTouchListener((v, event) -> {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Intent i = new Intent().setClass(ItineraryManagement.this, ItineraryReviewActivity.class);
-                    i.putExtra("itinerary", itinerary.toJSONObject().toString());
-                    i.putExtra("rating", review.getRating());
-                    i.putExtra("reviewed_itinerary", itinerary.getCode());
-                    startActivity(i);
-                }
-                return true;
             });
 
         } catch (JSONException e) {
@@ -187,15 +182,28 @@ public class ItineraryManagement extends AppCompatActivity {
         return true;
     }
 
-    public void participatorsList (View view)
-    {
+    public void participatorsList (View view) {
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
         fragmentTransaction.replace(R.id.it_management_root, fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
 
+    }
+
+    private void requestDataForRecycleView(Map<String, Object>  parameters, RecyclerView recyclerView) {
+        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
+                .setContext(this)
+                .setOnEndConnectionListener(list -> {
+                    if (!list.isEmpty()) {
+                        adapter = new ReviewAdapter(this, list);
+                        recyclerView.setAdapter(adapter);
+                    }
+                })
+                .setObjectToSend(parameters)
+                .build();
+        connector.execute();
     }
 }
 

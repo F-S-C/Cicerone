@@ -16,7 +16,6 @@
         <activity android:name=".AdminUserProfile" />
         <activity android:name=".UsersListFragment" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".ItineraryReviewActivity" />
         <activity android:name=".AdminItineraryDetails" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".AdminReportDetailsActivity" />
         <activity android:name=".AdminMainActivity" />

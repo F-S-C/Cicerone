@@ -1,7 +1,7 @@
 package com.fsc.cicerone;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +18,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 import app_connector.GetDataConnector;
-import app_connector.SendInPostConnector;
 
 
 public class InsertReportFragment extends Fragment {
@@ -63,6 +58,13 @@ public class InsertReportFragment extends Fragment {
                 Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
             } else {
                 ReportManager.addNewReport(getActivity(), currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString());
+                getActivity().setResult(Activity.RESULT_OK);
+                fragment = new ReportFragment();
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
+                fragmentTransaction.replace(R.id.frame, fragment);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
             }
         });
 
@@ -70,7 +72,7 @@ public class InsertReportFragment extends Fragment {
     }
 
 
-    public void setUsersInSpinner(Spinner users, String currentLoggedUser) {
+    private void setUsersInSpinner(Spinner users, String currentLoggedUser) {
         GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(getActivity())
                 .setOnEndConnectionListener(list -> {

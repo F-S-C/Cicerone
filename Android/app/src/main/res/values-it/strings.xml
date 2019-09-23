@@ -202,7 +202,7 @@
     <string name="warning_deleted_user">Questo utente è stato eliminato dalla piattaforma.</string>
     <string name="report_code">Codice segnalazione</string>
     <string name="report_title">Titolo segnalazione</string>
-    <string name="access_denied">Accesso negato.</string>
+    <string name="access_denied">Per accedere alla wishlist è necessario essere registrati</string>
     <string name="doc_not_exists">Documento: Nessun documento trovato.</string>
     <string name="no_create_itinerary">Non hai creato nessun itinerario.</string>
     <string name="review_itinerary">Recensioni itinerario.</string>

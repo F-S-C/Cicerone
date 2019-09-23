@@ -88,7 +88,7 @@ public abstract class Review extends BusinessEntity {
         this.description = builder.description;
     }
 
-    public abstract class Builder {
+    public abstract static class Builder {
         private final User author;
         private int feedback;
         private String description;

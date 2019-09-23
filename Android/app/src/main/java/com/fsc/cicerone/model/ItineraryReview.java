@@ -41,7 +41,7 @@ public class ItineraryReview extends Review {
         reviewedItinerary = builder.reviewedItinerary;
     }
 
-    public class Builder extends Review.Builder {
+    public static class Builder extends Review.Builder {
         private final Itinerary reviewedItinerary;
 
         public Builder(User author, Itinerary reviewedItinerary) {
