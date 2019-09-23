@@ -40,7 +40,7 @@ _Cicerone_ was created as an exam's project by the group [**_F.S.C. &mdash; Five
 
 ### The Exam
 
-The exam for which this project was created is the one of **Software Engineering** (in Italian: *"Ingegneria del Software*) of the second year of the Degree Course in _Computer Science and Digital Communication_ of the University of Bari "Aldo Moro", held by Prof. Danilo _Caivano_.
+The exam for which this project was created is the one of **Software Engineering** (in Italian: *"Ingegneria del Software"*) of the second year of the Degree Course in _Computer Science and Digital Communication_ of the University of Bari "Aldo Moro", held by Prof. Danilo _Caivano_.
 
 ## Information About the System
 
@@ -51,7 +51,7 @@ The entire system was built using **Java** _(for Android)_, **PHP** and the <abb
 In this repository there are:
 
 - The system source code
-- The online documentation
+- The online documentation ([Android](https://f-s-c.github.io/Cicerone/Android/index.html) | [Server](https://f-s-c.github.io/Cicerone/Server/index.html))
 - The static "brochure" website ([go to the website](https://f-s-c.github.io/Cicerone/))
 
 Visit the subsection ['the structure of this repository'](#the-structure-of-this-repository) to get more information on the organization of this repository and on the files that are in it.
@@ -64,9 +64,9 @@ This is the structure of the repository.
 Cicerone
 ├── Android (The android client-app source code)
 │   └── [...] (The entire Android Studio project structure)
-└── docs (The static website)
-    ├── Android (The online documentation for the Android app's codebase)
-    └── Server (The online documentation for the server's codebase)
+├── docs (The static website)
+│   ├── Android (The online documentation for the Android app's codebase)
+│   └── Server (The online documentation for the server's codebase)
 └── Server (The server back-end's source code)
     └── [...] (The entire project structure)
 ```
