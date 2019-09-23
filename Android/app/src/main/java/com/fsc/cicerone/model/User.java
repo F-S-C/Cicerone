@@ -53,16 +53,16 @@ public class User extends BusinessEntity {
     private Set<Document> documents;
 
     private static class Columns {
-        private final static String USERNAME_KEY = "username";
-        private final static String PASSWORD_KEY = "password";
-        private final static String TAX_CODE_KEY = "tax_code";
-        private final static String NAME_KEY = "name";
-        private final static String SURNAME_KEY = "surname";
-        private final static String EMAIL_KEY = "email";
-        private final static String USER_TYPE_KEY = "user_type";
-        private final static String CELLPHONE_KEY = "cellphone";
-        private final static String BIRTH_DATE_KEY = "birth_date";
-        private final static String SEX_KEY = "sex";
+        private static final String USERNAME_KEY = "username";
+        private static final String PASSWORD_KEY = "password";
+        private static final String TAX_CODE_KEY = "tax_code";
+        private static final String NAME_KEY = "name";
+        private static final String SURNAME_KEY = "surname";
+        private static final String EMAIL_KEY = "email";
+        private static final String USER_TYPE_KEY = "user_type";
+        private static final String CELLPHONE_KEY = "cellphone";
+        private static final String BIRTH_DATE_KEY = "birth_date";
+        private static final String SEX_KEY = "sex";
     }
 
     @Override

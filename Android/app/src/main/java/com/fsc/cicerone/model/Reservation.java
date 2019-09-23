@@ -40,14 +40,14 @@ public class Reservation extends BusinessEntity {
     private Date confirmationDate = null;
 
     private static class Columns{
-        private final static String CLIENT_KEY = "username";
-        private final static String ITINERARY_KEY = "booked_itinerary";
-        private final static String NUMBER_OF_CHILDREN_KEY = "number_of_children";
-        private final static String NUMBER_OF_ADULTS_KEY = "number_of_adults";
-        private final static String TOTAL_KEY = "total";
-        private final static String REQUESTED_DATE_KEY = "requested_date";
-        private final static String FORWARDING_DATE_KEY = "forwarding_date";
-        private final static String CONFIRMATION_DATE_KEY = "confirm_date";
+        private static final String CLIENT_KEY = "username";
+        private static final String ITINERARY_KEY = "booked_itinerary";
+        private static final String NUMBER_OF_CHILDREN_KEY = "number_of_children";
+        private static final String NUMBER_OF_ADULTS_KEY = "number_of_adults";
+        private static final String TOTAL_KEY = "total";
+        private static final String REQUESTED_DATE_KEY = "requested_date";
+        private static final String FORWARDING_DATE_KEY = "forwarding_date";
+        private static final String CONFIRMATION_DATE_KEY = "confirm_date";
     }
 
     public Reservation(User client, Itinerary itinerary) {

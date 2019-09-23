@@ -190,15 +190,6 @@ public class Itinerary extends BusinessEntity {
     }
 
     /**
-     * Set the itinerary's code
-     *
-     * @param code The new itinerary's code.
-     */
-    public void setName(int code) {
-        this.code = code;
-    }
-
-    /**
      * Get the itinerary's author.
      *
      * @return The itinerary's author.
