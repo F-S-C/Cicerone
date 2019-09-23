@@ -279,7 +279,6 @@ public class ItineraryDetails extends AppCompatActivity {
                     if (!list.isEmpty()) {
                         review.put("reviewed_itinerary", Objects.requireNonNull(review.get("booked_itinerary")).toString());
                         isReviewed(review);
-
                     }
                 })
                 .setObjectToSend(review)

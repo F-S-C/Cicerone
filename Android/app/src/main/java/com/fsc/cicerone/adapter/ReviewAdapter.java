@@ -78,14 +78,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         //TODO Reviewer profile image
 
         holder.itemView.setOnClickListener(v -> {
-            if (!mData.get(position).getAuthor().getUsername().equals("deleted_user")) {
-                if(!mData.get(position).getAuthor().getUsername().equals(AccountManager.getCurrentLoggedUser().getUsername())){
+            if (!mData.get(position).getAuthor().getUsername().equals("deleted_user") || !mData.get(position).getAuthor().getUsername().equals(AccountManager.getCurrentLoggedUser().getUsername()) || !AccountManager.isLogged()) {
+
                     Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("reviewed_user", mData.get(position).getAuthor().getUsername());
+                    bundle.putString("reviewed_user", mData.get(position).getAuthor().toString());
                     i.putExtras(bundle);
                     v.getContext().startActivity(i);
-                }
+
             } else {
                 Toast.makeText(context, context.getString(R.string.warning_deleted_user), Toast.LENGTH_SHORT).show();
             }
