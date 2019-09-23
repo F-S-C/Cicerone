@@ -29,6 +29,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -41,6 +42,7 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -99,8 +101,8 @@ public class ItineraryManagement extends AppCompatActivity {
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
         Button deleteItinerary = findViewById(R.id.deleteItinerary);
-        Button updateItinerary = findViewById(R.id.editItinerary);
-       // Button participatorBtn = findViewById(R.id.participatorsBtn);
+        FloatingActionButton updateItinerary = findViewById(R.id.editItinerary);
+        // Button participatorBtn = findViewById(R.id.participatorsBtn);
 
         RecyclerView recyclerView = findViewById(R.id.reviewList);
         recyclerView.setNestedScrollingEnabled(false);
@@ -198,17 +200,13 @@ public class ItineraryManagement extends AppCompatActivity {
         return true;
     }
 
-    public void participatorsList (View view) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
-        fragmentTransaction.replace(R.id.it_management_root, fragment);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-
+    public void participatorsList(View view) {
+        FragmentManager fm = getSupportFragmentManager();
+        ItineraryParticipantsDialogFragment editNameDialogFragment = ItineraryParticipantsDialogFragment.newInstance(itinerary);
+        editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 
-    private void requestDataForRecycleView(Map<String, Object>  parameters, RecyclerView recyclerView) {
+    private void requestDataForRecycleView(Map<String, Object> parameters, RecyclerView recyclerView) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
                 .setContext(this)
                 .setOnEndConnectionListener(list -> {

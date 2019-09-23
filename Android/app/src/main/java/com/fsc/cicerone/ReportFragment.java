@@ -19,6 +19,7 @@ package com.fsc.cicerone;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,14 +51,14 @@ import app_connector.SendInPostConnector;
 /**
  * Class that contains the elements of the TAB Report on the account details page.
  */
-public class ReportFragment extends NestedRecyclerFragment implements Refreshable {
+public class ReportFragment extends Fragment implements Refreshable {
 
     public Activity context;
     RecyclerView.Adapter adapter;
     Fragment fragment = null;
+    private RecyclerView recyclerView;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private RecyclerView recyclerView;
     public static final int RESULT_SHOULD_REPORT_BE_RELOADED = 1030;
 
     /**
@@ -76,9 +77,12 @@ public class ReportFragment extends NestedRecyclerFragment implements Refreshabl
         context = Objects.requireNonNull(getActivity());
 
         recyclerView = view.findViewById(R.id.report_list);
+        recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         refresh();
+
+        insertReport.setVisibility(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN ? View.GONE : View.VISIBLE);
 
         insertReport.setOnClickListener(v -> {
             fragment = new InsertReportFragment();
@@ -106,6 +110,9 @@ public class ReportFragment extends NestedRecyclerFragment implements Refreshabl
         if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
             parameters.remove("username");
         }
+
+        Log.e("TAG", parameters.toString());
+
         new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
