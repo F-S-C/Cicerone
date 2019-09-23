@@ -41,7 +41,7 @@ public class UserReview extends Review {
         reviewedUser = builder.reviewedUser;
     }
 
-    public class Builder extends Review.Builder {
+    public static class Builder extends Review.Builder {
         private final User reviewedUser;
 
         public Builder(User author, User reviewedUser) {

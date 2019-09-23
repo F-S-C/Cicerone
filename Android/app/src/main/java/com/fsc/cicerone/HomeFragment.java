@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.manager.AccountManager;
@@ -31,10 +31,12 @@ import app_connector.GetDataConnector;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements Refreshable {
     private ItineraryAdapter adapter;
     private Activity context;
     private TextView noActiveItineraries;
+    private RecyclerView recyclerView;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -45,32 +47,40 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         context = Objects.requireNonNull(getActivity());
-        RecyclerView recyclerView = view.findViewById(R.id.itinerary_list);
+        recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         noActiveItineraries = view.findViewById(R.id.noActiveItineraries);
 
-        requireData(view, recyclerView);
+        refresh();
 
         return view;
     }
 
-    private void requireData(View view, RecyclerView recyclerView) {
-        RelativeLayout progressBar = view.findViewById(R.id.progressContainer);
+    @Override
+    public void refresh() {
+        refresh(null);
+    }
+
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         GetDataConnector<Itinerary> connector = new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
-                .setOnStartConnectionListener(() -> progressBar.setVisibility(View.VISIBLE))
+                .setOnStartConnectionListener(() -> {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+                })
                 .setOnEndConnectionListener(list -> {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
                     List<Itinerary> filteredList = new LinkedList<>();
                     for (Itinerary itinerary : list) {
                         if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
                             filteredList.add(itinerary);
                     }
-                    progressBar.setVisibility(View.GONE);
+                    adapter = new ItineraryAdapter(getActivity(), filteredList, this);
+                    recyclerView.setAdapter(adapter);
                     if (!filteredList.isEmpty()) {
-                        adapter = new ItineraryAdapter(getActivity(), filteredList);
-                        recyclerView.setAdapter(adapter);
+                        noActiveItineraries.setVisibility(View.GONE);
                     } else {
-                                noActiveItineraries.setVisibility(View.VISIBLE);
+                        noActiveItineraries.setVisibility(View.VISIBLE);
                     }
                 })
                 .build();

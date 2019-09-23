@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.manager.AccountManager;
@@ -19,6 +20,7 @@ import com.fsc.cicerone.model.Itinerary;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -49,13 +51,18 @@ public class ItineraryUpdate extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryUpdate.class.getName();
-    private static final String DATE_FORMAT = "dd-MM-yy";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_update);
 
+        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        if(supportActionBar!=null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayShowHomeEnabled(true);
+        }
         Bundle bundle = getIntent().getExtras();
         Log.e("PROVAPROVA", Objects.requireNonNull(bundle).getString("itinerary"));
         Itinerary currentItinerary;
@@ -87,10 +94,10 @@ public class ItineraryUpdate extends AppCompatActivity {
         description.setText(currentItinerary.getDescription());
         location.setText(currentItinerary.getLocation());
         // TODO: Why is it crashing?
-//        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT, Locale.US);
-//        selectBeginningDate.setText(formatter.format(currentItinerary.getBeginningDate()));
-//        selectEndingDate.setText(formatter.format(currentItinerary.getEndingDate()));
-//        selectReservationDate.setText(formatter.format(currentItinerary.getReservationDate()));
+        //SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+        //selectBeginningDate.setText(formatter.format(currentItinerary.getBeginningDate()));
+        //selectEndingDate.setText(formatter.format(currentItinerary.getEndingDate()));
+        //selectReservationDate.setText(formatter.format(currentItinerary.getReservationDate()));
         minParticipants.setText(String.valueOf(currentItinerary.getMinParticipants()));
         maxParticipants.setText(String.valueOf(currentItinerary.getMaxParticipants()));
         durationHours.setText(currentItinerary.getDuration().substring(0, currentItinerary.getDuration().indexOf(":")));
@@ -381,15 +388,17 @@ public class ItineraryUpdate extends AppCompatActivity {
 
     }
 
-    public void sendData(View view) throws JSONException {
+    public void sendData(View view) throws JSONException, ParseException {
         Map<String, Object> params = new HashMap<>(14);
         boolean canSend = allFilled();
+        DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
         if (canSend) {
             params.put("title", title.getText().toString());
             params.put("description", description.getText().toString());
-            params.put("beginning_date", selectBeginningDate.getText().toString());
-            params.put("ending_date", selectEndingDate.getText().toString());
-            params.put("end_reservations_date", selectReservationDate.getText().toString());
+            params.put("beginning_date", outputFormat.format(outputFormat.parse(selectBeginningDate.getText().toString())));
+            params.put("ending_date", outputFormat.format(outputFormat.parse(selectEndingDate.getText().toString())));
+            params.put("end_reservations_date", outputFormat.format(outputFormat.parse(selectReservationDate.getText().toString())));
             params.put("maximum_participants_number", maxParticipants.getText().toString());
             params.put("minimum_participants_number", minParticipants.getText().toString());
             params.put("repetitions_per_day", repetitions.getText().toString());
@@ -473,5 +482,12 @@ public class ItineraryUpdate extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 
 }

@@ -42,12 +42,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     public ReservationAdapter(Context context, List<Reservation> list) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        this.mData = new ArrayList<>(list.size());
-        for(Reservation reservation : list){
-            if (!reservation.isConfirmed()){
-                this.mData.add(reservation);
-            }
-        }
+        this.mData = list;
     }
 
 
@@ -55,12 +50,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.layout = layout;
-        this.mData = new ArrayList<>(list.size());
-        for(Reservation reservation : list){
-            if (reservation.isConfirmed()){
-                this.mData.add(reservation);
-            }
-        }
+        this.mData = list;
     }
 
     // inflates the row layout from xml when needed
@@ -80,7 +70,13 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
         holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
-        holder.globetrotter.setText(mData.get(position).getClient().getUsername());
+        
+        //set TextView based on the layout. If layout is reservation_list, globetrotter must appear, otherwise, the cicerone.
+        if(layout == R.layout.reservation_list)
+            holder.globetrotter.setText(mData.get(position).getClient().getUsername());
+        else
+            holder.globetrotter.setText(mData.get(position).getItinerary().getCicerone().getUsername());
+
         holder.numberChildren.setText(String.valueOf(mData.get(position).getNumberOfChildren()));
         holder.numberAdults.setText(String.valueOf(mData.get(position).getNumberOfAdults()));
 

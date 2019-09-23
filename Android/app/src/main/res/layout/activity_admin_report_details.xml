@@ -30,7 +30,6 @@
                     android:layout_marginTop="40dp"
                     android:layout_weight="0"
                     android:gravity="center"
-                    android:text="@string/title"
                     android:textColor="@color/colorWhite"
                     android:textSize="30sp"
                     android:textStyle="bold" />
@@ -41,7 +40,6 @@
                     android:layout_height="30dp"
                     android:layout_weight="1"
                     android:gravity="center|center_vertical"
-                    android:text="@string/print_integer_number"
                     android:textColor="@color/colorWhite" />
 
                 <TextView
@@ -50,7 +48,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:gravity="center"
-                    android:text="@string/status"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
 
@@ -65,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="25dp"
+                android:padding="@dimen/default_margin"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="8dp">
 
@@ -89,7 +86,6 @@
                     android:id="@+id/report_user_activity_admin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
                     android:textColor="@android:color/background_dark" />
 
                 <Space
@@ -116,7 +112,6 @@
                     android:id="@+id/reporter_user_activity_admin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
                     android:textColor="@android:color/background_dark" />
 
                 <Space
@@ -144,7 +139,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/lorem_ipsum"
                     android:textColor="@android:color/background_dark" />
 
                 <Space
@@ -155,25 +149,24 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="end">
+
+
+                    <Button
+                        android:id="@+id/close_report"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/close_report" />
 
                     <Button
                         android:id="@+id/take_charge_report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/default_margin"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:text="@string/take_charge" />
-
-                    <Space
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <Button
-                        android:id="@+id/close_report"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/close_report" />
 
                 </LinearLayout>
 

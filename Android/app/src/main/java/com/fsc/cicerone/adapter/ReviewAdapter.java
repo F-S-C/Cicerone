@@ -13,8 +13,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fsc.cicerone.ItineraryDetails;
 import com.fsc.cicerone.ProfileActivity;
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Review;
 
 import java.util.List;
@@ -60,11 +63,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             if (!mData.get(position).getAuthor().getUsername().equals("deleted_user")) {
-                Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("reviewed_user", mData.get(position).getAuthor().getUsername());
-                i.putExtras(bundle);
-                v.getContext().startActivity(i);
+                if(!mData.get(position).getAuthor().getUsername().equals(AccountManager.getCurrentLoggedUser().getUsername())){
+                    Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("reviewed_user", mData.get(position).getAuthor().getUsername());
+                    i.putExtras(bundle);
+                    v.getContext().startActivity(i);
+                }
             } else {
                 Toast.makeText(context, context.getString(R.string.warning_deleted_user), Toast.LENGTH_SHORT).show();
             }
@@ -77,7 +82,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
      * @return Length of JSON array.
      */
     @Override
-    public int getItemCount() {
+    public int
+    getItemCount() {
         return mData.size();
     }
 

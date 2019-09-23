@@ -1,6 +1,6 @@
 package com.fsc.cicerone;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -51,17 +51,18 @@ public class ReportDetailsActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         // Extract the data
         parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
-        getReportFromServer(parameters);
-        cancButton.setEnabled(false);
         cancButton.setVisibility(View.GONE);
-        cancButton.setOnClickListener(view -> deleteReport(parameters));
+        getReportFromServer(parameters);
+
+        cancButton.setOnClickListener(view -> {
+            deleteReport(parameters);
+            cancButton.setEnabled(false);
+        });
     }
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(this, MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i);
+        super.onBackPressed();
     }
 
     private void getReportFromServer(Map<String, Object> params) {
@@ -81,12 +82,15 @@ public class ReportDetailsActivity extends AppCompatActivity {
                             break;
                         case CLOSED:
                             statusText += getString(R.string.closed);
+                            cancButton.setVisibility(View.GONE);
                             break;
                         case PENDING:
                             statusText += getString(R.string.pending);
+                            cancButton.setVisibility(View.GONE);
                             break;
                         case CANCELED:
                             statusText += getString(R.string.canceled);
+                            cancButton.setVisibility(View.GONE);
                             break;
                         default:
                             break;
@@ -112,8 +116,8 @@ public class ReportDetailsActivity extends AppCompatActivity {
                 .setContext(this)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.report_canceled),
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
+                        setResult(Activity.RESULT_OK);
                         params.remove("state");
                         getReportFromServer(params);
                     }

@@ -26,6 +26,8 @@ import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -124,12 +126,19 @@ public class ItineraryFragment extends Fragment {
         SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
                 .setOnEndConnectionListener(jsonArray -> {
-                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                    while (recyclerView.getItemDecorationCount() > 0) {
-                        recyclerView.removeItemDecorationAt(0);
+                    if(jsonArray.isEmpty()) {
+                        message.setText(R.string.no_create_itinerary);
+                        message.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
                     }
-                    adapter = new ItineraryAdapter(getActivity(), jsonArray);
-                    recyclerView.setAdapter(adapter);
+                    else {
+                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        while (recyclerView.getItemDecorationCount() > 0) {
+                            recyclerView.removeItemDecorationAt(0);
+                        }
+                        adapter = new ItineraryAdapter(getActivity(), jsonArray,this);
+                        recyclerView.setAdapter(adapter);
+                    }
                 })
                 .setObjectToSend(parameters)
                 .build();
@@ -140,12 +149,20 @@ public class ItineraryFragment extends Fragment {
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
-                    if (list.isEmpty())
+                    List<Reservation> filtered = new ArrayList<>(list.size());
+                    for (Reservation reservation : list) {
+                        if (reservation.isConfirmed()) {
+                            filtered.add(reservation);
+                        }
+                    }
+                    if (filtered.isEmpty()) {
+                        message.setText(R.string.no_itineraries);
                         message.setVisibility(View.VISIBLE);
+                    }
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                             DividerItemDecoration.VERTICAL));
-                    adapter2 = new ReservationAdapter(getActivity(), list, R.layout.participation_list);
+                    adapter2 = new ReservationAdapter(getActivity(), filtered, R.layout.participation_list);
                     recyclerView.setAdapter(adapter2);
                 })
                 .setObjectToSend(parameters)

@@ -39,7 +39,7 @@ class RequestReport extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT report.username, report.reported_user, report_details.* FROM report INNER JOIN report_details ON report.report_code = report_details.report_code";
+        $query = "SELECT * FROM report";
 
         $conditions = array();
         $data = array();

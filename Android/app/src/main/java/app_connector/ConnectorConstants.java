@@ -41,6 +41,11 @@ public final class ConnectorConstants {
     public static final String REPORT_FRAGMENT = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestReportJoinReportDetails.php";
 
     /**
+     * URL of the server-side connector for the report JOIN report_details query.
+     */
+    public static final String REQUEST_REPORT = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestReport.php";
+
+    /**
      * URL of the server-side connector for the itinerary table.
      */
     public static final String REQUEST_ITINERARY = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestItinerary.php";

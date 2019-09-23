@@ -35,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     Fragment fragment = null;
     FragmentManager fragmentManager;
 
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -49,7 +50,9 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         ActionBar actionBar = getSupportActionBar();
+
         if(actionBar != null){
+            actionBar.setTitle(R.string.reviews);
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -84,10 +87,12 @@ public class ProfileActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
+                        Objects.requireNonNull(actionBar).setTitle(R.string.reviews);
                         fragment = new SelectedUserReviewFragment();
                         fragment.setArguments(bundle);
                         break;
                     case 1:
+                        Objects.requireNonNull(actionBar).setTitle(R.string.add_review);
                         fragment = new InsertReviewFragment();
                         fragment.setArguments(bundle);
                         break;
@@ -119,13 +124,17 @@ public class ProfileActivity extends AppCompatActivity {
         SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(this)
                 .setOnEndConnectionListener(list -> {
+                    String string;
                     User result = list.get(0);
                     TextView name = findViewById(R.id.name_profile);
-                    name.setText(result.getName());
+                    string= String.format("%s%s %s", getString(R.string.name), getString(R.string.separator), result.getName());
+                    name.setText(string);
                     TextView surname = findViewById(R.id.surname_profile);
-                    surname.setText(result.getSurname());
+                    string = String.format("%s%s %s", getString(R.string.surname), getString(R.string.separator), result.getSurname());
+                    surname.setText(string);
                     TextView email = findViewById(R.id.email_profile);
-                    email.setText(result.getEmail());
+                    string = String.format("%s%s %s", getString(R.string.email), getString(R.string.separator), result.getEmail());
+                    email.setText(string);
                     TextView userType = findViewById(R.id.user_type_profile);
                     if (result.getUserType() == UserType.CICERONE) {
                         userType.setText(R.string.user_type_cicerone);

@@ -47,7 +47,7 @@ public class AdminDetailsUserFragment extends Fragment {
     private TextView documentNotFound;
     private String data;
     private DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-
+    private Button removeUser;
     private Activity context;
 
     /**
@@ -74,7 +74,7 @@ public class AdminDetailsUserFragment extends Fragment {
         documentExpiryDate = view.findViewById(R.id.dateEx_user_admin);
         TextView avgEarn = view.findViewById(R.id.avg_earn);
         TextView sex = view.findViewById(R.id.sex_user_admin);
-        Button removeUser = view.findViewById(R.id.remove_user_admin);
+        removeUser = view.findViewById(R.id.remove_user_admin);
         documentNotFound = view.findViewById(R.id.document_not_exists);
         Bundle bundle = getArguments();
 
@@ -115,22 +115,29 @@ public class AdminDetailsUserFragment extends Fragment {
     private void requestUserDocument(Map<String, Object> parameters) {
         SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_DOCUMENT, BusinessEntityBuilder.getFactory(Document.class))
                 .setContext(context)
+                .setOnStartConnectionListener(()->{
+                    documentNumber.setVisibility(View.GONE);
+                    documentType.setVisibility(View.GONE);
+                    documentNotFound.setVisibility(View.GONE);
+                    documentExpiryDate.setVisibility(View.GONE);
+                })
                 .setOnEndConnectionListener(list -> {
                     if (!list.isEmpty()) {
                         Document dataDocument = list.get(0);
-                        documentNotFound.setVisibility(View.GONE);
+
                         data = "Document Number: " + dataDocument.getNumber();
                         documentNumber.setText(data);
+                        documentNumber.setVisibility(View.VISIBLE);
+
                         data = "Document Type: " + dataDocument.getType();
                         documentType.setText(data);
+                        documentType.setVisibility(View.VISIBLE);
 
                         data = "Expiry Date: " + outputFormat.format(dataDocument.getExpirationDate());
                         documentExpiryDate.setText(data);
-
+                        documentExpiryDate.setVisibility(View.VISIBLE);
                     } else {
-                        documentNumber.setVisibility(View.GONE);
-                        documentType.setVisibility(View.GONE);
-                        documentExpiryDate.setVisibility(View.GONE);
+                        documentNotFound.setVisibility(View.VISIBLE);
                     }
                 })
                 .setObjectToSend(parameters)
@@ -150,8 +157,7 @@ public class AdminDetailsUserFragment extends Fragment {
                     .setObjectToSend(parameters)
                     .build();
             connector.execute();
-            startActivity(new Intent(context, AdminMainActivity.class));
-            context.finish();
+            removeUser.setEnabled(false);
         };
         new MaterialAlertDialogBuilder(context)
                 .setTitle(context.getString(R.string.are_you_sure))
@@ -159,6 +165,9 @@ public class AdminDetailsUserFragment extends Fragment {
                 .setPositiveButton(context.getString(R.string.yes), positiveClickListener)
                 .setNegativeButton(context.getString(R.string.no), null)
                 .show();
+
+
     }
+
 
 }

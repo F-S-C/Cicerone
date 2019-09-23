@@ -1,5 +1,7 @@
 package com.fsc.cicerone;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,14 +27,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class WishlistFragment extends Fragment {
+public class WishlistFragment extends Fragment implements Refreshable{
 
     private ItineraryAdapter adapter;
     private TextView numberOfItinerariesTextView;
     private Button clearWishlistButton;
     private RecyclerView recyclerView;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
+
+    public static final int REQUEST_UPDATE_WISHLIST = 1031;
 
 
     @Nullable
@@ -47,10 +50,7 @@ public class WishlistFragment extends Fragment {
         recyclerView = view.findViewById(R.id.itinerary_list);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
-        swipeRefreshLayout = view.findViewById(R.id.WishlistRoot);
-        swipeRefreshLayout.setOnRefreshListener(this::refreshData);
-
-        refreshData();
+        refresh();
 
         clearWishlistButton.setOnClickListener(v -> new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()))
                 .setTitle(getString(R.string.are_you_sure))
@@ -62,30 +62,42 @@ public class WishlistFragment extends Fragment {
         return view;
     }
 
-    void refreshData() {
-        WishlistManager.getWishlist(getActivity(), () -> swipeRefreshLayout.setRefreshing(true), list -> {
-            swipeRefreshLayout.setRefreshing(false);
+    private void clearWish() {
+        WishlistManager.clearWishlist(getActivity(), result -> {
+            if (result.getResult()) {
+                Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
+                refresh();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED) {
+            if (resultCode == Activity.RESULT_OK)
+                refresh();
+        }
+    }
+
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        WishlistManager.getWishlist(getActivity(), () -> {
+            if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+        }, list -> {
+            if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
 
             List<Itinerary> itineraryList = new ArrayList<>(list.size());
             for (Wishlist item : list) {
                 itineraryList.add(item.getItinerary());
             }
-            adapter = new ItineraryAdapter(getActivity(), itineraryList);
+            adapter = new ItineraryAdapter(getActivity(), itineraryList, this);
 
             numberOfItinerariesTextView.setText(String.format(getString(R.string.wishlist_number), list.size()));
             if (list.isEmpty())
                 clearWishlistButton.setVisibility(View.GONE);
 
             recyclerView.setAdapter(adapter);
-        });
-    }
-
-    private void clearWish() {
-        WishlistManager.clearWishlist(getActivity(), result -> {
-            if (result.getResult()) {
-                Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
-                refreshData();
-            }
         });
     }
 }

@@ -9,21 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GlobetrotterItineraryListFragment"></activity>
+        <activity android:name=".GlobetrotterItineraryListFragment"/>
         <activity android:name=".CiceroneItineraryListFragment" />
         <activity android:name=".AdminDetailsUserFragment" />
         <activity android:name=".ReservationFragment" />
         <activity android:name=".AdminUserProfile" />
         <activity android:name=".UsersListFragment" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".ItineraryReviewActivity" />
-        <activity android:name=".AdminItineraryDetails" />
+        <activity android:name=".AdminItineraryDetails" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".AdminReportDetailsActivity" />
         <activity android:name=".AdminMainActivity" />
         <activity
             android:name=".ChangePassword"
             android:label="@string/change_password" />
-        <activity android:name=".Wishlist" />
+        <activity android:name=".WishlistFragment" />
         <activity android:name=".ItineraryUpdate" />
         <activity
             android:name=".MainActivity"
@@ -35,9 +34,11 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".ItineraryManagement" />
+        <activity android:name=".ItineraryManagement" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ItineraryDetails" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ItineraryCreation" />
+        <activity
+            android:name=".ItineraryCreation"
+            android:label="@string/create_itinerary"/>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
         <activity

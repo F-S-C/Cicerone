@@ -45,13 +45,12 @@ import app_connector.SendInPostConnector;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DiscoverFragment extends Fragment {
+public class DiscoverFragment extends Fragment implements Refreshable {
     /**
      * The context (the host activity) of the fragment.
      */
     private Activity context;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private Button setEndingDateBtn;
     private Button setBeginningDateBtn;
@@ -96,11 +95,7 @@ public class DiscoverFragment extends Fragment {
         Button clearBtn = view.findViewById(R.id.itinerary_search_clear_btn);
         clearBtn.setOnClickListener(this::clearAllFields);
 
-
-        swipeRefreshLayout = view.findViewById(R.id.discover_swipe_to_refresh);
-        swipeRefreshLayout.setOnRefreshListener(this::refreshData);
-
-        refreshData();
+        refresh();
 
         return view;
     }
@@ -120,7 +115,7 @@ public class DiscoverFragment extends Fragment {
         setEndingDateBtn.setText(getString(R.string.ending_date));
         endingDate = null;
 
-        refreshData();
+        refresh();
     }
 
     @Override
@@ -153,14 +148,14 @@ public class DiscoverFragment extends Fragment {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     location = !query.isEmpty() ? query : null;
-                    refreshData();
+                    refresh();
                     return true;
                 }
             };
 
             onCloseListener = () -> {
                 location = null;
-                DiscoverFragment.this.refreshData();
+                DiscoverFragment.this.refresh();
                 return false;
             };
 
@@ -179,31 +174,6 @@ public class DiscoverFragment extends Fragment {
         searchView.setOnQueryTextListener(queryTextListener);
         searchView.setOnCloseListener(onCloseListener);
         return super.onOptionsItemSelected(item);
-    }
-
-    private void refreshData() {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
-        Map<String, Object> object = new HashMap<>(3);
-        if (beginningDate != null) object.put("beginning_date", sdf.format(beginningDate));
-        if (endingDate != null) object.put("beginning_date", sdf.format(endingDate));
-        if (location != null) object.put("location", location);
-        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
-                .setContext(context)
-                .setOnStartConnectionListener(() -> swipeRefreshLayout.setRefreshing(true))
-                .setOnEndConnectionListener(list -> {
-                    swipeRefreshLayout.setRefreshing(false);
-                    List<Itinerary> filteredList = new LinkedList<>();
-                    for (Itinerary itinerary : list) {
-                        if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
-                            filteredList.add(itinerary);
-                    }
-                    ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList);
-
-                    recyclerView.setAdapter(adapter);
-                })
-                .setObjectToSend(object)
-                .build();
-        connector.execute();
     }
 
     /**
@@ -264,7 +234,7 @@ public class DiscoverFragment extends Fragment {
             }
         });
 
-        picker.setOnDismissListener(dialog -> refreshData());
+        picker.setOnDismissListener(dialog -> refresh());
 
         if (!isEnding || beginningDate == null)
             picker.getDatePicker().setMinDate(new Date().getTime());
@@ -282,5 +252,33 @@ public class DiscoverFragment extends Fragment {
             button.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             button.setTextColor(ContextCompat.getColor(context, button.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
         }
+    }
+
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+        Map<String, Object> object = new HashMap<>(3);
+        if (beginningDate != null) object.put("beginning_date", sdf.format(beginningDate));
+        if (endingDate != null) object.put("beginning_date", sdf.format(endingDate));
+        if (location != null) object.put("location", location);
+        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
+                .setContext(context)
+                .setOnStartConnectionListener(() -> {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+                })
+                .setOnEndConnectionListener(list -> {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+                    List<Itinerary> filteredList = new LinkedList<>();
+                    for (Itinerary itinerary : list) {
+                        if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
+                            filteredList.add(itinerary);
+                    }
+                    ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList, this);
+
+                    recyclerView.setAdapter(adapter);
+                })
+                .setObjectToSend(object)
+                .build();
+        connector.execute();
     }
 }
