@@ -3,17 +3,21 @@
 [![License](https://img.shields.io/github/license/F-S-C/Cicerone?style=for-the-badge)](https://github.com/F-S-C/Cicerone/blob/master/LICENSE)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/F-S-C/Cicerone?style=for-the-badge)](https://github.com/F-S-C/Cicerone/releases/latest)
 
-This project has been created as part of an exam.
-<dl>
-  <dt>University</dt>
-  <dd>University of Bari</dd>
-  <dt>Academic year</dt>
-  <dd>2018/2019</dd>
-  <dt>Year and semester</dt>
-  <dd>Second year, second semester</dd>
-  <dt>Exam</dt>
-  <dd>Software Engineering</dd>
-</dl>
+## Quality<!-- omit in toc -->
+
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=ncloc)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=sqale_index)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=bugs)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=code_smells)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
+
+### Marks<!-- omit in toc -->
+
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=security_rating)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
+
+***
 
 ## Table of Contents<!-- omit in toc -->
 
@@ -28,6 +32,18 @@ This project has been created as part of an exam.
 ## Preface
 
 This repository contains the entire codebase of the system "Cicerone", designed and developed by a part of the team FSC for auniversity exam.
+
+This project has been created as part of an exam.
+<dl>
+  <dt>University</dt>
+  <dd>University of Bari</dd>
+  <dt>Academic year</dt>
+  <dd>2018/2019</dd>
+  <dt>Year and semester</dt>
+  <dd>Second year, second semester</dd>
+  <dt>Exam</dt>
+  <dd>Software Engineering</dd>
+</dl>
 
 ## The Authors
 
