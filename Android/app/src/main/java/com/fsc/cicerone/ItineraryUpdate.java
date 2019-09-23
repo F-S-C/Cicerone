@@ -80,7 +80,6 @@ public class ItineraryUpdate extends AppCompatActivity {
             supportActionBar.setDisplayShowHomeEnabled(true);
         }
         Bundle bundle = getIntent().getExtras();
-        Log.e("PROVAPROVA", Objects.requireNonNull(bundle).getString("itinerary"));
         Itinerary currentItinerary;
         try {
             currentItinerary = new Itinerary(new JSONObject(Objects.requireNonNull(bundle).getString("itinerary")));
@@ -110,8 +109,8 @@ public class ItineraryUpdate extends AppCompatActivity {
         description.setText(currentItinerary.getDescription());
         location.setText(currentItinerary.getLocation());
         // TODO: Why is it crashing?
-        //SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT, Locale.US);
-        //selectBeginningDate.setText(formatter.format(currentItinerary.getBeginningDate()));
+        //SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        //selectBeginningDate.setText(String.valueOf(currentItinerary.getBeginningDate()));
         //selectEndingDate.setText(formatter.format(currentItinerary.getEndingDate()));
         //selectReservationDate.setText(formatter.format(currentItinerary.getReservationDate()));
         minParticipants.setText(String.valueOf(currentItinerary.getMinParticipants()));

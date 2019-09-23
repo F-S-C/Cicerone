@@ -103,7 +103,6 @@ public class ItineraryCreation extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
         selectBeginningDate.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 selectBeginningDate.callOnClick();
@@ -450,7 +449,8 @@ public class ItineraryCreation extends AppCompatActivity {
                 && !durationMinutes.getText().toString().equals("")
                 && !location.getText().toString().equals("")
                 && !fullPrice.getText().toString().equals("")
-                && !reducedPrice.getText().toString().equals("");
+                && !reducedPrice.getText().toString().equals("")
+                &&  bitmapImage != null;
     }
 
     private void updateBeginningDate() {
@@ -498,49 +498,53 @@ public class ItineraryCreation extends AppCompatActivity {
     }
 
     private void uploadItineraryWithImage() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ConnectorConstants.IMAGE_UPLOADER, response -> {
-            try {
-                JSONObject result = new JSONObject(response);
-                if (result.getBoolean("result")) {
-                    String imgURL = ConnectorConstants.IMG_FOLDER.concat(result.getString("name"));
-                    ItineraryManager.uploadItinerary(
-                            title.getText().toString(),
-                            description.getText().toString(),
-                            selectBeginningDate.getText().toString(),
-                            selectEndingDate.getText().toString(),
-                            selectReservationDate.getText().toString(),
-                            location.getText().toString(),
-                            durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
-                            Integer.parseInt(repetitions.getText().toString()),
-                            Integer.parseInt(minParticipants.getText().toString()),
-                            Integer.parseInt(maxParticipants.getText().toString()),
-                            Float.parseFloat(fullPrice.getText().toString()),
-                            Float.parseFloat(reducedPrice.getText().toString()),
-                            imgURL, insStatus -> {
-                                if (insStatus.getResult()) {
-                                    Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(i);
-                                } else {
-                                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                } else {
-                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+        if(bitmapImage != null)
+        {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, ConnectorConstants.IMAGE_UPLOADER, response -> {
+                try {
+                    JSONObject result = new JSONObject(response);
+                    if (result.getBoolean("result")) {
+                        String imgURL = ConnectorConstants.IMG_FOLDER.concat(result.getString("name"));
+                        ItineraryManager.uploadItinerary(
+                                title.getText().toString(),
+                                description.getText().toString(),
+                                selectBeginningDate.getText().toString(),
+                                selectEndingDate.getText().toString(),
+                                selectReservationDate.getText().toString(),
+                                location.getText().toString(),
+                                durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
+                                Integer.parseInt(repetitions.getText().toString()),
+                                Integer.parseInt(minParticipants.getText().toString()),
+                                Integer.parseInt(maxParticipants.getText().toString()),
+                                Float.parseFloat(fullPrice.getText().toString()),
+                                Float.parseFloat(reducedPrice.getText().toString()),
+                                imgURL, insStatus -> {
+                                    if (insStatus.getResult()) {
+                                        Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                                        Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(i);
+                                    } else {
+                                        Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(ERROR_TAG, e.toString());
                 }
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.toString());
-            }
-        }, null) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("image", imgToString(bitmapImage));
-                return params;
-            }
-        };
-        ImageSingleton.getInstance(ItineraryCreation.this).addToRequestQue(stringRequest);
+            }, null) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("image", imgToString(bitmapImage));
+                    return params;
+                }
+            };
+            ImageSingleton.getInstance(ItineraryCreation.this).addToRequestQue(stringRequest);
+        }
+
     }
 
     @Override
