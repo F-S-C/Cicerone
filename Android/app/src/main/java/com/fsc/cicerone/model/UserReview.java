@@ -24,11 +24,11 @@ import org.json.JSONObject;
 public class UserReview extends Review {
     private User reviewedUser;
 
-    UserReview(JSONObject jsonObject) {
+    public UserReview(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
 
-    UserReview(String json) {
+    public UserReview(String json) {
         this(getJSONObject(json));
     }
 

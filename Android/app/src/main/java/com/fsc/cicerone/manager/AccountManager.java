@@ -232,7 +232,7 @@ public abstract class AccountManager {
                             sum += reservation.getTotal();
                         }
                     }
-                    t.setText(context.getString(R.string.avg_earn, (count > 0) ? sum / count : 0));
+                    t.setText(String.format(context.getString(R.string.avg_earn), (count > 0) ? sum / count : 0));
                 })
                 .setObjectToSend(user)
                 .build();
