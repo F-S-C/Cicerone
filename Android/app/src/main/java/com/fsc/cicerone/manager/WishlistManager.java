@@ -35,11 +35,18 @@ import app_connector.SendInPostConnector;
 
 public abstract class WishlistManager {
 
+    private static final String USERNAME_KEY = "username";
+    private static final String ITINERARY_KEY = "itinerary_in_wishlist";
+
+    private WishlistManager() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void getWishlist(Activity context, @Nullable DatabaseConnector.OnStartConnectionListener onStartCallback, @Nullable DatabaseConnector.OnEndConnectionListener<Wishlist> onEndCallback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> parameters = new HashMap<>(1);
-            parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-            new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class)) //TODO: Check
+            parameters.put(USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
+            new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class))
                     .setContext(context)
                     .setOnStartConnectionListener(onStartCallback)
                     .setOnEndConnectionListener(onEndCallback)
@@ -52,7 +59,7 @@ public abstract class WishlistManager {
     public static void clearWishlist(Activity context, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> parameters = new HashMap<>(1);
-            parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            parameters.put(USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
             new BooleanConnector.Builder(ConnectorConstants.CLEAR_WISHLIST)
                     .setContext(context)
                     .setOnEndConnectionListener(callback)
@@ -65,8 +72,8 @@ public abstract class WishlistManager {
     public static void removeFromWishlist(Activity context, Itinerary itinerary, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);
-            params.put("itinerary_in_wishlist", itinerary.getCode());
-            params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            params.put(ITINERARY_KEY, itinerary.getCode());
+            params.put(USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
 
             new BooleanConnector.Builder(ConnectorConstants.DELETE_WISHLIST)
                     .setContext(context)
@@ -77,11 +84,11 @@ public abstract class WishlistManager {
         }
     }
 
-    public static void addToWishlist(Activity context, Itinerary itinerary, @Nullable BooleanConnector.OnEndConnectionListener callback){
+    public static void addToWishlist(Activity context, Itinerary itinerary, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);
-            params.put("itinerary_in_wishlist", itinerary.getCode());
-            params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            params.put(ITINERARY_KEY, itinerary.getCode());
+            params.put(USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
 
             new BooleanConnector.Builder(ConnectorConstants.INSERT_WISHLIST)
                     .setContext(context)
@@ -95,8 +102,8 @@ public abstract class WishlistManager {
     public static void isInWishlist(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);
-            params.put("itinerary_in_wishlist", itinerary.getCode());
-            params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            params.put(ITINERARY_KEY, itinerary.getCode());
+            params.put(USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
 
             new SendInPostConnector.Builder<>(ConnectorConstants.SEARCH_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class))
                     .setContext(context)

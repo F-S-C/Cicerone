@@ -29,7 +29,7 @@ import java.util.Locale;
  */
 public class Itinerary extends BusinessEntity {
 
-    private int itineraryCode;
+    private int code;
     private User cicerone;
     private String title;
     private String description;
@@ -91,9 +91,9 @@ public class Itinerary extends BusinessEntity {
     @Override
     protected void loadFromJSONObject(JSONObject itinerary) {
         try {
-            itineraryCode = itinerary.getInt("itinerary_code");
+            code = itinerary.getInt("itinerary_code");
         } catch (JSONException e) {
-            itineraryCode = -1;
+            code = -1;
         }
 
         try {
@@ -186,7 +186,7 @@ public class Itinerary extends BusinessEntity {
      * @return The itinerary's code.
      */
     public int getCode() {
-        return itineraryCode;
+        return code;
     }
 
     /**
@@ -195,7 +195,7 @@ public class Itinerary extends BusinessEntity {
      * @param code The new itinerary's code.
      */
     public void setName(int code) {
-        this.itineraryCode = code;
+        this.code = code;
     }
 
     /**
@@ -217,21 +217,12 @@ public class Itinerary extends BusinessEntity {
     }
 
     /**
-     * Get the itinerary's code.
-     *
-     * @return The itinerary's code.
-     */
-    public int getItineraryCode() {
-        return itineraryCode;
-    }
-
-    /**
      * Set the itinerary's code.
      *
-     * @param itineraryCode The new itinerary's code.
+     * @param code The new itinerary's code.
      */
-    public void setItineraryCode(int itineraryCode) {
-        this.itineraryCode = itineraryCode;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     /**
@@ -479,7 +470,7 @@ public class Itinerary extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
         try {
-            result.put("itinerary_code", this.itineraryCode);
+            result.put("itinerary_code", this.code);
             result.put("title", this.title);
             result.put("username", this.cicerone.toJSONObject());
             result.put("description", this.description);
@@ -501,7 +492,7 @@ public class Itinerary extends BusinessEntity {
     }
 
     private Itinerary(Builder builder) {
-        itineraryCode = 0;
+        code = 0;
         cicerone = builder.cicerone;
         title = builder.title;
         description = builder.description;

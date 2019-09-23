@@ -30,6 +30,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import app_connector.ConnectorConstants;
+
 /**
  * An <i>entity</i> class that stores the data of a user.
  */
@@ -49,6 +51,19 @@ public class User extends BusinessEntity {
 
     private Document currentDocument;
     private Set<Document> documents;
+
+    private static class Columns {
+        private final static String USERNAME_KEY = "username";
+        private final static String PASSWORD_KEY = "password";
+        private final static String TAX_CODE_KEY = "tax_code";
+        private final static String NAME_KEY = "name";
+        private final static String SURNAME_KEY = "surname";
+        private final static String EMAIL_KEY = "email";
+        private final static String USER_TYPE_KEY = "user_type";
+        private final static String CELLPHONE_KEY = "cellphone";
+        private final static String BIRTH_DATE_KEY = "birth_date";
+        private final static String SEX_KEY = "sex";
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -122,65 +137,64 @@ public class User extends BusinessEntity {
     }
 
 
-
     @Override
     protected void loadFromJSONObject(JSONObject user) {
         try {
-            name = user.getString("name");
+            name = user.getString(Columns.NAME_KEY);
         } catch (JSONException e) {
             name = null;
         }
 
         try {
-            surname = user.getString("surname");
+            surname = user.getString(Columns.SURNAME_KEY);
         } catch (JSONException e) {
             surname = null;
         }
 
         try {
-            email = user.getString("email");
+            email = user.getString(Columns.EMAIL_KEY);
         } catch (JSONException e) {
             email = null;
         }
 
         try {
-            password = user.getString("password");
+            password = user.getString(Columns.PASSWORD_KEY);
         } catch (JSONException e) {
             password = null;
         }
 
         try {
-            sex = Sex.getValue(user.getString("sex"));
+            sex = Sex.getValue(user.getString(Columns.SEX_KEY));
         } catch (JSONException e) {
             sex = null;
         }
 
         try {
-            taxCode = user.getString("tax_code");
+            taxCode = user.getString(Columns.TAX_CODE_KEY);
         } catch (JSONException e) {
             taxCode = null;
         }
 
         try {
-            username = user.getString("username");
+            username = user.getString(Columns.USERNAME_KEY);
         } catch (JSONException e) {
             username = null;
         }
 
         try {
-            userType = UserType.getValue(user.getInt("user_type"));
+            userType = UserType.getValue(user.getInt(Columns.USER_TYPE_KEY));
         } catch (JSONException e) {
             userType = null;
         }
 
         try {
-            cellphone = user.getString("cellphone");
+            cellphone = user.getString(Columns.CELLPHONE_KEY);
         } catch (JSONException e) {
             cellphone = null;
         }
 
         try {
-            birthDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(user.getString("birth_date"));
+            birthDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(user.getString(Columns.BIRTH_DATE_KEY));
         } catch (JSONException | ParseException e) {
             birthDate = null;
         }
@@ -312,7 +326,6 @@ public class User extends BusinessEntity {
      * @param username The new user's username.
      */
     public void setUsername(String username) {
-        // TODO: check for uniqueness
         this.username = username;
     }
 
@@ -450,17 +463,17 @@ public class User extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
         try {
-            if (this.name != null) result.put("name", this.name);
-            if (this.surname != null) result.put("surname", this.surname);
-            if (this.email != null) result.put("email", this.email);
-            if (this.password != null) result.put("password", this.password);
-            if (this.sex != null) result.put("sex", this.sex.toString());
-            if (this.taxCode != null) result.put("tax_code", this.taxCode);
-            if (this.username != null) result.put("username", this.username);
-            if (this.userType != null) result.put("user_type", this.userType.toInt());
-            if (this.cellphone != null) result.put("cellphone", this.cellphone);
+            if (this.name != null) result.put(Columns.NAME_KEY, this.name);
+            if (this.surname != null) result.put(Columns.SURNAME_KEY, this.surname);
+            if (this.email != null) result.put(Columns.EMAIL_KEY, this.email);
+            if (this.password != null) result.put(Columns.PASSWORD_KEY, this.password);
+            if (this.sex != null) result.put(Columns.SEX_KEY, this.sex.toString());
+            if (this.taxCode != null) result.put(Columns.TAX_CODE_KEY, this.taxCode);
+            if (this.username != null) result.put(Columns.USERNAME_KEY, this.username);
+            if (this.userType != null) result.put(Columns.USER_TYPE_KEY, this.userType.toInt());
+            if (this.cellphone != null) result.put(Columns.CELLPHONE_KEY, this.cellphone);
             if (this.birthDate != null)
-                result.put("birth_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this.birthDate));
+                result.put(Columns.BIRTH_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.birthDate));
         } catch (JSONException e) {
             result = null;
         }
@@ -475,8 +488,8 @@ public class User extends BusinessEntity {
     public JSONObject getCredentials() {
         JSONObject result = new JSONObject();
         try {
-            result.put("password", this.password);
-            result.put("username", this.username);
+            result.put(Columns.PASSWORD_KEY, this.password);
+            result.put(Columns.USERNAME_KEY, this.username);
         } catch (JSONException e) {
             result = null;
         }

@@ -39,6 +39,17 @@ public class Reservation extends BusinessEntity {
     private Date forwardingDate;
     private Date confirmationDate = null;
 
+    private static class Columns{
+        private final static String CLIENT_KEY = "username";
+        private final static String ITINERARY_KEY = "booked_itinerary";
+        private final static String NUMBER_OF_CHILDREN_KEY = "number_of_children";
+        private final static String NUMBER_OF_ADULTS_KEY = "number_of_adults";
+        private final static String TOTAL_KEY = "total";
+        private final static String REQUESTED_DATE_KEY = "requested_date";
+        private final static String FORWARDING_DATE_KEY = "forwarding_date";
+        private final static String CONFIRMATION_DATE_KEY = "confirm_date";
+    }
+
     public Reservation(User client, Itinerary itinerary) {
         this.client = client;
         this.itinerary = itinerary;
@@ -93,19 +104,19 @@ public class Reservation extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
         try {
-            result.put("username", this.client.toJSONObject());
-            result.put("booked_itinerary", this.itinerary.toJSONObject());
-            result.put("number_of_children", this.numberOfChildren);
-            result.put("number_of_adults", this.numberOfAdults);
-            result.put("total", this.total);
+            result.put(Columns.CLIENT_KEY, this.client.toJSONObject());
+            result.put(Columns.ITINERARY_KEY, this.itinerary.toJSONObject());
+            result.put(Columns.NUMBER_OF_CHILDREN_KEY, this.numberOfChildren);
+            result.put(Columns.NUMBER_OF_ADULTS_KEY, this.numberOfAdults);
+            result.put(Columns.TOTAL_KEY, this.total);
             if (this.requestedDate != null) {
-                result.put("requested_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.requestedDate));
+                result.put(Columns.REQUESTED_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.requestedDate));
             }
             if (this.forwardingDate != null) {
-                result.put("forwarding_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.forwardingDate));
+                result.put(Columns.FORWARDING_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.forwardingDate));
             }
             if (this.confirmationDate != null) {
-                result.put("confirm_date", new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.confirmationDate));
+                result.put(Columns.CONFIRMATION_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.confirmationDate));
             }
         } catch (JSONException e) {
             result = null;
@@ -127,7 +138,7 @@ public class Reservation extends BusinessEntity {
 
         User tempClient;
         try {
-            tempClient = new User(jsonObject.getJSONObject("username"));
+            tempClient = new User(jsonObject.getJSONObject(Columns.CLIENT_KEY));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             tempClient = new User();
@@ -136,7 +147,7 @@ public class Reservation extends BusinessEntity {
 
         Itinerary tempItinerary;
         try {
-            tempItinerary = new Itinerary(jsonObject.getJSONObject("booked_itinerary"));
+            tempItinerary = new Itinerary(jsonObject.getJSONObject(Columns.ITINERARY_KEY));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             tempItinerary = new Itinerary();
@@ -144,21 +155,21 @@ public class Reservation extends BusinessEntity {
         this.itinerary = tempItinerary;
 
         try {
-            this.numberOfChildren = jsonObject.getInt("number_of_children");
+            this.numberOfChildren = jsonObject.getInt(Columns.NUMBER_OF_CHILDREN_KEY);
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             this.numberOfChildren = 0;
         }
 
         try {
-            this.numberOfAdults = jsonObject.getInt("number_of_adults");
+            this.numberOfAdults = jsonObject.getInt(Columns.NUMBER_OF_ADULTS_KEY);
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             this.numberOfAdults = 0;
         }
 
         try {
-            this.requestedDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("requested_date"));
+            this.requestedDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString(Columns.REQUESTED_DATE_KEY));
         } catch (JSONException | ParseException e) {
             Log.e(ERROR_TAG, e.getMessage());
             this.requestedDate = null;
@@ -172,8 +183,8 @@ public class Reservation extends BusinessEntity {
         }
 
         try {
-            if (jsonObject.has("confirm_date") && jsonObject.get("confirm_date") != null && !jsonObject.getString("confirm_date").equals("0000-00-00"))
-                this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("confirm_date"));
+            if (jsonObject.has(Columns.CONFIRMATION_DATE_KEY) && jsonObject.get(Columns.CONFIRMATION_DATE_KEY) != null && !jsonObject.getString(Columns.CONFIRMATION_DATE_KEY).equals("0000-00-00"))
+                this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString(Columns.CONFIRMATION_DATE_KEY));
             else
                 this.confirmationDate = null;
         } catch (JSONException | ParseException e) {

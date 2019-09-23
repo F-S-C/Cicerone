@@ -165,9 +165,9 @@ public class ItineraryDetails extends AppCompatActivity {
                 isReserved();
 
                 //itinerary for review
-                parameters.put("booked_itinerary", itinerary.getItineraryCode());
+                parameters.put("booked_itinerary", itinerary.getCode());
                 parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-                parameters.put("itinerary", itinerary.getItineraryCode());
+                parameters.put("itinerary", itinerary.getCode());
                 permissionReview(parameters);
             }
 
