@@ -6,7 +6,7 @@ use database_connector\controller\download\UserDataDownloader;
 
 require_once "/membri/fsc/database_connector/controller/download/UserDataDownloader.php";
 
-$user = strtolower($_GET['username']);
+$user = htmlspecialchars(strtolower($_GET['username']));
 $pass = $_GET['password'];
 
 if (!isset($user) || !isset($pass)) {

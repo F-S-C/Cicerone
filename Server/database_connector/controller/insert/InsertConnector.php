@@ -43,6 +43,7 @@ abstract class InsertConnector extends BooleanConnector
     {
         $query = "INSERT INTO " . $this::TABLE_NAME . "(" . $this::COLUMNS . ") VALUES ";
         foreach ($this->values_to_add as $value) {
+            unset($value);
             $prepared = substr(str_repeat("?,", substr_count($this::COLUMNS, ",") + 1), 0, -1);
             $query .= "(" . $prepared . "), ";
         }

@@ -41,6 +41,8 @@ import app_connector.SendInPostConnector;
 public abstract class AccountManager {
 
     private static User currentLoggedUser;
+    private static final String USERNAME_KEY = "username";
+    private static final String PASSWORD_KEY = "password";
 
     private AccountManager() {
         throw new IllegalStateException("Utility class");
@@ -65,8 +67,8 @@ public abstract class AccountManager {
      */
     public static void attemptLogin(Activity context, String username, String password, Runnable onStart, RunnableUsingBusinessEntity onEnd) {
         Map<String, Object> params = new HashMap<>(2);
-        params.put("username", username);
-        params.put("password", password);
+        params.put(USERNAME_KEY, username);
+        params.put(PASSWORD_KEY, password);
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.LOGIN_CONNECTOR)
                 .setContext(context)
                 .setOnStartConnectionListener(onStart::run)
@@ -143,7 +145,7 @@ public abstract class AccountManager {
      */
     public static void checkIfUsernameExists(Activity context, String user, BooleanRunnable result) {
         Map<String, Object> obj = new HashMap<>(1);
-        obj.put("username", user);
+        obj.put(USERNAME_KEY, user);
         SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> result.accept(!list.isEmpty()))
@@ -197,7 +199,7 @@ public abstract class AccountManager {
      */
     public static void insertUserDocument(Activity context, String username, Document document, BooleanRunnable callback) {
         Map<String, Object> doc = SendInPostConnector.paramsFromObject(document);
-        doc.put("username", username);
+        doc.put(USERNAME_KEY, username);
         Log.i("DOCUMENT", doc.toString());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_DOCUMENT)
                 .setContext(context)

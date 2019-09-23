@@ -34,6 +34,43 @@ class UserDataDownloader extends DatabaseConnector
     /** @var string The user's password */
     private $password;
 
+    // Constants used in the HTML printing to reduce duplication
+    //<editor-fold desc="Text Constants">
+    private const SENT = "Sent";
+    private const RECEIVED = "Received";
+    private const OWNER = "Owner";
+    private const DESCRIPTION = "Description";
+    private const TITLE = self::TITLE_KEY;
+    private const BEGINNING_DATE = "Beginning Date";
+    private const ENDING_DATE = "Ending Date";
+    private const END_OF_RESERVATIONS_DATE = "End of Reservations Date";
+    private const MAX_PARTICIPANTS = "Max. Participants";
+    private const MIN_PARTICIPANTS = "Min. Participants";
+    private const LOCATION = self::LOCATION_KEY;
+    private const REPETITIONS_PER_DAY = "Repetitions per Day";
+    private const DURATION = self::DURATION_KEY;
+    private const FULL_PRICE = "Full price";
+    private const REDUCED_PRICE = "Reduced Price";
+    private const LANGUAGES = "Languages";
+    //</editor-fold>
+
+    // Constants used to access database's columns
+    //<editor-fold desc="Database Rows">
+    private const ITINERARY_CODE_KEY = "itinerary_code";
+    private const TITLE_KEY = "title";
+    private const BEGINNING_DATE_KEY = "beginning_date";
+    private const ENDING_DATE_KEY = "ending_date";
+    private const END_RESERVATIONS_DATE_KEY = "end_reservations_date";
+    private const MAX_PARTICIPANTS_NUMBER_KEY = "maximum_participants_number";
+    private const MIN_PARTICIPANTS_NUMBER_KEY = "minimum_participants_number";
+    private const LOCATION_KEY = "location";
+    private const REPETITIONS_PER_DAY_KEY = "repetitions_per_day";
+    private const DURATION_KEY = "duration";
+    private const FULL_PRICE_KEY = "full_price";
+    private const REDUCED_PRICE_KEY = "reduced_price";
+    private const USERNAME_KEY = "username";
+    //</editor-fold>
+
     /**
      * UserDataDownloader constructor.
      * @param string $username The username of the user whose data will be downloaded.
@@ -94,7 +131,7 @@ class UserDataDownloader extends DatabaseConnector
      */
     private function get_itineraries_reviews(bool $written_by_logged_user): string
     {
-        $id = ($written_by_logged_user ? "Sent" : "Received");
+        $id = ($written_by_logged_user ? self::SENT : self::RECEIVED);
         $to_return = "<h4 class='subsubsectionHead' id='" . strtolower($id) . "-itineraries-reviews'>" . $id . " Itineraries Reviews</h4>";
 
         $statement = $this->connection->prepare("SELECT ir.username, ir.reviewed_itinerary, ir.feedback, ir.description,i.username FROM itinerary_review ir, itinerary i WHERE ir.reviewed_itinerary = i.itinerary_code AND " . ($written_by_logged_user ? "ir" : "i") . ".username = ?");
@@ -104,7 +141,7 @@ class UserDataDownloader extends DatabaseConnector
             $statement->bind_result($reviewer, $reviewed_itinerary, $feedback, $description, $itinerary_owner);
             $number_of_rows = 0;
             $table_creator = new TableCreator(5);
-            $table_creator->set_header(array("Reviewer", "Reviewed", "Owner", "Feedback", "Description"));
+            $table_creator->set_header(array("Reviewer", "Reviewed", self::OWNER, "Feedback", self::DESCRIPTION));
             while ($statement->fetch()) {
                 $number_of_rows++;
                 $table_creator->add_row(array($reviewer, $reviewed_itinerary, $itinerary_owner, $feedback, $description));
@@ -139,39 +176,39 @@ class UserDataDownloader extends DatabaseConnector
             $table_creator->set_super_header(array("Itinerary in Wishlist"), array(15));
             $table_creator->set_header(array(
                 "Itinerary Code",
-                "Owner",
-                "Title",
-                "Description",
-                "Beginning Date",
-                "Ending Date",
-                "End of Reservations Date",
-                "Max. Participants",
-                "Min. Participants",
-                "Location",
-                "Repetitions per Day",
-                "Duration",
-                "Full price",
-                "Reduced Price",
-                "Languages"
+                self::OWNER,
+                self::TITLE,
+                self::DESCRIPTION,
+                self::BEGINNING_DATE,
+                self::ENDING_DATE,
+                self::END_OF_RESERVATIONS_DATE,
+                self::MAX_PARTICIPANTS,
+                self::MIN_PARTICIPANTS,
+                self::LOCATION,
+                self::REPETITIONS_PER_DAY,
+                self::DURATION,
+                self::FULL_PRICE,
+                self::REDUCED_PRICE,
+                self::LANGUAGES
             ));
 
             while ($row = $result->fetch_assoc()) {
                 $table_creator->add_row(array(
-                    $row['itinerary_code'],
+                    $row[self::ITINERARY_CODE_KEY],
                     $row['itinerary.username'],
-                    $row['title'],
+                    $row[self::TITLE_KEY],
                     self::OMISSIS,
-                    $row['beginning_date'],
-                    $row['ending_date'],
-                    $row['end_reservations_date'],
-                    $row['maximum_partecipants_number'],
-                    $row['minimum_partecipants_number'],
-                    $row['location'],
-                    $row['repetitions_per_day'],
-                    $row['duration'],
-                    $row['full_price'],
-                    $row['reduced_price'],
-                    $this->get_languages($row['itinerary_code'], false)
+                    $row[self::BEGINNING_DATE_KEY],
+                    $row[self::ENDING_DATE_KEY],
+                    $row[self::END_RESERVATIONS_DATE_KEY],
+                    $row[self::MAX_PARTICIPANTS_NUMBER_KEY],
+                    $row[self::MIN_PARTICIPANTS_NUMBER_KEY],
+                    $row[self::LOCATION_KEY],
+                    $row[self::REPETITIONS_PER_DAY_KEY],
+                    $row[self::DURATION_KEY],
+                    $row[self::FULL_PRICE_KEY],
+                    $row[self::REDUCED_PRICE_KEY],
+                    $this->get_languages($row[self::ITINERARY_CODE_KEY], false)
                 ));
             }
             $to_return .= $table_creator->get_table();
@@ -206,20 +243,20 @@ class UserDataDownloader extends DatabaseConnector
                 "Forwading Date",
                 "Confim Date",
                 "Itinerary Code",
-                "Owner",
-                "Title",
-                "Description",
-                "Beginning Date",
-                "Ending Date",
-                "End of Reservations Date",
-                "Max. Participants",
-                "Min. Participants",
-                "Location",
-                "Repetitions per Day",
-                "Duration",
-                "Full price",
-                "Reduced Price",
-                "Languages"
+                self::OWNER,
+                self::TITLE,
+                self::DESCRIPTION,
+                self::BEGINNING_DATE,
+                self::ENDING_DATE,
+                self::END_OF_RESERVATIONS_DATE,
+                self::MAX_PARTICIPANTS,
+                self::MIN_PARTICIPANTS,
+                self::LOCATION,
+                self::REPETITIONS_PER_DAY,
+                self::DURATION,
+                self::FULL_PRICE,
+                self::REDUCED_PRICE,
+                self::LANGUAGES
             ));
             while ($row = $result->fetch_assoc()) {
                 $table_creator->add_row(array(
@@ -229,21 +266,21 @@ class UserDataDownloader extends DatabaseConnector
                     $row['requested_date'],
                     $row['forwading_date'],
                     $row['confirm_date'],
-                    $row['itinerary_code'],
-                    $row['username'],
-                    $row['title'],
+                    $row[self::ITINERARY_CODE_KEY],
+                    $row[self::USERNAME_KEY],
+                    $row[self::TITLE_KEY],
                     self::OMISSIS,
-                    $row['beginning_date'],
-                    $row['ending_date'],
-                    $row['end_reservations_date'],
-                    $row['maximum_partecipants_number'],
-                    $row['minimum_partecipants_number'],
-                    $row['location'],
-                    $row['repetitions_per_day'],
-                    $row['duration'],
-                    $row['full_price'],
-                    $row['reduced_price'],
-                    $this->get_languages($row['itinerary_code'], false)
+                    $row[self::BEGINNING_DATE_KEY],
+                    $row[self::ENDING_DATE_KEY],
+                    $row[self::END_RESERVATIONS_DATE_KEY],
+                    $row[self::MAX_PARTICIPANTS_NUMBER_KEY],
+                    $row[self::MIN_PARTICIPANTS_NUMBER_KEY],
+                    $row[self::LOCATION_KEY],
+                    $row[self::REPETITIONS_PER_DAY_KEY],
+                    $row[self::DURATION_KEY],
+                    $row[self::FULL_PRICE_KEY],
+                    $row[self::REDUCED_PRICE_KEY],
+                    $this->get_languages($row[self::ITINERARY_CODE_KEY], false)
                 ));
             }
             $to_return .= $table_creator->get_table();
@@ -272,39 +309,39 @@ class UserDataDownloader extends DatabaseConnector
             $table_creator->set_super_header(array("Itinerary"), array(15));
             $table_creator->set_header(array(
                 "Code",
-                "Owner",
-                "Title",
-                "Description",
-                "Beginning Date",
-                "Ending Date",
-                "End of Reservations Date",
-                "Max. Participants",
-                "Min. Participants",
-                "Location",
-                "Repetitions per Day",
-                "Duration",
-                "Full price",
-                "Reduced Price",
-                "Languages"
+                self::OWNER,
+                self::TITLE,
+                self::DESCRIPTION,
+                self::BEGINNING_DATE,
+                self::ENDING_DATE,
+                self::END_OF_RESERVATIONS_DATE,
+                self::MAX_PARTICIPANTS,
+                self::MIN_PARTICIPANTS,
+                self::LOCATION,
+                self::REPETITIONS_PER_DAY,
+                self::DURATION,
+                self::FULL_PRICE,
+                self::REDUCED_PRICE,
+                self::LANGUAGES
             ));
 
             while ($row = $result->fetch_assoc()) {
                 $table_creator->add_row(array(
-                    $row['itinerary_code'],
-                    $row['username'],
-                    $row['title'],
+                    $row[self::ITINERARY_CODE_KEY],
+                    $row[self::USERNAME_KEY],
+                    $row[self::TITLE_KEY],
                     self::OMISSIS,
-                    $row['beginning_date'],
-                    $row['ending_date'],
-                    $row['end_reservations_date'],
-                    $row['maximum_partecipants_number'],
-                    $row['minimum_partecipants_number'],
-                    $row['location'],
-                    $row['repetitions_per_day'],
-                    $row['duration'],
-                    $row['full_price'],
-                    $row['reduced_price'],
-                    $this->get_languages($row['itinerary_code'], false)
+                    $row[self::BEGINNING_DATE_KEY],
+                    $row[self::ENDING_DATE_KEY],
+                    $row[self::END_RESERVATIONS_DATE_KEY],
+                    $row[self::MAX_PARTICIPANTS_NUMBER_KEY],
+                    $row[self::MIN_PARTICIPANTS_NUMBER_KEY],
+                    $row[self::LOCATION_KEY],
+                    $row[self::REPETITIONS_PER_DAY_KEY],
+                    $row[self::DURATION_KEY],
+                    $row[self::FULL_PRICE_KEY],
+                    $row[self::REDUCED_PRICE_KEY],
+                    $this->get_languages($row[self::ITINERARY_CODE_KEY], false)
                 ));
             }
 
@@ -390,7 +427,7 @@ class UserDataDownloader extends DatabaseConnector
     private function get_languages(string $id, bool $user_languages = true): string
     {
         $languages = "";
-        if ($statement = $this->connection->prepare("SELECT ul.language_code, l.language_name FROM " . ($user_languages ? "user_language" : "itinerary_language") . " ul, language l WHERE l.language_code = ul.language_code AND " . ($user_languages ? "username" : "itinerary_code") . " = ?")) {
+        if ($statement = $this->connection->prepare("SELECT ul.language_code, l.language_name FROM " . ($user_languages ? "user_language" : "itinerary_language") . " ul, language l WHERE l.language_code = ul.language_code AND " . ($user_languages ? self::USERNAME_KEY : self::ITINERARY_CODE_KEY) . " = ?")) {
             $statement->bind_param("s", $id);
             $statement->execute();
             $statement->bind_result($code, $name);
@@ -487,7 +524,7 @@ class UserDataDownloader extends DatabaseConnector
      */
     private function get_reports(bool $done_by_logged_user): string
     {
-        $id = $done_by_logged_user ? "Sent" : "Received";
+        $id = $done_by_logged_user ? self::SENT : self::RECEIVED;
         $to_return = "<h3 class='subsectionHead' id='" . strtolower($id) . "-reports'>" . $id . " Reports</h3>";
 
         $statement = $this->connection->prepare("SELECT r.report_code, r.username, r.reported_user, rd.report_body, rd.state, rd.object FROM report r, report_details rd WHERE r.report_code = rd.report_code AND " . ($done_by_logged_user ? "username = ?" : "reported_user = ?"));
@@ -523,7 +560,7 @@ class UserDataDownloader extends DatabaseConnector
      */
     private function get_user_reviews(bool $done_by_logged_user): string
     {
-        $to_return = "<h4 class='subsubsectionHead' id='" . ($done_by_logged_user ? "sent" : "received") . "-user-reviews'>" . ($done_by_logged_user ? "Sent" : "Received") . " User Reviews</h4>";
+        $to_return = "<h4 class='subsubsectionHead' id='" . ($done_by_logged_user ? self::SENT : self::RECEIVED) . "-user-reviews'>" . ($done_by_logged_user ? self::SENT : self::RECEIVED) . " User Reviews</h4>";
 
         $statement = $this->connection->prepare("SELECT username, reviewed_user, feedback, description FROM user_review WHERE " . ($done_by_logged_user ? "username = ?" : "reviewed_user = ?"));
         if ($statement) {

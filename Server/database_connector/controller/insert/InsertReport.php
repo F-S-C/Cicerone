@@ -24,7 +24,7 @@ class InsertReport extends InsertConnector
 
         $result = json_decode(parent::get_content(), true);
         if (!$result[self::RESULT_KEY]) {
-            $result["error"] = $result["error"] . " (in main)";
+            $result[self::ERROR_KEY] = $result[self::ERROR_KEY] . " (in main)";
             die(json_encode($result));
         }
 
@@ -41,7 +41,7 @@ class InsertReport extends InsertConnector
             $prepared = $this->connection->prepare("DELETE FROM report WHERE report_code = ?");
             $prepared->bind_param("i", $id);
             $prepared->execute();
-            $result["error"] = $result["error"] . " (in details)";
+            $result[self::ERROR_KEY] = $result[self::ERROR_KEY] . " (in details)";
             die(json_encode($result));
         }
 
