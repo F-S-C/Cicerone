@@ -222,7 +222,7 @@
     <string name="doc_not_exists">Documento: Nessun documento trovato.</string>
     <string name="no_create_itinerary">Non hai creato nessun itinerario.</string>
     <string name="review_itinerary">Recensioni itinerario</string>
-    <string name="participators_list">Participators list</string>
+    <string name="participants_list">Lista partecipanti</string>
     <string name="add_review">Scrivi recensione</string>
     <string name="updateReview">Aggiorna recensione</string>
     <string name="review_dialog_message">Inserire di seguito tutti i dettagli necessari a effettuare una recensione. Tutti i campi sono obbligatori.</string>

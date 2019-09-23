@@ -82,7 +82,7 @@ public class ItineraryParticipantsDialogFragment extends DialogFragment {
         }
         builder.setView(view);
 
-        builder.setTitle(getActivity().getString(R.string.participators_list));
+        builder.setTitle(getActivity().getString(R.string.participants_list));
         builder.setNeutralButton(getActivity().getString(R.string.ok), null);
 
         return builder.create();

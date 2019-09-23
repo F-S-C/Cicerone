@@ -403,7 +403,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:onClick="participatorsList"
-                    android:text="@string/participators_list"
+                    android:text="@string/participants_list"
                     android:textColor="@color/colorWhite" />
 
                 <LinearLayout

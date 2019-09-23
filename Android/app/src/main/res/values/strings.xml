@@ -245,7 +245,7 @@
     <string name="doc_not_exists">Document: No documents found.</string>
     <string name="no_create_itinerary">You have not created any itinerary.</string>
     <string name="review_itinerary">Itinerary\'s reviews</string>
-    <string name="participators_list">Partecipators list</string>
+    <string name="participants_list">Participants\' list</string>
     <string name="add_review">Add review</string>
     <string name="updateReview">Update review</string>
     <string name="review_dialog_message">Please insert all the requested details to make for a review. All fields are required.</string>
