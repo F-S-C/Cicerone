@@ -150,12 +150,12 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="@string/add_review" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/reviewUserList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/material_card_spacing" />
         </LinearLayout>
 

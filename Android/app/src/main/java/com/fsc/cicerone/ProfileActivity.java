@@ -17,32 +17,24 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.ItineraryReview;
-import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,7 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
         userType = findViewById(R.id.user_type_profile);
         star = findViewById(R.id.avg_feedback);
         buttReview = findViewById(R.id.insertUserReview);
-        recyclerView = findViewById(R.id.reviewList);
+        recyclerView = findViewById(R.id.reviewUserList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         params = new HashMap<>();
@@ -115,8 +107,6 @@ public class ProfileActivity extends AppCompatActivity {
         getData(reviewed_user);
         //set avg feedback user
         avgReviewUser(reviewed_user);
-        //set recycler review list
-        requestDataForRecycleView(reviewed_user);
 
         if(!AccountManager.isLogged()){
             buttReview.setEnabled(false);
@@ -127,6 +117,9 @@ public class ProfileActivity extends AppCompatActivity {
             params.put("username",AccountManager.getCurrentLoggedUser().getUsername());
             permissionReview(params);
         }
+        //set recycler review list
+        requestDataForRecycleView(params, recyclerView);
+
 
     }
 
@@ -203,7 +196,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review_itinerary, null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
         descriptionReview = view.findViewById(R.id.objectReview);
         feedbackReview = view.findViewById(R.id.feedbackReview);
@@ -224,7 +217,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         Toast.makeText(this, ProfileActivity.this.getString(R.string.updated_review),
                                                 Toast.LENGTH_SHORT).show();
                                         isReviewed(params);
-                                        requestDataForRecycleView(reviewed_user);
+                                        requestDataForRecycleView(params,recyclerView);
                                     }
                                 })
                                 .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
@@ -242,7 +235,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     Toast.makeText(this, ProfileActivity.this.getString(R.string.deleted_review),
                                             Toast.LENGTH_SHORT).show();
                                     isReviewed(params);
-                                    requestDataForRecycleView(reviewed_user);
+                                    requestDataForRecycleView(params,recyclerView);
                                 }
                             })
                             .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
@@ -253,7 +246,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void addReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review_itinerary, null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
         descriptionReview = view.findViewById(R.id.objectReview);
         feedbackReview = view.findViewById(R.id.feedbackReview);
@@ -276,7 +269,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         Toast.makeText(this, ProfileActivity.this.getString(R.string.added_review),
                                                 Toast.LENGTH_SHORT).show();
                                     isReviewed(params);
-                                    requestDataForRecycleView(reviewed_user);
+                                    requestDataForRecycleView(params, recyclerView);
                                 })
                                 .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
                                 .build();
@@ -291,14 +284,14 @@ public class ProfileActivity extends AppCompatActivity {
         return !descriptionReview.getText().toString().equals("") && feedbackReview.getRating() > 0;
     }
 
-    private void requestDataForRecycleView(User reviewed_user) {
+    private void requestDataForRecycleView(Map<String, Object> review, RecyclerView recyclerView) {
         SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(this)
                 .setOnEndConnectionListener(list -> {
                     adapter = new ReviewAdapter(this, list);
                     recyclerView.setAdapter(adapter);
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromObject(reviewed_user))
+                .setObjectToSend(review)
                 .build();
         connector.execute();
     }
