@@ -29,10 +29,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -99,7 +97,6 @@ public class ItineraryManagement extends AppCompatActivity {
         rPrice = findViewById(R.id.rPrice);
         Button deleteItinerary = findViewById(R.id.deleteItinerary);
         FloatingActionButton updateItinerary = findViewById(R.id.editItinerary);
-        // Button participatorBtn = findViewById(R.id.participatorsBtn);
 
         RecyclerView recyclerView = findViewById(R.id.reviewList);
         recyclerView.setNestedScrollingEnabled(false);

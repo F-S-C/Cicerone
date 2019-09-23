@@ -17,7 +17,6 @@
 package com.fsc.cicerone;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -55,10 +54,9 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
         supportActionBar.setTitle(getString(R.string.report_details_title));
-        if(supportActionBar!=null){
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowHomeEnabled(true);
-        }
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
+        
         setContentView(R.layout.activity_admin_report_details);
         takeChargeReport = findViewById(R.id.take_charge_report);
         closeReport = findViewById(R.id.close_report);

@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class WishlistFragment extends Fragment implements Refreshable{
+public class WishlistFragment extends Fragment implements Refreshable {
 
     private ItineraryAdapter adapter;
     private TextView numberOfItinerariesTextView;
@@ -90,18 +90,17 @@ public class WishlistFragment extends Fragment implements Refreshable{
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED) {
-            if (resultCode == Activity.RESULT_OK)
-                refresh();
+        if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED && resultCode == Activity.RESULT_OK) {
+            refresh();
         }
     }
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         WishlistManager.getWishlist(getActivity(), () -> {
-            if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         }, list -> {
-            if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
 
             List<Itinerary> itineraryList = new ArrayList<>(list.size());
             for (Wishlist item : list) {

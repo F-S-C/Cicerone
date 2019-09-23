@@ -17,7 +17,6 @@
 package app_connector;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
@@ -68,29 +67,29 @@ public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnecto
         super(builder);
     }
 
-    public static class Builder<BuilderType extends BusinessEntity> extends DatabaseConnector.Builder<BuilderType> {
+    public static class Builder<B extends BusinessEntity> extends DatabaseConnector.Builder<B> {
 
-        public Builder(String url, BusinessEntityBuilder<BuilderType> builder) {
+        public Builder(String url, BusinessEntityBuilder<B> builder) {
             super(url, builder);
         }
 
         @Override
-        public Builder<BuilderType> setOnStartConnectionListener(OnStartConnectionListener listener) {
-            return (Builder<BuilderType>) super.setOnStartConnectionListener(listener);
+        public Builder<B> setOnStartConnectionListener(OnStartConnectionListener listener) {
+            return (Builder<B>) super.setOnStartConnectionListener(listener);
         }
 
         @Override
-        public Builder<BuilderType> setOnEndConnectionListener(OnEndConnectionListener<BuilderType> onEndConnectionListener) {
-            return (Builder<BuilderType>) super.setOnEndConnectionListener(onEndConnectionListener);
+        public Builder<B> setOnEndConnectionListener(OnEndConnectionListener<B> onEndConnectionListener) {
+            return (Builder<B>) super.setOnEndConnectionListener(onEndConnectionListener);
         }
 
         @Override
-        public Builder<BuilderType> setContext(Activity context) {
-            return (Builder<BuilderType>) super.setContext(context);
+        public Builder<B> setContext(Activity context) {
+            return (Builder<B>) super.setContext(context);
         }
 
         @Override
-        public GetDataConnector<BuilderType> build() {
+        public GetDataConnector<B> build() {
             return new GetDataConnector<>(this);
         }
     }

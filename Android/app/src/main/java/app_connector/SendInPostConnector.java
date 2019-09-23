@@ -127,9 +127,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      * @return A string containing the URL query.
      */
     private String urlQueryFromJSONObject(Map<String, Object> list) {
-        if (list == null)
-            return "";
-        else if (list.isEmpty())
+        if (list == null || list.isEmpty())
             return "";
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -189,7 +187,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
         } else if (entity instanceof Wishlist) {
             mapData.put(USERNAME_KEY, ((Wishlist) entity).getUser().getUsername());
             mapData.put(ITINERARY_IN_WISHLIST_KEY, ((Wishlist) entity).getItinerary().getCode());
-        } // else if(entity instance of OtherTypes) ...
+        }
 
         return mapData;
     }
@@ -215,35 +213,35 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
         this.objectToSend = builder.objectToSend;
     }
 
-    public static class Builder<BuilderType extends BusinessEntity> extends DatabaseConnector.Builder<BuilderType> {
+    public static class Builder<B extends BusinessEntity> extends DatabaseConnector.Builder<B> {
         private Map<String, Object> objectToSend;
 
-        public Builder(String url, BusinessEntityBuilder<BuilderType> builder) {
+        public Builder(String url, BusinessEntityBuilder<B> builder) {
             super(url, builder);
         }
 
         @Override
-        public Builder<BuilderType> setOnStartConnectionListener(OnStartConnectionListener listener) {
-            return (Builder<BuilderType>) super.setOnStartConnectionListener(listener);
+        public Builder<B> setOnStartConnectionListener(OnStartConnectionListener listener) {
+            return (Builder<B>) super.setOnStartConnectionListener(listener);
         }
 
         @Override
-        public Builder<BuilderType> setOnEndConnectionListener(OnEndConnectionListener<BuilderType> listener) {
-            return (Builder<BuilderType>) super.setOnEndConnectionListener(listener);
+        public Builder<B> setOnEndConnectionListener(OnEndConnectionListener<B> listener) {
+            return (Builder<B>) super.setOnEndConnectionListener(listener);
         }
 
         @Override
-        public Builder<BuilderType> setContext(Activity context) {
-            return (Builder<BuilderType>) super.setContext(context);
+        public Builder<B> setContext(Activity context) {
+            return (Builder<B>) super.setContext(context);
         }
 
-        public Builder<BuilderType> setObjectToSend(Map<String, Object> objectToSend) {
+        public Builder<B> setObjectToSend(Map<String, Object> objectToSend) {
             this.objectToSend = objectToSend;
             return this;
         }
 
         @Override
-        public SendInPostConnector<BuilderType> build() {
+        public SendInPostConnector<B> build() {
             return new SendInPostConnector<>(this);
         }
     }

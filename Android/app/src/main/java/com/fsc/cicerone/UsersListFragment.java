@@ -18,7 +18,6 @@ package com.fsc.cicerone;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,6 @@ public class UsersListFragment extends Fragment implements Refreshable {
     private UserListAdapter adapter;
     private RecyclerView recyclerView;
     private Itinerary itinerary;
-    Map<String, Object> parameters;
 
 
     public UsersListFragment() {
@@ -76,8 +74,7 @@ public class UsersListFragment extends Fragment implements Refreshable {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-        if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE)
-        {
+        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE) {
             String s = Objects.requireNonNull(bundle).getString("itinerary");
             try {
                 itinerary = new Itinerary(new JSONObject(s));
@@ -85,12 +82,8 @@ public class UsersListFragment extends Fragment implements Refreshable {
                 e.printStackTrace();
             }
 
-            parameters = new HashMap<>(1);
-            parameters.put("booked_itinerary",itinerary.getCode());
-            getParticipators(parameters);
-        }
-        else
-        {
+            getParticipators();
+        } else {
             refresh();
         }
 
@@ -119,15 +112,17 @@ public class UsersListFragment extends Fragment implements Refreshable {
     }
 
 
-    public void getParticipators( Map<String, Object> parameters) {
+    public void getParticipators() {
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("booked_itinerary", itinerary.getCode());
+
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
-        })
+                })
                 .setOnEndConnectionListener(list -> {
                     List<User> participators = new LinkedList<>();
-                    for(Reservation reservation : list )
-                    {
+                    for (Reservation reservation : list) {
                         participators.add(reservation.getClient());
                     }
                     adapter = new UserListAdapter(getActivity(), participators);

@@ -71,7 +71,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText docType;
     private EditText expDate;
     private Spinner sex;
-    private ViewFlipper viewFlipper;
     private NachoTextView nachoTextView;
     private static final Pattern LETTERS_NUMBERS = Pattern.compile("[a-zA-Z0-9]+");
     private static final Pattern LETTERS_AND_SPACES = Pattern.compile("[a-zA-Z ]+");
@@ -86,7 +85,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         LanguageManager languages = new LanguageManager();
 
-        viewFlipper = findViewById(R.id.registrationView);
+        ViewFlipper viewFlipper = findViewById(R.id.registrationView);
         username = findViewById(R.id.registrationUsername);
         email = findViewById(R.id.registrationEmail);
         name = findViewById(R.id.registrationName);

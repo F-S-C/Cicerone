@@ -46,7 +46,6 @@ import app_connector.SendInPostConnector;
 
 public class AdminItineraryDetails extends AppCompatActivity {
 
-    private TextView itineraryTitle;
     private ImageView image;
     private TextView description;
     private TextView bDate;

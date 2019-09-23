@@ -59,10 +59,6 @@ public class ItineraryFragment extends Fragment {
     private Activity context;
     RecyclerView.Adapter adapter;
     private RecyclerView.Adapter adapter2;
-    private Button newItinerary;
-    private Button participations;
-    private Button myItineraries;
-    private RecyclerView itineraryList;
     private TextView message;
 
     /**
@@ -79,19 +75,18 @@ public class ItineraryFragment extends Fragment {
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        newItinerary = view.findViewById(R.id.newItinerary);
-        participations = view.findViewById(R.id.partecipations);
-        myItineraries = view.findViewById(R.id.myitineraries);
-        itineraryList = view.findViewById(R.id.itinerary_list);
-        // itineraryList = view.findViewById(R.id.itinerary_list);
+        Button newItineraryButton = view.findViewById(R.id.newItinerary);
+        Button participationsButton = view.findViewById(R.id.partecipations);
+        Button myItinerariesButton = view.findViewById(R.id.myitineraries);
+        RecyclerView itineraryList = view.findViewById(R.id.itinerary_list);
         message = view.findViewById(R.id.noItineraries);
 
         final Map<String, Object> parameters = SendInPostConnector
                 .paramsFromObject(currentLoggedUser.getCredentials());
         parameters.remove("password");
         if (currentLoggedUser.getUserType() == UserType.CICERONE) {
-            participations.setVisibility(View.VISIBLE);
-            myItineraries.setVisibility(View.VISIBLE);
+            participationsButton.setVisibility(View.VISIBLE);
+            myItinerariesButton.setVisibility(View.VISIBLE);
         }
 
         // Set up the RecyclerView for Globetrotter's participations
@@ -100,36 +95,36 @@ public class ItineraryFragment extends Fragment {
                 new DividerItemDecoration(itineraryList.getContext(), DividerItemDecoration.VERTICAL));
         getParticipations(parameters, itineraryList);
 
-        myItineraries.setOnClickListener(v -> {
+        myItinerariesButton.setOnClickListener(v -> {
             // disable button (Material Style)
-            participations.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-            participations.setTextColor(ContextCompat.getColor(context,
-                    participations.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
+            participationsButton.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+            participationsButton.setTextColor(ContextCompat.getColor(context,
+                    participationsButton.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             // enable button (Outlined Style)
-            myItineraries.setBackgroundColor(ContextCompat.getColor(context,
-                    myItineraries.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
-            myItineraries.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
+            myItinerariesButton.setBackgroundColor(ContextCompat.getColor(context,
+                    myItinerariesButton.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
+            myItinerariesButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
             getMyItineraries(parameters, itineraryList);
             message.setVisibility(View.GONE);
-            newItinerary.setVisibility(View.VISIBLE);
+            newItineraryButton.setVisibility(View.VISIBLE);
 
         });
 
-        participations.setOnClickListener(v -> {
+        participationsButton.setOnClickListener(v -> {
             // disable button (Material Style)
-            myItineraries.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-            myItineraries.setTextColor(ContextCompat.getColor(context,
-                    myItineraries.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
+            myItinerariesButton.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+            myItinerariesButton.setTextColor(ContextCompat.getColor(context,
+                    myItinerariesButton.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             // enable button (Outlined Style)
-            participations.setBackgroundColor(ContextCompat.getColor(context,
+            participationsButton.setBackgroundColor(ContextCompat.getColor(context,
                     itineraryList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
-            participations.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
+            participationsButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
             getParticipations(parameters, itineraryList);
-            newItinerary.setVisibility(View.GONE);
+            newItineraryButton.setVisibility(View.GONE);
 
         });
 
-        newItinerary.setOnClickListener(v -> {
+        newItineraryButton.setOnClickListener(v -> {
             Intent i = new Intent().setClass(getActivity(), ItineraryCreation.class);
             startActivity(i);
         });

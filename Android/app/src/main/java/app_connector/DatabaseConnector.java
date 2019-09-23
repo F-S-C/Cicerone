@@ -150,39 +150,39 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
         this.onStartConnectionListener = builder.onStartConnectionListener;
         this.onEndConnectionListener = builder.onEndConnectionListener;
         this.fileUrl = builder.url;
-        this.builder = builder.builder;
+        this.builder = builder.businessEntityBuilder;
     }
 
-    public static abstract class Builder<BuilderType extends BusinessEntity> {
+    public abstract static class Builder<B extends BusinessEntity> {
         private final String url; // The URL of the server-side script
 
         private OnStartConnectionListener onStartConnectionListener = null;
-        private OnEndConnectionListener<BuilderType> onEndConnectionListener = null;
+        private OnEndConnectionListener<B> onEndConnectionListener = null;
 
-        private final BusinessEntityBuilder<BuilderType> builder;
+        private final BusinessEntityBuilder<B> businessEntityBuilder;
         private WeakReference<Activity> context = null;
 
-        Builder(String url, BusinessEntityBuilder<BuilderType> builder) {
+        Builder(String url, BusinessEntityBuilder<B> businessEntityBuilder) {
             this.url = url;
-            this.builder = builder;
+            this.businessEntityBuilder = businessEntityBuilder;
         }
 
-        public Builder<BuilderType> setOnStartConnectionListener(OnStartConnectionListener onStartConnectionListener) {
+        public Builder<B> setOnStartConnectionListener(OnStartConnectionListener onStartConnectionListener) {
             this.onStartConnectionListener = onStartConnectionListener;
             return this;
         }
 
-        public Builder<BuilderType> setOnEndConnectionListener(OnEndConnectionListener<BuilderType> onEndConnectionListener) {
+        public Builder<B> setOnEndConnectionListener(OnEndConnectionListener<B> onEndConnectionListener) {
             this.onEndConnectionListener = onEndConnectionListener;
             return this;
         }
 
-        public Builder<BuilderType> setContext(Activity context) {
+        public Builder<B> setContext(Activity context) {
             this.context = context != null ? new WeakReference<>(context) : null;
             return this;
         }
 
-        public abstract DatabaseConnector<BuilderType> build();
+        public abstract DatabaseConnector<B> build();
 
     }
 }

@@ -243,8 +243,8 @@ public class ItineraryDetails extends AppCompatActivity {
                 .setOnEndConnectionListener(list -> {
                     if (!list.isEmpty()) {
                         int sum = 0;
-                        for (ItineraryReview itineraryReview : list) {
-                            sum += itineraryReview.getFeedback();
+                        for (ItineraryReview review : list) {
+                            sum += review.getFeedback();
                         }
                         float total = (float) sum / list.size();
                         avgReview.setRating(total);

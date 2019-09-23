@@ -45,16 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private final Fragment discoverFragment = new DiscoverFragment();
 
     /**
-     * The wishlist fragment (third tab).
-     */
-    private WishlistFragment wishlistFragment;
-
-    /**
-     * The profile fragment (fourth tab).
-     */
-    private Fragment profileFragment;
-
-    /**
      * The fragment manager used to load, unload, show and hide the fragments.
      */
     private final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -97,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        profileFragment = AccountManager.isLogged() ? new AccountDetails() : null;
-        wishlistFragment = AccountManager.isLogged() ? new WishlistFragment() : null;
+        Fragment profileFragment = AccountManager.isLogged() ? new AccountDetails() : null;
+        WishlistFragment wishlistFragment = AccountManager.isLogged() ? new WishlistFragment() : null;
 
         navView.setOnNavigationItemSelectedListener(item -> {
             ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
@@ -113,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     if (AccountManager.isLogged()) {
                         changeCurrentFragment(wishlistFragment);
                         supportActionBar.setTitle(getString(R.string.wishlist));
-                        wishlistFragment.refresh();
+                        if (wishlistFragment != null) wishlistFragment.refresh();
                     } else {
                         Toast.makeText(this, R.string.access_denied, Toast.LENGTH_SHORT).show();
                     }

@@ -17,10 +17,9 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView descriptionReview;
     private RatingBar feedbackReview;
 
-    private User reviewed_user;
+    private User reviewedUser;
     private Map<String, Object> params;
     private UserReview userReview;
 
@@ -98,24 +97,24 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         Bundle bundle =  Objects.requireNonNull(getIntent().getExtras());
-        reviewed_user = new User();
+        reviewedUser = new User();
         try {
-            reviewed_user = new User(new JSONObject(bundle.getString("reviewed_user")));
+            reviewedUser = new User(new JSONObject(bundle.getString("reviewed_user")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         //set TextView data user
-        getData(reviewed_user);
+        getData(reviewedUser);
         //set avg feedback user
-        avgReviewUser(reviewed_user);
+        avgReviewUser(reviewedUser);
 
         if(!AccountManager.isLogged()){
             buttReview.setEnabled(false);
         }
 
         if(AccountManager.isLogged()){
-            params.put("reviewed_user", reviewed_user.getUsername());
+            params.put("reviewed_user", reviewedUser.getUsername());
             params.put("username",AccountManager.getCurrentLoggedUser().getUsername());
             permissionReview(params);
         }
@@ -125,22 +124,22 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private void getData(User reviewed_user) {
+    private void getData(User reviewedUser) {
         final String LABEL_AND_CONTENT = "%s%s %s";
-        username.setText(String.format(getString(R.string.username_display), reviewed_user.getUsername()));
-        name.setText(String.format(LABEL_AND_CONTENT, getString(R.string.name), getString(R.string.separator), reviewed_user.getName()));
-        surname.setText(String.format(LABEL_AND_CONTENT, getString(R.string.surname), getString(R.string.separator), reviewed_user.getSurname()));
-        email.setText(String.format(LABEL_AND_CONTENT, getString(R.string.email), getString(R.string.separator), reviewed_user.getEmail()));
-        if (reviewed_user.getUserType() == UserType.CICERONE) {
+        username.setText(String.format(getString(R.string.username_display), reviewedUser.getUsername()));
+        name.setText(String.format(LABEL_AND_CONTENT, getString(R.string.name), getString(R.string.separator), reviewedUser.getName()));
+        surname.setText(String.format(LABEL_AND_CONTENT, getString(R.string.surname), getString(R.string.separator), reviewedUser.getSurname()));
+        email.setText(String.format(LABEL_AND_CONTENT, getString(R.string.email), getString(R.string.separator), reviewedUser.getEmail()));
+        if (reviewedUser.getUserType() == UserType.CICERONE) {
             userType.setText(R.string.user_type_cicerone);
         } else {
             userType.setText(R.string.user_type_globetrotter);
         }
         ImageView imageView = findViewById(R.id.image_profile);
-        imageView.setImageResource(reviewed_user.getSex().getAvatarResource());
+        imageView.setImageResource(reviewedUser.getSex().getAvatarResource());
     }
 
-    private void avgReviewUser(User review_user){
+    private void avgReviewUser(User reviewUser){
 
         SendInPostConnector<UserReview> connectorReview = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(this)
@@ -151,7 +150,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                     star.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromObject(review_user))
+                .setObjectToSend(SendInPostConnector.paramsFromObject(reviewUser))
                 .build();
         connectorReview.execute();
 
@@ -187,7 +186,7 @@ public class ProfileActivity extends AppCompatActivity {
                         buttReview.setOnClickListener(view -> ProfileActivity.this.updateReview());
 
                     } else {
-                        userReview = new UserReview.Builder(AccountManager.getCurrentLoggedUser(), reviewed_user).build();
+                        userReview = new UserReview.Builder(AccountManager.getCurrentLoggedUser(), reviewedUser).build();
                         buttReview.setEnabled(true);
                         buttReview.setText(getString(R.string.add_review));
                         buttReview.setOnClickListener(view -> ProfileActivity.this.addReview());

@@ -102,11 +102,6 @@ public class ItineraryParticipantsDialogFragment extends DialogFragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     private void getParticipators() {
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("booked_itinerary", itinerary.getCode());

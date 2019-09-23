@@ -50,12 +50,9 @@ public class SplashActivity extends AppCompatActivity {
                     AccountManager.attemptLogin(this, currentLoggedUser.getString("username"), currentLoggedUser.getString("password"), () -> {
                         // Do nothing
                     }, (result, success) -> {
-                        Intent intent = new Intent(SplashActivity.this,
-                                (success) ?
-                                        (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) ?
-                                                activityToOpenIfLoggedAdmin :
-                                                activityToOpenIfLogged :
-                                        activityToOpenIfNotLogged);
+                        Class targetLoggedActivity = (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) ?
+                                activityToOpenIfLoggedAdmin : activityToOpenIfLogged;
+                        Intent intent = new Intent(SplashActivity.this, (success) ? targetLoggedActivity : activityToOpenIfNotLogged);
                         startActivity(intent);
                         finish();
                     });

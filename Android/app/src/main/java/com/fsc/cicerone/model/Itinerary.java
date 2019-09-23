@@ -16,8 +16,6 @@
 
 package com.fsc.cicerone.model;
 
-import androidx.annotation.NonNull;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

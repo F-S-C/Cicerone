@@ -16,7 +16,6 @@
 
 package com.fsc.cicerone;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

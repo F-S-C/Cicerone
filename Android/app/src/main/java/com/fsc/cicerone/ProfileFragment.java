@@ -89,7 +89,6 @@ public class ProfileFragment extends Fragment {
     private TextInputEditText documentType;
     private TextInputEditText documentExpiryDate;
     private Button switchButton;
-    private Button modifyButton;
     private Calendar birthCalendar;
     private Calendar expCalendar = Calendar.getInstance(TimeZone.getDefault());
     private Spinner sexList;
@@ -124,7 +123,7 @@ public class ProfileFragment extends Fragment {
         documentExpiryDate = view.findViewById(R.id.documentExpiryDateText);
         Button logoutButton = view.findViewById(R.id.logout);
         switchButton = view.findViewById(R.id.switch_to_cicerone);
-        modifyButton = view.findViewById(R.id.modifyButton);
+        Button modifyButton = view.findViewById(R.id.modifyButton);
         sexList = view.findViewById(R.id.sexList);
         Button changePaswButton = view.findViewById(R.id.change_passw_btn);
         birthCalendar = toCalendar(AccountManager.getCurrentLoggedUser().getBirthDate());

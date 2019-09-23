@@ -129,8 +129,7 @@ public class ReportFragment extends Fragment implements Refreshable {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED) {
-            if (resultCode == Activity.RESULT_OK)
+        if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED && resultCode == Activity.RESULT_OK) {
                 refresh();
         }
     }

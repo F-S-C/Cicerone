@@ -21,8 +21,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.fsc.cicerone.ItineraryDetails;
-import com.fsc.cicerone.R;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;

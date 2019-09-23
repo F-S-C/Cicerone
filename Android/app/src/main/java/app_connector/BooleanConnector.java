@@ -17,7 +17,6 @@
 package app_connector;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;

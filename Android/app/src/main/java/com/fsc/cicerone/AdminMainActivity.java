@@ -63,9 +63,6 @@ public class AdminMainActivity extends AppCompatActivity {
      */
     private BottomNavigationView navView;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
-
-
     /**
      * Create the activity and load the layout.
      *
@@ -82,7 +79,7 @@ public class AdminMainActivity extends AppCompatActivity {
         ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
         supportActionBar.setTitle(getString(R.string.active_itineraries));
 
-        swipeRefreshLayout = findViewById(R.id.admin_main_swipe_refresh);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.admin_main_swipe_refresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (activeFragment instanceof Refreshable) {
