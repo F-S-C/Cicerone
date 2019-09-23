@@ -16,20 +16,18 @@
 
 package com.fsc.cicerone;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.UserListAdapter;
 import com.fsc.cicerone.manager.AccountManager;
@@ -38,6 +36,7 @@ import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,34 +48,29 @@ import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
-import app_connector.GetDataConnector;
 import app_connector.SendInPostConnector;
 
-public class UsersListFragment extends Fragment implements Refreshable {
+public class ItineraryParticipantsDialogFragment extends DialogFragment {
 
     private UserListAdapter adapter;
     private RecyclerView recyclerView;
     private Itinerary itinerary;
-    Map<String, Object> parameters;
 
-
-    public UsersListFragment() {
-    }
-
+    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Context context = Objects.requireNonNull(getActivity());
-        View view = inflater.inflate(R.layout.fragment_users_list, container, false);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.fragment_users_list, null);
         Bundle bundle = getArguments();
 
         recyclerView = view.findViewById(R.id.user_list);
-        recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-        if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE)
-        {
+        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE) {
             String s = Objects.requireNonNull(bundle).getString("itinerary");
             try {
                 itinerary = new Itinerary(new JSONObject(s));
@@ -84,49 +78,46 @@ public class UsersListFragment extends Fragment implements Refreshable {
                 e.printStackTrace();
             }
 
-            parameters = new HashMap<>(1);
-            parameters.put("booked_itinerary",itinerary.getCode());
-            getParticipators(parameters);
+            getParticipators();
         }
-        else
-        {
-            refresh();
-        }
+        builder.setView(view);
 
-        return view;
+        builder.setTitle(getActivity().getString(R.string.participators_list));
+        builder.setNeutralButton(getActivity().getString(R.string.ok), null);
+
+        return builder.create();
+    }
+
+    public ItineraryParticipantsDialogFragment() {
+        // Required empty constructor
+    }
+
+    public static ItineraryParticipantsDialogFragment newInstance(Itinerary itinerary) {
+
+        Bundle args = new Bundle();
+        args.putString("itinerary", itinerary.toString());
+
+        ItineraryParticipantsDialogFragment fragment = new ItineraryParticipantsDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
-    public void refresh() {
-        refresh(null);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
-                .setContext(getActivity())
-                .setOnStartConnectionListener(() -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-                })
-                .setOnEndConnectionListener(list -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                    adapter = new UserListAdapter(getActivity(), list);
-                    recyclerView.setAdapter(adapter);
-                })
-                .build();
-        connector.execute();
-    }
+    private void getParticipators() {
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("booked_itinerary", itinerary.getCode());
 
-
-    public void getParticipators( Map<String, Object> parameters) {
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
-        })
+                })
                 .setOnEndConnectionListener(list -> {
                     List<User> participators = new LinkedList<>();
-                    for(Reservation reservation : list )
-                    {
+                    for (Reservation reservation : list) {
                         participators.add(reservation.getClient());
                     }
                     adapter = new UserListAdapter(getActivity(), participators);

@@ -395,17 +395,6 @@
                     android:textColor="@color/colorWhite" />
 
                 <Button
-                    android:id="@+id/editItinerary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/material_card_spacing"
-                    android:background="@drawable/primary_button_style"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="@string/edit_itinerary"
-                    android:textColor="@color/colorWhite" />
-
-                <Button
                     android:id="@+id/participatorsBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -463,5 +452,17 @@
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editItinerary"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@drawable/ic_mode_edit_black_24dp"
+        app:tint="@color/colorWhite" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
