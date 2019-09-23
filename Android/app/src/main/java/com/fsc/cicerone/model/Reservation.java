@@ -180,6 +180,8 @@ public class Reservation extends BusinessEntity {
             Log.d(ERROR_TAG, e.getMessage());
             this.confirmationDate = null;
         }
+
+        total = numberOfAdults * itinerary.getFullPrice() + numberOfChildren * itinerary.getReducedPrice();
     }
 
     private Reservation(Builder builder) {
