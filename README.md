@@ -75,6 +75,22 @@ Cicerone
 
 This project is released under the [**Apache 2.0 License**](https://github.com/F-S-C/Cicerone/blob/master/LICENSE) (see the [`LICENSE`](https://github.com/F-S-C/Cicerone/blob/master/LICENSE) file for more information). So, any use of the source code requires a copyright notice containing the source of the code and its original authors. To show the original authors of the code a notation like `F.S.C. (Alessandro Annese, Andrea Esposito, Graziano Montanaro, Regina Zaccaria)` is preferred (it can be used another notation where are shown _both_ the group name _and_ its components).
 
+```
+Copyright 2019 FSC - Five Students of Computer Science
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
 <!-- ### Used Tools and Libraries -->
 
 <!-- - [Tool/Library](tool-website) ([License](link-to-license)) -->
