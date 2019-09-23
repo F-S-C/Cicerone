@@ -94,6 +94,9 @@ public class AccountDetails extends Fragment implements Refreshable {
                     default:
                         break;
                 }
+                if (fragment instanceof NestedRecyclerFragment) {
+                    ((NestedRecyclerFragment) fragment).setNestedScrollingEnabled(true);
+                }
                 FragmentManager fm = Objects.requireNonNull(getFragmentManager());
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.frame, fragment);

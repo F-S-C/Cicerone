@@ -50,7 +50,7 @@ import app_connector.SendInPostConnector;
 /**
  * Class that contains the elements of the TAB Report on the account details page.
  */
-public class ReportFragment extends Fragment implements Refreshable {
+public class ReportFragment extends NestedRecyclerFragment implements Refreshable {
 
     public Activity context;
     RecyclerView.Adapter adapter;
@@ -76,7 +76,6 @@ public class ReportFragment extends Fragment implements Refreshable {
         context = Objects.requireNonNull(getActivity());
 
         recyclerView = view.findViewById(R.id.report_list);
-        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         refresh();

@@ -442,9 +442,7 @@ public class ItineraryDetails extends AppCompatActivity {
                     isReserved();
                     Toast.makeText(ItineraryDetails.this, R.string.reservation_added, Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton(R.string.no, (dialog, id) -> {
-                    // Do nothing
-                })
+                .setNegativeButton(R.string.no, null)
                 .show();
     }
 
