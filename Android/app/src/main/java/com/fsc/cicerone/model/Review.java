@@ -30,6 +30,10 @@ public abstract class Review extends BusinessEntity {
 
     static final String ERROR_TAG = "REVIEW_ERROR";
 
+    Review() {
+        // Do nothing
+    }
+
     Review(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }

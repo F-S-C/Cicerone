@@ -25,7 +25,6 @@ public class ItineraryReview extends Review {
     private Itinerary reviewedItinerary;
 
     public ItineraryReview(JSONObject jsonObject) {
-        super(jsonObject);
         loadFromJSONObject(jsonObject);
     }
 

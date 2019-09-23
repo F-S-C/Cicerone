@@ -25,7 +25,6 @@ public class UserReview extends Review {
     private User reviewedUser;
 
     UserReview(JSONObject jsonObject) {
-        super(jsonObject);
         loadFromJSONObject(jsonObject);
     }
 
