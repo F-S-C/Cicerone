@@ -39,7 +39,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/itinerary_description" />
+        android:hint="@string/itinerary_description"
+        android:inputType="textPersonName" />
 
 </LinearLayout>

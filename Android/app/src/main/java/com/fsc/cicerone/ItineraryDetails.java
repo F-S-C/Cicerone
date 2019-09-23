@@ -282,7 +282,6 @@ public class ItineraryDetails extends AppCompatActivity {
                     if (!list.isEmpty()) {
                         review.put("reviewed_itinerary", Objects.requireNonNull(review.get("booked_itinerary")).toString());
                         isReviewed(review);
-
                     }
                 })
                 .setObjectToSend(review)
@@ -314,7 +313,7 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     private void updateReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review_itinerary, null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
         descriptionReview = view.findViewById(R.id.objectReview);
         feedbackReview = view.findViewById(R.id.feedbackReview);
@@ -364,7 +363,7 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     private void addReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review_itinerary, null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
         descriptionReview = view.findViewById(R.id.objectReview);
         feedbackReview = view.findViewById(R.id.feedbackReview);

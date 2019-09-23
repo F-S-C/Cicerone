@@ -78,16 +78,6 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/username_profile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/username"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="30sp" />
-
                         <RatingBar
                             android:id="@+id/avg_feedback"
                             style="@android:style/Widget.Material.RatingBar.Indicator"
@@ -100,6 +90,16 @@
                             android:minHeight="40dip"
                             android:numStars="5"
                             android:textAlignment="center" />
+
+                        <TextView
+                            android:id="@+id/username_profile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/username"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="30sp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -137,30 +137,26 @@
 
             </LinearLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="25dp">
+
+            <Button
+                android:id="@+id/insertUserReview"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_review" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reviewUserList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/reviewFragment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:icon="@drawable/reviews" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/insertReviewFragment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:icon="@drawable/insert" />
-
-            </com.google.android.material.tabs.TabLayout>
-
-            <FrameLayout
-                android:id="@+id/frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorWhite" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/material_card_spacing" />
         </LinearLayout>
 
     </LinearLayout>
