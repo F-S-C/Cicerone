@@ -36,7 +36,7 @@
         <activity android:name=".AdminReportDetailsActivity" />
         <activity android:name=".AdminMainActivity" />
         <activity
-            android:name=".ChangePassword"
+            android:name=".ChangePasswordActivity"
             android:label="@string/change_password" />
         <activity android:name=".WishlistFragment" />
         <activity android:name=".ItineraryUpdate" />

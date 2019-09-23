@@ -218,7 +218,7 @@ public class ProfileFragment extends Fragment {
                 expCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
         changePaswButton.setOnClickListener(view1 -> {
-            Intent i = new Intent(getActivity(), ChangePassword.class);
+            Intent i = new Intent(getActivity(), ChangePasswordActivity.class);
             getActivity().startActivity(i);
         });
 

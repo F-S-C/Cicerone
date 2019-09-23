@@ -45,36 +45,37 @@ public abstract class ItineraryManager {
      *
      * @param title       The title of the new itinerary.
      * @param description The description of the itinerary.
-     * @param bDate       The beginning date of the itinerary (format "yyyy-MM-dd").
-     * @param eDate       The ending date of the itinerary (format "yyyy-MM-dd").
-     * @param rDate       The reservation's ending date of the itinerary (format "yyyy-MM-dd").
+     * @param beginDate       The beginning date of the itinerary (format "yyyy-MM-dd").
+     * @param endDate       The ending date of the itinerary (format "yyyy-MM-dd").
+     * @param endReservationDate       The reservation's ending date of the itinerary (format "yyyy-MM-dd").
      * @param location    The location of the itinerary.
      * @param duration    The duration of the itinerary.
      * @param repetitions The number of repetitions per day if the itinerary.
-     * @param minP        The minimum number of participants.
-     * @param maxP        The maximum number of participants.
-     * @param fPrice      The full price of the itinerary.
-     * @param rPrice      The reduced price of the itinerary.
-     * @param url         The URL of the image of the itinerary.
+     * @param minParticipants        The minimum number of participants.
+     * @param maxParticipants        The maximum number of participants.
+     * @param fullPrice      The full price of the itinerary.
+     * @param reducedPrice      The reduced price of the itinerary.
+     * @param imageUrl         The URL of the image of the itinerary.
      * @return The new itinerary.
      */
-    public static Itinerary uploadItinerary(String title, String description, String bDate, String eDate, String rDate, String location, String duration, int repetitions, int minP, int maxP, float fPrice, float rPrice, String url, BooleanConnector.OnEndConnectionListener result) {
+
+    public static Itinerary uploadItinerary(String title, String description, String beginDate, String endDate, String endReservationDate, String location, String duration, int repetitions, int minParticipants, int maxParticipants, float fullPrice, float reducedPrice, String imageUrl, BooleanConnector.OnEndConnectionListener callback) {
         SimpleDateFormat in = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date beginningDate;
         Date endingDate;
         Date reservationDate;
         try {
-            beginningDate = in.parse(bDate);
+            beginningDate = in.parse(beginDate);
         } catch (ParseException e) {
             beginningDate = new Date();
         }
         try {
-            endingDate = in.parse(eDate);
+            endingDate = in.parse(endDate);
         } catch (ParseException e) {
             endingDate = new Date();
         }
         try {
-            reservationDate = in.parse(rDate);
+            reservationDate = in.parse(endReservationDate);
         } catch (ParseException e) {
             reservationDate = new Date();
         }
@@ -85,19 +86,19 @@ public abstract class ItineraryManager {
                 .beginningDate(beginningDate)
                 .endingDate(endingDate)
                 .reservationDate(reservationDate)
-                .minParticipants(minP)
-                .maxParticipants(maxP)
+                .minParticipants(minParticipants)
+                .maxParticipants(maxParticipants)
                 .location(location)
                 .repetitions(repetitions)
                 .duration(duration)
-                .fullPrice(fPrice)
-                .reducedPrice(rPrice)
-                .imageUrl(url)
+                .fullPrice(fullPrice)
+                .reducedPrice(reducedPrice)
+                .imageUrl(imageUrl)
                 .build();
 
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY)
                 .setContext(null)
-                .setOnEndConnectionListener(result)
+                .setOnEndConnectionListener(callback)
                 .setObjectToSend(SendInPostConnector.paramsFromObject(itinerary))
                 .build();
 

@@ -34,7 +34,7 @@ import java.util.Map;
 import app_connector.BooleanConnector;
 import app_connector.ConnectorConstants;
 
-public class ChangePassword extends AppCompatActivity {
+public class ChangePasswordActivity extends AppCompatActivity {
 
     private EditText oldPassword;
     private EditText newPassword;
@@ -54,62 +54,32 @@ public class ChangePassword extends AppCompatActivity {
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        oldPassword.addTextChangedListener(new TextWatcher() {
+        TextWatcher onTextChangedListener = new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                //Do nothing
+                // Do nothing
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //Do nothing
+                // Do nothing
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 verifyFields();
             }
-        });
 
+        };
+
+        oldPassword.addTextChangedListener(onTextChangedListener);
         newPassword.setOnFocusChangeListener((view, hasFocus) -> verifyFields());
 
-        newPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                //Do nothing
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //Do nothing
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                verifyFields();
-            }
-        });
-
+        newPassword.addTextChangedListener(onTextChangedListener);
         newPassword.setOnFocusChangeListener((view, hasFocus) -> verifyFields());
 
+        verifyNewPassword.addTextChangedListener(onTextChangedListener);
         verifyNewPassword.setOnFocusChangeListener((view, hasFocus) -> verifyFields());
-
-        verifyNewPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                //Do nothing
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //Do nothing
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                verifyFields();
-            }
-        });
 
         changeP.setOnClickListener(view -> {
             if (oldPassword.getText().toString().equals(newPassword.getText().toString())) {
@@ -136,10 +106,10 @@ public class ChangePassword extends AppCompatActivity {
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
                         user.setPassword(newPassword.getText().toString());
-                        Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChangePasswordActivity.this, ChangePasswordActivity.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
                         onBackPressed();
                     } else {
-                        Toast.makeText(ChangePassword.this, ChangePassword.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChangePasswordActivity.this, ChangePasswordActivity.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setObjectToSend(params)
