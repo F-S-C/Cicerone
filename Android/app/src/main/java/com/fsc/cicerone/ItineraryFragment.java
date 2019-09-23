@@ -129,6 +129,7 @@ public class ItineraryFragment extends Fragment {
                     if(jsonArray.isEmpty()) {
                         message.setText(R.string.no_create_itinerary);
                         message.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
                     }
                     else {
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
