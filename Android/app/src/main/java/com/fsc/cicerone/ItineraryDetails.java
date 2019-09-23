@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -96,6 +97,10 @@ public class ItineraryDetails extends AppCompatActivity {
     Map<String, Object> parameters;
     private RecyclerView recyclerView;
 
+    private  EditText requestedDateInput;
+    private EditText numberOfAdultsInput;
+    private EditText numberOfChildrenInput;
+
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
 
     @Override
@@ -119,6 +124,7 @@ public class ItineraryDetails extends AppCompatActivity {
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
         avgReview = findViewById(R.id.itineraryReview);
+
         parameters = new HashMap<>();
 
         if (!AccountManager.isLogged()) {
@@ -309,43 +315,34 @@ public class ItineraryDetails extends AppCompatActivity {
     }
 
     private void updateReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
+        View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
-        descriptionReview = view.findViewById(R.id.objectReview);
-        feedbackReview = view.findViewById(R.id.feedbackReview);
+        descriptionReview = viewReview.findViewById(R.id.objectReview);
+        feedbackReview = viewReview.findViewById(R.id.feedbackReview);
         descriptionReview.setText(itineraryReview.getDescription());
         feedbackReview.setRating(itineraryReview.getFeedback());
 
-        new MaterialAlertDialogBuilder(this)
+        AlertDialog dialogUpdate = new MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.update_review))
-                .setView(view)
-                .setPositiveButton(R.string.update_review, (dialog, id) -> {
-                    itineraryReview.setDescription(descriptionReview.getText().toString());
-                    itineraryReview.setFeedback((int) feedbackReview.getRating());
-                    if (allFilled()) {
-                        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY_REVIEW)
-                                .setContext(this)
-                                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                                    if (result.getResult()) {
-                                        Toast.makeText(this, ItineraryDetails.this.getString(R.string.updated_review),
-                                                Toast.LENGTH_SHORT).show();
-                                        isReviewed(parameters);
-                                        requestDataForRecycleView(objectReview, recyclerView);
-                                    }
-                                })
-                                .setObjectToSend(SendInPostConnector.paramsFromObject(itineraryReview))
-                                .build();
-                        connector.execute();
-                    } else
-                        Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
-                                Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton(R.string.delete_review, (dialog, id) -> {
-                    BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY_REVIEW)
+                .setView(viewReview)
+                .setPositiveButton(R.string.update_review, null)
+                .setNegativeButton(R.string.delete_review, null)
+                .create();
+
+        dialogUpdate.setOnShowListener(dialogInterface -> {
+
+            Button buttonPositive = dialogUpdate.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button buttonNegative = dialogUpdate.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+            buttonPositive.setOnClickListener(view -> {
+                itineraryReview.setDescription(descriptionReview.getText().toString());
+                itineraryReview.setFeedback((int) feedbackReview.getRating());
+                if (allFilledReview()) {
+                    BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY_REVIEW)
                             .setContext(this)
                             .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                                 if (result.getResult()) {
-                                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.deleted_review),
+                                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.updated_review),
                                             Toast.LENGTH_SHORT).show();
                                     isReviewed(parameters);
                                     requestDataForRecycleView(objectReview, recyclerView);
@@ -354,45 +351,79 @@ public class ItineraryDetails extends AppCompatActivity {
                             .setObjectToSend(SendInPostConnector.paramsFromObject(itineraryReview))
                             .build();
                     connector.execute();
-                })
-                .show();
-    }
-
-    private void addReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
-        // Get a reference to all the fields in the dialog
-        descriptionReview = view.findViewById(R.id.objectReview);
-        feedbackReview = view.findViewById(R.id.feedbackReview);
-        descriptionReview.setText("");
-        feedbackReview.setRating(0);
-
-
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(getString(R.string.add_review))
-                .setMessage(getString(R.string.review_dialog_message))
-                .setView(view)
-                .setPositiveButton(R.string.add_review, (dialog, id) -> {
-                    if (allFilled()) {
-                        itineraryReview.setFeedback((int) feedbackReview.getRating());
-                        itineraryReview.setDescription(descriptionReview.getText().toString());
-                        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY_REVIEW)
+                    dialogUpdate.dismiss();
+                } else
+                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
+                            Toast.LENGTH_SHORT).show();
+            });
+            buttonNegative.setOnClickListener(view -> new MaterialAlertDialogBuilder(this)
+                    .setTitle(getString(R.string.are_you_sure))
+                    .setMessage(getString(R.string.sure_to_remove_review))
+                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY_REVIEW)
                                 .setContext(this)
                                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                                    if (result.getResult())
-                                        Toast.makeText(this, ItineraryDetails.this.getString(R.string.added_review),
+                                    if (result.getResult()) {
+                                        Toast.makeText(this, ItineraryDetails.this.getString(R.string.deleted_review),
                                                 Toast.LENGTH_SHORT).show();
-                                    isReviewed(parameters);
-                                    requestDataForRecycleView(objectReview, recyclerView);
+                                        isReviewed(parameters);
+                                        requestDataForRecycleView(objectReview, recyclerView);
+                                    }
                                 })
                                 .setObjectToSend(SendInPostConnector.paramsFromObject(itineraryReview))
                                 .build();
                         connector.execute();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                    // to do nothing
-                })
-                .show();
+                        dialogUpdate.dismiss();
+                    })
+                    .setNegativeButton(getString(R.string.no), null)
+                    .show());
+        });
+        dialogUpdate.show();
+    }
+
+    private void addReview() {
+        View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
+        // Get a reference to all the fields in the dialog
+        descriptionReview = viewReview.findViewById(R.id.objectReview);
+        feedbackReview = viewReview.findViewById(R.id.feedbackReview);
+        descriptionReview.setText("");
+        feedbackReview.setRating(0);
+
+        AlertDialog dialogSubmit = new MaterialAlertDialogBuilder(this)
+                .setView(viewReview)
+                .setTitle(getString(R.string.add_review))
+                .setMessage(getString(R.string.review_dialog_message))
+                .setPositiveButton(R.string.submit_review, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+
+        dialogSubmit.setOnShowListener(dialogInterface -> {
+
+            Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> {
+                itineraryReview.setFeedback((int) feedbackReview.getRating());
+                itineraryReview.setDescription(descriptionReview.getText().toString());
+                if (allFilledReview()) {
+                    BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY_REVIEW)
+                            .setContext(this)
+                            .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                                if (result.getResult())
+                                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.added_review),
+                                            Toast.LENGTH_SHORT).show();
+                                isReviewed(parameters);
+                                requestDataForRecycleView(objectReview, recyclerView);
+                            })
+                            .setObjectToSend(SendInPostConnector.paramsFromObject(itineraryReview))
+                            .build();
+                    connector.execute();
+                    dialogSubmit.dismiss();
+                } else
+                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
+                            Toast.LENGTH_SHORT).show();
+            });
+        });
+        dialogSubmit.show();
+
     }
 
     public void askForReservation(View view) {
@@ -400,9 +431,9 @@ public class ItineraryDetails extends AppCompatActivity {
         final Calendar myCalendar = Calendar.getInstance();
 
         // Get a reference to all the fields in the dialog
-        EditText requestedDateInput = v.findViewById(R.id.requested_date_input);
-        EditText numberOfAdultsInput = v.findViewById(R.id.number_of_adults_input);
-        EditText numberOfChildrenInput = v.findViewById(R.id.number_of_children_input);
+        requestedDateInput = v.findViewById(R.id.requested_date_input);
+        numberOfAdultsInput = v.findViewById(R.id.number_of_adults_input);
+        numberOfChildrenInput = v.findViewById(R.id.number_of_children_input);
 
         // Set up the date picker on requestedDateInput click.
         DatePickerDialog.OnDateSetListener date = (view1, year, monthOfYear, dayOfMonth) -> {
@@ -424,11 +455,19 @@ public class ItineraryDetails extends AppCompatActivity {
             dialog.show();
         });
 
-        new MaterialAlertDialogBuilder(this)
+        AlertDialog dialogSubmit = new MaterialAlertDialogBuilder(this)
+                .setView(v)
                 .setTitle(getString(R.string.insert_details))
                 .setMessage(getString(R.string.reservation_dialog_message))
-                .setView(v)
-                .setPositiveButton(R.string.yes, (dialog, id) -> {
+                .setPositiveButton(R.string.submit_request, null)
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+
+        dialogSubmit.setOnShowListener(dialogInterface -> {
+
+            Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view1 -> {
+                if (allFilledReservation()) {
                     try {
                         ReservationManager.addReservation(itinerary,
                                 Integer.parseInt(numberOfAdultsInput.getText().toString()),
@@ -439,9 +478,23 @@ public class ItineraryDetails extends AppCompatActivity {
                     }
                     isReserved();
                     Toast.makeText(ItineraryDetails.this, R.string.reservation_added, Toast.LENGTH_SHORT).show();
+                    dialogSubmit.dismiss();
+                } else
+                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
+                            Toast.LENGTH_SHORT).show();
+            });
+        });
+        dialogSubmit.show();
+
+
+       /* new MaterialAlertDialogBuilder(this)
+
+                .setView(v)
+                .setPositiveButton(, (dialog, id) -> {
+
                 })
                 .setNegativeButton(R.string.no, null)
-                .show();
+                .show();*/
     }
 
     public void removeReservation(View v) {
@@ -489,10 +542,13 @@ public class ItineraryDetails extends AppCompatActivity {
         connector.execute();
     }
 
-    private boolean allFilled() {
+    private boolean allFilledReview() {
         return !descriptionReview.getText().toString().equals("") && feedbackReview.getRating() > 0;
     }
 
+    private boolean allFilledReservation(){
+        return !requestedDateInput.getText().toString().equals("") && !numberOfAdultsInput.getText().toString().equals("") && !numberOfChildrenInput.getText().toString().equals("");
+    }
 
 }
 

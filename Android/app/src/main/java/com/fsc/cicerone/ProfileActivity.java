@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -121,7 +122,6 @@ public class ProfileActivity extends AppCompatActivity {
         //set recycler review list
         requestDataForRecycleView(params, recyclerView);
 
-
     }
 
     private void getData(User reviewedUser) {
@@ -199,43 +199,34 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
+        View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
-        descriptionReview = view.findViewById(R.id.objectReview);
-        feedbackReview = view.findViewById(R.id.feedbackReview);
+        descriptionReview = viewReview.findViewById(R.id.objectReview);
+        feedbackReview = viewReview.findViewById(R.id.feedbackReview);
         descriptionReview.setText(userReview.getDescription());
         feedbackReview.setRating(userReview.getFeedback());
 
-        new MaterialAlertDialogBuilder(this)
+        AlertDialog dialogUpdate = new MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.update_review))
-                .setView(view)
-                .setPositiveButton(R.string.update_review, (dialog, id) -> {
-                    userReview.setDescription(descriptionReview.getText().toString());
-                    userReview.setFeedback((int) feedbackReview.getRating());
-                    if (allFilled()) {
-                        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_USER_REVIEW)
-                                .setContext(this)
-                                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                                    if (result.getResult()) {
-                                        Toast.makeText(this, ProfileActivity.this.getString(R.string.updated_review),
-                                                Toast.LENGTH_SHORT).show();
-                                        isReviewed(params);
-                                        requestDataForRecycleView(params,recyclerView);
-                                    }
-                                })
-                                .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
-                                .build();
-                        connector.execute();
-                    } else
-                        Toast.makeText(this, ProfileActivity.this.getString(R.string.error_fields_empty),
-                                Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton(R.string.delete_review, (dialog, id) -> {
-                    BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_USER_REVIEW)
+                .setView(viewReview)
+                .setPositiveButton(R.string.update_review, null)
+                .setNegativeButton(R.string.delete_review, null)
+                .create();
+
+        dialogUpdate.setOnShowListener(dialogInterface -> {
+
+            Button buttonPositive = dialogUpdate.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button buttonNegative = dialogUpdate.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+            buttonPositive.setOnClickListener(view -> {
+                userReview.setDescription(descriptionReview.getText().toString());
+                userReview.setFeedback((int) feedbackReview.getRating());
+                if (allFilled()) {
+                    BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_USER_REVIEW)
                             .setContext(this)
                             .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                                 if (result.getResult()) {
-                                    Toast.makeText(this, ProfileActivity.this.getString(R.string.deleted_review),
+                                    Toast.makeText(this, ProfileActivity.this.getString(R.string.updated_review),
                                             Toast.LENGTH_SHORT).show();
                                     isReviewed(params);
                                     requestDataForRecycleView(params,recyclerView);
@@ -244,43 +235,78 @@ public class ProfileActivity extends AppCompatActivity {
                             .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
                             .build();
                     connector.execute();
-                })
-                .show();
-    }
-
-    private void addReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
-        // Get a reference to all the fields in the dialog
-        descriptionReview = view.findViewById(R.id.objectReview);
-        feedbackReview = view.findViewById(R.id.feedbackReview);
-        descriptionReview.setText("");
-        feedbackReview.setRating(0);
-
-
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(getString(R.string.add_review))
-                .setMessage(getString(R.string.review_dialog_message))
-                .setView(view)
-                .setPositiveButton(R.string.add_review, (dialog, id) -> {
-                    if (allFilled()) {
-                        userReview.setFeedback((int) feedbackReview.getRating());
-                        userReview.setDescription(descriptionReview.getText().toString());
-                        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_USER_REVIEW)
+                    dialogUpdate.dismiss();
+                } else
+                    Toast.makeText(this, ProfileActivity.this.getString(R.string.error_fields_empty),
+                            Toast.LENGTH_SHORT).show();
+            });
+            buttonNegative.setOnClickListener(view -> new MaterialAlertDialogBuilder(this)
+                    .setTitle(getString(R.string.are_you_sure))
+                    .setMessage(getString(R.string.sure_to_remove_review))
+                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_USER_REVIEW)
                                 .setContext(this)
                                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                                    if (result.getResult())
-                                        Toast.makeText(this, ProfileActivity.this.getString(R.string.added_review),
+                                    if (result.getResult()) {
+                                        Toast.makeText(this, ProfileActivity.this.getString(R.string.deleted_review),
                                                 Toast.LENGTH_SHORT).show();
-                                    isReviewed(params);
-                                    requestDataForRecycleView(params, recyclerView);
+                                        isReviewed(params);
+                                        requestDataForRecycleView(params,recyclerView);
+                                    }
                                 })
                                 .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
                                 .build();
                         connector.execute();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
+                        dialogUpdate.dismiss();
+                    })
+                    .setNegativeButton(getString(R.string.no), null)
+                    .show());
+        });
+        dialogUpdate.show();
+    }
+
+    private void addReview() {
+        View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
+        // Get a reference to all the fields in the dialog
+        descriptionReview = viewReview.findViewById(R.id.objectReview);
+        feedbackReview = viewReview.findViewById(R.id.feedbackReview);
+        descriptionReview.setText("");
+        feedbackReview.setRating(0);
+
+        AlertDialog dialogSubmit = new MaterialAlertDialogBuilder(this)
+                .setView(viewReview)
+                .setTitle(getString(R.string.add_review))
+                .setMessage(getString(R.string.review_dialog_message))
+                .setPositiveButton(R.string.submit_review, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+
+        dialogSubmit.setOnShowListener(dialogInterface -> {
+
+            Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> {
+                userReview.setFeedback((int) feedbackReview.getRating());
+                userReview.setDescription(descriptionReview.getText().toString());
+                if (allFilled()) {
+                    BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_USER_REVIEW)
+                            .setContext(this)
+                            .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                                if (result.getResult())
+                                    Toast.makeText(this, ProfileActivity.this.getString(R.string.added_review),
+                                            Toast.LENGTH_SHORT).show();
+                                isReviewed(params);
+                                requestDataForRecycleView(params, recyclerView);
+                            })
+                            .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
+                            .build();
+                    connector.execute();
+                    dialogSubmit.dismiss();
+                }else
+                    Toast.makeText(this, ProfileActivity.this.getString(R.string.error_fields_empty),
+                            Toast.LENGTH_SHORT).show();
+            });
+        });
+        dialogSubmit.show();
     }
 
     private boolean allFilled() {

@@ -63,13 +63,13 @@ public class InsertReportFragment extends Fragment {
         EditText object = view.findViewById(R.id.object);
         EditText body = view.findViewById(R.id.body);
         Spinner users = view.findViewById(R.id.users);
-        Button sendReport = view.findViewById(R.id.sendReport);
+       // Button sendReport = view.findViewById(R.id.sendReport);
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
         setUsersInSpinner(users, currentLoggedUser.getUsername());
 
-        sendReport.setOnClickListener(v -> {
+       /* sendReport.setOnClickListener(v -> {
             if (object.getText().toString().equals("") || body.getText().toString().equals("")) {
                 Toast.makeText(getActivity(), InsertReportFragment.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
             } else {
@@ -82,7 +82,7 @@ public class InsertReportFragment extends Fragment {
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
             }
-        });
+        });*/
 
         return view;
     }

@@ -23,10 +23,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,15 +42,21 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReportAdapter;
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
+import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import app_connector.ConnectorConstants;
+import app_connector.GetDataConnector;
 import app_connector.SendInPostConnector;
 
 /**
@@ -56,9 +67,10 @@ public class ReportFragment extends Fragment implements Refreshable {
     RecyclerView.Adapter adapter;
     Fragment fragment = null;
     private RecyclerView recyclerView;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
     public static final int RESULT_SHOULD_REPORT_BE_RELOADED = 1030;
+    private EditText object;
+    private EditText body;
+    private Spinner users;
 
     /**
      * Empty Constructor
@@ -82,18 +94,67 @@ public class ReportFragment extends Fragment implements Refreshable {
 
         insertReport.setVisibility(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN ? View.GONE : View.VISIBLE);
 
-        insertReport.setOnClickListener(v -> {
-            fragment = new InsertReportFragment();
-            fragmentManager = getFragmentManager();
-            fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment);
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
-        });
+        insertReport.setOnClickListener(v -> insertReport());
 
         return view;
     }
 
+    private void insertReport() {
+        View reportView = getLayoutInflater().inflate(R.layout.dialog_new_report, null);
+
+         object = reportView.findViewById(R.id.object);
+         body = reportView.findViewById(R.id.body);
+         users = reportView.findViewById(R.id.users);
+
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
+
+        setUsersInSpinner(users, currentLoggedUser.getUsername());
+
+        AlertDialog dialogSubmit = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                .setView(reportView)
+                .setTitle(getString(R.string.insert_report))
+                .setMessage(getString(R.string.report_dialog_message))
+                .setPositiveButton(R.string.insert_report, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+
+        dialogSubmit.setOnShowListener(dialogInterface -> {
+
+            Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
+            /*button.setOnClickListener(view -> new MaterialAlertDialogBuilder(context)
+                    .setTitle(getString(R.string.are_you_sure))
+                    .setMessage(getString(R.string.sure_to_insert_report))
+                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                        if (allFilled()) {
+                            ReportManager.addNewReport(context, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString());
+                            refresh();
+                            dialogSubmit.dismiss();
+                        }else
+                            Toast.makeText(context, context.getString(R.string.error_fields_empty),
+                                    Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton(getString(R.string.no), null)
+                    .show());*/
+            button.setOnClickListener(view ->{
+                if(allFilled()){
+                    new MaterialAlertDialogBuilder(context)
+                            .setTitle(R.string.insert_report)
+                            .setMessage(R.string.sure_to_insert_report)
+                            .setPositiveButton(R.string.yes, (dialog,witch)->{
+                                ReportManager.addNewReport(context, currentLoggedUser,users.getSelectedItem().toString(),object.getText().toString(), body.getText().toString());
+                                refresh();
+                                dialogSubmit.dismiss();
+                            })
+                            .setNegativeButton(R.string.no,null)
+                            .show();
+                }else
+                    Toast.makeText(context, context.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+            });
+
+        });
+
+        dialogSubmit.show();
+    }
 
     @Override
     public void refresh() {
@@ -132,5 +193,29 @@ public class ReportFragment extends Fragment implements Refreshable {
         if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED && resultCode == Activity.RESULT_OK) {
                 refresh();
         }
+    }
+
+    private void setUsersInSpinner(Spinner users, String currentLoggedUser) {
+        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    List<String> cleanList = new ArrayList<>();
+
+                    for (User user : list) {
+                        if (!user.getUsername().equals(currentLoggedUser))
+                            cleanList.add(user.getUsername());
+                    }
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
+                            android.R.layout.simple_spinner_item, cleanList);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    users.setAdapter(dataAdapter);
+
+                })
+                .build();
+        connector.execute();
+    }
+
+    private boolean allFilled() {
+        return !object.getText().toString().equals("") && !body.getText().toString().equals("") && !users.getSelectedItem().equals("");
     }
 }

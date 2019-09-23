@@ -226,4 +226,7 @@
     <string name="add_review">Scrivi recensione</string>
     <string name="updateReview">Aggiorna recensione</string>
     <string name="review_dialog_message">Inserire di seguito tutti i dettagli necessari a effettuare una recensione. Tutti i campi sono obbligatori.</string>
+    <string name="sure_to_insert_report">Sei sicuro/a di voler inserire la tua segnalazione?</string>
+    <string name="sure_to_remove_review">Sei sicuro/a di voler cancellare la tua recensione?</string>
+    <string name="submit_request">Invia richiesta</string>
 </resources>

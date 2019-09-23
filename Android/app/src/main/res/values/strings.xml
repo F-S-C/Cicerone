@@ -249,5 +249,8 @@
     <string name="add_review">Add review</string>
     <string name="updateReview">Update review</string>
     <string name="review_dialog_message">Please insert all the requested details to make for a review. All fields are required.</string>
+    <string name="sure_to_insert_report">Are you sure you want to insert your report?</string>
+    <string name="sure_to_remove_review">Are you sure you want to remove your review?</string>
+    <string name="submit_request">Submit request</string>
     <string name="username_display" translatable="false">\@%s</string>
 </resources>
