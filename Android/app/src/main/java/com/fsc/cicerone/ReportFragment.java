@@ -33,8 +33,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -137,18 +135,18 @@ public class ReportFragment extends Fragment implements Refreshable {
                     .show());*/
             button.setOnClickListener(view ->{
                 if(allFilled()){
-                    new MaterialAlertDialogBuilder(context)
+                    new MaterialAlertDialogBuilder(getContext())
                             .setTitle(R.string.insert_report)
                             .setMessage(R.string.sure_to_insert_report)
                             .setPositiveButton(R.string.yes, (dialog,witch)->{
-                                ReportManager.addNewReport(context, currentLoggedUser,users.getSelectedItem().toString(),object.getText().toString(), body.getText().toString());
+                                ReportManager.addNewReport(getActivity(), currentLoggedUser,users.getSelectedItem().toString(),object.getText().toString(), body.getText().toString());
                                 refresh();
                                 dialogSubmit.dismiss();
                             })
                             .setNegativeButton(R.string.no,null)
                             .show();
                 }else
-                    Toast.makeText(context, context.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
             });
 
         });
@@ -197,7 +195,7 @@ public class ReportFragment extends Fragment implements Refreshable {
 
     private void setUsersInSpinner(Spinner users, String currentLoggedUser) {
         GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
-                .setContext(context)
+                .setContext(getActivity())
                 .setOnEndConnectionListener(list -> {
                     List<String> cleanList = new ArrayList<>();
 
