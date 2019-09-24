@@ -17,7 +17,6 @@
 package com.fsc.cicerone;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +73,6 @@ public class ItineraryFragment extends Fragment {
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        Button newItineraryButton = view.findViewById(R.id.newItinerary);
         Button participationsButton = view.findViewById(R.id.partecipations);
         Button myItinerariesButton = view.findViewById(R.id.myitineraries);
         RecyclerView itineraryList = view.findViewById(R.id.itinerary_list);
@@ -105,8 +103,6 @@ public class ItineraryFragment extends Fragment {
             myItinerariesButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
             getMyItineraries(parameters, itineraryList);
             message.setVisibility(View.GONE);
-            newItineraryButton.setVisibility(View.VISIBLE);
-
         });
 
         participationsButton.setOnClickListener(v -> {
@@ -119,13 +115,6 @@ public class ItineraryFragment extends Fragment {
                     itineraryList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             participationsButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
             getParticipations(parameters, itineraryList);
-            newItineraryButton.setVisibility(View.GONE);
-
-        });
-
-        newItineraryButton.setOnClickListener(v -> {
-            Intent i = new Intent().setClass(getActivity(), ItineraryCreation.class);
-            startActivity(i);
         });
 
         return view;
@@ -140,14 +129,13 @@ public class ItineraryFragment extends Fragment {
                         message.setText(R.string.no_create_itinerary);
                         message.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                         recyclerView.setVisibility(View.VISIBLE);
                         while (recyclerView.getItemDecorationCount() > 0) {
                             recyclerView.removeItemDecorationAt(0);
                         }
-                        adapter = new ItineraryAdapter(getActivity(), jsonArray,this);
+                        adapter = new ItineraryAdapter(getActivity(), jsonArray, this);
                         recyclerView.setAdapter(adapter);
                     }
                 })

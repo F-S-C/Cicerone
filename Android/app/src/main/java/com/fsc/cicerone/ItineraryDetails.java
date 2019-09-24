@@ -527,7 +527,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
         Intent i = new Intent().setClass(this, ProfileActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("reviewed_user", author.getText().toString());
+        bundle.putString("reviewed_user", itinerary.getCicerone().toString());
         i.putExtras(bundle);
         startActivity(i);
     }
