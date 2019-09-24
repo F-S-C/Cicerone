@@ -43,7 +43,6 @@ import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.manager.WishlistManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.fsc.cicerone.model.UserType;
@@ -57,16 +56,12 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 public class ItineraryDetails extends AppCompatActivity {
     RecyclerView.Adapter adapter;
+    private RatingBar avgReview;
     private Button requestReservation;
     private FloatingActionButton modifyWishlistButton;
     private Button addReview;
@@ -90,7 +85,6 @@ public class ItineraryDetails extends AppCompatActivity {
     private RatingBar feedbackReview;
 
     private Itinerary itinerary;
-    private Map<String, Object> objectReview;
     private RecyclerView recyclerView;
 
     private EditText requestedDateInput;
@@ -119,7 +113,7 @@ public class ItineraryDetails extends AppCompatActivity {
         duration = findViewById(R.id.duration);
         fPrice = findViewById(R.id.fPrice);
         rPrice = findViewById(R.id.rPrice);
-        RatingBar avgReview = findViewById(R.id.itineraryReview);
+        avgReview = findViewById(R.id.itineraryReview);
 
         if (!AccountManager.isLogged()) {
             modifyWishlistButton.setEnabled(false);
@@ -128,7 +122,6 @@ public class ItineraryDetails extends AppCompatActivity {
             addReview.setEnabled(false);
         }
 
-        objectReview = new HashMap<>();
         Bundle bundle = getIntent().getExtras();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -148,11 +141,8 @@ public class ItineraryDetails extends AppCompatActivity {
             supportActionBar.setTitle(itinerary.getTitle());
             getDataFromServer(itinerary);
 
-            objectReview.put("reviewed_itinerary", itinerary.getCode());
-            //set the avg feedback itinerary
-            ReviewManager.getAvgItineraryFeedback(this, itinerary, avgReview::setRating);
             //set the recycle view reference to review of the itinerary
-            requestDataForRecycleView(objectReview, recyclerView);
+            requestDataForRecycleView(recyclerView);
 
             ImageView imageView = findViewById(R.id.imageView2);
             imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
@@ -164,10 +154,7 @@ public class ItineraryDetails extends AppCompatActivity {
                 isReserved();
                 //itinerary for review
                 permissionReview();
-
-
             }
-
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -277,6 +264,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
     private void updateReview(ItineraryReview itineraryReview) {
         View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
+
         // Get a reference to all the fields in the dialog
         descriptionReview = viewReview.findViewById(R.id.objectReview);
         feedbackReview = viewReview.findViewById(R.id.feedbackReview);
@@ -288,6 +276,7 @@ public class ItineraryDetails extends AppCompatActivity {
                 .setView(viewReview)
                 .setPositiveButton(R.string.update_review, null)
                 .setNegativeButton(R.string.delete_review, null)
+                .setNeutralButton(R.string.cancel, null)
                 .create();
 
         dialogUpdate.setOnShowListener(dialogInterface -> {
@@ -302,7 +291,7 @@ public class ItineraryDetails extends AppCompatActivity {
                     ReviewManager.updateReviewItinerary(this, itineraryReview, success -> Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.updated_review),
                             Toast.LENGTH_SHORT).show());
                     isReviewed();
-                    requestDataForRecycleView(objectReview, recyclerView);
+                    requestDataForRecycleView(recyclerView);
                     dialogUpdate.dismiss();
                 } else
                     Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
@@ -315,7 +304,7 @@ public class ItineraryDetails extends AppCompatActivity {
                         ReviewManager.deleteReviewItinerary(this, itineraryReview, success -> Toast.makeText(this, ItineraryDetails.this.getString(R.string.deleted_review),
                                 Toast.LENGTH_SHORT).show());
                         isReviewed();
-                        requestDataForRecycleView(objectReview, recyclerView);
+                        requestDataForRecycleView(recyclerView);
                         dialogUpdate.dismiss();
                     })
                     .setNegativeButton(getString(R.string.no), null)
@@ -351,7 +340,7 @@ public class ItineraryDetails extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show());
 
                     isReviewed();
-                    requestDataForRecycleView(objectReview, recyclerView);
+                    requestDataForRecycleView(recyclerView);
                     dialogSubmit.dismiss();
                 } else
                     Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
@@ -466,16 +455,12 @@ public class ItineraryDetails extends AppCompatActivity {
         return true;
     }
 
-    private void requestDataForRecycleView(Map<String, Object> parameters, RecyclerView recyclerView) {
-        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
-                .setContext(this)
-                .setOnEndConnectionListener(list -> {
-                    adapter = new ReviewAdapter(this, list);
-                    recyclerView.setAdapter(adapter);
-                })
-                .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+    private void requestDataForRecycleView(RecyclerView recyclerView) {
+        ReviewManager.getAvgItineraryFeedback(this, itinerary, avgReview::setRating);
+        ReviewManager.requestItineraryReviews(this, itinerary, list -> {
+            adapter = new ReviewAdapter(this, list);
+            recyclerView.setAdapter(adapter);
+        });
     }
 
     private boolean allFilledReview() {
