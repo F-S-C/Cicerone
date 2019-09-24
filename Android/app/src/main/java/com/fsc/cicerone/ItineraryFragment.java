@@ -26,12 +26,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.adapter.ReservationAdapter;
@@ -53,7 +55,7 @@ import java.util.Objects;
  * Class that contains the elements of the TAB Itinerary on the account details
  * page.
  */
-public class ItineraryFragment extends Fragment {
+public class ItineraryFragment extends Fragment implements Refreshable {
 
     private Activity context;
     RecyclerView.Adapter adapter;
@@ -136,18 +138,17 @@ public class ItineraryFragment extends Fragment {
                 .setContext(context)
                 .setOnEndConnectionListener(jsonArray -> {
                     message.setVisibility(View.GONE);
-                    if(jsonArray.isEmpty()) {
+                    if (jsonArray.isEmpty()) {
                         message.setText(R.string.no_create_itinerary);
                         message.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                         recyclerView.setVisibility(View.VISIBLE);
                         while (recyclerView.getItemDecorationCount() > 0) {
                             recyclerView.removeItemDecorationAt(0);
                         }
-                        adapter = new ItineraryAdapter(getActivity(), jsonArray,this);
+                        adapter = new ItineraryAdapter(getActivity(), jsonArray, this);
                         recyclerView.setAdapter(adapter);
                     }
                 })
@@ -178,7 +179,7 @@ public class ItineraryFragment extends Fragment {
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                             DividerItemDecoration.VERTICAL));
-                    adapter2 = new ReservationAdapter(getActivity(), filtered, R.layout.participation_list);
+                    adapter2 = new ReservationAdapter(getActivity(), filtered, ItineraryFragment.this, R.layout.participation_list);
                     recyclerView.setAdapter(adapter2);
                 })
                 .setObjectToSend(parameters)
@@ -186,4 +187,8 @@ public class ItineraryFragment extends Fragment {
         connector.execute();
     }
 
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+    }
 }
