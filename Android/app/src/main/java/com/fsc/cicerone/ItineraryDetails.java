@@ -257,7 +257,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
     public void permissionReview() {
         ReviewManager.permissionReviewItinerary(this, AccountManager.getCurrentLoggedUser(), itinerary, success -> {
-            if (success) isReserved();
+            if (success) isReviewed();
         }, () -> addReview.setEnabled(false));
 
     }
