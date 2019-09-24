@@ -17,7 +17,6 @@
 package com.fsc.cicerone;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +31,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.adapter.ReservationAdapter;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
@@ -47,9 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Itinerary on the account details
@@ -76,7 +73,6 @@ public class ItineraryFragment extends Fragment {
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        Button newItineraryButton = view.findViewById(R.id.newItinerary);
         Button participationsButton = view.findViewById(R.id.partecipations);
         Button myItinerariesButton = view.findViewById(R.id.myitineraries);
         RecyclerView itineraryList = view.findViewById(R.id.itinerary_list);
@@ -107,8 +103,6 @@ public class ItineraryFragment extends Fragment {
             myItinerariesButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
             getMyItineraries(parameters, itineraryList);
             message.setVisibility(View.GONE);
-            newItineraryButton.setVisibility(View.VISIBLE);
-
         });
 
         participationsButton.setOnClickListener(v -> {
@@ -121,13 +115,6 @@ public class ItineraryFragment extends Fragment {
                     itineraryList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             participationsButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
             getParticipations(parameters, itineraryList);
-            newItineraryButton.setVisibility(View.GONE);
-
-        });
-
-        newItineraryButton.setOnClickListener(v -> {
-            Intent i = new Intent().setClass(getActivity(), ItineraryCreation.class);
-            startActivity(i);
         });
 
         return view;
@@ -138,17 +125,16 @@ public class ItineraryFragment extends Fragment {
         SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
                 .setOnEndConnectionListener(jsonArray -> {
-                    if(jsonArray.isEmpty()) {
+                    if (jsonArray.isEmpty()) {
                         message.setText(R.string.no_create_itinerary);
                         message.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                         while (recyclerView.getItemDecorationCount() > 0) {
                             recyclerView.removeItemDecorationAt(0);
                         }
-                        adapter = new ItineraryAdapter(getActivity(), jsonArray,this);
+                        adapter = new ItineraryAdapter(getActivity(), jsonArray, this);
                         recyclerView.setAdapter(adapter);
                     }
                 })
