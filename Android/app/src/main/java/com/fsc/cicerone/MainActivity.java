@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         if (!AccountManager.isLogged()) {
             navView.getMenu().findItem(R.id.navigation_profile).setTitle(getString(R.string.login));
             navView.getMenu().findItem(R.id.navigation_profile).setIcon(getDrawable(R.drawable.ic_login));
+            navView.getMenu().removeItem(R.id.empty_menu_item);
         }
         fabSettings = findViewById(R.id.fab);
         layoutFabReport = findViewById(R.id.layout_fab_new_report);
@@ -103,8 +104,7 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fabItinerary = layoutFabItinerary.findViewById(R.id.fab_new_itinerary);
 
         if (!AccountManager.isLogged()) {
-            fabSettings.setEnabled(false);
-            fabSettings.setBackgroundColor(Color.LTGRAY);
+            fabSettings.setVisibility(View.GONE);
         } else {
             fabSettings.setOnClickListener(v -> {
                 if (isFabMenuExtended) {

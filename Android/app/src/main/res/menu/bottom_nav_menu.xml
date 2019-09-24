@@ -28,6 +28,7 @@
         android:title="@string/discover"
         app:showAsAction="always" />
     <item
+        android:id="@+id/empty_menu_item"
         android:title=""
         app:showAsAction="always" />
     <item

@@ -173,8 +173,6 @@ public class ReportFragment extends Fragment implements Refreshable {
             parameters.remove("username");
         }
 
-        Log.e("TAG", parameters.toString());
-
         new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
