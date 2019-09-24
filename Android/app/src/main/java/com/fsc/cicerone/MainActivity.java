@@ -17,7 +17,6 @@
 package com.fsc.cicerone;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -281,7 +280,8 @@ public class MainActivity extends AppCompatActivity {
                             .setTitle(R.string.insert_report)
                             .setMessage(R.string.sure_to_insert_report)
                             .setPositiveButton(R.string.yes, (dialog, witch) -> {
-                                ReportManager.addNewReport(MainActivity.this, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString());
+                                ReportManager.addNewReport(MainActivity.this, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString(), success ->
+                                        Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show());
 //                                refresh();
                                 dialogSubmit.dismiss();
                             })

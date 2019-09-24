@@ -17,12 +17,12 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.fsc.cicerone.R;
+import androidx.annotation.Nullable;
+
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 import com.fsc.cicerone.model.User;
@@ -44,8 +44,9 @@ public abstract class ReportManager {
      * @param reportedUserUsername  The username of the reported user.
      * @param object                The object of the report
      * @param body                  The body of the report.
+     * @param callback A callback to be executed after the operation is completed.
      */
-    public static void addNewReport(Activity context, User author, String reportedUserUsername, String object, String body)
+    public static void addNewReport(Activity context, User author, String reportedUserUsername, String object, String body, @Nullable BooleanRunnable callback)
     {
         Map<String, Object> param = new HashMap<>(5);
         param.put("username", author.getUsername());
@@ -57,9 +58,7 @@ public abstract class ReportManager {
         new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult())
-                        Toast.makeText(context, context.getString(R.string.report_sent), Toast.LENGTH_SHORT).show();
-                    Log.e("REPORT", result.getMessage());
+                    if (callback != null) callback.accept(result.getResult());
                 })
                 .setObjectToSend(param)
                 .build()
@@ -71,8 +70,9 @@ public abstract class ReportManager {
      *
      * @param context The context of the activity.
      * @param report  The report to close.
+     * @param callback A callback to be executed after the operation is completed.
      */
-    public static void takeCharge(Activity context, Report report)
+    public static void takeCharge(Activity context, Report report, @Nullable BooleanRunnable callback)
     {
         Map<String, Object> param = new HashMap<>(2);
         param.put("report_code", report.getCode());
@@ -81,9 +81,7 @@ public abstract class ReportManager {
         new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult())
-                        Toast.makeText(context, context.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show();
-                    Log.e("REPORT", result.getMessage());
+                    if (callback != null) callback.accept(result.getResult());
                 })
                 .setObjectToSend(param)
                 .build()
@@ -94,10 +92,11 @@ public abstract class ReportManager {
     /**
      * Change the status of the report to "Canceled".
      *
-     * @param context The context of the activity.
-     * @param report  The report to close.
+     * @param context  The context of the activity.
+     * @param report   The report to close.
+     * @param callback A callback to be executed after the operation is completed.
      */
-    public static void  removeReport (Activity context, Report report)
+    public static void  removeReport (Activity context, Report report, @Nullable BooleanRunnable callback)
     {
         Map<String, Object> param = new HashMap<>(2);
         param.put("report_code", report.getCode());
@@ -106,10 +105,7 @@ public abstract class ReportManager {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) {
-                        Toast.makeText(context, context.getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
-
-                    }
+                    if (callback != null) callback.accept(result.getResult());
                 })
                 .setObjectToSend(param)
                 .build();
@@ -123,8 +119,9 @@ public abstract class ReportManager {
      *
      * @param context The context of the activity.
      * @param report  The report to close.
+     * @param callback A callback to be executed after the operation is completed.
      */
-    public static void  closeReport (Activity context, Report report)
+    public static void  closeReport (Activity context, Report report, @Nullable BooleanRunnable callback)
     {
         Map<String, Object> param = new HashMap<>(2);
         param.put("report_code", report.getCode());
@@ -133,11 +130,7 @@ public abstract class ReportManager {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    Log.e("remove", result.toJSONObject().toString());
-                    if (result.getResult()) {
-                        Toast.makeText(context, context.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();
-
-                    }
+                    if (callback != null) callback.accept(result.getResult());
                 })
                 .setObjectToSend(param)
                 .build();

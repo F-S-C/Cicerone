@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,7 +67,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
 
         cancButton.setOnClickListener(view -> {
             cancButton.setEnabled(false);
-            ReportManager.removeReport(this, report);
+            ReportManager.removeReport(this, report, success -> Toast.makeText(ReportDetailsActivity.this, ReportDetailsActivity.this.getString(R.string.report_canceled), Toast.LENGTH_SHORT).show());
             report.setStatus(ReportStatus.CANCELED);
             bindDataToView(report);
             setResult(Activity.RESULT_OK);
@@ -74,12 +75,11 @@ public class ReportDetailsActivity extends AppCompatActivity {
     }
 
     private void bindDataToView(Report report) {
-        if(report.getStatus().toString().equals("Open"))
+        if (report.getStatus().toString().equals("Open"))
             cancButton.setVisibility(View.VISIBLE);
-            cancButton.setEnabled(true);
+        cancButton.setEnabled(true);
 
-        if(report.getStatus().toString().equals("Canceled"))
-        {
+        if (report.getStatus().toString().equals("Canceled")) {
             cancButton.setEnabled(false);
             cancButton.setTextColor(Color.GRAY);
         }
