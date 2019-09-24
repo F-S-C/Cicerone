@@ -22,13 +22,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -93,7 +89,7 @@ public class ItineraryManagement extends ItineraryActivity {
         updateItinerary.setOnClickListener(v -> {
             Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
             i.putExtras(bundle);
-            v.getContext().startActivity(i);
+            startActivityForResult(i,ItineraryUpdate.RESULT_ITINERARY_UPDATED);
         });
 
 
@@ -134,6 +130,7 @@ public class ItineraryManagement extends ItineraryActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ItineraryUpdate.RESULT_ITINERARY_UPDATED && resultCode == Activity.RESULT_OK) {
             finish();
+            // TODO: Refresh itinerari?
         }
     }
 }
