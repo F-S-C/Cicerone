@@ -33,14 +33,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.manager.WishlistManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -50,13 +46,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 
 public class ItineraryDetails extends ItineraryActivity {
 
     RecyclerView.Adapter adapter;
-    private RatingBar avgReview;
     private Button requestReservation;
     private FloatingActionButton modifyWishlistButton;
     private Button addReview;
@@ -66,7 +59,6 @@ public class ItineraryDetails extends ItineraryActivity {
     private EditText descriptionReview;
     private RatingBar feedbackReview;
 
-    private Map<String, Object> objectReview;
     private RecyclerView recyclerView;
 
     private EditText requestedDateInput;
@@ -100,21 +92,10 @@ public class ItineraryDetails extends ItineraryActivity {
             addReview.setEnabled(false);
         }
 
-        Bundle bundle = getIntent().getExtras();
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
-        supportActionBar.setDisplayShowHomeEnabled(true);
 
         recyclerView = findViewById(R.id.reviewList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // set the avg feedback itinerary
-        // set the recycle view reference to review of the itinerary
-        requestDataForRecycleView(objectReview, recyclerView);
 
         if (AccountManager.isLogged()) {
             // itinerary for wishlist
@@ -243,7 +224,7 @@ public class ItineraryDetails extends ItineraryActivity {
                                     ItineraryDetails.this.getString(R.string.updated_review), Toast.LENGTH_SHORT)
                                     .show());
                     isReviewed();
-                    requestDataForRecycleView(recyclerView);
+                    refresh();
                     dialogUpdate.dismiss();
                 } else
                     Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
@@ -257,7 +238,7 @@ public class ItineraryDetails extends ItineraryActivity {
                                         ItineraryDetails.this.getString(R.string.deleted_review), Toast.LENGTH_SHORT)
                                         .show());
                         isReviewed();
-                        requestDataForRecycleView(recyclerView);
+                        refresh();
                         dialogUpdate.dismiss();
                     }).setNegativeButton(getString(R.string.no), null).show());
         });
@@ -291,7 +272,7 @@ public class ItineraryDetails extends ItineraryActivity {
                                             .show());
 
                     isReviewed();
-                    requestDataForRecycleView(recyclerView);
+                    refresh();
                     dialogSubmit.dismiss();
                 } else
                     Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
@@ -390,8 +371,13 @@ public class ItineraryDetails extends ItineraryActivity {
         startActivityWithData(ProfileActivity.class, bundle);
     }
 
-    private void requestDataForRecycleView(RecyclerView recyclerView) {
-        ReviewManager.getAvgItineraryFeedback(this, itinerary, avgReview::setRating);
+    @Override
+    void bindDataToView() {
+        requestDataForRecycleView();
+        super.bindDataToView();
+    }
+
+    private void requestDataForRecycleView() {
         ReviewManager.requestItineraryReviews(this, itinerary, list -> {
             adapter = new ReviewAdapter(this, list);
             recyclerView.setAdapter(adapter);
