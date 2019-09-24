@@ -52,7 +52,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 
 public class ItineraryCreation extends AppCompatActivity {

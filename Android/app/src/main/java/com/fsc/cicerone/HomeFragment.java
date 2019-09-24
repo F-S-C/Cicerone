@@ -40,8 +40,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import app_connector.ConnectorConstants;
-import app_connector.GetDataConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.GetDataConnector;
 
 
 /**

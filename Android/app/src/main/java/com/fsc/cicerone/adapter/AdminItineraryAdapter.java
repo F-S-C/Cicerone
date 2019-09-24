@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import app_connector.ConnectorConstants;
-import app_connector.SendInPostConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * The adapter useful to show data in the admin part of the application.

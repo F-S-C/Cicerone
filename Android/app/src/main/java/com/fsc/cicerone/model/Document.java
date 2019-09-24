@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 /**
  * A document as represented in Cicerone. Each document is identified by a number.

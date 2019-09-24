@@ -30,7 +30,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 /**
  * An <i>entity</i> class that stores the data of a user.

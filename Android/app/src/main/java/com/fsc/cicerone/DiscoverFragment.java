@@ -54,8 +54,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import app_connector.ConnectorConstants;
-import app_connector.SendInPostConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 
 /**

@@ -27,8 +27,8 @@ import com.fsc.cicerone.model.User;
 import java.util.HashMap;
 import java.util.Map;
 
-import app_connector.BooleanConnector;
-import app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 public abstract class ReportManager {
     private ReportManager(){

@@ -53,9 +53,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import app_connector.ConnectorConstants;
-import app_connector.GetDataConnector;
-import app_connector.SendInPostConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.GetDataConnector;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Report on the account details page.

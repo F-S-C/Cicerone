@@ -16,23 +16,19 @@
 
 package com.fsc.cicerone;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
 
@@ -40,8 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import app_connector.ConnectorConstants;
-import app_connector.GetDataConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.GetDataConnector;
 
 
 public class InsertReportFragment extends Fragment {

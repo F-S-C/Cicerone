@@ -46,8 +46,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import app_connector.BooleanConnector;
-import app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 public class ItineraryUpdate extends AppCompatActivity {
     EditText title;
