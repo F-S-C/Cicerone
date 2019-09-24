@@ -32,11 +32,6 @@ public class AdminItineraryDetails extends ItineraryActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void goToAuthor(View view) {
         Bundle bundle = new Bundle();
         bundle.putString("user", itinerary.getCicerone().toJSONObject().toString());

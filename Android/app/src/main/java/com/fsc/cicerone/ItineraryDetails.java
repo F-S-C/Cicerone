@@ -339,13 +339,6 @@ public class ItineraryDetails extends ItineraryActivity {
         });
         dialogSubmit.show();
 
-        /*
-         * new MaterialAlertDialogBuilder(this)
-         *
-         * .setView(v) .setPositiveButton(, (dialog, id) -> {
-         *
-         * }) .setNegativeButton(R.string.no, null) .show();
-         */
     }
 
     public void removeReservation(View v) {

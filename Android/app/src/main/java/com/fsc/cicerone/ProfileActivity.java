@@ -137,10 +137,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         ReviewManager.isReviewedUser(this, reviewedUser, AccountManager.getCurrentLoggedUser(), (result, found) -> {
             if (found) {
-                UserReview userReview = (UserReview) result;
+                UserReview review = (UserReview) result;
                 buttReview.setEnabled(true);
                 buttReview.setText(getString(R.string.updateReview));
-                buttReview.setOnClickListener(view -> ProfileActivity.this.updateReview(userReview));
+                buttReview.setOnClickListener(view -> ProfileActivity.this.updateReview(review));
             } else {
                 userReview = new UserReview.Builder(AccountManager.getCurrentLoggedUser(), reviewedUser).build();
                 buttReview.setEnabled(true);
