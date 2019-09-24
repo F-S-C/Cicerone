@@ -32,6 +32,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Review;
 import com.fsc.cicerone.model.UserReview;
 
 import java.util.HashMap;
@@ -49,11 +50,17 @@ public class ReviewFragment extends Fragment implements Refreshable {
     private RecyclerView recyclerView;
     private TextView message;
 
+    private SwipeRefreshLayout swipeRefreshLayout = null;
+
     /**
      * Empty Constructor
      */
     public ReviewFragment() {
         // Required empty public constructor
+    }
+
+    public ReviewFragment(SwipeRefreshLayout swipeRefreshLayout){
+        this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
     @Override
@@ -67,7 +74,7 @@ public class ReviewFragment extends Fragment implements Refreshable {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         message = view.findViewById(R.id.noReview);
-        refresh();
+        refresh(swipeRefreshLayout);
 
         return view;
     }

@@ -17,26 +17,20 @@
 package com.fsc.cicerone;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 public class ReportDetailsActivity extends AppCompatActivity {
 
@@ -46,6 +40,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
     private TextView reportedUser;
     private TextView bodyText;
     private Button cancButton;
+    private Report report;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,57 +57,38 @@ public class ReportDetailsActivity extends AppCompatActivity {
         reportedUser = findViewById(R.id.report_user_activity);
         bodyText = findViewById(R.id.body_report_activity);
         cancButton = findViewById(R.id.delete_report_btn);
-        Map<String, Object> parameters = new HashMap<>();
         // Get the bundle
         Bundle bundle = getIntent().getExtras();
         // Extract the data
-        parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
-        cancButton.setVisibility(View.GONE);
-        getReportFromServer(parameters);
+        report = new Report(Objects.requireNonNull(bundle).getString("report"));
+
+        bindDataToView(report);
 
         cancButton.setOnClickListener(view -> {
-            deleteReport(parameters);
             cancButton.setEnabled(false);
+            ReportManager.removeReport(this, report);
+            report.setStatus(ReportStatus.CANCELED);
+            bindDataToView(report);
+            setResult(Activity.RESULT_OK);
         });
     }
 
-    private void getReportFromServer(Map<String, Object> params) {
-        SendInPostConnector<Report> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
-                .setContext(this)
-                .setOnEndConnectionListener(list -> {
-                    Report result = list.get(0);
-                    String code = "Nr. " + result.getCode();
-                    String statusText = "Status: ";
-                    reportTitle.setText(result.getObject());
-                    reportCode.setText(code);
-                    switch (result.getStatus()) {
-                        case OPEN:
-                            statusText += getString(R.string.open);
-                            cancButton.setEnabled(true);
-                            cancButton.setVisibility(View.VISIBLE);
-                            break;
-                        case CLOSED:
-                            statusText += getString(R.string.closed);
-                            cancButton.setVisibility(View.GONE);
-                            break;
-                        case PENDING:
-                            statusText += getString(R.string.pending);
-                            cancButton.setVisibility(View.GONE);
-                            break;
-                        case CANCELED:
-                            statusText += getString(R.string.canceled);
-                            cancButton.setVisibility(View.GONE);
-                            break;
-                        default:
-                            break;
-                    }
-                    status.setText(statusText);
-                    reportedUser.setText(result.getReportedUser().getUsername());
-                    bodyText.setText(result.getBody());
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
+    private void bindDataToView(Report report) {
+        if(report.getStatus().toString().equals("Open"))
+            cancButton.setVisibility(View.VISIBLE);
+            cancButton.setEnabled(true);
+
+        if(report.getStatus().toString().equals("Canceled"))
+        {
+            cancButton.setEnabled(false);
+            cancButton.setTextColor(Color.GRAY);
+        }
+
+        reportTitle.setText(report.getObject());
+        reportCode.setText(String.valueOf(report.getCode()));
+        status.setText(report.getStatus().toString());
+        reportedUser.setText(report.getReportedUser().getUsername());
+        bodyText.setText(report.getBody());
     }
 
     @Override
@@ -121,20 +97,4 @@ public class ReportDetailsActivity extends AppCompatActivity {
         return true;
     }
 
-    private void deleteReport(Map<String, Object> params) {
-        params.put("state", ReportStatus.CLOSED.toInt());
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
-                .setContext(this)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
-                        setResult(Activity.RESULT_OK);
-                        params.remove("state");
-                        getReportFromServer(params);
-                    }
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
-    }
 }

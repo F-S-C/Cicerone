@@ -32,6 +32,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReservationAdapter;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Reservation;
@@ -41,9 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Reservation on the account
@@ -56,11 +55,17 @@ public class ReservationFragment extends Fragment implements Refreshable {
     private RecyclerView recyclerView;
     private TextView message;
 
+    private SwipeRefreshLayout swipeRefreshLayout = null;
+
     /**
      * Empty constructor
      */
     public ReservationFragment() {
         // Required empty public constructor
+    }
+
+    public ReservationFragment(SwipeRefreshLayout swipeRefreshLayout) {
+        this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
     @Override
@@ -74,7 +79,7 @@ public class ReservationFragment extends Fragment implements Refreshable {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        refresh();
+        refresh(swipeRefreshLayout);
 
         return view;
     }
@@ -104,7 +109,7 @@ public class ReservationFragment extends Fragment implements Refreshable {
                         }
                     }
                     if (!filtered.isEmpty()) {
-                        adapter = new ReservationAdapter(getActivity(), filtered);
+                        adapter = new ReservationAdapter(getActivity(), filtered, ReservationFragment.this);
                         recyclerView.setAdapter(adapter);
                     } else {
                         message.setVisibility(View.VISIBLE);

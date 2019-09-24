@@ -24,15 +24,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.Refreshable;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.Reservation;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,6 +51,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     private Context context;
     private ViewHolder previouslyClickedHolder = null;
     private int layout = R.layout.reservation_list;
+    private Fragment fragment = null;
 
     /**
      * Constructor.
@@ -54,18 +59,20 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
      * @param context The parent Context.
      * @param list    The array of JSON Objects got from server.
      */
-    public ReservationAdapter(Context context, List<Reservation> list) {
+    public ReservationAdapter(Context context, List<Reservation> list, @Nullable Fragment fragment) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
+        this.fragment = fragment;
     }
 
 
-    public ReservationAdapter(Context context, List<Reservation> list, int layout) {
+    public ReservationAdapter(Context context, List<Reservation> list, @Nullable Fragment fragment, int layout) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.layout = layout;
         this.mData = list;
+        this.fragment = fragment;
     }
 
     // inflates the row layout from xml when needed
@@ -85,9 +92,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
         holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
-        
+
         //set TextView based on the layout. If layout is reservation_list, globetrotter must appear, otherwise, the cicerone.
-        if(layout == R.layout.reservation_list)
+        if (layout == R.layout.reservation_list)
             holder.globetrotter.setText(mData.get(position).getClient().getUsername());
         else
             holder.globetrotter.setText(mData.get(position).getItinerary().getCicerone().getUsername());
@@ -101,6 +108,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                     .setPositiveButton(context.getString(R.string.yes), (dialog, which) -> {
                         ReservationManager.confirmReservation(mData.get(position));
                         removeAt(position);
+                        if(fragment != null && fragment instanceof Refreshable) ((Refreshable) fragment).refresh();
                     })
                     .setNegativeButton(context.getString(R.string.no), null)
                     .show());
@@ -112,6 +120,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                     .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
                         ReservationManager.refuseReservation(mData.get(position));
                         removeAt(position);
+                        if(fragment != null && fragment instanceof Refreshable) ((Refreshable) fragment).refresh();
                     }))
                     .setNegativeButton(context.getString(R.string.no), null)
                     .show());
@@ -123,6 +132,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                     .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
                         ReservationManager.refuseReservation(mData.get(position));
                         removeAt(position);
+                        if(fragment != null && fragment instanceof Refreshable) ((Refreshable) fragment).refresh();
                     }))
                     .setNegativeButton(context.getString(R.string.no), null)
                     .show());
@@ -140,12 +150,16 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                     holder.declineReservation.setVisibility(View.VISIBLE);
                 }
             } else if (layout == R.layout.participation_list) {
-                if (previouslyClickedHolder != null)
-                    previouslyClickedHolder.removeParticipation.setVisibility(View.GONE);
+                Date today = new Date();
+                if (mData.get(position).getConfirmationDate().before(today) && mData.get(position).getItinerary().getReservationDate().before(today)) {
+                    if (previouslyClickedHolder != null)
+                        previouslyClickedHolder.removeParticipation.setVisibility(View.GONE);
 
 
-                if (previouslyClickedHolder != holder)
-                    holder.removeParticipation.setVisibility(View.VISIBLE);
+                    if (previouslyClickedHolder != holder)
+                        holder.removeParticipation.setVisibility(View.VISIBLE);
+                }
+
 
             }
 
