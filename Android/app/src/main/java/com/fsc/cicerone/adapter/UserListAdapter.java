@@ -34,17 +34,10 @@ import com.fsc.cicerone.ProfileActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReviewManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.User;
-import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * The ReviewAdapter of the Recycler View for the styles present in the app.
