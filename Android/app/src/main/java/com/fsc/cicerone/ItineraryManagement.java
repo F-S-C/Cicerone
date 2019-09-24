@@ -99,7 +99,7 @@ public class ItineraryManagement extends ItineraryActivity {
     }
 
     public void deleteItineraryFromServer() {
-        ItineraryManager.deleteItinerary(this, itinerary.getCode());
+        ItineraryManager.deleteItinerary(this, itinerary, success -> Toast.makeText(ItineraryManagement.this, ItineraryManagement.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show());
     }
 
     public void participatorsList(View view) {

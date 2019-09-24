@@ -18,6 +18,12 @@ package com.fsc.cicerone.manager;
 
 import android.app.Activity;
 
+import androidx.annotation.Nullable;
+
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
+import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.model.Itinerary;
 
 import java.text.ParseException;
@@ -26,10 +32,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * A <i>control</i> class that manages the itineraries.
@@ -56,6 +58,7 @@ public abstract class ItineraryManager {
      * @param fullPrice      The full price of the itinerary.
      * @param reducedPrice      The reduced price of the itinerary.
      * @param imageUrl         The URL of the image of the itinerary.
+     * @param callback A callback to be executed after the operation is completed.
      * @return The new itinerary.
      */
 
@@ -106,9 +109,16 @@ public abstract class ItineraryManager {
         return itinerary;
     }
 
-    public static void deleteItinerary(Activity context, int code){
+    /**
+     * Delete an itinerary from the server.
+     *
+     * @param context The context of the activity
+     * @param code The code of the itinerary to delete.
+     * @param callback A callback to be executed after the operation is completed.
+     */
+    public static void deleteItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback){
         Map<String, Object> params = new HashMap<>(1);
-        params.put("itinerary_code", code);
+        params.put("itinerary_code", itinerary.getCode());
         new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
@@ -117,6 +127,41 @@ public abstract class ItineraryManager {
                 .setObjectToSend(params)
                 .build()
                 .execute();
+    }
+
+    /**
+     * Update an itinerary with new information
+     *
+     * @param context The context of the activity.
+     * @param itinerary The itinerary to update
+     * @param callback A callback to be executed after the operation is completed.
+     */
+    public static void updateItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback)
+    {
+        Map<String, Object> params = new HashMap<>(14);
+        params.put("itinerary_code", itinerary.getCode());
+        params.put("title", itinerary.getTitle());
+        params.put("description", itinerary.getDescription());
+        params.put("beginning_date", itinerary.getBeginningDate());
+        params.put("ending_date", itinerary.getEndingDate());
+        params.put("ending_reservations_date", itinerary.getReservationDate());
+        params.put("repetitions_per_day", itinerary.getRepetitions());
+        params.put("location", itinerary.getLocation());
+        params.put("duration", itinerary.getDuration());
+        params.put("minimum_participants_number", itinerary.getMinParticipants());
+        params.put("maximum_participants_number", itinerary.getMaxParticipants());
+        params.put("full_price", itinerary.getFullPrice());
+        params.put("reduced_price", itinerary.getReducedPrice());
+
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (callback != null) callback.accept(result.getResult());
+                })
+                .setObjectToSend(params)
+                .build();
+        connector.execute();
+
     }
 
 }
