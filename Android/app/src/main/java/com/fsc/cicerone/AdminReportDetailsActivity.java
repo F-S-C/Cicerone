@@ -40,7 +40,6 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     private TextView reporterUser;
     private TextView bodyText;
     private Button takeChargeReport;
-    private Button closeReport;
     private Report report;
 
     @Override
@@ -53,7 +52,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_admin_report_details);
         takeChargeReport = findViewById(R.id.take_charge_report);
-        closeReport = findViewById(R.id.close_report);
+        Button closeReport = findViewById(R.id.close_report);
         reportTitle = findViewById(R.id.report_title_admin);
         reportCode = findViewById(R.id.report_code_admin);
         status = findViewById(R.id.status_text_admin);

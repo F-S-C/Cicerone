@@ -46,8 +46,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
@@ -386,7 +384,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
                     if (!result.getResult())
                         Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
                     Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
-                    user.setCurrentDocument(newUserDoc);
+                    user.setDocument(newUserDoc);
                     refresh();
                 })
                 .setObjectToSend(documentData)

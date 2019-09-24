@@ -114,7 +114,7 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         return true;
     }
 
-    abstract public void goToAuthor(View view);
+    public abstract void goToAuthor(View view);
 
     void startActivityWithData(Class targetActivity, Bundle bundle) {
         Intent i = new Intent().setClass(this, targetActivity);

@@ -5,6 +5,8 @@ namespace database_connector\controller\request;
 use database_connector\controller\JsonConnector;
 
 require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
+require_once "/membri/fsc/database_connector/controller/request/RequestDocument.php";
+require_once "/membri/fsc/database_connector/controller/request/RequestUserLanguage.php";
 
 /**
  * Get all the information about a user.
@@ -53,6 +55,11 @@ class RequestRegisteredUser extends JsonConnector
 
         $query .= $this->create_SQL_WHERE_clause($conditions);
 
-        return $this->execute_query($query, $data, $types);
+        $to_return = $this->execute_query($query, $data, $types);
+        foreach ($to_return as &$row) {
+            $row["document"] = $this->get_from_connector(new RequestDocument($row["username"]))[0];
+            $row["languages"] = $this->get_from_connector(new RequestUserLanguage(null, $row["username"]));
+        }
+        return $to_return;
     }
 }

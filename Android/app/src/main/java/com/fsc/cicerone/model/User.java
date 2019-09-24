@@ -18,6 +18,7 @@ package com.fsc.cicerone.model;
 
 import android.util.Patterns;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,8 +50,8 @@ public class User extends BusinessEntity {
     private String cellphone;
     private Date birthDate;
 
-    private Document currentDocument;
-    private Set<Document> documents;
+    private Document document;
+    private Set<Language> languages;
 
     private static class Columns {
         private static final String USERNAME_KEY = "username";
@@ -63,6 +64,8 @@ public class User extends BusinessEntity {
         private static final String CELLPHONE_KEY = "cellphone";
         private static final String BIRTH_DATE_KEY = "birth_date";
         private static final String SEX_KEY = "sex";
+        private static final String DOCUMENT_KEY = "document";
+        private static final String LANGUAGES_KEY = "languages";
     }
 
     @Override
@@ -78,14 +81,11 @@ public class User extends BusinessEntity {
         return Objects.hash(username);
     }
 
-    private Set<Language> languages;
-
     /**
      * Default empty constructor.
      */
     public User() {
         // Automatically set everything to a default value
-        documents = new HashSet<>();
         languages = new HashSet<>();
     }
 
@@ -102,7 +102,6 @@ public class User extends BusinessEntity {
         this.cellphone = null;
         this.birthDate = null;
 
-        documents = new HashSet<>();
         languages = new HashSet<>();
     }
 
@@ -199,8 +198,17 @@ public class User extends BusinessEntity {
             birthDate = null;
         }
 
-        documents = new HashSet<>();
-        languages = new HashSet<>();
+        try {
+            document = new Document(user.getJSONObject(Columns.DOCUMENT_KEY));
+        } catch (JSONException e) {
+            document = null;
+        }
+
+        try {
+            languages = Language.getSetFromJSONArray(user.getJSONArray(Columns.LANGUAGES_KEY));
+        } catch (JSONException e) {
+            languages = new HashSet<>();
+        }
     }
 
     /**
@@ -388,44 +396,17 @@ public class User extends BusinessEntity {
      *
      * @return The user's current document.
      */
-    public Document getCurrentDocument() {
-        return currentDocument;
+    public Document getDocument() {
+        return document;
     }
 
     /**
      * Set the user's current (last added and valid) document.
      *
-     * @param currentDocument The new user's current document.
+     * @param document The new user's current document.
      */
-    public void setCurrentDocument(Document currentDocument) {
-        this.currentDocument = currentDocument;
-    }
-
-    /**
-     * Get all the user's documents.
-     *
-     * @return A set containing all the user's documents.
-     */
-    public Set<Document> getDocuments() {
-        return documents;
-    }
-
-    /**
-     * Add a document to the user's documents' list if it doesn't exists, otherwise do nothing.
-     *
-     * @param document The document to be added.
-     */
-    public void addDocument(Document document) {
-        this.documents.add(document);
-    }
-
-    /**
-     * Remove a document from the user's documents' list if it exists, otherwise do nothing.
-     *
-     * @param document The document to be removed.
-     */
-    public void removeDocument(Document document) {
-        this.documents.remove(document);
+    public void setDocument(Document document) {
+        this.document = document;
     }
 
     /**
@@ -474,6 +455,9 @@ public class User extends BusinessEntity {
             if (this.cellphone != null) result.put(Columns.CELLPHONE_KEY, this.cellphone);
             if (this.birthDate != null)
                 result.put(Columns.BIRTH_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.birthDate));
+            if (document != null)
+                result.put(Columns.DOCUMENT_KEY, this.document.toJSONObject());
+            if (!languages.isEmpty()) result.put(Columns.DOCUMENT_KEY, new JSONArray(languages));
         } catch (JSONException e) {
             result = null;
         }

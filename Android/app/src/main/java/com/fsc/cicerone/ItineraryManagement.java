@@ -17,13 +17,14 @@
 package com.fsc.cicerone;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -88,7 +89,7 @@ public class ItineraryManagement extends ItineraryActivity {
         updateItinerary.setOnClickListener(v -> {
             Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
             i.putExtras(bundle);
-            v.getContext().startActivity(i);
+            startActivityForResult(i,ItineraryUpdate.RESULT_ITINERARY_UPDATED);
         });
 
 
@@ -101,6 +102,7 @@ public class ItineraryManagement extends ItineraryActivity {
 
     public void deleteItineraryFromServer() {
         ItineraryManager.deleteItinerary(this, itinerary, success -> Toast.makeText(ItineraryManagement.this, ItineraryManagement.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show());
+        ItineraryManagement.this.finish();
     }
 
     public void participatorsList(View view) {
@@ -121,6 +123,15 @@ public class ItineraryManagement extends ItineraryActivity {
                 .setObjectToSend(parameters)
                 .build();
         connector.execute();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ItineraryUpdate.RESULT_ITINERARY_UPDATED && resultCode == Activity.RESULT_OK) {
+            finish();
+            // TODO: Refresh itinerari?
+        }
     }
 }
 

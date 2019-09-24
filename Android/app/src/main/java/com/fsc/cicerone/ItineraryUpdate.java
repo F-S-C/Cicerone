@@ -16,8 +16,8 @@
 
 package com.fsc.cicerone;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -64,6 +64,7 @@ public class ItineraryUpdate extends AppCompatActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryUpdate.class.getName();
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final int RESULT_ITINERARY_UPDATED = 1050;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,9 +206,6 @@ public class ItineraryUpdate extends AppCompatActivity {
                         repetitions.setFocusableInTouchMode(false);
                         repetitions.setFocusable(false);
                     } else {
-                        if (repetitions.getText().toString().equals("1")) {
-                            repetitions.setText("");
-                        }
 
                         repetitions.setClickable(true);
                         repetitions.setFocusableInTouchMode(true);
@@ -414,11 +412,10 @@ public class ItineraryUpdate extends AppCompatActivity {
             currentItinerary.setDuration(durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
             currentItinerary.setFullPrice(Float.parseFloat(fullPrice.getText().toString()));
             currentItinerary.setReducedPrice(Float.parseFloat(reducedPrice.getText().toString()));
-            ItineraryManager.updateItinerary(this, currentItinerary, success -> Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show());
-            Intent i = new Intent(ItineraryUpdate.this, MainActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-
+            ItineraryManager.updateItinerary(this, currentItinerary, success -> { if(success) Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
+            });
+            setResult(Activity.RESULT_OK);
+            finish();
 
         } else {
             Toast.makeText(ItineraryUpdate.this, ItineraryUpdate.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
