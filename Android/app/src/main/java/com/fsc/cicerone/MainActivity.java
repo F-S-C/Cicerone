@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Fragment profileFragment = AccountManager.isLogged() ? new AccountDetails() : null;
+        Fragment profileFragment = AccountManager.isLogged() ? new AccountDetails(swipeRefreshLayout) : null;
         WishlistFragment wishlistFragment = AccountManager.isLogged() ? new WishlistFragment() : null;
 
         navView.setOnNavigationItemSelectedListener(item -> {

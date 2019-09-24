@@ -69,12 +69,17 @@ public class ReportFragment extends Fragment implements Refreshable {
     private EditText object;
     private EditText body;
     private Spinner users;
+    private SwipeRefreshLayout swipeRefreshLayout = null;
 
     /**
      * Empty Constructor
      */
     public ReportFragment() {
         // Required empty public constructor
+    }
+
+    public ReportFragment(SwipeRefreshLayout swipeRefreshLayout){
+        this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
     @Override
@@ -88,7 +93,7 @@ public class ReportFragment extends Fragment implements Refreshable {
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        refresh();
+        refresh(swipeRefreshLayout);
 
         insertReport.setVisibility(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN ? View.GONE : View.VISIBLE);
 

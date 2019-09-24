@@ -44,12 +44,17 @@ public class AccountDetails extends Fragment implements Refreshable {
 
     private TabLayout tabLayout;
     private Fragment fragment = null;
+    private SwipeRefreshLayout swipeRefreshLayout = null;
 
     private View holderView;
 
 
     public AccountDetails() {
         // required empty constructor
+    }
+
+    public AccountDetails(SwipeRefreshLayout swipeRefreshLayout){
+        this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
     @Nullable
@@ -84,7 +89,7 @@ public class AccountDetails extends Fragment implements Refreshable {
                         fragment = new ProfileFragment();
                         break;
                     case 1:
-                        fragment = new ReportFragment();
+                        fragment = new ReportFragment(swipeRefreshLayout);
                         break;
                     case 2:
                         fragment = new ReviewFragment();
