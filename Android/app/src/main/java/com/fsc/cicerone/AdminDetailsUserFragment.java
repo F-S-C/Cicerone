@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -46,7 +47,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 
@@ -64,6 +64,7 @@ public class AdminDetailsUserFragment extends Fragment {
     private DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
     private Button removeUser;
     private Activity context;
+    private User user;
 
     /**
      * Empty constructor
@@ -93,7 +94,7 @@ public class AdminDetailsUserFragment extends Fragment {
         documentNotFound = view.findViewById(R.id.document_not_exists);
         Bundle bundle = getArguments();
 
-        User user = null;
+         user = null;
         try {
             user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
             if (user.getUserType() == UserType.CICERONE) {
@@ -122,7 +123,7 @@ public class AdminDetailsUserFragment extends Fragment {
         sex.setText(data);
 
         requestUserDocument(parameters);
-        removeUser.setOnClickListener(v -> deleteAccount(parameters));
+        removeUser.setOnClickListener(v -> deleteAccount(user));
 
         return view;
     }
@@ -160,18 +161,11 @@ public class AdminDetailsUserFragment extends Fragment {
         userDocumentConnector.execute();
     }
 
-    private void deleteAccount(Map<String, Object> parameters) {
+    private void deleteAccount(User user) {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
-            BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
-                    .setContext(context)
-                    .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                        if (!result.getResult()) {
-                            Log.e("DELETE_USER_ERROR", result.getMessage());
-                        }
-                    })
-                    .setObjectToSend(parameters)
-                    .build();
-            connector.execute();
+            AccountManager.deleteAccount(context, user , success -> Toast.makeText(context,
+                    context.getString(R.string.removed_user), Toast.LENGTH_SHORT)
+                    .show());
             removeUser.setEnabled(false);
         };
         new MaterialAlertDialogBuilder(context)
