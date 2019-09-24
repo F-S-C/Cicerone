@@ -206,9 +206,6 @@ public class ItineraryUpdate extends AppCompatActivity {
                         repetitions.setFocusableInTouchMode(false);
                         repetitions.setFocusable(false);
                     } else {
-                        if (repetitions.getText().toString().equals("1")) {
-                            repetitions.setText("");
-                        }
 
                         repetitions.setClickable(true);
                         repetitions.setFocusableInTouchMode(true);

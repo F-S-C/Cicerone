@@ -37,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.manager.ItineraryManager;
 
 import org.json.JSONException;
@@ -51,8 +52,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 
 public class ItineraryCreation extends AppCompatActivity {
@@ -193,9 +192,7 @@ public class ItineraryCreation extends AppCompatActivity {
                         repetitions.setFocusableInTouchMode(false);
                         repetitions.setFocusable(false);
                     } else {
-                        if (repetitions.getText().toString().equals("1")) {
-                            repetitions.setText("");
-                        }
+
 
                         repetitions.setClickable(true);
                         repetitions.setFocusableInTouchMode(true);
