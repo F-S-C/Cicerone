@@ -16,63 +16,31 @@
 
 package com.fsc.cicerone;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.ItineraryReview;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class AdminItineraryDetails extends ItineraryActivity {
+
+    public AdminItineraryDetails() {
+        super();
+        this.layout = R.layout.activity_admin_itinerary_details;
+    }
+
+    public AdminItineraryDetails(int contentLayoutId) {
+        super(contentLayoutId);
+        this.layout = R.layout.activity_admin_itinerary_details;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_itinerary_details);
-
-
-        Map<String, Object> objectReview = new HashMap<>(1);
-        objectReview.put("reviewed_itinerary", itinerary.getCode());
-
-        getItineraryReviews(objectReview);
-
-        ImageView imageView = findViewById(R.id.imageView2);
-        imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
     }
 
-
-    public void getItineraryReviews(Map<String, Object> itineraryCode) {
-        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
-                .setContext(this)
-                .setOnEndConnectionListener(list -> {
-                    if (!list.isEmpty()) {
-                        int sum = 0;
-                        for (ItineraryReview itineraryReview : list) {
-                            sum += itineraryReview.getFeedback();
-                        }
-                        float total = (float) sum / list.size();
-                        review.setRating(total);
-                    } else {
-                        review.setRating(0);
-                    }
-                })
-                .setObjectToSend(itineraryCode)
-                .build();
-        connector.execute();
-    }
-
+    @Override
     public void goToAuthor(View view) {
-        Intent i = new Intent().setClass(view.getContext(), AdminUserProfile.class);
         Bundle bundle = new Bundle();
         bundle.putString("user", itinerary.getCicerone().toJSONObject().toString());
-        i.putExtras(bundle);
-        view.getContext().startActivity(i);
+        startActivityWithData(AdminUserProfile.class, bundle);
     }
 
 }

@@ -18,7 +18,6 @@ package com.fsc.cicerone;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -35,7 +33,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
-import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
@@ -43,12 +40,10 @@ import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.manager.WishlistManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,10 +51,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 public class ItineraryDetails extends ItineraryActivity {
     RecyclerView.Adapter adapter;
@@ -81,15 +72,23 @@ public class ItineraryDetails extends ItineraryActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
 
+    public ItineraryDetails() {
+        super();
+        this.layout = R.layout.activity_itinerary_details;
+    }
+
+    public ItineraryDetails(int contentLayoutId) {
+        super(contentLayoutId);
+        this.layout = R.layout.activity_itinerary_details;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_itinerary_details);
+
         requestReservation = findViewById(R.id.requestReservation);
         modifyWishlistButton = findViewById(R.id.intoWishlist);
         addReview = findViewById(R.id.insertReview);
-
-        parameters = new HashMap<>();
 
         if (!AccountManager.isLogged()) {
             modifyWishlistButton.setEnabled(false);
@@ -106,40 +105,21 @@ public class ItineraryDetails extends ItineraryActivity {
 
         objectReview.put("reviewed_itinerary", itinerary.getCode());
         // set the avg feedback itinerary
-        getItineraryReviews(objectReview);
         // set the recycle view reference to review of the itinerary
         requestDataForRecycleView(objectReview, recyclerView);
 
-        ImageView imageView = findViewById(R.id.imageView2);
-        imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
-
         objectReview.put("reviewed_itinerary", itinerary.getCode());
         // set the avg feedback itinerary
-        ReviewManager.getAvgItineraryFeedback(this, itinerary, avgReview::setRating);
         // set the recycle view reference to review of the itinerary
         requestDataForRecycleView(objectReview, recyclerView);
 
         if (AccountManager.isLogged()) {
             // itinerary for wishlist
             checkWishlist();
-
             // itinerary for reservation
             isReserved();
-
             // itinerary for review
-            parameters.put("booked_itinerary", itinerary.getCode());
-            parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-            parameters.put("itinerary", itinerary.getCode());
-            permissionReview(parameters);
-            if (AccountManager.isLogged()) {
-                // itinerary for wishlist
-                checkWishlist();
-                // itinerary for reservation
-                isReserved();
-                // itinerary for review
-                permissionReview();
-
-            }
+            permissionReview();
 
         }
 
@@ -184,43 +164,6 @@ public class ItineraryDetails extends ItineraryActivity {
                     isInWishlist ? R.drawable.ic_favorite_black_24dp : R.drawable.ic_outline_favorite_border_24px);
         });
 
-    }
-
-    public void getItineraryReviews(Map<String, Object> itineraryCode) {
-        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(
-                ConnectorConstants.ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
-                        .setContext(this).setOnEndConnectionListener(list -> {
-                            if (!list.isEmpty()) {
-                                int sum = 0;
-                                for (ItineraryReview review : list) {
-                                    sum += review.getFeedback();
-                                }
-                                float total = (float) sum / list.size();
-                                avgReview.setRating(total);
-                            } else {
-                                avgReview.setRating(0);
-                            }
-                        }).setObjectToSend(itineraryCode).build();
-        connector.execute();
-    }
-
-    public void getDataFromServer(Itinerary itinerary) {
-        SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-
-        description.setText(itinerary.getDescription());
-        Picasso.get().load(itinerary.getImageUrl()).into(image);
-        author.setText(itinerary.getCicerone().getUsername());
-        String dur = itinerary.getDuration();
-        duration.setText(dur.substring(0, 5));
-        location.setText(itinerary.getLocation());
-        repetitions.setText(String.valueOf(itinerary.getRepetitions()));
-        fPrice.setText(Float.toString(itinerary.getFullPrice()));
-        rPrice.setText(Float.toString(itinerary.getReducedPrice()));
-        minP.setText(String.valueOf(itinerary.getMinParticipants()));
-        maxP.setText(String.valueOf(itinerary.getMaxParticipants()));
-        bDate.setText(out.format(itinerary.getBeginningDate()));
-        eDate.setText(out.format(itinerary.getEndingDate()));
-        rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
     public void isReserved() {
@@ -409,9 +352,9 @@ public class ItineraryDetails extends ItineraryActivity {
 
         /*
          * new MaterialAlertDialogBuilder(this)
-         * 
+         *
          * .setView(v) .setPositiveButton(, (dialog, id) -> {
-         * 
+         *
          * }) .setNegativeButton(R.string.no, null) .show();
          */
     }
@@ -427,26 +370,25 @@ public class ItineraryDetails extends ItineraryActivity {
                 }).setNegativeButton(getString(R.string.no), null).show();
     }
 
+    @Override
     public void goToAuthor(View view) {
         if (itinerary.getCicerone().getUserType() == UserType.ADMIN) {
             Toast.makeText(this, getString(R.string.warning_deleted_user), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Intent i = new Intent().setClass(this, ProfileActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("reviewed_user", itinerary.getCicerone().toString());
-        i.putExtras(bundle);
-        startActivity(i);
+        startActivityWithData(ProfileActivity.class, bundle);
     }
 
     private void requestDataForRecycleView(Map<String, Object> parameters, RecyclerView recyclerView) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(
                 ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
-                        .setContext(this).setOnEndConnectionListener(list -> {
-                            adapter = new ReviewAdapter(this, list);
-                            recyclerView.setAdapter(adapter);
-                        }).setObjectToSend(parameters).build();
+                .setContext(this).setOnEndConnectionListener(list -> {
+                    adapter = new ReviewAdapter(this, list);
+                    recyclerView.setAdapter(adapter);
+                }).setObjectToSend(parameters).build();
         connector.execute();
     }
 

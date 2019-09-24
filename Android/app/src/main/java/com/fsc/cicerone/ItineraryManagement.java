@@ -45,11 +45,19 @@ public class ItineraryManagement extends ItineraryActivity {
     private RecyclerView.Adapter adapter;
 
 
+    public ItineraryManagement() {
+        super();
+        this.layout = R.layout.activity_itinerary_management;
+    }
+
+    public ItineraryManagement(int contentLayoutId) {
+        super(contentLayoutId);
+        this.layout = R.layout.activity_itinerary_management;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_itinerary_management);
 
         Button deleteItinerary = findViewById(R.id.deleteItinerary);
         FloatingActionButton updateItinerary = findViewById(R.id.editItinerary);
@@ -67,10 +75,6 @@ public class ItineraryManagement extends ItineraryActivity {
         code.put("reviewed_itinerary", itinerary.getCode());
         requestDataForRecycleView(code, recyclerView);
         code.put("itinerary_code", itinerary.getCode());
-        getItineraryReviews(code);
-
-        ImageView imageView = findViewById(R.id.imageView2);
-        imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
 
         deleteItinerary.setOnClickListener(v -> new MaterialAlertDialogBuilder(ItineraryManagement.this).
                 setTitle(getString(R.string.are_you_sure))
@@ -89,24 +93,9 @@ public class ItineraryManagement extends ItineraryActivity {
 
     }
 
-    public void getItineraryReviews(Map<String, Object> itineraryCode) {
-        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
-                .setContext(this)
-                .setOnEndConnectionListener(list -> {
-                    if (!list.isEmpty()) {
-                        int sum = 0;
-                        for (ItineraryReview itineraryReview : list) {
-                            sum += itineraryReview.getFeedback();
-                        }
-                        float total = (float) sum / list.size();
-                        review.setRating(total);
-                    } else {
-                        review.setRating(0);
-                    }
-                })
-                .setObjectToSend(itineraryCode)
-                .build();
-        connector.execute();
+    @Override
+    public void goToAuthor(View view) {
+        // Do nothing
     }
 
     public void deleteItineraryFromServer() {

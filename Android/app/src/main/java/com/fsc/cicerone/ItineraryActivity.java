@@ -1,6 +1,8 @@
 package com.fsc.cicerone;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -10,6 +12,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.fsc.cicerone.functional_interfaces.FloatRunnable;
+import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.squareup.picasso.Picasso;
 
@@ -49,7 +53,7 @@ public abstract class ItineraryActivity extends AppCompatActivity {
         bindDataToView();
     }
 
-    void bindDataToView(){
+    void bindDataToView() {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
         ImageView image = findViewById(R.id.image);
@@ -57,7 +61,7 @@ public abstract class ItineraryActivity extends AppCompatActivity {
         TextView bDate = findViewById(R.id.beginningDate);
         TextView eDate = findViewById(R.id.endingDate);
         TextView rDate = findViewById(R.id.reservationDate);
-        RatingBar review = findViewById(R.id.itineraryReview); //TODO Use to bind review
+        RatingBar review = findViewById(R.id.itineraryReview);
         TextView author = findViewById(R.id.author);
         TextView minP = findViewById(R.id.minP);
         TextView maxP = findViewById(R.id.maxP);
@@ -66,6 +70,7 @@ public abstract class ItineraryActivity extends AppCompatActivity {
         TextView duration = findViewById(R.id.duration);
         TextView fPrice = findViewById(R.id.fPrice);
         TextView rPrice = findViewById(R.id.rPrice);
+        ImageView imageView = findViewById(R.id.imageView2);
 
         description.setText(itinerary.getDescription());
         Picasso.get().load(itinerary.getImageUrl()).into(image);
@@ -81,13 +86,22 @@ public abstract class ItineraryActivity extends AppCompatActivity {
         bDate.setText(out.format(itinerary.getBeginningDate()));
         eDate.setText(out.format(itinerary.getEndingDate()));
         rDate.setText(out.format(itinerary.getReservationDate()));
+        imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
 
-        //TODO BIND REVIEWS
+        ReviewManager.getAvgItineraryFeedback(ItineraryActivity.this, itinerary, review::setRating);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    abstract public void goToAuthor(View view);
+
+    void startActivityWithData(Class targetActivity, Bundle bundle) {
+        Intent i = new Intent().setClass(this, targetActivity);
+        i.putExtras(bundle);
+        startActivity(i);
     }
 }
