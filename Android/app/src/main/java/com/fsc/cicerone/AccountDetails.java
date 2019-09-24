@@ -44,12 +44,17 @@ public class AccountDetails extends Fragment implements Refreshable {
 
     private TabLayout tabLayout;
     private Fragment fragment = null;
+    private SwipeRefreshLayout swipeRefreshLayout = null;
 
     private View holderView;
 
 
     public AccountDetails() {
         // required empty constructor
+    }
+
+    public AccountDetails(SwipeRefreshLayout swipeRefreshLayout){
+        this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
     @Nullable
@@ -84,16 +89,16 @@ public class AccountDetails extends Fragment implements Refreshable {
                         fragment = new ProfileFragment();
                         break;
                     case 1:
-                        fragment = new ReportFragment();
+                        fragment = new ReportFragment(swipeRefreshLayout);
                         break;
                     case 2:
-                        fragment = new ReviewFragment();
+                        fragment = new ReviewFragment(swipeRefreshLayout);
                         break;
                     case 3:
                         fragment = new ItineraryFragment();
                         break;
                     case 4:
-                        fragment = new ReservationFragment();
+                        fragment = new ReservationFragment(swipeRefreshLayout);
                         break;
                     default:
                         break;
@@ -130,7 +135,15 @@ public class AccountDetails extends Fragment implements Refreshable {
     }
 
     @Override
+    public void refresh() {
+        refresh(swipeRefreshLayout);
+    }
+
+    @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        ImageView imageView = holderView.findViewById(R.id.avatar);
+        imageView.setImageResource(AccountManager.getCurrentLoggedUser().getSex().getAvatarResource());
+
         if (fragment instanceof Refreshable) {
             ((Refreshable) fragment).refresh(swipeRefreshLayout);
         } else {

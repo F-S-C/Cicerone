@@ -17,6 +17,7 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -98,6 +99,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         Bundle bundle =  Objects.requireNonNull(getIntent().getExtras());
+
         reviewedUser = new User();
         try {
             reviewedUser = new User(new JSONObject(bundle.getString("reviewed_user")));

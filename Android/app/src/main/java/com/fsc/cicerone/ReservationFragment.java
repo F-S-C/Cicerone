@@ -55,11 +55,17 @@ public class ReservationFragment extends Fragment implements Refreshable {
     private RecyclerView recyclerView;
     private TextView message;
 
+    private SwipeRefreshLayout swipeRefreshLayout = null;
+
     /**
      * Empty constructor
      */
     public ReservationFragment() {
         // Required empty public constructor
+    }
+
+    public ReservationFragment(SwipeRefreshLayout swipeRefreshLayout) {
+        this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
     @Override
@@ -73,7 +79,7 @@ public class ReservationFragment extends Fragment implements Refreshable {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        refresh();
+        refresh(swipeRefreshLayout);
 
         return view;
     }
