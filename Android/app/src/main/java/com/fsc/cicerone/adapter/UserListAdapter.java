@@ -93,7 +93,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         }
         holder.usrType.setText(typeName);
         holder.imageView.setImageResource(mData.get(position).getSex().getAvatarResource());
-        ReviewManager.getAvgUserFeedback(context,user,value -> holder.avgRating.setRating(value));
+        ReviewManager.getAvgUserFeedback(context,user, holder.avgRating::setRating);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
