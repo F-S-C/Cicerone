@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.fsc.cicerone.functional_interfaces.FloatRunnable;
 import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.squareup.picasso.Picasso;
@@ -21,9 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Objects;
 
-public abstract class ItineraryActivity extends AppCompatActivity {
+public abstract class ItineraryActivity extends AppCompatActivity implements Refreshable {
     Itinerary itinerary;
     int layout = R.layout.activity_itinerary_details;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public ItineraryActivity() {
         super();
@@ -50,7 +51,10 @@ public abstract class ItineraryActivity extends AppCompatActivity {
         supportActionBar.setDisplayShowHomeEnabled(true);
         supportActionBar.setTitle(itinerary.getTitle());
 
-        bindDataToView();
+        swipeRefreshLayout = findViewById(R.id.itinerary_activity_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(this::refresh);
+
+        refresh();
     }
 
     void bindDataToView() {
@@ -89,6 +93,19 @@ public abstract class ItineraryActivity extends AppCompatActivity {
         imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
 
         ReviewManager.getAvgItineraryFeedback(ItineraryActivity.this, itinerary, review::setRating);
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void refresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        bindDataToView();
+    }
+
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        refresh();
     }
 
     @Override

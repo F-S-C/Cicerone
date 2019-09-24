@@ -108,11 +108,6 @@ public class ItineraryDetails extends ItineraryActivity {
         // set the recycle view reference to review of the itinerary
         requestDataForRecycleView(objectReview, recyclerView);
 
-        objectReview.put("reviewed_itinerary", itinerary.getCode());
-        // set the avg feedback itinerary
-        // set the recycle view reference to review of the itinerary
-        requestDataForRecycleView(objectReview, recyclerView);
-
         if (AccountManager.isLogged()) {
             // itinerary for wishlist
             checkWishlist();
