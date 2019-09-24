@@ -270,7 +270,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
             switchButton.setVisibility(View.VISIBLE);
         }
 
-        if(getParentFragment() instanceof AccountDetails){
+        if (getParentFragment() instanceof AccountDetails) {
             ((AccountDetails) getParentFragment()).refresh();
         }
 
@@ -296,6 +296,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         refresh();
+        if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
     }
 
     private void switchToCicerone() {
@@ -386,12 +387,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
                         Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
                     Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
                     user.setCurrentDocument(newUserDoc);
-                    ProfileFragment fragment = new ProfileFragment();
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
-                    fragmentTransaction.replace(R.id.frame, fragment);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
+                    refresh();
                 })
                 .setObjectToSend(documentData)
                 .build();
