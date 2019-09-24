@@ -43,10 +43,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -77,7 +79,7 @@ import com.fsc.cicerone.app_connector.SendInPostConnector;
 /**
  * Class that contains the elements of the TAB Itinerary on the account details page.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements Refreshable {
 
     private static final String ERROR_TAG = "ERROR IN " + ProfileFragment.class.getName();
     private TextInputEditText name;
@@ -142,15 +144,12 @@ public class ProfileFragment extends Fragment {
         };
 
         addItemsSex(sexList);
-        requestUserData(sexList);
-        final Map<String, Object> updateParams = new HashMap<>(2);
-        updateParams.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-        updateParams.put("user_type", AccountManager.getCurrentLoggedUser().getUserType().toInt());
+        refresh();
 
         switchButton.setOnClickListener(view1 -> new MaterialAlertDialogBuilder(context)
                 .setTitle(context.getString(R.string.are_you_sure))
                 .setMessage(context.getString(R.string.answer_switch_to_cicerone))
-                .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> switchToCicerone(updateParams)))
+                .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> switchToCicerone()))
                 .setNegativeButton(context.getString(R.string.no), null)
                 .show());
 
@@ -250,15 +249,16 @@ public class ProfileFragment extends Fragment {
         spinner.setAdapter(dataAdapter);
     }
 
-    private void requestUserData(Spinner spinner) {
+    @Override
+    public void refresh() {
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
         if (currentLoggedUser.getSex() == Sex.MALE) {
-            spinner.setSelection(0);
+            sexList.setSelection(0);
         } else if (currentLoggedUser.getSex() == Sex.FEMALE) {
-            spinner.setSelection(1);
+            sexList.setSelection(1);
         } else {
-            spinner.setSelection(2);
+            sexList.setSelection(2);
         }
         name.setText(currentLoggedUser.getName());
         surname.setText(currentLoggedUser.getSurname());
@@ -288,10 +288,17 @@ public class ProfileFragment extends Fragment {
         userDocumentConnector.execute();
     }
 
-    private void switchToCicerone(Map<String, Object> parameters) {
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        refresh();
+    }
+
+    private void switchToCicerone() {
+        final Map<String, Object> parameters = new HashMap<>(2);
+        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         parameters.put("user_type", UserType.CICERONE.toInt());
 
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
@@ -305,8 +312,8 @@ public class ProfileFragment extends Fragment {
 
                 })
                 .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+                .build()
+                .execute();
 
     }
 
