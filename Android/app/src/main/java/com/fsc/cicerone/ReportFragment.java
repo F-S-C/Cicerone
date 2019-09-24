@@ -43,6 +43,7 @@ import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
+import com.fsc.cicerone.model.ReportStatus;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -119,20 +120,6 @@ public class ReportFragment extends Fragment implements Refreshable {
         dialogSubmit.setOnShowListener(dialogInterface -> {
 
             Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
-            /*button.setOnClickListener(view -> new MaterialAlertDialogBuilder(context)
-                    .setTitle(getString(R.string.are_you_sure))
-                    .setMessage(getString(R.string.sure_to_insert_report))
-                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                        if (allFilled()) {
-                            ReportManager.addNewReport(context, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString());
-                            refresh();
-                            dialogSubmit.dismiss();
-                        }else
-                            Toast.makeText(context, context.getString(R.string.error_fields_empty),
-                                    Toast.LENGTH_SHORT).show();
-                    })
-                    .setNegativeButton(getString(R.string.no), null)
-                    .show());*/
             button.setOnClickListener(view ->{
                 if(allFilled()){
                     new MaterialAlertDialogBuilder(getContext())
@@ -168,8 +155,6 @@ public class ReportFragment extends Fragment implements Refreshable {
             parameters.remove("username");
         }
 
-        Log.e("TAG", parameters.toString());
-
         new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(getActivity())
                 .setOnStartConnectionListener(() -> {
@@ -177,7 +162,16 @@ public class ReportFragment extends Fragment implements Refreshable {
                 })
                 .setOnEndConnectionListener(list -> {
                     if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                    adapter = new ReportAdapter(getActivity(), list, this);
+                    if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN){
+                    List<Report> filtered = new ArrayList<>(list.size());
+                    for (Report report : list){
+                        if(!(report.getStatus() == ReportStatus.CLOSED || report.getStatus() == ReportStatus.CANCELED))
+                            filtered.add(report);
+                    }
+                        adapter = new ReportAdapter(getActivity(), filtered, this);
+                    }else
+                        adapter = new ReportAdapter(getActivity(), list, this);
+
                     recyclerView.setAdapter(adapter);
                 })
                 .setObjectToSend(parameters)
