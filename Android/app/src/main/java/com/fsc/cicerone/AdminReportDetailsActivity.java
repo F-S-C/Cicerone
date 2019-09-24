@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,7 +50,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         supportActionBar.setTitle(getString(R.string.report_details_title));
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         supportActionBar.setDisplayShowHomeEnabled(true);
-        
+
         setContentView(R.layout.activity_admin_report_details);
         takeChargeReport = findViewById(R.id.take_charge_report);
         closeReport = findViewById(R.id.close_report);
@@ -67,7 +68,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         bindDataToView(report);
 
         takeChargeReport.setOnClickListener(v -> {
-            ReportManager.takeCharge(this,report);
+            ReportManager.takeCharge(this, report, success -> Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show());
             report.setStatus(ReportStatus.PENDING);
             bindDataToView(report);
             takeChargeReport.setEnabled(false);
@@ -75,18 +76,18 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         });
 
         closeReport.setOnClickListener(v -> {
-                ReportManager.closeReport(this,report);
-                report.setStatus(ReportStatus.CLOSED);
-                bindDataToView(report);
-                closeReport.setEnabled(false);
-                takeChargeReport.setEnabled(false);
-                setResult(Activity.RESULT_OK);
+            ReportManager.closeReport(this, report, success -> Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_closed), Toast.LENGTH_SHORT).show());
+            report.setStatus(ReportStatus.CLOSED);
+            bindDataToView(report);
+            closeReport.setEnabled(false);
+            takeChargeReport.setEnabled(false);
+            setResult(Activity.RESULT_OK);
         });
 
     }
 
     private void bindDataToView(Report report) {
-        if(report.getStatus().toString().equals("Pending"))
+        if (report.getStatus().toString().equals("Pending"))
             takeChargeReport.setEnabled(false);
 
         reportCode.setText(String.valueOf(report.getCode()));

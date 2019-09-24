@@ -17,11 +17,11 @@
 package com.fsc.cicerone;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fabSettings;
     private LinearLayout layoutFabReport;
     private LinearLayout layoutFabItinerary;
+    private FrameLayout subFabContainer;
 
 
     /**
@@ -99,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
         fabSettings = findViewById(R.id.fab);
         layoutFabReport = findViewById(R.id.layout_fab_new_report);
         layoutFabItinerary = findViewById(R.id.layout_fab_new_itinerary);
+        subFabContainer = findViewById(R.id.fabFrame);
+
+        subFabContainer.setOnClickListener(v -> closeSubMenusFab());
 
         FloatingActionButton fabReport = layoutFabReport.findViewById(R.id.fab_new_report);
         FloatingActionButton fabItinerary = layoutFabItinerary.findViewById(R.id.fab_new_itinerary);
@@ -142,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         WishlistFragment wishlistFragment = AccountManager.isLogged() ? new WishlistFragment() : null;
 
         navView.setOnNavigationItemSelectedListener(item -> {
+            closeSubMenusFab();
             ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
             boolean toReturn = false;
             switch (item.getItemId()) {
@@ -225,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void closeSubMenusFab() {
+        subFabContainer.setVisibility(View.INVISIBLE);
         layoutFabReport.setVisibility(View.INVISIBLE);
         layoutFabItinerary.setVisibility(View.INVISIBLE);
         fabSettings.setImageResource(R.drawable.ic_add_black_24dp);
@@ -232,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openSubMenusFab() {
+        subFabContainer.setVisibility(View.VISIBLE);
         layoutFabReport.setVisibility(View.VISIBLE);
         layoutFabItinerary.setVisibility(View.VISIBLE);
         //Change settings icon to 'X' icon
@@ -281,7 +288,8 @@ public class MainActivity extends AppCompatActivity {
                             .setTitle(R.string.insert_report)
                             .setMessage(R.string.sure_to_insert_report)
                             .setPositiveButton(R.string.yes, (dialog, witch) -> {
-                                ReportManager.addNewReport(MainActivity.this, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString());
+                                ReportManager.addNewReport(MainActivity.this, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString(), success ->
+                                        Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show());
 //                                refresh();
                                 dialogSubmit.dismiss();
                             })

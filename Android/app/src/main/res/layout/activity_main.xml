@@ -65,6 +65,7 @@
                 android:layout_width="wrap_content"
                 android:backgroundTint="@color/colorAccent"
                 android:layout_height="wrap_content"
+                app:elevation="1dp"
                 app:srcCompat="@drawable/ic_add_black_24dp"
                 app:tint="@color/colorWhite"
                 app:layout_anchor="@id/bottom_navigation_appbar" />
