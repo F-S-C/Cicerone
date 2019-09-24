@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.adapter.ReservationAdapter;

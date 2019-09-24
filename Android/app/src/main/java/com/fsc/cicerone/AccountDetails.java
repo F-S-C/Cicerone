@@ -92,13 +92,13 @@ public class AccountDetails extends Fragment implements Refreshable {
                         fragment = new ReportFragment(swipeRefreshLayout);
                         break;
                     case 2:
-                        fragment = new ReviewFragment();
+                        fragment = new ReviewFragment(swipeRefreshLayout);
                         break;
                     case 3:
                         fragment = new ItineraryFragment();
                         break;
                     case 4:
-                        fragment = new ReservationFragment();
+                        fragment = new ReservationFragment(swipeRefreshLayout);
                         break;
                     default:
                         break;
