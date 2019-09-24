@@ -41,7 +41,9 @@ import com.fsc.cicerone.model.ReportStatus;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fsc.cicerone.app_connector.ConnectorConstants;
