@@ -135,6 +135,7 @@ public class ItineraryFragment extends Fragment {
         SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
                 .setOnEndConnectionListener(jsonArray -> {
+                    message.setVisibility(View.GONE);
                     if(jsonArray.isEmpty()) {
                         message.setText(R.string.no_create_itinerary);
                         message.setVisibility(View.VISIBLE);
@@ -142,6 +143,7 @@ public class ItineraryFragment extends Fragment {
                     }
                     else {
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        recyclerView.setVisibility(View.VISIBLE);
                         while (recyclerView.getItemDecorationCount() > 0) {
                             recyclerView.removeItemDecorationAt(0);
                         }
@@ -159,6 +161,7 @@ public class ItineraryFragment extends Fragment {
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
                     List<Reservation> filtered = new ArrayList<>(list.size());
+                    message.setVisibility(View.GONE);
                     for (Reservation reservation : list) {
                         if (reservation.isConfirmed()) {
                             filtered.add(reservation);
@@ -167,7 +170,11 @@ public class ItineraryFragment extends Fragment {
                     if (filtered.isEmpty()) {
                         message.setText(R.string.no_itineraries);
                         message.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+
                     }
+                    recyclerView.setVisibility(View.VISIBLE);
+
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                             DividerItemDecoration.VERTICAL));
