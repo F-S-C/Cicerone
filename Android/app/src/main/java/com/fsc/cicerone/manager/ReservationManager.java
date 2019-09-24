@@ -144,4 +144,21 @@ public abstract class ReservationManager {
                     .execute();
         }
     }
+
+    public static void isConfirmed(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+        if(AccountManager.isLogged()){
+            Map<String, Object> params = new HashMap<>(2);
+            params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            params.put("booked_itinerary", itinerary.getCode());
+
+            new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
+                    .setContext(context)
+                    .setOnEndConnectionListener(list -> {
+                        if(callback != null) callback.accept(list.get(0).isConfirmed());
+                    })
+                    .setObjectToSend(params)
+                    .build()
+                    .execute();
+        }
+    }
 }

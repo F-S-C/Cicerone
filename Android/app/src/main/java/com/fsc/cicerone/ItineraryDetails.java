@@ -267,7 +267,12 @@ public class ItineraryDetails extends AppCompatActivity {
     public void isReserved() {
         ReservationManager.isReserved(this, itinerary, success -> {
             if (success) {
-                requestReservation.setText(getString(R.string.remove_reservation));
+                ReservationManager.isConfirmed(this, itinerary, success1 -> {
+                    if(success1)
+                        requestReservation.setText(getString(R.string.remove_reservation));
+                    else
+                        requestReservation.setText(getString(R.string.remove_request_reservation));
+                });
                 requestReservation.setOnClickListener(ItineraryDetails.this::removeReservation);
             } else {
                 requestReservation.setText(getString(R.string.request_reservation));
