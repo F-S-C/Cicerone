@@ -28,17 +28,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.manager.WishlistManager;
@@ -51,9 +50,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,37 +59,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
-
-public class ItineraryDetails extends AppCompatActivity {
+public class ItineraryDetails extends ItineraryActivity {
     RecyclerView.Adapter adapter;
     private Button requestReservation;
     private FloatingActionButton modifyWishlistButton;
     private Button addReview;
-    private ImageView image;
-    private TextView description;
-    private TextView bDate;
-    private TextView eDate;
-    private TextView rDate;
-    private TextView location;
-    private TextView author;
-    private TextView minP;
-    private TextView maxP;
-    private TextView repetitions;
-    private TextView duration;
-    private TextView fPrice;
-    private TextView rPrice;
 
     private boolean isInWishlist;
-    private RatingBar avgReview;
 
     private EditText descriptionReview;
     private RatingBar feedbackReview;
     private ItineraryReview itineraryReview;
 
-    private Itinerary itinerary;
     private Map<String, Object> objectReview;
     Map<String, Object> parameters;
     private RecyclerView recyclerView;
@@ -111,20 +88,7 @@ public class ItineraryDetails extends AppCompatActivity {
         requestReservation = findViewById(R.id.requestReservation);
         modifyWishlistButton = findViewById(R.id.intoWishlist);
         addReview = findViewById(R.id.insertReview);
-        image = findViewById(R.id.image);
-        description = findViewById(R.id.description);
-        bDate = findViewById(R.id.beginningDate);
-        eDate = findViewById(R.id.endingDate);
-        rDate = findViewById(R.id.reservationDate);
-        author = findViewById(R.id.author);
-        minP = findViewById(R.id.minP);
-        maxP = findViewById(R.id.maxP);
-        location = findViewById(R.id.location);
-        repetitions = findViewById(R.id.repetitions);
-        duration = findViewById(R.id.duration);
-        fPrice = findViewById(R.id.fPrice);
-        rPrice = findViewById(R.id.rPrice);
-        avgReview = findViewById(R.id.itineraryReview);
+
 
         parameters = new HashMap<>();
 
@@ -136,52 +100,35 @@ public class ItineraryDetails extends AppCompatActivity {
         }
 
         objectReview = new HashMap<>();
-        Bundle bundle = getIntent().getExtras();
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
-        supportActionBar.setDisplayShowHomeEnabled(true);
 
         recyclerView = findViewById(R.id.reviewList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        try {
-            String s = Objects.requireNonNull(bundle).getString("itinerary");
 
-            itinerary = new Itinerary(new JSONObject(s));
-            supportActionBar.setTitle(itinerary.getTitle());
-            getDataFromServer(itinerary);
+        objectReview.put("reviewed_itinerary", itinerary.getCode());
+        //set the avg feedback itinerary
+        getItineraryReviews(objectReview);
+        //set the recycle view reference to review of the itinerary
+        requestDataForRecycleView(objectReview, recyclerView);
 
-            objectReview.put("reviewed_itinerary", itinerary.getCode());
-            //set the avg feedback itinerary
-            getItineraryReviews(objectReview);
-            //set the recycle view reference to review of the itinerary
-            requestDataForRecycleView(objectReview, recyclerView);
+        ImageView imageView = findViewById(R.id.imageView2);
+        imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
 
-            ImageView imageView = findViewById(R.id.imageView2);
-            imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
+        if (AccountManager.isLogged()) {
+            //itinerary for wishlist
+            checkWishlist();
 
-            if (AccountManager.isLogged()) {
-                //itinerary for wishlist
-                checkWishlist();
+            //itinerary for reservation
+            isReserved();
 
-                //itinerary for reservation
-                isReserved();
-
-                //itinerary for review
-                parameters.put("booked_itinerary", itinerary.getCode());
-                parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-                parameters.put("itinerary", itinerary.getCode());
-                permissionReview(parameters);
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+            //itinerary for review
+            parameters.put("booked_itinerary", itinerary.getCode());
+            parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            parameters.put("itinerary", itinerary.getCode());
+            permissionReview(parameters);
         }
+
 
         modifyWishlistButton.setOnClickListener(v -> {
             setResult(Activity.RESULT_OK);
@@ -223,25 +170,6 @@ public class ItineraryDetails extends AppCompatActivity {
             modifyWishlistButton.setImageResource(isInWishlist ? R.drawable.ic_favorite_black_24dp : R.drawable.ic_outline_favorite_border_24px);
         });
 
-    }
-
-    public void getDataFromServer(Itinerary itinerary) {
-        SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-
-        description.setText(itinerary.getDescription());
-        Picasso.get().load(itinerary.getImageUrl()).into(image);
-        author.setText(itinerary.getCicerone().getUsername());
-        String dur = itinerary.getDuration();
-        duration.setText(dur.substring(0, 5));
-        location.setText(itinerary.getLocation());
-        repetitions.setText(String.valueOf(itinerary.getRepetitions()));
-        fPrice.setText(Float.toString(itinerary.getFullPrice()));
-        rPrice.setText(Float.toString(itinerary.getReducedPrice()));
-        minP.setText(String.valueOf(itinerary.getMinParticipants()));
-        maxP.setText(String.valueOf(itinerary.getMaxParticipants()));
-        bDate.setText(out.format(itinerary.getBeginningDate()));
-        eDate.setText(out.format(itinerary.getEndingDate()));
-        rDate.setText(out.format(itinerary.getReservationDate()));
     }
 
     public void getItineraryReviews(Map<String, Object> itineraryCode) {
@@ -532,11 +460,7 @@ public class ItineraryDetails extends AppCompatActivity {
         startActivity(i);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
+
 
     private void requestDataForRecycleView(Map<String, Object> parameters, RecyclerView recyclerView) {
         SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
