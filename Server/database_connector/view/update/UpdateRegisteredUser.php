@@ -4,7 +4,7 @@ namespace database_connector\view\update;
 
 use database_connector\controller\update\UpdateRegisteredUser;
 
-require_once "/membri/fsc/database_connector/controller/update/UpdateRegisteredUser.php";
+require_once "/home/fsc/www/database_connector/controller/update/UpdateRegisteredUser.php";
 
 $connector = new UpdateRegisteredUser($_POST['username']);
 $connector->add_value("tax_code", $_POST['tax_code'], "s");

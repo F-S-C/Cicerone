@@ -4,9 +4,9 @@ namespace database_connector\view\download;
 
 use database_connector\controller\download\UserDataDownloader;
 
-require_once "/membri/fsc/database_connector/controller/download/UserDataDownloader.php";
+require_once "/home/fsc/www/database_connector/controller/download/UserDataDownloader.php";
 
-$user = htmlspecialchars(strtolower($_GET['username']));
+$user = strtolower($_GET['username']);
 $pass = $_GET['password'];
 
 if (!isset($user) || !isset($pass)) {

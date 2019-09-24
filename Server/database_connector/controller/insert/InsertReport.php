@@ -2,8 +2,8 @@
 
 namespace database_connector\controller\insert;
 
-require_once "/membri/fsc/database_connector/controller/insert/InsertConnector.php";
-require_once "/membri/fsc/database_connector/controller/insert/InsertReportDetails.php";
+require_once "/home/fsc/www/database_connector/controller/insert/InsertConnector.php";
+require_once "/home/fsc/www/database_connector/controller/insert/InsertReportDetails.php";
 
 /**
  * Insert a report for the admin.
@@ -24,7 +24,7 @@ class InsertReport extends InsertConnector
 
         $result = json_decode(parent::get_content(), true);
         if (!$result[self::RESULT_KEY]) {
-            $result[self::ERROR_KEY] = $result[self::ERROR_KEY] . " (in main)";
+            $result["error"] = $result["error"] . " (in main)";
             die(json_encode($result));
         }
 
@@ -41,7 +41,7 @@ class InsertReport extends InsertConnector
             $prepared = $this->connection->prepare("DELETE FROM report WHERE report_code = ?");
             $prepared->bind_param("i", $id);
             $prepared->execute();
-            $result[self::ERROR_KEY] = $result[self::ERROR_KEY] . " (in details)";
+            $result["error"] = $result["error"] . " (in details)";
             die(json_encode($result));
         }
 

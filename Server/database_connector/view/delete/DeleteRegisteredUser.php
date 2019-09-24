@@ -5,7 +5,7 @@ namespace database_connector\view\delete;
 
 use database_connector\controller\delete\DeleteRegisteredUser;
 
-require_once "/membri/fsc/database_connector/controller/delete/DeleteRegisteredUser.php";
+require_once "/home/fsc/www/database_connector/controller/delete/DeleteRegisteredUser.php";
 
 
 $connector = new DeleteRegisteredUser($_POST['username']);

@@ -2,7 +2,7 @@
 
 namespace database_connector\controller\insert;
 
-require_once "/membri/fsc/database_connector/controller/insert/InsertConnector.php";
+require_once "/home/fsc/www/database_connector/controller/insert/InsertConnector.php";
 
 /**
  * Insert an itinerary.

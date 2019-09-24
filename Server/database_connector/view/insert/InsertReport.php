@@ -4,7 +4,7 @@ namespace database_connector\view\insert;
 
 use database_connector\controller\insert\InsertReport;
 
-require_once "/membri/fsc/database_connector/controller/insert/InsertReport.php";
+require_once "/home/fsc/www/database_connector/controller/insert/InsertReport.php";
 
 $connector = new InsertReport();
 $connector->add_value(array(

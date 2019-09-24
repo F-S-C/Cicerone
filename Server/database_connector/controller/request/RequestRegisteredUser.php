@@ -4,9 +4,9 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 
-require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
-require_once "/membri/fsc/database_connector/controller/request/RequestDocument.php";
-require_once "/membri/fsc/database_connector/controller/request/RequestUserLanguage.php";
+require_once "/home/fsc/www/database_connector/controller/JsonConnector.php";
+require_once "/home/fsc/www/database_connector/controller/request/RequestDocument.php";
+require_once "/home/fsc/www/database_connector/controller/request/RequestUserLanguage.php";
 
 /**
  * Get all the information about a user.
