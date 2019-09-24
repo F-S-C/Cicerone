@@ -128,6 +128,13 @@ public abstract class ReservationManager {
         connector.execute();
     }
 
+    /**
+     * Check if an itinerary is already reserved.
+     *
+     * @param context The context of the caller.
+     * @param itinerary The itinerary of the reservation.
+     * @param callback    A callback to be executed after the operation is completed.
+     */
     public static void isReserved(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);
@@ -145,6 +152,13 @@ public abstract class ReservationManager {
         }
     }
 
+    /**
+     * Check if an reservation is already confirmed.
+     *
+     * @param context The context of the caller.
+     * @param itinerary The itinerary of the reservation.
+     * @param callback    A callback to be executed after the operation is completed.
+     */
     public static void isConfirmed(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
         if(AccountManager.isLogged()){
             Map<String, Object> params = new HashMap<>(2);
