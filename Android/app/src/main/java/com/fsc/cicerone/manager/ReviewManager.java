@@ -32,10 +32,12 @@ public abstract class ReviewManager {
      * Set the feedback's average of the itinerary.
      *
      * @param context   The context of the caller.
-     * @param itinerary The itinerary of the feedback's avarage.
+     * @param itinerary The itinerary of the feedback's average.
      * @param callback  A callback to be executed after the operation is completed.
      */
     public static void getAvgItineraryFeedback(Activity context, Itinerary itinerary, @Nullable FloatRunnable callback) {
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("reviewed_itinerary", itinerary.getCode());
         new SendInPostConnector.Builder<>(ConnectorConstants.ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
@@ -46,7 +48,7 @@ public abstract class ReviewManager {
                     if (callback != null)
                         callback.accept(!list.isEmpty() ? (float) sum / list.size() : 0);
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromObject(itinerary))
+                .setObjectToSend(parameters)
                 .build()
                 .execute();
     }
