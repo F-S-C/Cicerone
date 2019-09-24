@@ -57,6 +57,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -282,8 +283,10 @@ public class ItineraryDetails extends AppCompatActivity {
                 .setOnEndConnectionListener(list -> {
 
                     if (!list.isEmpty()) {
-                        review.put("reviewed_itinerary", Objects.requireNonNull(review.get("booked_itinerary")).toString());
-                        isReviewed(review);
+                        if(new Date().compareTo(list.get(0).getRequestedDate()) > 0) {
+                            review.put("reviewed_itinerary", Objects.requireNonNull(review.get("booked_itinerary")).toString());
+                            isReviewed(review);
+                        }
                     }
                 })
                 .setObjectToSend(review)
