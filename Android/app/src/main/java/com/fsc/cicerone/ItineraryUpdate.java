@@ -30,7 +30,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.Itinerary;
 
 import org.json.JSONException;
@@ -41,13 +41,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 public class ItineraryUpdate extends AppCompatActivity {
     EditText title;
@@ -64,6 +59,7 @@ public class ItineraryUpdate extends AppCompatActivity {
     EditText fullPrice;
     EditText reducedPrice;
     Button submit;
+    Itinerary currentItinerary;
     final Calendar myCalendar = Calendar.getInstance();
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryUpdate.class.getName();
@@ -79,7 +75,6 @@ public class ItineraryUpdate extends AppCompatActivity {
         supportActionBar.setDisplayShowHomeEnabled(true);
 
         Bundle bundle = getIntent().getExtras();
-        Itinerary currentItinerary;
         try {
             currentItinerary = new Itinerary(new JSONObject(Objects.requireNonNull(bundle).getString("itinerary")));
         } catch (JSONException e) {
@@ -402,29 +397,27 @@ public class ItineraryUpdate extends AppCompatActivity {
 
     }
 
-    public void sendData(View view) throws JSONException, ParseException {
-        Map<String, Object> params = new HashMap<>(14);
+    public void sendData(View view) throws ParseException {
         boolean canSend = allFilled();
         DateFormat outputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
 
         if (canSend) {
-            params.put("title", title.getText().toString());
-            params.put("description", description.getText().toString());
-            params.put("beginning_date", outputFormat.format(outputFormat.parse(selectBeginningDate.getText().toString())));
-            params.put("ending_date", outputFormat.format(outputFormat.parse(selectEndingDate.getText().toString())));
-            params.put("end_reservations_date", outputFormat.format(outputFormat.parse(selectReservationDate.getText().toString())));
-            params.put("maximum_participants_number", maxParticipants.getText().toString());
-            params.put("minimum_participants_number", minParticipants.getText().toString());
-            params.put("repetitions_per_day", repetitions.getText().toString());
-            params.put("location", location.getText().toString());
-            params.put("duration", durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
-            params.put("full_price", fullPrice.getText().toString());
-            params.put("reduced_price", reducedPrice.getText().toString());
-            params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-            Bundle bundle = getIntent().getExtras();
-            
-            params.put("itinerary_code",new Itinerary(new JSONObject(Objects.requireNonNull(bundle).getString("itinerary"))).getCode());
-            submitNewData(params);
+            currentItinerary.setTitle(title.getText().toString());
+            currentItinerary.setDescription(description.getText().toString());
+            currentItinerary.setBeginningDate(outputFormat.parse(selectBeginningDate.getText().toString()));
+            currentItinerary.setEndingDate(outputFormat.parse(selectEndingDate.getText().toString()));
+            currentItinerary.setReservationDate(outputFormat.parse(selectReservationDate.getText().toString()));
+            currentItinerary.setMaxParticipants(Integer.parseInt(maxParticipants.getText().toString()));
+            currentItinerary.setMinParticipants(Integer.parseInt(minParticipants.getText().toString()));
+            currentItinerary.setRepetitions(Integer.parseInt(repetitions.getText().toString()));
+            currentItinerary.setLocation(location.getText().toString());
+            currentItinerary.setDuration(durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
+            currentItinerary.setFullPrice(Float.parseFloat(fullPrice.getText().toString()));
+            currentItinerary.setReducedPrice(Float.parseFloat(reducedPrice.getText().toString()));
+            ItineraryManager.updateItinerary(this, currentItinerary, success -> Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show());
+            Intent i = new Intent(ItineraryUpdate.this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
 
 
         } else {
@@ -433,24 +426,6 @@ public class ItineraryUpdate extends AppCompatActivity {
     }
 
 
-    private void submitNewData(Map<String, Object> params) {
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY)
-                .setContext(this)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    Log.e("p", result.toJSONObject().toString());
-                    if (result.getResult()) {
-                        Intent i = new Intent(ItineraryUpdate.this, MainActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
-                        startActivity(i);
-
-                    }
-
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
-    }
 
     private boolean allFilled() {
         return !title.getText().toString().equals("")
