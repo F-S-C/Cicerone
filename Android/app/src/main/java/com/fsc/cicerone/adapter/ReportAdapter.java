@@ -111,7 +111,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
                 i = new Intent(context, ReportDetailsActivity.class);
             }
             Bundle bundle = new Bundle();
-            bundle.putString("report_code", String.valueOf(mData.get(position).getCode()));
+            bundle.putString("report", mData.get(position).toString());
             i.putExtras(bundle);
             fragment.startActivityForResult(i, ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED);
         });
