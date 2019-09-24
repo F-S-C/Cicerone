@@ -135,6 +135,11 @@ public class AccountDetails extends Fragment implements Refreshable {
     }
 
     @Override
+    public void refresh() {
+        refresh(swipeRefreshLayout);
+    }
+
+    @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         ImageView imageView = holderView.findViewById(R.id.avatar);
         imageView.setImageResource(AccountManager.getCurrentLoggedUser().getSex().getAvatarResource());

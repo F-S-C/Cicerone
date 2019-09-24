@@ -269,6 +269,11 @@ public class ProfileFragment extends Fragment implements Refreshable {
         } else {
             switchButton.setVisibility(View.VISIBLE);
         }
+
+        if(getParentFragment() instanceof AccountDetails){
+            ((AccountDetails) getParentFragment()).refresh();
+        }
+
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         birthDate.setText(outputFormat.format(currentLoggedUser.getBirthDate()));
         Map<String, Object> parameters = new HashMap<>(1);
