@@ -35,6 +35,16 @@ public abstract class ReportManager {
         throw new IllegalStateException("Utility class");
     }
 
+
+    /**
+     * Insert a Report made by a User to another.
+     *
+     * @param context               The context of the activity.
+     * @param author                The author of the report.
+     * @param reportedUserUsername  The username of the reported user.
+     * @param object                The object of the report
+     * @param body                  The body of the report.
+     */
     public static void addNewReport(Activity context, User author, String reportedUserUsername, String object, String body)
     {
         Map<String, Object> param = new HashMap<>(5);
@@ -56,6 +66,12 @@ public abstract class ReportManager {
                 .execute();
     }
 
+    /**
+     * Change the status of the report to "Pending".
+     *
+     * @param context The context of the activity.
+     * @param report  The report to close.
+     */
     public static void takeCharge(Activity context, Report report)
     {
         Map<String, Object> param = new HashMap<>(2);
@@ -75,6 +91,12 @@ public abstract class ReportManager {
 
     }
 
+    /**
+     * Change the status of the report to "Canceled".
+     *
+     * @param context The context of the activity.
+     * @param report  The report to close.
+     */
     public static void  removeReport (Activity context, Report report)
     {
         Map<String, Object> param = new HashMap<>(2);
@@ -96,6 +118,12 @@ public abstract class ReportManager {
 
     }
 
+    /**
+     * Change the status of the report to "Closed".
+     *
+     * @param context The context of the activity.
+     * @param report  The report to close.
+     */
     public static void  closeReport (Activity context, Report report)
     {
         Map<String, Object> param = new HashMap<>(2);
