@@ -33,6 +33,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -85,9 +86,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
         holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
-        
+
         //set TextView based on the layout. If layout is reservation_list, globetrotter must appear, otherwise, the cicerone.
-        if(layout == R.layout.reservation_list)
+        if (layout == R.layout.reservation_list)
             holder.globetrotter.setText(mData.get(position).getClient().getUsername());
         else
             holder.globetrotter.setText(mData.get(position).getItinerary().getCicerone().getUsername());
@@ -140,12 +141,16 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                     holder.declineReservation.setVisibility(View.VISIBLE);
                 }
             } else if (layout == R.layout.participation_list) {
-                if (previouslyClickedHolder != null)
-                    previouslyClickedHolder.removeParticipation.setVisibility(View.GONE);
+                Date today = new Date();
+                if (mData.get(position).getConfirmationDate().before(today) && mData.get(position).getItinerary().getReservationDate().before(today)) {
+                    if (previouslyClickedHolder != null)
+                        previouslyClickedHolder.removeParticipation.setVisibility(View.GONE);
 
 
-                if (previouslyClickedHolder != holder)
-                    holder.removeParticipation.setVisibility(View.VISIBLE);
+                    if (previouslyClickedHolder != holder)
+                        holder.removeParticipation.setVisibility(View.VISIBLE);
+                }
+
 
             }
 

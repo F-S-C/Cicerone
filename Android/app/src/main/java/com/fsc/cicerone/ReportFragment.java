@@ -37,6 +37,8 @@ import com.fsc.cicerone.adapter.ReportAdapter;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
+import com.fsc.cicerone.model.ReportStatus;
+import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
 import java.util.HashMap;
@@ -103,7 +105,16 @@ public class ReportFragment extends Fragment implements Refreshable {
                 })
                 .setOnEndConnectionListener(list -> {
                     if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                    adapter = new ReportAdapter(getActivity(), list, this);
+                    if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN){
+                    List<Report> filtered = new ArrayList<>(list.size());
+                    for (Report report : list){
+                        if(!(report.getStatus() == ReportStatus.CLOSED || report.getStatus() == ReportStatus.CANCELED))
+                            filtered.add(report);
+                    }
+                        adapter = new ReportAdapter(getActivity(), filtered, this);
+                    }else
+                        adapter = new ReportAdapter(getActivity(), list, this);
+
                     recyclerView.setAdapter(adapter);
                 })
                 .setObjectToSend(parameters)

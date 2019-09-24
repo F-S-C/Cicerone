@@ -57,6 +57,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -266,7 +267,12 @@ public class ItineraryDetails extends AppCompatActivity {
     public void isReserved() {
         ReservationManager.isReserved(this, itinerary, success -> {
             if (success) {
-                requestReservation.setText(getString(R.string.remove_reservation));
+                ReservationManager.isConfirmed(this, itinerary, success1 -> {
+                    if(success1)
+                        requestReservation.setText(getString(R.string.remove_reservation));
+                    else
+                        requestReservation.setText(getString(R.string.remove_request_reservation));
+                });
                 requestReservation.setOnClickListener(ItineraryDetails.this::removeReservation);
             } else {
                 requestReservation.setText(getString(R.string.request_reservation));
@@ -282,8 +288,10 @@ public class ItineraryDetails extends AppCompatActivity {
                 .setOnEndConnectionListener(list -> {
 
                     if (!list.isEmpty()) {
-                        review.put("reviewed_itinerary", Objects.requireNonNull(review.get("booked_itinerary")).toString());
-                        isReviewed(review);
+                        if(new Date().compareTo(list.get(0).getRequestedDate()) > 0) {
+                            review.put("reviewed_itinerary", Objects.requireNonNull(review.get("booked_itinerary")).toString());
+                            isReviewed(review);
+                        }
                     }
                 })
                 .setObjectToSend(review)
