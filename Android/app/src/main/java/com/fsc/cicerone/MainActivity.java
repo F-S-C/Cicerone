@@ -17,18 +17,29 @@
 package com.fsc.cicerone;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ReportManager;
+import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserType;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -59,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private BottomNavigationView navView;
 
+    private boolean isFabMenuExtended = false;
+    private FloatingActionButton fabSettings;
+    private LinearLayout layoutFabReport;
+    private LinearLayout layoutFabItinerary;
+
 
     /**
      * Create the activity and load the layout.
@@ -75,7 +91,42 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         navView = findViewById(R.id.bottom_navigation);
-        navView.getMenu().removeItem(AccountManager.isLogged() ? R.id.navigation_login : R.id.navigation_profile);
+        if (!AccountManager.isLogged()) {
+            navView.getMenu().findItem(R.id.navigation_profile).setTitle(getString(R.string.login));
+            navView.getMenu().findItem(R.id.navigation_profile).setIcon(getDrawable(R.drawable.ic_login));
+        }
+        fabSettings = findViewById(R.id.fab);
+        layoutFabReport = findViewById(R.id.layout_fab_new_report);
+        layoutFabItinerary = findViewById(R.id.layout_fab_new_itinerary);
+
+        FloatingActionButton fabReport = layoutFabReport.findViewById(R.id.fab_new_report);
+        FloatingActionButton fabItinerary = layoutFabItinerary.findViewById(R.id.fab_new_itinerary);
+
+        if (!AccountManager.isLogged()) {
+            fabSettings.setEnabled(false);
+            fabSettings.setBackgroundColor(Color.LTGRAY);
+        } else {
+            fabSettings.setOnClickListener(v -> {
+                if (isFabMenuExtended) {
+                    closeSubMenusFab();
+                } else {
+                    openSubMenusFab();
+                }
+            });
+
+            fabReport.setOnClickListener(v -> {
+                insertReport();
+                closeSubMenusFab();
+            });
+            fabItinerary.setOnClickListener(v -> {
+                closeSubMenusFab();
+                Intent i = new Intent().setClass(MainActivity.this, ItineraryCreation.class);
+                startActivity(i);
+            });
+            if (AccountManager.getCurrentLoggedUser().getUserType() != UserType.CICERONE)
+                layoutFabItinerary.setVisibility(View.GONE);
+        }
+        closeSubMenusFab();
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.main_activity_swipe_refresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
@@ -115,12 +166,13 @@ public class MainActivity extends AppCompatActivity {
                     toReturn = true;
                     break;
                 case R.id.navigation_profile:
-                    changeCurrentFragment(profileFragment);
-                    supportActionBar.setTitle(getString(R.string.account));
+                    if (!AccountManager.isLogged()) {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    } else {
+                        changeCurrentFragment(profileFragment);
+                        supportActionBar.setTitle(getString(R.string.account));
+                    }
                     toReturn = true;
-                    break;
-                case R.id.navigation_login:
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     break;
                 default:
                     break;
@@ -170,5 +222,77 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void closeSubMenusFab() {
+        layoutFabReport.setVisibility(View.INVISIBLE);
+        layoutFabItinerary.setVisibility(View.INVISIBLE);
+        fabSettings.setImageResource(R.drawable.ic_add_black_24dp);
+        isFabMenuExtended = false;
+    }
+
+    private void openSubMenusFab() {
+        layoutFabReport.setVisibility(View.VISIBLE);
+        layoutFabItinerary.setVisibility(View.VISIBLE);
+        //Change settings icon to 'X' icon
+        fabSettings.setImageResource(R.drawable.ic_dialog_close_dark);
+        isFabMenuExtended = true;
+    }
+
+    private void insertReport() {
+        View reportView = getLayoutInflater().inflate(R.layout.dialog_new_report, null);
+
+        EditText object = reportView.findViewById(R.id.object);
+        EditText body = reportView.findViewById(R.id.body);
+        Spinner users = reportView.findViewById(R.id.users);
+
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
+
+        AccountManager.setUsersInSpinner(this, users);
+
+        AlertDialog dialogSubmit = new MaterialAlertDialogBuilder(this)
+                .setView(reportView)
+                .setTitle(getString(R.string.insert_report))
+                .setMessage(getString(R.string.report_dialog_message))
+                .setPositiveButton(R.string.insert_report, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+
+        dialogSubmit.setOnShowListener(dialogInterface -> {
+
+            Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
+            /*button.setOnClickListener(view -> new MaterialAlertDialogBuilder(context)
+                    .setTitle(getString(R.string.are_you_sure))
+                    .setMessage(getString(R.string.sure_to_insert_report))
+                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                        if (allFilled()) {
+                            ReportManager.addNewReport(context, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString());
+                            refresh();
+                            dialogSubmit.dismiss();
+                        }else
+                            Toast.makeText(context, context.getString(R.string.error_fields_empty),
+                                    Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton(getString(R.string.no), null)
+                    .show());*/
+            button.setOnClickListener(view -> {
+                if (!object.getText().toString().equals("") && !body.getText().toString().equals("") && !users.getSelectedItem().equals("")) {
+                    new MaterialAlertDialogBuilder(MainActivity.this)
+                            .setTitle(R.string.insert_report)
+                            .setMessage(R.string.sure_to_insert_report)
+                            .setPositiveButton(R.string.yes, (dialog, witch) -> {
+                                ReportManager.addNewReport(MainActivity.this, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString());
+//                                refresh();
+                                dialogSubmit.dismiss();
+                            })
+                            .setNegativeButton(R.string.no, null)
+                            .show();
+                } else
+                    Toast.makeText(MainActivity.this, getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+            });
+
+        });
+
+        dialogSubmit.show();
     }
 }

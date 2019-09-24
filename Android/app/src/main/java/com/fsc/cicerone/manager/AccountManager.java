@@ -18,9 +18,12 @@ package com.fsc.cicerone.manager;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.functional_interfaces.RunnableUsingBusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -28,8 +31,11 @@ import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
@@ -237,6 +243,27 @@ public abstract class AccountManager {
                     t.setText(String.format(context.getString(R.string.avg_earn), (count > 0) ? sum / count : 0));
                 })
                 .setObjectToSend(user)
+                .build();
+        connector.execute();
+    }
+
+    public static void setUsersInSpinner(Activity context, Spinner users) {
+        // TODO: Needs cleanup?
+        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(context)
+                .setOnEndConnectionListener(list -> {
+                    List<String> cleanList = new ArrayList<>();
+
+                    for (User user : list) {
+                        if (!user.getUsername().equals(AccountManager.getCurrentLoggedUser().getUsername()))
+                            cleanList.add(user.getUsername());
+                    }
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(context),
+                            android.R.layout.simple_spinner_item, cleanList);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    users.setAdapter(dataAdapter);
+
+                })
                 .build();
         connector.execute();
     }
