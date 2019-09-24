@@ -39,7 +39,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
-import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.manager.ReviewManager;
@@ -47,7 +46,6 @@ import com.fsc.cicerone.manager.WishlistManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
-import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -59,13 +57,11 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 
@@ -154,7 +150,7 @@ public class ItineraryDetails extends AppCompatActivity {
 
             objectReview.put("reviewed_itinerary", itinerary.getCode());
             //set the avg feedback itinerary
-            ReviewManager.getAvgItineraryFeedback(this, itinerary, value -> avgReview.setRating(value));
+            ReviewManager.getAvgItineraryFeedback(this, itinerary, avgReview::setRating);
             //set the recycle view reference to review of the itinerary
             requestDataForRecycleView(objectReview, recyclerView);
 
