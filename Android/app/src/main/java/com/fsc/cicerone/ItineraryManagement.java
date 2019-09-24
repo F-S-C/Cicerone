@@ -17,6 +17,7 @@
 package com.fsc.cicerone;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -138,7 +140,7 @@ public class ItineraryManagement extends AppCompatActivity {
             updateItinerary.setOnClickListener(v -> {
                 Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
                 i.putExtras(bundle);
-                v.getContext().startActivity(i);
+                v.getContext().nice
             });
 
         } catch (JSONException e) {
@@ -190,6 +192,7 @@ public class ItineraryManagement extends AppCompatActivity {
 
     public void deleteItineraryFromServer() {
         ItineraryManager.deleteItinerary(this, itinerary, success -> Toast.makeText(ItineraryManagement.this, ItineraryManagement.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show());
+        ItineraryManagement.this.finish();
     }
 
     @Override
@@ -216,6 +219,14 @@ public class ItineraryManagement extends AppCompatActivity {
                 .setObjectToSend(parameters)
                 .build();
         connector.execute();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ItineraryUpdate.RESULT_ITINERARY_UPDATED && resultCode == Activity.RESULT_OK) {
+            finish();
+        }
     }
 }
 

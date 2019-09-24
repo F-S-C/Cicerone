@@ -17,6 +17,7 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -113,7 +114,7 @@ public abstract class ItineraryManager {
      * Delete an itinerary from the server.
      *
      * @param context The context of the activity
-     * @param code The code of the itinerary to delete.
+     * @param itinerary The code of the itinerary to delete.
      * @param callback A callback to be executed after the operation is completed.
      */
     public static void deleteItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback){
@@ -122,7 +123,7 @@ public abstract class ItineraryManager {
         new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) context.finish();
+                    if (callback != null) callback.accept(result.getResult());
                 })
                 .setObjectToSend(params)
                 .build()
@@ -138,13 +139,14 @@ public abstract class ItineraryManager {
      */
     public static void updateItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback)
     {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
         Map<String, Object> params = new HashMap<>(14);
         params.put("itinerary_code", itinerary.getCode());
         params.put("title", itinerary.getTitle());
         params.put("description", itinerary.getDescription());
-        params.put("beginning_date", itinerary.getBeginningDate());
-        params.put("ending_date", itinerary.getEndingDate());
-        params.put("ending_reservations_date", itinerary.getReservationDate());
+        params.put("beginning_date", simpleDateFormat.format(itinerary.getBeginningDate()));
+        params.put("ending_date", simpleDateFormat.format(itinerary.getEndingDate()));
+        params.put("end_reservations_date", simpleDateFormat.format(itinerary.getReservationDate()));
         params.put("repetitions_per_day", itinerary.getRepetitions());
         params.put("location", itinerary.getLocation());
         params.put("duration", itinerary.getDuration());
@@ -157,6 +159,8 @@ public abstract class ItineraryManager {
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (callback != null) callback.accept(result.getResult());
+                    Log.e("result",String.valueOf(result.getResult()));
+                    Log.e("message",result.getMessage());
                 })
                 .setObjectToSend(params)
                 .build();
