@@ -18,25 +18,17 @@ package com.fsc.cicerone;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 public class AdminReportDetailsActivity extends AppCompatActivity {
 
@@ -48,6 +40,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     private TextView bodyText;
     private Button takeChargeReport;
     private Button closeReport;
+    private Report report;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,60 +59,43 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         reportedUser = findViewById(R.id.report_user_activity_admin);
         reporterUser = findViewById(R.id.reporter_user_activity_admin);
         bodyText = findViewById(R.id.body_report_activity_admin);
-        Map<String, Object> parameters = new HashMap<>(3);
 
         //Get the bundle
         Bundle bundle = getIntent().getExtras();
         //Extract the data
-        parameters.put("report_code", Objects.requireNonNull(Objects.requireNonNull(bundle).getString("report_code")));
-        getReportFromServer(parameters);
+        report = new Report(Objects.requireNonNull(bundle.getString("report")));
+        bindDataToView(report);
 
-        takeChargeReport.setOnClickListener(v -> takeCharge(parameters));
+        takeChargeReport.setOnClickListener(v -> {
+            ReportManager.takeCharge(this,report);
+            report.setStatus(ReportStatus.PENDING);
+            bindDataToView(report);
+            takeChargeReport.setEnabled(false);
+            setResult(Activity.RESULT_OK);
+        });
 
-        closeReport.setOnClickListener(v -> close(parameters));
+        closeReport.setOnClickListener(v -> {
+                ReportManager.closeReport(this,report);
+                report.setStatus(ReportStatus.CLOSED);
+                bindDataToView(report);
+                closeReport.setEnabled(false);
+                takeChargeReport.setEnabled(false);
+                setResult(Activity.RESULT_OK);
+        });
 
     }
 
-    private void getReportFromServer(Map<String, Object> params) {
-        SendInPostConnector<Report> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
-                .setContext(this)
-                .setOnStartConnectionListener(() -> {
-                    takeChargeReport.setEnabled(false);
-                    closeReport.setEnabled(false);
-                })
-                .setOnEndConnectionListener(list -> {
-                    Report result = list.get(0);
-                    String code = "Nr. " + result.getCode();
-                    String statusText = "Status: ";
-                    reportTitle.setText(result.getObject());
-                    reportCode.setText(code);
-                    switch (result.getStatus()) {
-                        case OPEN:
-                            statusText += getString(R.string.open);
-                            takeChargeReport.setEnabled(true);
-                            closeReport.setEnabled(true);
-                            break;
-                        case CLOSED:
-                            statusText += getString(R.string.closed);
-                            break;
-                        case PENDING:
-                            statusText += getString(R.string.pending);
-                            closeReport.setEnabled(true);
-                            break;
-                        case CANCELED:
-                            statusText += getString(R.string.canceled);
-                            break;
-                        default:
-                            break;
-                    }
-                    status.setText(statusText);
-                    reportedUser.setText(result.getReportedUser().getUsername());
-                    reporterUser.setText(result.getAuthor().getUsername());
-                    bodyText.setText(result.getBody());
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
+    private void bindDataToView(Report report) {
+        if(report.getStatus().toString().equals("Pending"))
+            takeChargeReport.setEnabled(false);
+
+        reportCode.setText(String.valueOf(report.getCode()));
+        reportTitle.setText(report.getObject());
+        status.setText(report.getStatus().toString());
+        reportedUser.setText(report.getReportedUser().getUsername());
+        reporterUser.setText(report.getAuthor().getUsername());
+        bodyText.setText(report.getBody());
+
     }
 
     @Override
@@ -128,42 +104,5 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         return true;
     }
 
-    public void takeCharge(Map<String, Object> params) {
-        params.put("object", reportTitle.getText().toString());
-        params.put("report_body", bodyText.getText().toString());
-        params.put("state", ReportStatus.PENDING.toInt());
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
-                .setContext(this)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    Log.e("p", result.toJSONObject().toString());
-                    if (result.getResult()) {
-                        Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show();
-                        getReportFromServer(params);
-                        setResult(Activity.RESULT_OK);
-                    }
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
-    }
-
-    public void close(Map<String, Object> params) {
-        params.put("object", reportTitle.getText().toString());
-        params.put("report_body", bodyText.getText().toString());
-        params.put("state", ReportStatus.CLOSED.toInt());
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
-                .setContext(this)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    Log.e("p", result.toJSONObject().toString());
-                    if (result.getResult()) {
-                        Toast.makeText(AdminReportDetailsActivity.this, AdminReportDetailsActivity.this.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();
-                        getReportFromServer(params);
-                        setResult(Activity.RESULT_OK);
-                    }
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
-    }
 }
 

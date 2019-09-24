@@ -21,14 +21,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 import com.fsc.cicerone.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 public abstract class ReportManager {
     private ReportManager(){
@@ -54,5 +54,65 @@ public abstract class ReportManager {
                 .setObjectToSend(param)
                 .build()
                 .execute();
+    }
+
+    public static void takeCharge(Activity context, Report report)
+    {
+        Map<String, Object> param = new HashMap<>(2);
+        param.put("report_code", report.getCode());
+        param.put("state",ReportStatus.PENDING.toInt());
+
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult())
+                        Toast.makeText(context, context.getString(R.string.report_taking_charge), Toast.LENGTH_SHORT).show();
+                    Log.e("REPORT", result.getMessage());
+                })
+                .setObjectToSend(param)
+                .build()
+                .execute();
+
+    }
+
+    public static void  removeReport (Activity context, Report report)
+    {
+        Map<String, Object> param = new HashMap<>(2);
+        param.put("report_code", report.getCode());
+        param.put("state", ReportStatus.CANCELED.toInt());
+
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (result.getResult()) {
+                        Toast.makeText(context, context.getString(R.string.report_canceled), Toast.LENGTH_SHORT).show();
+
+                    }
+                })
+                .setObjectToSend(param)
+                .build();
+        connector.execute();
+
+
+    }
+
+    public static void  closeReport (Activity context, Report report)
+    {
+        Map<String, Object> param = new HashMap<>(2);
+        param.put("report_code", report.getCode());
+        param.put("state", ReportStatus.CLOSED.toInt());
+
+        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    Log.e("remove", result.toJSONObject().toString());
+                    if (result.getResult()) {
+                        Toast.makeText(context, context.getString(R.string.report_closed), Toast.LENGTH_SHORT).show();
+
+                    }
+                })
+                .setObjectToSend(param)
+                .build();
+        connector.execute();
     }
 }

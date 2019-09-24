@@ -66,4 +66,21 @@ public enum ReportStatus {
                 throw new IllegalArgumentException();
         }
     }
+
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case OPEN:
+                return "Open";
+            case PENDING:
+                return "Pending";
+            case CLOSED:
+                return "Closed";
+            case CANCELED:
+                return "Canceled";
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
 }

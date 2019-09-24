@@ -17,7 +17,6 @@
 package com.fsc.cicerone;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,15 +25,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.adapter.ReservationAdapter;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
@@ -47,14 +50,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
-
 /**
  * Class that contains the elements of the TAB Itinerary on the account details
  * page.
  */
-public class ItineraryFragment extends Fragment {
+public class ItineraryFragment extends Fragment implements Refreshable {
 
     private Activity context;
     RecyclerView.Adapter adapter;
@@ -75,7 +75,6 @@ public class ItineraryFragment extends Fragment {
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        Button newItineraryButton = view.findViewById(R.id.newItinerary);
         Button participationsButton = view.findViewById(R.id.partecipations);
         Button myItinerariesButton = view.findViewById(R.id.myitineraries);
         RecyclerView itineraryList = view.findViewById(R.id.itinerary_list);
@@ -106,8 +105,6 @@ public class ItineraryFragment extends Fragment {
             myItinerariesButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
             getMyItineraries(parameters, itineraryList);
             message.setVisibility(View.GONE);
-            newItineraryButton.setVisibility(View.VISIBLE);
-
         });
 
         participationsButton.setOnClickListener(v -> {
@@ -120,34 +117,27 @@ public class ItineraryFragment extends Fragment {
                     itineraryList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             participationsButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
             getParticipations(parameters, itineraryList);
-            newItineraryButton.setVisibility(View.GONE);
-
-        });
-
-        newItineraryButton.setOnClickListener(v -> {
-            Intent i = new Intent().setClass(getActivity(), ItineraryCreation.class);
-            startActivity(i);
         });
 
         return view;
     }
 
     private void getMyItineraries(Map<String, Object> parameters, RecyclerView recyclerView) {
-        // TODO: Test and check if the new adapter works as expected.
         SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
                 .setOnEndConnectionListener(jsonArray -> {
-                    if(jsonArray.isEmpty()) {
+                    message.setVisibility(View.GONE);
+                    if (jsonArray.isEmpty()) {
                         message.setText(R.string.no_create_itinerary);
                         message.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        recyclerView.setVisibility(View.VISIBLE);
                         while (recyclerView.getItemDecorationCount() > 0) {
                             recyclerView.removeItemDecorationAt(0);
                         }
-                        adapter = new ItineraryAdapter(getActivity(), jsonArray,this);
+                        adapter = new ItineraryAdapter(getActivity(), jsonArray, this);
                         recyclerView.setAdapter(adapter);
                     }
                 })
@@ -161,6 +151,7 @@ public class ItineraryFragment extends Fragment {
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
                     List<Reservation> filtered = new ArrayList<>(list.size());
+                    message.setVisibility(View.GONE);
                     for (Reservation reservation : list) {
                         if (reservation.isConfirmed()) {
                             filtered.add(reservation);
@@ -169,11 +160,15 @@ public class ItineraryFragment extends Fragment {
                     if (filtered.isEmpty()) {
                         message.setText(R.string.no_itineraries);
                         message.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+
                     }
+                    recyclerView.setVisibility(View.VISIBLE);
+
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                             DividerItemDecoration.VERTICAL));
-                    adapter2 = new ReservationAdapter(getActivity(), filtered, R.layout.participation_list);
+                    adapter2 = new ReservationAdapter(getActivity(), filtered, ItineraryFragment.this, R.layout.participation_list);
                     recyclerView.setAdapter(adapter2);
                 })
                 .setObjectToSend(parameters)
@@ -181,4 +176,8 @@ public class ItineraryFragment extends Fragment {
         connector.execute();
     }
 
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+    }
 }
