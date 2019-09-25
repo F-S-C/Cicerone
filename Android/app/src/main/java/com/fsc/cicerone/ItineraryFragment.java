@@ -37,9 +37,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.adapter.ReservationAdapter;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ItineraryManager;
+import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
@@ -47,6 +49,7 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -98,7 +101,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
         itineraryList.setLayoutManager(new LinearLayoutManager(getActivity()));
         itineraryList.addItemDecoration(
                 new DividerItemDecoration(itineraryList.getContext(), DividerItemDecoration.VERTICAL));
-        getParticipations(parameters, itineraryList);
+        getParticipations(currentLoggedUser, itineraryList);
 
         myItinerariesButton.setOnClickListener(v -> {
             // disable button (Material Style)
@@ -110,7 +113,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
             myItinerariesButton.setBackgroundColor(ContextCompat.getColor(context,
                     myItinerariesButton.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             myItinerariesButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getMyItineraries(parameters, itineraryList);
+            getMyItineraries(currentLoggedUser, itineraryList);
             message.setVisibility(View.GONE);
         });
 
@@ -126,64 +129,55 @@ public class ItineraryFragment extends Fragment implements Refreshable {
             participationsButton.setBackgroundColor(ContextCompat.getColor(context,
                     itineraryList.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
             participationsButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            getParticipations(parameters, itineraryList);
+            getParticipations(currentLoggedUser, itineraryList);
         });
 
         return view;
     }
 
-    private void getMyItineraries(Map<String, Object> parameters, RecyclerView recyclerView) {
-        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
-                .setContext(context)
-                .setOnEndConnectionListener(jsonArray -> {
-                    message.setVisibility(View.GONE);
-                    if (jsonArray.isEmpty()) {
-                        message.setText(R.string.no_create_itinerary);
-                        message.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
-                    } else {
-                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                        recyclerView.setVisibility(View.VISIBLE);
-                        while (recyclerView.getItemDecorationCount() > 0) {
-                            recyclerView.removeItemDecorationAt(0);
-                        }
-                        adapter = new ItineraryAdapter(getActivity(), jsonArray, this);
-                        recyclerView.setAdapter(adapter);
-                    }
-                })
-                .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+    private void getMyItineraries(User user, RecyclerView recyclerView) {
+        Map<String,Object> parameters = new HashMap<>();
+        parameters.put("username",user.getUsername());
+        ItineraryManager.requestItinerary(context, parameters, null, list -> {
+            message.setVisibility(View.GONE);
+            if (list.isEmpty()) {
+                message.setText(R.string.no_create_itinerary);
+                message.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                recyclerView.setVisibility(View.VISIBLE);
+                while (recyclerView.getItemDecorationCount() > 0) {
+                    recyclerView.removeItemDecorationAt(0);
+                }
+                adapter = new ItineraryAdapter(getActivity(), list, this);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
-    private void getParticipations(Map<String, Object> parameters, RecyclerView recyclerView) {
-        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(context)
-                .setOnEndConnectionListener(list -> {
-                    List<Reservation> filtered = new ArrayList<>(list.size());
-                    message.setVisibility(View.GONE);
-                    for (Reservation reservation : list) {
-                        if (reservation.isConfirmed()) {
-                            filtered.add(reservation);
-                        }
-                    }
-                    if (filtered.isEmpty()) {
-                        message.setText(R.string.no_itineraries);
-                        message.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
+    private void getParticipations(User user, RecyclerView recyclerView) {
+        ReservationManager.getListInvestments(context, user, list -> {
+            List<Reservation> filtered = new ArrayList<>(list.size());
+            message.setVisibility(View.GONE);
+            for (Reservation reservation : list) {
+                if (reservation.isConfirmed()) {
+                    filtered.add(reservation);
+                }
+            }
+            if (filtered.isEmpty()) {
+                message.setText(R.string.no_itineraries);
+                message.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
 
-                    }
-                    recyclerView.setVisibility(View.VISIBLE);
-
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
-                            DividerItemDecoration.VERTICAL));
-                    adapter2 = new ReservationAdapter(getActivity(), filtered, ItineraryFragment.this, R.layout.participation_list);
-                    recyclerView.setAdapter(adapter2);
-                })
-                .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+            }
+            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+                    DividerItemDecoration.VERTICAL));
+            adapter2 = new ReservationAdapter(getActivity(), filtered, ItineraryFragment.this, R.layout.participation_list);
+            recyclerView.setAdapter(adapter2);
+        });
     }
 
     @Override
