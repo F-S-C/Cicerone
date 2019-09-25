@@ -193,4 +193,20 @@ public abstract class ReservationManager {
                     .execute();
         }
     }
+
+    /**
+     * Get investments'list of the user.
+     * @param context The context of the caller.
+     * @param user The user of the investments'list.
+     * @param callback A callback to be executed after the operation is completed.
+     */
+    public static void getListInvestments(Activity context, User user, @Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback ){
+
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnEndConnectionListener(callback)
+                .setObjectToSend(SendInPostConnector.paramsFromObject(user))
+                .build()
+                .execute();
+    }
 }
