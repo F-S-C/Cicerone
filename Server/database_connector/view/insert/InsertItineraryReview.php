@@ -4,7 +4,7 @@ namespace database_connector\view\insert;
 
 use database_connector\controller\insert\InsertItineraryReview;
 
-require_once "/membri/fsc/database_connector/controller/insert/InsertItineraryReview.php";
+require_once "/home/fsc/www/database_connector/controller/insert/InsertItineraryReview.php";
 
 $connector = new InsertItineraryReview();
 $connector->add_value(array(strtolower($_POST['username']),

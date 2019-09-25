@@ -104,7 +104,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             } else {
                 i = new Intent().setClass(context, ProfileActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("reviewed_user", mData.get(position).getUsername());
+                bundle.putString("reviewed_user", mData.get(position).toString());
                 i.putExtras(bundle);
                 context.startActivity(i);
             }

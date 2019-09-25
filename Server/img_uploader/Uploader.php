@@ -8,7 +8,7 @@ namespace img_uploader;
 class Uploader
 {
     /** @var string The upload path on the server. */
-    protected const UPLOAD_PATH = "/membri/fsc/images/";
+    protected const UPLOAD_PATH = "/home/fsc/www/images/";
 
     /**
      * @var mixed The image string.

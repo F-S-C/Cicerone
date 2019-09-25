@@ -5,7 +5,7 @@ namespace database_connector\controller;
 use Exception;
 use mysqli_sql_exception;
 
-require_once "/membri/fsc/database_connector/controller/DatabaseConnector.php";
+require_once "/home/fsc/www/database_connector/controller/DatabaseConnector.php";
 
 /**
  * A type of connector that fetches data from a Database and converts the results of the interrogation to the

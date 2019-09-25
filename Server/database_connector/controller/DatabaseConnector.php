@@ -22,7 +22,7 @@ abstract class DatabaseConnector
     protected const DB_P = "89n@W[";
 
     /** @var string The database's name. */
-    protected const DB_NAME = "my_fsc";
+    protected const DB_NAME = "cicerone";
 
     /** @var mysqli|null A reference to the database connection. */
     protected $connection = null;

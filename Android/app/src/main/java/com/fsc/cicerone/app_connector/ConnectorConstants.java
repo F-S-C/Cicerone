@@ -27,7 +27,7 @@ public final class ConnectorConstants {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
-    private static final String SERVER_URL = "https://fsc.altervista.org";
+    private static final String SERVER_URL = "https://fscgroup.ddns.net";
     private static final String DB_CONNECTOR_FOLDER = "/database_connector/view";
 
     private static final String INSERT_SUBFOLDER = "/insert";
