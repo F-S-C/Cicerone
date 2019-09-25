@@ -39,6 +39,7 @@ import com.fsc.cicerone.adapter.ReservationAdapter;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
@@ -60,6 +61,11 @@ public class ItineraryFragment extends Fragment implements Refreshable {
     RecyclerView.Adapter adapter;
     private RecyclerView.Adapter adapter2;
     private TextView message;
+    Button participationsButton;
+    Button myItinerariesButton;
+    RecyclerView itineraryList;
+    private boolean lastClicked = false;  // If it's false, then Participation is loaded, if it's true, MyItineraries is loaded instead.
+    private Map<String, Object> parameters;
 
     /**
      * Empty constructor
@@ -75,12 +81,12 @@ public class ItineraryFragment extends Fragment implements Refreshable {
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        Button participationsButton = view.findViewById(R.id.partecipations);
-        Button myItinerariesButton = view.findViewById(R.id.myitineraries);
-        RecyclerView itineraryList = view.findViewById(R.id.itinerary_list);
+        participationsButton = view.findViewById(R.id.partecipations);
+        myItinerariesButton = view.findViewById(R.id.myitineraries);
+        itineraryList = view.findViewById(R.id.itinerary_list);
         message = view.findViewById(R.id.noItineraries);
 
-        final Map<String, Object> parameters = SendInPostConnector
+         parameters = SendInPostConnector
                 .paramsFromObject(currentLoggedUser.getCredentials());
         parameters.remove("password");
         if (currentLoggedUser.getUserType() == UserType.CICERONE) {
@@ -96,6 +102,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
 
         myItinerariesButton.setOnClickListener(v -> {
             // disable button (Material Style)
+            lastClicked = true;
             participationsButton.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             participationsButton.setTextColor(ContextCompat.getColor(context,
                     participationsButton.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
@@ -109,6 +116,9 @@ public class ItineraryFragment extends Fragment implements Refreshable {
 
         participationsButton.setOnClickListener(v -> {
             // disable button (Material Style)
+            if(lastClicked == true)
+                lastClicked = false;
+
             myItinerariesButton.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             myItinerariesButton.setTextColor(ContextCompat.getColor(context,
                     myItinerariesButton.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
@@ -178,6 +188,27 @@ public class ItineraryFragment extends Fragment implements Refreshable {
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        if(lastClicked == true)
+        {
+            ItineraryManager.requestItinerary(getActivity(),parameters, () -> {
+                if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+            }, list -> {
+                if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+
+                itineraryList.setVisibility(View.VISIBLE);
+
+                itineraryList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                itineraryList.addItemDecoration(new DividerItemDecoration(itineraryList.getContext(),
+                        DividerItemDecoration.VERTICAL));
+                adapter2 = new ItineraryAdapter(getActivity(), list, ItineraryFragment.this);
+                itineraryList.setAdapter(adapter2);
+            });
+        }
+
+        else
+        {
+            
+        }
         if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
     }
 }
