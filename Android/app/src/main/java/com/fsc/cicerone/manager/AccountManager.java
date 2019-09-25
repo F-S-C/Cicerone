@@ -311,4 +311,26 @@ public abstract class AccountManager {
                 .build()
                 .execute();
     }
+
+    /**
+     * Update credentials' user.
+     *
+     * @param context     The application context.
+     * @param user        The user to update.
+     * @param newPassword The password.
+     * @param callback    A function to be executed after the insert attempt.
+     */
+    public static void updateCurrentAccount(Activity context, User user, String newPassword, @Nullable BooleanRunnable callback) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("username", user.getUsername());
+        parameters.put("password", newPassword);
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (callback != null) callback.accept(result.getResult());
+                })
+                .setObjectToSend(parameters)
+                .build()
+                .execute();
+    }
 }

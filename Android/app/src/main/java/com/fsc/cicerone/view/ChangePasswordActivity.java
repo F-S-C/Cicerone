@@ -27,13 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.model.User;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -98,24 +92,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void changePasswordOnServer() {
-        User user = AccountManager.getCurrentLoggedUser();
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("username", user.getUsername());
-        params.put("password", newPassword.getText().toString());
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
-                .setContext(this)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (result.getResult()) {
-                        user.setPassword(newPassword.getText().toString());
-                        Toast.makeText(ChangePasswordActivity.this, ChangePasswordActivity.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
-                        onBackPressed();
-                    } else {
-                        Toast.makeText(ChangePasswordActivity.this, ChangePasswordActivity.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
+        AccountManager.updateCurrentAccount(this, AccountManager.getCurrentLoggedUser(), newPassword.getText().toString(), success -> {
+            if (success) {
+                AccountManager.getCurrentLoggedUser().setPassword(newPassword.getText().toString());
+                Toast.makeText(ChangePasswordActivity.this, ChangePasswordActivity.this.getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            } else {
+                Toast.makeText(ChangePasswordActivity.this, ChangePasswordActivity.this.getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void verifyFields() {
