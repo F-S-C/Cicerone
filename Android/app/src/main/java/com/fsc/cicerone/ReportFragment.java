@@ -33,11 +33,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReportAdapter;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
+import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
 import java.util.ArrayList;
@@ -55,6 +58,7 @@ public class ReportFragment extends Fragment implements Refreshable {
     private RecyclerView recyclerView;
     public static final int RESULT_SHOULD_REPORT_BE_RELOADED = 1030;
     private SwipeRefreshLayout swipeRefreshLayout = null;
+
 
     /**
      * Empty Constructor
@@ -89,35 +93,27 @@ public class ReportFragment extends Fragment implements Refreshable {
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        final Map<String, Object> parameters = new HashMap<>(1); //Connection params
-        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-        // set up the RecyclerView
-        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-            parameters.remove("username");
-        }
+        User user = null;
+        if (!(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) )
+            user = AccountManager.getCurrentLoggedUser();
 
-        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
-                .setContext(getActivity())
-                .setOnStartConnectionListener(() -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-                })
-                .setOnEndConnectionListener(list -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                    if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN){
-                    List<Report> filtered = new ArrayList<>(list.size());
-                    for (Report report : list){
-                        if(!(report.getStatus() == ReportStatus.CLOSED || report.getStatus() == ReportStatus.CANCELED))
-                            filtered.add(report);
-                    }
-                        adapter = new ReportAdapter(getActivity(), filtered, this);
-                    }else
-                        adapter = new ReportAdapter(getActivity(), list, this);
 
-                    recyclerView.setAdapter(adapter);
-                })
-                .setObjectToSend(parameters)
-                .build()
-                .execute();
+        ReportManager.requestReport(getActivity(), user, () -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+        }, list -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+            if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN){
+                List<Report> filtered = new ArrayList<>(list.size());
+                for (Report report : list){
+                    if(!(report.getStatus() == ReportStatus.CLOSED || report.getStatus() == ReportStatus.CANCELED))
+                        filtered.add(report);
+                }
+                adapter = new ReportAdapter(getActivity(), filtered, this);
+            }else
+                adapter = new ReportAdapter(getActivity(), list, this);
+
+            recyclerView.setAdapter(adapter);
+        });
     }
 
     @Override
@@ -127,5 +123,7 @@ public class ReportFragment extends Fragment implements Refreshable {
                 refresh();
         }
     }
+
+
 
 }

@@ -22,7 +22,10 @@ import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
 import com.fsc.cicerone.model.User;
@@ -135,5 +138,24 @@ public abstract class ReportManager {
                 .setObjectToSend(param)
                 .build();
         connector.execute();
+    }
+
+    /**
+     * Get list of the report.
+     * @param context The context of the activity.
+     * @param user The user of request view reports' list.
+     * @param onStartConnectionListener On start connection callback.
+     * @param callback A callback to be executed after the operation is completed.
+     */
+    public static void requestReport (Activity context, User user, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable DatabaseConnector.OnEndConnectionListener<Report> callback){
+        final Map<String, Object> parameters = new HashMap<>();
+        if(user != null) parameters.put("username", user.getUsername());
+        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
+                .setContext(context)
+                .setOnStartConnectionListener(onStartConnectionListener)
+                .setOnEndConnectionListener(callback)
+                .setObjectToSend(parameters)
+                .build()
+                .execute();
     }
 }

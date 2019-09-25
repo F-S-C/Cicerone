@@ -17,7 +17,6 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,22 +29,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.AdminItineraryAdapter;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.manager.ItineraryManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.User;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Itinerary on the account details
@@ -54,9 +44,6 @@ import com.fsc.cicerone.app_connector.SendInPostConnector;
 public class CiceroneItineraryListFragment extends Fragment {
 
     AdminItineraryAdapter adapter;
-    private View view;
-    private static final String ERROR_TAG = "ERROR IN " + CiceroneItineraryListFragment.class.getName();
-
     /**
      * Empty constructor
      */
@@ -66,12 +53,12 @@ public class CiceroneItineraryListFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_cicerone_itinerary_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.activity_cicerone_itinerary_list_fragment, container, false);
 
         Bundle bundle = getArguments();
 
         User user = new User(Objects.requireNonNull(bundle).getString("user"));
-        
+
         RecyclerView recyclerView = view.findViewById(R.id.cicerone_itinerary_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(
