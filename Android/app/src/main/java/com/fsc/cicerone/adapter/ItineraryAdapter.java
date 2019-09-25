@@ -29,11 +29,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.AdminItineraryDetails;
-import com.fsc.cicerone.ItineraryDetails;
-import com.fsc.cicerone.ItineraryManagement;
+import view.admin_view.AdminItineraryDetails;
+import view.ItineraryDetails;
+import view.ItineraryManagement;
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.WishlistFragment;
+import view.WishlistFragment;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.UserType;

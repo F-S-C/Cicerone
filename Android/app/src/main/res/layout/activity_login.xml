@@ -25,7 +25,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="25dp"
-    tools:context=".LoginActivity">
+    tools:context="view.LoginActivity">
 
     <ImageView
         android:id="@+id/imageView"

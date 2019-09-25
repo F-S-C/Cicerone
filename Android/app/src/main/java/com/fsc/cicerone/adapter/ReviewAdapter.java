@@ -30,7 +30,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.ProfileActivity;
+import view.ProfileActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Review;
