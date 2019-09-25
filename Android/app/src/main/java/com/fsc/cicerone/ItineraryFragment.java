@@ -36,14 +36,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.adapter.ReservationAdapter;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.manager.ReservationManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
@@ -145,7 +140,9 @@ public class ItineraryFragment extends Fragment implements Refreshable {
     }
 
     private void getParticipations(User user, RecyclerView recyclerView) {
-        ReservationManager.getListInvestments(context, user, list -> {
+        Map<String,Object> parameters = new HashMap<>();
+        parameters.put("username", user.getUsername());
+        ReservationManager.getListInvestments(context, parameters,null, list -> {
             List<Reservation> filtered = new ArrayList<>(list.size());
             message.setVisibility(View.GONE);
             for (Reservation reservation : list) {

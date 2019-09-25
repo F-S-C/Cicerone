@@ -21,7 +21,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.fsc.cicerone.adapter.UserListAdapter;
 import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.mailer.Mailer;
@@ -31,14 +30,12 @@ import com.fsc.cicerone.model.Reservation;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
-import com.fsc.cicerone.model.User;
+
 
 /**
  * The manager class for the Reservation data-type.
@@ -197,15 +194,16 @@ public abstract class ReservationManager {
     /**
      * Get investments'list of the user.
      * @param context The context of the caller.
-     * @param user The user of the investments'list.
+     * @param parameters The user of the investments'list.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void getListInvestments(Activity context, User user, @Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback ){
+    public static void getListInvestments(Activity context, Map<String,Object> parameters, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener,@Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback ){
 
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(context)
+                .setOnStartConnectionListener(onStartConnectionListener)
                 .setOnEndConnectionListener(callback)
-                .setObjectToSend(SendInPostConnector.paramsFromObject(user))
+                .setObjectToSend(parameters)
                 .build()
                 .execute();
     }
