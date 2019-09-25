@@ -59,7 +59,7 @@ class Sender
     private $mysqli = null;
 
     /** @var string The email filename. */
-    private $email_name = "./reservationConfirmationEmail.php";
+    private $email_name = "./reservationConfirmation.php";
 
     /**
     * Sender constructor.
