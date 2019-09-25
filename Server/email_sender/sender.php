@@ -7,6 +7,7 @@ require '/home/fsc/www/email_sender/PHPMailer/src/Exception.php';
 require '/home/fsc/www/email_sender/PHPMailer/src/PHPMailer.php';
 require '/home/fsc/www/email_sender/PHPMailer/src/SMTP.php';
 
+use mysqli;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
@@ -15,7 +16,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Sender
 {
     /** @var string The database's server's IP */
-    protected const DB_SERVER_NAME = "127.0.0.1";
+    protected const DB_HOSTNAME = "127.0.0.1";
     
     /** @var string The database's username. */
     protected const DB_USERNAME = "fsc";
@@ -27,7 +28,7 @@ class Sender
     protected const DB_NAME = "cicerone";
 
     /** @var string The email filename. */
-    protected const EMAIL_FILENAME = "./mail.php";
+    protected const EMAIL_FILENAME = "./reservationConfirmationEmail.php";
 
     /** @var string The SMTP host. */
     protected const SMTP_HOST = "smtp.gmail.com";
@@ -57,7 +58,11 @@ class Sender
      * @var array The array containing the user and itinerary data to be included in the email.
      */
     private $email_data;
-    
+
+    /**
+     * @var mysqli The mysql variable used for the connection to the database.
+     */
+    private $mysqli = null;
     /**
     * Sender constructor.
     */
@@ -67,10 +72,17 @@ class Sender
             $this->username = $_POST['username'];
             $this->itinerary_code = $_POST['itinerary_code'];
             $this->recipient_email = $_POST['recipient_email'];
-            $this->email_data = $this->getDataFromDB();
-            $this->sendEmail();
+
+            $this->mysqli = new mysqli(self::DB_HOSTNAME, self::DB_USERNAME, self::DB_P, self::DB_NAME);
+            if($this->mysqli->connect_errno > 0){
+                die('{"result":false,"error":"Could not connect.  ' . $this->mysqli->connect_error . '"}');
+            }else{
+                $this->email_data = $this->getDataFromDB();
+                $this->mysqli->close();
+                $this->sendEmail();
+            }
         }else{
-            print '{"result":false, "error":"Missing fields!"}';
+            die('{"result":false, "error":"Missing fields!"}');
         }
     }
 
@@ -102,43 +114,32 @@ class Sender
      * @return array Array of string to be inserted in the e-mail page.
      */
     private function getDataFromDB() {
-        $link = mysqli_connect(self::DB_SERVER_NAME, self::DB_USERNAME, self::DB_P, self::DB_NAME);
-        if($link === false){
-            print '{"result":false,"error":"Could not connect.  ' . mysqli_connect_error() . '"}';
-            exit;
-        }
         //USER DATA
         $sql = "SELECT * FROM registered_user WHERE username = '" . $this->username . "'";
-        if($result = mysqli_query($link, $sql)){
-            if(mysqli_num_rows($result) > 0){
-                $row = mysqli_fetch_array($result);
+        if($result = $this->mysqli->query($sql)){
+            if($result->num_rows > 0){
+                $row = $result->fetch_assoc();
                 $user = array('name' => $row['name'],'surname' => $row['surname'],'email' => $row['email'],'cellphone' => $row['cellphone']);
-                mysqli_free_result($result);
+                $result->free();
             }else{
-                print '{"result":false,"error":"Username not found."}';
-                exit;
+                die('{"result":false,"error":"Username not found."}');
             }
         } else{
-            print '{"result":false,"error":"Could not able to execute $sql. ' . mysqli_error($link) . '"}';
-            exit;
+            die('{"result":false,"error":"Could not able to execute $sql. ' . $this->mysqli->error . '"}');
         }
 
         $sql = "SELECT * FROM itinerary WHERE itinerary_code = '" . $this->itinerary_code . "'";
-        if($result = mysqli_query($link, $sql)){
-            if(mysqli_num_rows($result) > 0){
-                $row = mysqli_fetch_array($result);
+        if($result = $this->mysqli->query($sql)){
+            if($result->num_rows > 0){
+                $row = $result->fetch_assoc();
                 $itinerary = array('title' => $row['title'],'location' => $row['location'],'beginning_date' => $row['beginning_date'],'ending_date' => $row['ending_date']);
-                mysqli_free_result($result);
+                $result->free();
             }else{
-                print '{"result":false,"error":"Itinerary not found."}';
-                exit;
+                die('{"result":false,"error":"Itinerary not found."}');
             }
         } else{
-            print '{"result":false,"error":"Could not able to execute $sql. ' . mysqli_error($link) . '"}';
-            exit;
+            die('{"result":false,"error":"Could not able to execute $sql. ' . $this->mysqli->error . '"}');
         }
-
-        mysqli_close($link);
         return array_merge($user, $itinerary);
     }
 
