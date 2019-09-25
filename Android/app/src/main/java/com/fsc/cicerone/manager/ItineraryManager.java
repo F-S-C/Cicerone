@@ -18,14 +18,19 @@ package com.fsc.cicerone.manager;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.adapter.AdminItineraryAdapter;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,20 +51,20 @@ public abstract class ItineraryManager {
     /**
      * Create and upload a new itinerary to the server.
      *
-     * @param title       The title of the new itinerary.
-     * @param description The description of the itinerary.
-     * @param beginDate       The beginning date of the itinerary (format "yyyy-MM-dd").
-     * @param endDate       The ending date of the itinerary (format "yyyy-MM-dd").
-     * @param endReservationDate       The reservation's ending date of the itinerary (format "yyyy-MM-dd").
-     * @param location    The location of the itinerary.
-     * @param duration    The duration of the itinerary.
-     * @param repetitions The number of repetitions per day if the itinerary.
-     * @param minParticipants        The minimum number of participants.
-     * @param maxParticipants        The maximum number of participants.
-     * @param fullPrice      The full price of the itinerary.
-     * @param reducedPrice      The reduced price of the itinerary.
-     * @param imageUrl         The URL of the image of the itinerary.
-     * @param callback A callback to be executed after the operation is completed.
+     * @param title              The title of the new itinerary.
+     * @param description        The description of the itinerary.
+     * @param beginDate          The beginning date of the itinerary (format "yyyy-MM-dd").
+     * @param endDate            The ending date of the itinerary (format "yyyy-MM-dd").
+     * @param endReservationDate The reservation's ending date of the itinerary (format "yyyy-MM-dd").
+     * @param location           The location of the itinerary.
+     * @param duration           The duration of the itinerary.
+     * @param repetitions        The number of repetitions per day if the itinerary.
+     * @param minParticipants    The minimum number of participants.
+     * @param maxParticipants    The maximum number of participants.
+     * @param fullPrice          The full price of the itinerary.
+     * @param reducedPrice       The reduced price of the itinerary.
+     * @param imageUrl           The URL of the image of the itinerary.
+     * @param callback           A callback to be executed after the operation is completed.
      * @return The new itinerary.
      */
 
@@ -113,11 +118,11 @@ public abstract class ItineraryManager {
     /**
      * Delete an itinerary from the server.
      *
-     * @param context The context of the activity
+     * @param context   The context of the activity
      * @param itinerary The code of the itinerary to delete.
-     * @param callback A callback to be executed after the operation is completed.
+     * @param callback  A callback to be executed after the operation is completed.
      */
-    public static void deleteItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback){
+    public static void deleteItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
         Map<String, Object> params = new HashMap<>(1);
         params.put("itinerary_code", itinerary.getCode());
         new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
@@ -133,39 +138,39 @@ public abstract class ItineraryManager {
     /**
      * Update an itinerary with new information
      *
-     * @param context The context of the activity.
+     * @param context   The context of the activity.
      * @param itinerary The itinerary to update
-     * @param callback A callback to be executed after the operation is completed.
+     * @param callback  A callback to be executed after the operation is completed.
      */
-    public static void updateItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback)
-    {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
-        Map<String, Object> params = new HashMap<>(14);
-        params.put("itinerary_code", itinerary.getCode());
-        params.put("title", itinerary.getTitle());
-        params.put("description", itinerary.getDescription());
-        params.put("beginning_date", simpleDateFormat.format(itinerary.getBeginningDate()));
-        params.put("ending_date", simpleDateFormat.format(itinerary.getEndingDate()));
-        params.put("end_reservations_date", simpleDateFormat.format(itinerary.getReservationDate()));
-        params.put("repetitions_per_day", itinerary.getRepetitions());
-        params.put("location", itinerary.getLocation());
-        params.put("duration", itinerary.getDuration());
-        params.put("minimum_participants_number", itinerary.getMinParticipants());
-        params.put("maximum_participants_number", itinerary.getMaxParticipants());
-        params.put("full_price", itinerary.getFullPrice());
-        params.put("reduced_price", itinerary.getReducedPrice());
-
+    public static void updateItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (callback != null) callback.accept(result.getResult());
-                    Log.e("result",String.valueOf(result.getResult()));
-                    Log.e("message",result.getMessage());
+                    Log.e("result", String.valueOf(result.getResult()));
+                    Log.e("message", result.getMessage());
                 })
-                .setObjectToSend(params)
+                .setObjectToSend(SendInPostConnector.paramsFromObject(itinerary))
                 .build();
         connector.execute();
+    }
 
+
+    /**
+     * Request itinerary.
+     * @param context The context of the caller.
+     * @param parameters The parameters of the request.
+     * @param onStartConnectionListener On start connection callback.
+     * @param callback A callback to be executed after the operation is completed.
+     */
+    public static void requestItinerary(Activity context, Map<String, Object> parameters, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable DatabaseConnector.OnEndConnectionListener<Itinerary> callback) {
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
+                .setContext(context)
+                .setOnStartConnectionListener(onStartConnectionListener)
+                .setOnEndConnectionListener(callback)
+                .setObjectToSend(parameters)
+                .build()
+                .execute();
     }
 
 }

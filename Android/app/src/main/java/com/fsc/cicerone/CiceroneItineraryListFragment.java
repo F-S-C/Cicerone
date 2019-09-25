@@ -30,6 +30,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.AdminItineraryAdapter;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.User;
@@ -38,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -51,7 +54,7 @@ import com.fsc.cicerone.app_connector.SendInPostConnector;
 public class CiceroneItineraryListFragment extends Fragment {
 
     AdminItineraryAdapter adapter;
-
+    private View view;
     private static final String ERROR_TAG = "ERROR IN " + CiceroneItineraryListFragment.class.getName();
 
     /**
@@ -63,43 +66,32 @@ public class CiceroneItineraryListFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_cicerone_itinerary_list_fragment, container, false);
+        view = inflater.inflate(R.layout.activity_cicerone_itinerary_list_fragment, container, false);
 
         Bundle bundle = getArguments();
 
-        try {
-            Map<String, Object> parameters = new HashMap<>(1);
-            User user = new User(
-                    new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
-            parameters.put("username", user.getUsername());
-
-            RecyclerView recyclerView = view.findViewById(R.id.cicerone_itinerary_recycler);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.addItemDecoration(
-                    new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(view, parameters, recyclerView);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+        User user = new User(Objects.requireNonNull(bundle).getString("user"));
+        
+        RecyclerView recyclerView = view.findViewById(R.id.cicerone_itinerary_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        requireData(view, user, recyclerView);
         return view;
     }
 
-    private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
+    private void requireData(View view, User user, RecyclerView recyclerView) {
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("username", user.getUsername());
         TextView message = view.findViewById(R.id.no_created_itinerary);
-        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
-                .setContext(getActivity())
-                .setOnStartConnectionListener(() -> message.setVisibility(View.GONE))
-                .setOnEndConnectionListener(list -> {
-                    if (!list.isEmpty()) {
-                        adapter = new AdminItineraryAdapter(getActivity(), list);
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        message.setVisibility(View.VISIBLE);
-                    }
-                })
-                .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+        ItineraryManager.requestItinerary(getActivity(), parameters, () -> message.setVisibility(View.GONE), list -> {
+            if (!list.isEmpty()) {
+                adapter = new AdminItineraryAdapter(getActivity(), list);
+                recyclerView.setAdapter(adapter);
+            } else {
+                message.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 }
