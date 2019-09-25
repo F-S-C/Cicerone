@@ -59,9 +59,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
     RecyclerView.Adapter adapter;
     private RecyclerView.Adapter adapter2;
     private TextView message;
-    Button participationsButton;
-    Button myItinerariesButton;
-    RecyclerView itineraryList;
+    private RecyclerView itineraryList;
     private boolean lastClicked = false;  // If it's false, then Participation is loaded, if it's true, MyItineraries is loaded instead.
     private Map<String, Object> parameters;
 
@@ -79,8 +77,8 @@ public class ItineraryFragment extends Fragment implements Refreshable {
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        participationsButton = view.findViewById(R.id.partecipations);
-        myItinerariesButton = view.findViewById(R.id.myitineraries);
+        Button participationsButton = view.findViewById(R.id.partecipations);
+        Button myItinerariesButton = view.findViewById(R.id.myitineraries);
         itineraryList = view.findViewById(R.id.itinerary_list);
         message = view.findViewById(R.id.noItineraries);
 
@@ -119,7 +117,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
 
         participationsButton.setOnClickListener(v -> {
             // disable button (Material Style)
-            if(lastClicked == true)
+            if(lastClicked)
                 lastClicked = false;
 
             myItinerariesButton.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
@@ -136,12 +134,15 @@ public class ItineraryFragment extends Fragment implements Refreshable {
     }
 
 
-
+    @Override
+    public void refresh() {
+        refresh(null);
+    }
 
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        if(lastClicked == true) {
+        if(lastClicked) {
             ItineraryManager.requestItinerary(getActivity(), parameters, () -> {
                 if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
             }, list -> {
@@ -168,6 +169,8 @@ public class ItineraryFragment extends Fragment implements Refreshable {
             ReservationManager.getListInvestments(context, parameters,() -> {
                 if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
             }, list -> {
+                if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+
                 List<Reservation> filtered = new ArrayList<>(list.size());
                 message.setVisibility(View.GONE);
                 for (Reservation reservation : list) {
@@ -189,6 +192,5 @@ public class ItineraryFragment extends Fragment implements Refreshable {
                 itineraryList.setAdapter(adapter2);
             });
         }
-        if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
     }
 }
