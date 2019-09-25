@@ -293,11 +293,12 @@ public abstract class ReviewManager {
      * @param reviewedUser The user reviewed.
      * @param callback     A callback to be executed after the operation is completed.
      */
-    public static void requestUserReviews(Activity context, User reviewedUser, @Nullable DatabaseConnector.OnEndConnectionListener<UserReview> callback) {
+    public static void requestUserReviews(Activity context, User reviewedUser, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener ,@Nullable DatabaseConnector.OnEndConnectionListener<UserReview> callback) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("reviewed_user", reviewedUser.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(context)
+                .setOnStartConnectionListener(onStartConnectionListener)
                 .setOnEndConnectionListener(callback)
                 .setObjectToSend(parameters)
                 .build()

@@ -16,6 +16,7 @@
 
 package com.fsc.cicerone;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,15 +32,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Review;
-import com.fsc.cicerone.model.UserReview;
+import com.fsc.cicerone.manager.ReviewManager;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Review on the account details page.
@@ -68,7 +62,6 @@ public class ReviewFragment extends Fragment implements Refreshable {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_review_fragment, container, false);
-
         // set up the RecyclerView
         recyclerView = view.findViewById(R.id.review_list);
         recyclerView.setNestedScrollingEnabled(false);
@@ -86,26 +79,18 @@ public class ReviewFragment extends Fragment implements Refreshable {
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("reviewed_user", AccountManager.getCurrentLoggedUser().getUsername());
+        ReviewManager.requestUserReviews((Activity) getContext(), AccountManager.getCurrentLoggedUser(), () -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+            message.setVisibility(View.GONE);
+        }, list -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+            if (!list.isEmpty()) {
+                adapter = new ReviewAdapter(getActivity(), list);
+                recyclerView.setAdapter(adapter);
+            } else {
+                message.setVisibility(View.VISIBLE);
+            }
+        });
 
-        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
-                .setContext(getActivity())
-                .setOnStartConnectionListener(() -> {
-                    if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-                    message.setVisibility(View.GONE);
-                })
-                .setOnEndConnectionListener(list -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                    if (!list.isEmpty()) {
-                        adapter = new ReviewAdapter(getActivity(), list);
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        message.setVisibility(View.VISIBLE);
-                    }
-                })
-                .setObjectToSend(parameters)
-                .build()
-                .execute();
     }
 }

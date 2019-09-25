@@ -46,7 +46,6 @@ import java.util.Objects;
  */
 public class AdminDetailsUserFragment extends Fragment {
 
-    private static final String ERROR_TAG = "ERROR IN " + AdminDetailsUserFragment.class.getName();
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
@@ -89,8 +88,7 @@ public class AdminDetailsUserFragment extends Fragment {
         removeUser = view.findViewById(R.id.remove_user_admin);
         Bundle bundle = getArguments();
 
-        assert bundle != null;
-        user = new User(Objects.requireNonNull(bundle.get("user")).toString());
+        user = new User(Objects.requireNonNull(bundle).getString("user"));
 
         getDataUser(user);
 

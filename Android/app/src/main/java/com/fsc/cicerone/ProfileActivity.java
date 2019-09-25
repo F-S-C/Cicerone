@@ -120,7 +120,6 @@ public class ProfileActivity extends AppCompatActivity {
         imageView.setImageResource(reviewedUser.getSex().getAvatarResource());
     }
 
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -244,7 +243,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void requestDataForRecycleView(RecyclerView recyclerView) {
         ReviewManager.getAvgUserFeedback(this, reviewedUser, value -> star.setRating(value));
-        ReviewManager.requestUserReviews(this, reviewedUser, list -> {
+        ReviewManager.requestUserReviews(this, reviewedUser, null, list -> {
             adapter = new ReviewAdapter(ProfileActivity.this, list);
             recyclerView.setAdapter(adapter);
         });
