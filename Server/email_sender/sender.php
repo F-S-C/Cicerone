@@ -8,6 +8,7 @@ require '/home/fsc/www/email_sender/PHPMailer/src/PHPMailer.php';
 require '/home/fsc/www/email_sender/PHPMailer/src/SMTP.php';
 
 use mysqli;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
@@ -26,9 +27,6 @@ class Sender
 
     /** @var string The database's name. */
     protected const DB_NAME = "cicerone";
-
-    /** @var string The email filename. */
-    protected const EMAIL_FILENAME = "./reservationConfirmationEmail.php";
 
     /** @var string The SMTP host. */
     protected const SMTP_HOST = "smtp.gmail.com";
@@ -54,15 +52,15 @@ class Sender
     /** @var string The recipient e-mail. */
     private $recipient_email = null;
 
-    /**
-     * @var array The array containing the user and itinerary data to be included in the email.
-     */
+    /** @var array The array containing the user and itinerary data to be included in the email. */
     private $email_data;
 
-    /**
-     * @var mysqli The mysql variable used for the connection to the database.
-     */
+    /** @var mysqli The mysql variable used for the connection to the database. */
     private $mysqli = null;
+
+    /** @var string The email filename. */
+    private $email_name = "./reservationConfirmationEmail.php";
+
     /**
     * Sender constructor.
     */
@@ -97,13 +95,13 @@ class Sender
     /**
      * Function that requires a page and converts it into a string passing a list of variables.
      * @param $variablesToMakeLocal array Array of variables to be make local on the email page.
-     * @return bool|false|string The e-mail page if successful. False otherwise.
+     * @return bool|string The e-mail page if successful. False otherwise.
      */
     private function getMailPage($variablesToMakeLocal) {
         extract($variablesToMakeLocal);
-        if (is_file(self::EMAIL_FILENAME)) {
+        if (is_file($this->email_name)) {
             ob_start();
-            include self::EMAIL_FILENAME;
+            include $this->email_name;
             return ob_get_clean();
         }
         return false;
@@ -167,11 +165,11 @@ class Sender
         $mail->Body    = $this->getMailPage($this->email_data);
         $mail->AltBody = 'Please use your browser to see the e-mail.';
 
-        if(!$mail->Send()) {
-            print '{"result":false, "error":"Mailer Error: ' . $mail->ErrorInfo . '"}';
-            exit;
-        }else {
+        try {
+            $mail->Send();
             print '{"result":true}';
+        } catch (Exception $e) {
+            die('{"result":false, "error":"Mailer Error: ' . $mail->ErrorInfo . '"}');
         }
     }
 }
