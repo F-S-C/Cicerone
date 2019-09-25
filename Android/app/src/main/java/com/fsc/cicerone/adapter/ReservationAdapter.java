@@ -29,7 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.Refreshable;
+import com.fsc.cicerone.view.Refreshable;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.Reservation;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -182,7 +182,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
      */
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        //Defining variables of reservation details view
+        //Defining variables of reservation details com.fsc.cicerone.view
         TextView itineraryTitle;
         TextView globetrotter;
         TextView numberChildren;
