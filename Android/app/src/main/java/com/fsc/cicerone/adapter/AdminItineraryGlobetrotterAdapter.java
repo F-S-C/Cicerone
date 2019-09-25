@@ -83,7 +83,7 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;
@@ -97,12 +97,6 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
             itineraryCicerone = itemView.findViewById(R.id.itinerary_cicerone);
             location = itemView.findViewById(R.id.location);
             requestedDate = itemView.findViewById(R.id.requested);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            //Do nothing
         }
     }
 }

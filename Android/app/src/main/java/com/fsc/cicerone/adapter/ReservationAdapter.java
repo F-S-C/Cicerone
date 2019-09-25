@@ -47,11 +47,10 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     private List<Reservation> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
     private Context context;
     private ViewHolder previouslyClickedHolder = null;
     private int layout = R.layout.reservation_list;
-    private Fragment fragment = null;
+    private Fragment fragment;
 
     /**
      * Constructor.
@@ -181,7 +180,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         //Defining variables of reservation details view
         TextView itineraryTitle;
@@ -210,29 +209,16 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             numberAdults = itemView.findViewById(R.id.nr_adults_requested);
             numberChildren = itemView.findViewById(R.id.nr_children_requested);
             requestedDate = itemView.findViewById(R.id.date_requested);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
     }
 
-    public void removeAt(int position) {
+    private void removeAt(int position) {
         mData.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mData.size());
     }
 
-
-    /**
-     * Item Click Listener for parent activity will implement this method to respond to click events.
-     */
-    interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
 
 }
 
