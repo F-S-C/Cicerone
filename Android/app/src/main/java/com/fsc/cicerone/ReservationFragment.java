@@ -32,12 +32,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReservationAdapter;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReservationManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Reservation;
 
 import java.util.ArrayList;
