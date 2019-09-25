@@ -29,8 +29,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.AdminUserProfile;
-import com.fsc.cicerone.ProfileActivity;
+import com.fsc.cicerone.view.admin_view.AdminUserProfileActivity;
+import com.fsc.cicerone.view.ProfileActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReviewManager;
@@ -47,7 +47,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     private final Activity context;
     private List<User> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener = null;
 
     /**
      * Constructor.
@@ -93,12 +92,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         }
         holder.usrType.setText(typeName);
         holder.imageView.setImageResource(mData.get(position).getSex().getAvatarResource());
-        ReviewManager.getAvgUserFeedback(context,user, holder.avgRating::setRating);
+        ReviewManager.getAvgUserFeedback(context, user, holder.avgRating::setRating);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                i = new Intent(context, AdminUserProfile.class);
+                i = new Intent(context, AdminUserProfileActivity.class);
                 i.putExtra("user", mData.get(position).toJSONObject().toString());
                 context.startActivity(i);
             } else {
@@ -127,7 +126,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView usr;
         TextView usrType;
@@ -140,23 +139,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             usrType = itemView.findViewById(R.id.usrType);
             avgRating = itemView.findViewById(R.id.ratingBar2);
             imageView = itemView.findViewById(R.id.imageView2);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
-
-
-    /**
-     * Item Click Listener for parent activity will implement this method to respond to click events.
-     */
-    interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
 }
 
 
