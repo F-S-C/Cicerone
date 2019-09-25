@@ -29,8 +29,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import view.admin_view.AdminUserProfile;
-import view.ProfileActivity;
+import com.fsc.cicerone.view.admin_view.AdminUserProfile;
+import com.fsc.cicerone.view.ProfileActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReviewManager;

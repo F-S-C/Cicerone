@@ -85,7 +85,7 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
      */
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        //Defining variables of ITINERARY_LIST view
+        //Defining variables of ITINERARY_LIST com.fsc.cicerone.view
         TextView itineraryTitle;
         TextView itineraryCicerone;
         TextView location;

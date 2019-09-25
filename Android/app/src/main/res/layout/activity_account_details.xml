@@ -21,7 +21,7 @@
     android:id="@+id/accountDetailsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="view.AccountDetails">
+    tools:context="com.fsc.cicerone.view.AccountDetails">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

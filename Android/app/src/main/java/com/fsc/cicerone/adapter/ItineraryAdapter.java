@@ -29,11 +29,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import view.admin_view.AdminItineraryDetails;
-import view.ItineraryDetails;
-import view.ItineraryManagement;
+import com.fsc.cicerone.view.admin_view.AdminItineraryDetails;
+import com.fsc.cicerone.view.ItineraryDetails;
+import com.fsc.cicerone.view.ItineraryManagement;
 import com.fsc.cicerone.R;
-import view.WishlistFragment;
+import com.fsc.cicerone.view.WishlistFragment;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.UserType;
@@ -126,7 +126,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
      */
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        //Defining variables of ITINERARY_LIST view
+        //Defining variables of ITINERARY_LIST com.fsc.cicerone.view
         TextView itineraryTitle;
         TextView location;
         TextView beginning;

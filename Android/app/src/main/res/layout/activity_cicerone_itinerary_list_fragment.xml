@@ -19,7 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="view.CiceroneItineraryListFragment">
+    tools:context="com.fsc.cicerone.view.CiceroneItineraryListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cicerone_itinerary_recycler"

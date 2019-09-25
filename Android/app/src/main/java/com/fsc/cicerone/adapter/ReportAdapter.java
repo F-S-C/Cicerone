@@ -31,10 +31,10 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import view.admin_view.AdminReportDetailsActivity;
+import com.fsc.cicerone.view.admin_view.AdminReportDetailsActivity;
 import com.fsc.cicerone.R;
-import view.ReportDetailsActivity;
-import view.ReportFragment;
+import com.fsc.cicerone.view.ReportDetailsActivity;
+import com.fsc.cicerone.view.ReportFragment;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.UserType;
