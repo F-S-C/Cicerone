@@ -31,7 +31,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.UserListAdapter;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
@@ -97,40 +99,28 @@ public class UsersListFragment extends Fragment implements Refreshable {
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
-                .setContext(getActivity())
-                .setOnStartConnectionListener(() -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-                })
-                .setOnEndConnectionListener(list -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                    adapter = new UserListAdapter(getActivity(), list);
-                    recyclerView.setAdapter(adapter);
-                })
-                .build();
-        connector.execute();
+        AccountManager.getListUsers(getActivity(), () -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+
+        }, list -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+            adapter = new UserListAdapter(getActivity(), list);
+            recyclerView.setAdapter(adapter);
+        });
     }
 
 
     public void getParticipators() {
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("booked_itinerary", itinerary.getCode());
+        ReservationManager.getReservations(getActivity(), itinerary, list -> {
+            List<User> participators = new LinkedList<>();
+            for (Reservation reservation : list) {
+                participators.add(reservation.getClient());
+            }
+            adapter = new UserListAdapter(getActivity(), participators);
+            recyclerView.setAdapter(adapter);
 
-        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(getActivity())
-                .setOnStartConnectionListener(() -> {
-                })
-                .setOnEndConnectionListener(list -> {
-                    List<User> participators = new LinkedList<>();
-                    for (Reservation reservation : list) {
-                        participators.add(reservation.getClient());
-                    }
-                    adapter = new UserListAdapter(getActivity(), participators);
-                    recyclerView.setAdapter(adapter);
-
-                })
-                .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+        });
     }
 }

@@ -252,8 +252,10 @@ public abstract class AccountManager {
     //TODO
 
     /**
-     * @param context
-     * @param users
+     * Get list of the user that a user can review.
+     *
+     * @param context The application context.
+     * @param users   The user to be reported.
      */
     public static void setUsersInSpinner(Activity context, Spinner users) {
         // TODO: Needs cleanup?
@@ -290,6 +292,22 @@ public abstract class AccountManager {
                     if (callback != null) callback.accept(result.getResult());
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(user))
+                .build()
+                .execute();
+    }
+
+    /**
+     * Get list of the registered user.
+     *
+     * @param context                   The application context.
+     * @param onStartConnectionListener On start connection callback.
+     * @param callback                  A function to be executed after the insert attempt.
+     */
+    public static void getListUsers(Activity context, @Nullable GetDataConnector.OnStartConnectionListener onStartConnectionListener, @Nullable GetDataConnector.OnEndConnectionListener<User> callback) {
+        new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(context)
+                .setOnStartConnectionListener(onStartConnectionListener)
+                .setOnEndConnectionListener(callback)
                 .build()
                 .execute();
     }
