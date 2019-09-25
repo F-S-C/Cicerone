@@ -47,7 +47,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     private final Activity context;
     private List<User> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener = null;
 
     /**
      * Constructor.
@@ -93,7 +92,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         }
         holder.usrType.setText(typeName);
         holder.imageView.setImageResource(mData.get(position).getSex().getAvatarResource());
-        ReviewManager.getAvgUserFeedback(context,user, holder.avgRating::setRating);
+        ReviewManager.getAvgUserFeedback(context, user, holder.avgRating::setRating);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
@@ -127,7 +126,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView usr;
         TextView usrType;
@@ -140,23 +139,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             usrType = itemView.findViewById(R.id.usrType);
             avgRating = itemView.findViewById(R.id.ratingBar2);
             imageView = itemView.findViewById(R.id.imageView2);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
-
-
-    /**
-     * Item Click Listener for parent activity will implement this method to respond to click events.
-     */
-    interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
 }
 
 

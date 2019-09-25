@@ -124,7 +124,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         //Defining variables of ITINERARY_LIST view
         TextView itineraryTitle;
