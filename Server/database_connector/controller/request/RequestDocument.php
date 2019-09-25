@@ -4,7 +4,7 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 
-require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
+require_once "/home/fsc/www/database_connector/controller/JsonConnector.php";
 
 /**
  * Request all the documents for a user.

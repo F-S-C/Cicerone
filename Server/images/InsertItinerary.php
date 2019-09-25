@@ -6,6 +6,7 @@ use database_connector\controller\insert\InsertItinerary;
 
 require_once "/home/fsc/www/database_connector/controller/insert/InsertItinerary.php";
 
+die(strtolower(json_decode($_GET['username'], true)["username"]));
 $connector = new InsertItinerary();
 $connector->add_value(array($_POST['title'],
     $_POST['description'],
@@ -17,7 +18,7 @@ $connector->add_value(array($_POST['title'],
     $_POST['location'],
     $_POST['repetitions_per_day'],
     $_POST['duration'],
-    strtolower($_POST['username']),
+    strtolower(json_decode($_POST['username'], true)["username"]),
     $_POST['full_price'],
     $_POST['reduced_price'],
     $_POST['image_url']

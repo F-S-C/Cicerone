@@ -2,7 +2,7 @@
 
 namespace database_connector\controller\update;
 
-require_once "/membri/fsc/database_connector/controller/update/UpdateConnector.php";
+require_once "/home/fsc/www/database_connector/controller/update/UpdateConnector.php";
 
 /**
  * Update an itinerary.

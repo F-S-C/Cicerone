@@ -2,7 +2,7 @@
 
 namespace database_connector\controller\delete;
 
-require_once "/membri/fsc/database_connector/controller/delete/DeleteConnector.php";
+require_once "/home/fsc/www/database_connector/controller/delete/DeleteConnector.php";
 
 /**
  * A connector that deletes an reservation from the reservation table.

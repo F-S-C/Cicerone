@@ -4,7 +4,7 @@ namespace database_connector\view\update;
 
 use database_connector\controller\update\UpdateItinerary;
 
-require_once "/membri/fsc/database_connector/controller/update/UpdateItinerary.php";
+require_once "/home/fsc/www/database_connector/controller/update/UpdateItinerary.php";
 
 $connector = new UpdateItinerary($_POST['itinerary_code']);
 $connector->add_value("title", $_POST['title'], "s");

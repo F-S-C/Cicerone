@@ -14,18 +14,19 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/itinerary_activity_swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".ItineraryDetails">
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/itinerary_activity_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -121,48 +122,63 @@
 
                             <TableRow>
 
-                                <TextView
-                                    android:id="@+id/textView41"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/repetitions" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/textView42"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="1dp"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/separator" />
+                                    <TextView
+                                        android:id="@+id/textView41"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/repetitions" />
 
-                                <TextView
-                                    android:id="@+id/repetitions"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textStyle="bold" />
+                                    <TextView
+                                        android:id="@+id/textView42"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="1dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:text="@string/separator" />
+
+                                    <TextView
+                                        android:id="@+id/repetitions"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
                             </TableRow>
 
                             <TableRow>
 
-                                <TextView
-                                    android:id="@+id/textView44"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/duration" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/textView45"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="1dp"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/separator" />
+                                    <TextView
+                                        android:id="@+id/textView44"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/duration" />
 
-                                <TextView
-                                    android:id="@+id/duration"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textStyle="bold" />
+                                    <TextView
+                                        android:id="@+id/textView45"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="1dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:text="@string/separator" />
+
+                                    <TextView
+                                        android:id="@+id/duration"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+
                             </TableRow>
 
                             <TableRow>
@@ -427,6 +443,7 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -476,5 +493,5 @@
             app:srcCompat="@drawable/ic_outline_favorite_border_24px"
             app:tint="@color/colorWhite" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

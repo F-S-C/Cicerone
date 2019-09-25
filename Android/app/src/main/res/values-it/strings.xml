@@ -231,4 +231,5 @@
     <string name="submit_request">Invia richiesta</string>
     <string name="remove_request_reservation">Rimuovi la richiesta di prenotazione</string>
     <string name="removed_user">L\'utente è stato rimosso.</string>
+    <string name="no_participants">Nessun partecipante per questo itinerario</string>
 </resources>

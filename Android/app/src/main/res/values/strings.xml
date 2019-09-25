@@ -255,4 +255,5 @@
     <string name="username_display" translatable="false">\@%s</string>
     <string name="remove_request_reservation">Remove request reservation</string>
     <string name="removed_user">The user has been removed.</string>
+    <string name="no_participants">No participants for this itinerary</string>
 </resources>

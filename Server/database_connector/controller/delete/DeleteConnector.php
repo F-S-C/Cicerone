@@ -4,7 +4,7 @@ namespace database_connector\controller\delete;
 
 use database_connector\controller\BooleanConnector;
 
-require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
+require_once "/home/fsc/www/database_connector/controller/BooleanConnector.php";
 
 /**
  * A generic connector that deletes data from a database.
