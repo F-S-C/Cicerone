@@ -365,7 +365,7 @@ public class ItineraryDetails extends ItineraryActivity {
     }
 
     @Override
-    void bindDataToView() {
+    public void bindDataToView() {
         requestDataForRecycleView();
         super.bindDataToView();
     }
