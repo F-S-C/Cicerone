@@ -20,6 +20,7 @@ package com.fsc.cicerone;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -29,12 +30,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,9 +45,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItineraryManagement extends ItineraryActivity {
+public class ItineraryManagement extends ItineraryActivity implements Refreshable {
     private Fragment fragment = new UsersListFragment();
     private RecyclerView.Adapter adapter;
+    private Map<String, Object> code;
+    private Itinerary currentItinerary;
 
 
     public ItineraryManagement() {
@@ -68,7 +73,7 @@ public class ItineraryManagement extends ItineraryActivity {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        final Map<String, Object> code = new HashMap<>();
+         code = new HashMap<>();
         //Get the bundle
         Bundle bundle = getIntent().getExtras();
         fragment.setArguments(bundle);
@@ -129,9 +134,32 @@ public class ItineraryManagement extends ItineraryActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ItineraryUpdate.RESULT_ITINERARY_UPDATED && resultCode == Activity.RESULT_OK) {
-            finish();
+            refresh();
             // TODO: Refresh itinerari?
         }
+    }
+
+    @Override
+    public void refresh() {
+        refresh(null);
+    }
+
+
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        ItineraryManager.requestItinerary(this, code, () -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+
+        }, list -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+            Log.e("it",list.get(0).toString());
+        });
+
+    }
+
+    @Override
+    public void bindDataToView() {
+        super.bindDataToView();
     }
 }
 

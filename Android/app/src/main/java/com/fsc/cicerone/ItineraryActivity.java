@@ -57,7 +57,7 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         refresh();
     }
 
-    void bindDataToView() {
+    public void bindDataToView() {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
         ImageView image = findViewById(R.id.image);

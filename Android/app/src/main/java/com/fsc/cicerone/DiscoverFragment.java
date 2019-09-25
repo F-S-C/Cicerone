@@ -41,7 +41,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.Itinerary;
 
 import java.text.SimpleDateFormat;
@@ -54,8 +54,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 
 /**
@@ -275,26 +273,21 @@ public class DiscoverFragment extends Fragment implements Refreshable {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         Map<String, Object> object = new HashMap<>(3);
         if (beginningDate != null) object.put("beginning_date", sdf.format(beginningDate));
-        if (endingDate != null) object.put("beginning_date", sdf.format(endingDate));
+        if (endingDate != null) object.put("ending_date", sdf.format(endingDate));
         if (location != null) object.put("location", location);
-        SendInPostConnector<Itinerary> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
-                .setContext(context)
-                .setOnStartConnectionListener(() -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-                })
-                .setOnEndConnectionListener(list -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                    List<Itinerary> filteredList = new LinkedList<>();
-                    for (Itinerary itinerary : list) {
-                        if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
-                            filteredList.add(itinerary);
-                    }
-                    ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList, this);
+        ItineraryManager.requestItinerary(context, object, () -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
 
-                    recyclerView.setAdapter(adapter);
-                })
-                .setObjectToSend(object)
-                .build();
-        connector.execute();
+        }, list -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+            List<Itinerary> filteredList = new LinkedList<>();
+            for (Itinerary itinerary : list) {
+                if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
+                    filteredList.add(itinerary);
+            }
+            ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList, this);
+
+            recyclerView.setAdapter(adapter);
+        });
     }
 }

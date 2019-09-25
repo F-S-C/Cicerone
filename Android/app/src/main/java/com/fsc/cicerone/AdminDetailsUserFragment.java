@@ -19,51 +19,47 @@ package com.fsc.cicerone;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * Class that contains the details of the user to whom the administrator is interested.
  */
 public class AdminDetailsUserFragment extends Fragment {
 
-    private static final String ERROR_TAG = "ERROR IN " + AdminDetailsUserFragment.class.getName();
     private TextView documentNumber;
     private TextView documentType;
     private TextView documentExpiryDate;
-    private TextView documentNotFound;
-    private String data;
     private DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
     private Button removeUser;
     private Activity context;
+    private User user;
+    private TextView name;
+    private TextView surname;
+    private TextView email;
+    private TextView cellphone;
+    private TextView birthDate;
+    private TextView avgEarn;
+    private TextView sex;
 
     /**
      * Empty constructor
@@ -79,36 +75,35 @@ public class AdminDetailsUserFragment extends Fragment {
         context = Objects.requireNonNull(getActivity());
 
         View view = inflater.inflate(R.layout.activity_admin_details_user_fragment, container, false);
-        TextView name = view.findViewById(R.id.name_users_admin);
-        TextView surname = view.findViewById(R.id.surname_user_admin);
-        TextView email = view.findViewById(R.id.email_user_admin);
-        TextView cellphone = view.findViewById(R.id.cellphone_user_admin);
-        TextView birthDate = view.findViewById(R.id.bday_user_admin);
+        name = view.findViewById(R.id.name_users_admin);
+        surname = view.findViewById(R.id.surname_user_admin);
+        email = view.findViewById(R.id.email_user_admin);
+        cellphone = view.findViewById(R.id.cellphone_user_admin);
+        birthDate = view.findViewById(R.id.bday_user_admin);
         documentNumber = view.findViewById(R.id.nrDoc_user_admin);
         documentType = view.findViewById(R.id.typeDoc_user_admin);
         documentExpiryDate = view.findViewById(R.id.dateEx_user_admin);
-        TextView avgEarn = view.findViewById(R.id.avg_earn);
-        TextView sex = view.findViewById(R.id.sex_user_admin);
+        avgEarn = view.findViewById(R.id.avg_earn);
+        sex = view.findViewById(R.id.sex_user_admin);
         removeUser = view.findViewById(R.id.remove_user_admin);
-        documentNotFound = view.findViewById(R.id.document_not_exists);
         Bundle bundle = getArguments();
 
-        User user = null;
-        try {
-            user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
-            if (user.getUserType() == UserType.CICERONE) {
-                avgEarn.setVisibility(View.VISIBLE);
-                AccountManager.userAvgEarnings(context, user.getUsername(), avgEarn);
-            }
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
+        user = new User(Objects.requireNonNull(bundle).getString("user"));
+
+        getDataUser(user);
+
+        removeUser.setOnClickListener(v -> deleteAccount(user));
+
+        return view;
+    }
+
+    private void getDataUser(User user) {
+        if (user.getUserType() == UserType.CICERONE) {
+            avgEarn.setVisibility(View.VISIBLE);
+            AccountManager.userAvgEarnings(context, user.getUsername(), avgEarn);
         }
 
-
-        assert user != null;
-        Map<String, Object> parameters = new HashMap<>(1);
-        parameters.put("username", user.getUsername());
-        data = "Name: " + user.getName();
+        String data = "Name: " + user.getName();
         name.setText(data);
         data = "Surname: " + user.getSurname();
         surname.setText(data);
@@ -120,58 +115,19 @@ public class AdminDetailsUserFragment extends Fragment {
         birthDate.setText(data);
         data = "Sex: " + user.getSex().toString();
         sex.setText(data);
-
-        requestUserDocument(parameters);
-        removeUser.setOnClickListener(v -> deleteAccount(parameters));
-
-        return view;
+        data = "Document Number: " + user.getDocument().getNumber();
+        documentNumber.setText(data);
+        data = "Document Type: " + user.getDocument().getType();
+        documentType.setText(data);
+        data = "Expiry Date: " + outputFormat.format(user.getDocument().getExpirationDate());
+        documentExpiryDate.setText(data);
     }
 
-    private void requestUserDocument(Map<String, Object> parameters) {
-        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_DOCUMENT, BusinessEntityBuilder.getFactory(Document.class))
-                .setContext(context)
-                .setOnStartConnectionListener(()->{
-                    documentNumber.setVisibility(View.GONE);
-                    documentType.setVisibility(View.GONE);
-                    documentNotFound.setVisibility(View.GONE);
-                    documentExpiryDate.setVisibility(View.GONE);
-                })
-                .setOnEndConnectionListener(list -> {
-                    if (!list.isEmpty()) {
-                        Document dataDocument = list.get(0);
-
-                        data = "Document Number: " + dataDocument.getNumber();
-                        documentNumber.setText(data);
-                        documentNumber.setVisibility(View.VISIBLE);
-
-                        data = "Document Type: " + dataDocument.getType();
-                        documentType.setText(data);
-                        documentType.setVisibility(View.VISIBLE);
-
-                        data = "Expiry Date: " + outputFormat.format(dataDocument.getExpirationDate());
-                        documentExpiryDate.setText(data);
-                        documentExpiryDate.setVisibility(View.VISIBLE);
-                    } else {
-                        documentNotFound.setVisibility(View.VISIBLE);
-                    }
-                })
-                .setObjectToSend(parameters)
-                .build();
-        userDocumentConnector.execute();
-    }
-
-    private void deleteAccount(Map<String, Object> parameters) {
+    private void deleteAccount(User user) {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
-            BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
-                    .setContext(context)
-                    .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                        if (!result.getResult()) {
-                            Log.e("DELETE_USER_ERROR", result.getMessage());
-                        }
-                    })
-                    .setObjectToSend(parameters)
-                    .build();
-            connector.execute();
+            AccountManager.deleteAccount(context, user , success -> Toast.makeText(context,
+                    context.getString(R.string.removed_user), Toast.LENGTH_SHORT)
+                    .show());
             removeUser.setEnabled(false);
         };
         new MaterialAlertDialogBuilder(context)
@@ -180,9 +136,5 @@ public class AdminDetailsUserFragment extends Fragment {
                 .setPositiveButton(context.getString(R.string.yes), positiveClickListener)
                 .setNegativeButton(context.getString(R.string.no), null)
                 .show();
-
-
     }
-
-
 }

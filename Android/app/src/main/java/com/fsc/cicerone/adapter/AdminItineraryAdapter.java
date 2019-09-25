@@ -26,6 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
@@ -73,6 +75,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         String title = mData.get(position).getTitle();
         Integer itineraryNumber = mData.get(position).getCode();
         String location = mData.get(position).getLocation();
@@ -83,7 +86,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
         holder.itineraryTitle.setText(title);
         holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
         holder.location.setText(location);
-        setItineraryAvgPrice(itineraryNumber, holder.avgItineraryPrice);
+        setItineraryAvgPrice(mData.get(position), holder.avgItineraryPrice);
     }
 
     /**
@@ -124,28 +127,21 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
     /**
      * Set the average earnings of an itinerary.
      *
-     * @param itineraryCode The itinerary code.
-     * @param t             The TextView which shows the average earnings.
+     * @param itinerary The itinerary .
+     * @param t         The TextView which shows the average earnings.
      */
-    private void setItineraryAvgPrice(Integer itineraryCode, TextView t) {
-        Map<String, Object> params = new HashMap<>(1);
-        params.put("booked_itinerary", itineraryCode);
-        SendInPostConnector<Reservation> conn = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(context)
-                .setOnEndConnectionListener(list -> {
-                    int count = 0;
-                    float price = 0;
-                    for (Reservation reservation : list) {
-                        if (reservation.isConfirmed()) {
-                            price += reservation.getTotal();
-                            count++;
-                        }
-                    }
-                    t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
-                })
-                .setObjectToSend(params)
-                .build();
-        conn.execute();
+    private void setItineraryAvgPrice(Itinerary itinerary, TextView t) {
+        ReservationManager.getReservations(context, itinerary, list -> {
+            int count = 0;
+            float price = 0;
+            for (Reservation reservation : list) {
+                if (reservation.isConfirmed()) {
+                    price += reservation.getTotal();
+                    count++;
+                }
+            }
+            t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
+        });
     }
 }
 

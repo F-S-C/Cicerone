@@ -475,5 +475,4 @@ public class ItineraryUpdate extends AppCompatActivity {
         return true;
     }
 
-
 }

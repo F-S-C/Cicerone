@@ -22,6 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
@@ -247,6 +249,14 @@ public abstract class AccountManager {
         connector.execute();
     }
 
+    //TODO
+
+    /**
+     * Get list of the user that a user can review.
+     *
+     * @param context The application context.
+     * @param users   The user to be reported.
+     */
     public static void setUsersInSpinner(Activity context, Spinner users) {
         // TODO: Needs cleanup?
         GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
@@ -266,5 +276,39 @@ public abstract class AccountManager {
                 })
                 .build();
         connector.execute();
+    }
+
+    /**
+     * Delete registered user.
+     *
+     * @param context  The application context.
+     * @param user     The user to be deleted.
+     * @param callback A function to be executed after the insert attempt.
+     */
+    public static void deleteAccount(Activity context, User user, @Nullable BooleanRunnable callback) {
+        new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
+                .setContext(context)
+                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
+                    if (callback != null) callback.accept(result.getResult());
+                })
+                .setObjectToSend(SendInPostConnector.paramsFromObject(user))
+                .build()
+                .execute();
+    }
+
+    /**
+     * Get list of the registered user.
+     *
+     * @param context                   The application context.
+     * @param onStartConnectionListener On start connection callback.
+     * @param callback                  A function to be executed after the insert attempt.
+     */
+    public static void getListUsers(Activity context, @Nullable GetDataConnector.OnStartConnectionListener onStartConnectionListener, @Nullable GetDataConnector.OnEndConnectionListener<User> callback) {
+        new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+                .setContext(context)
+                .setOnStartConnectionListener(onStartConnectionListener)
+                .setOnEndConnectionListener(callback)
+                .build()
+                .execute();
     }
 }
