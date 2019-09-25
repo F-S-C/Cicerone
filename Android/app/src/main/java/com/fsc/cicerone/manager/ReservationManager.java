@@ -21,6 +21,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.adapter.UserListAdapter;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -29,11 +31,14 @@ import com.fsc.cicerone.model.Reservation;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
+import com.fsc.cicerone.model.User;
 
 /**
  * The manager class for the Reservation data-type.
@@ -42,6 +47,19 @@ public abstract class ReservationManager {
 
     private ReservationManager() {
         throw new IllegalStateException("Utility class");
+    }
+
+    public static void getReservations(Activity context, Itinerary itinerary, @Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback){
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("booked_itinerary", itinerary.getCode());
+
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnStartConnectionListener(null)
+                .setOnEndConnectionListener(callback)
+                .setObjectToSend(parameters)
+                .build()
+                .execute();
     }
 
     /**

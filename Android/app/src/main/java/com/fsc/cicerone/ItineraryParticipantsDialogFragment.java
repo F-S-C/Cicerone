@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.UserListAdapter;
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
@@ -72,17 +73,23 @@ public class ItineraryParticipantsDialogFragment extends DialogFragment {
 
         if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE) {
             String s = Objects.requireNonNull(bundle).getString("itinerary");
-            try {
-                itinerary = new Itinerary(new JSONObject(s));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            getParticipators();
+            itinerary = new Itinerary(s);
+            ReservationManager.getReservations(getActivity(), itinerary, list -> {
+                List<User> participants = new LinkedList<>();
+                for (Reservation reservation : list) {
+                    if (reservation.isConfirmed())
+                        participants.add(reservation.getClient());
+                }
+                if (participants.isEmpty()){
+                    builder.setMessage(getActivity().getString(R.string.no_participants));
+                }
+                adapter = new UserListAdapter(getActivity(), participants);
+                recyclerView.setAdapter(adapter);
+            });
         }
         builder.setView(view);
 
-        builder.setTitle(getActivity().getString(R.string.participants_list));
+        builder.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.participants_list));
         builder.setNeutralButton(getActivity().getString(R.string.ok), null);
 
         return builder.create();
@@ -100,27 +107,5 @@ public class ItineraryParticipantsDialogFragment extends DialogFragment {
         ItineraryParticipantsDialogFragment fragment = new ItineraryParticipantsDialogFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    private void getParticipators() {
-        Map<String, Object> parameters = new HashMap<>(1);
-        parameters.put("booked_itinerary", itinerary.getCode());
-
-        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(getActivity())
-                .setOnStartConnectionListener(() -> {
-                })
-                .setOnEndConnectionListener(list -> {
-                    List<User> participators = new LinkedList<>();
-                    for (Reservation reservation : list) {
-                        participators.add(reservation.getClient());
-                    }
-                    adapter = new UserListAdapter(getActivity(), participators);
-                    recyclerView.setAdapter(adapter);
-
-                })
-                .setObjectToSend(parameters)
-                .build();
-        connector.execute();
     }
 }

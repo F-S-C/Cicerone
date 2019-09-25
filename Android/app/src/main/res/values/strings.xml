@@ -254,4 +254,5 @@
     <string name="submit_request">Submit request</string>
     <string name="username_display" translatable="false">\@%s</string>
     <string name="remove_request_reservation">Remove request reservation</string>
+    <string name="no_participants">No participants for this itinerary</string>
 </resources>
