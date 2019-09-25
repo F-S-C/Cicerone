@@ -43,17 +43,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItineraryManagement extends ItineraryActivity {
+public class ItineraryManagementActivity extends ItineraryActivity {
     private Fragment fragment = new UsersListFragment();
     private RecyclerView.Adapter adapter;
 
 
-    public ItineraryManagement() {
+    public ItineraryManagementActivity() {
         super();
         this.layout = R.layout.activity_itinerary_management;
     }
 
-    public ItineraryManagement(int contentLayoutId) {
+    public ItineraryManagementActivity(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_itinerary_management;
     }
@@ -79,7 +79,7 @@ public class ItineraryManagement extends ItineraryActivity {
         requestDataForRecycleView(code, recyclerView);
         code.put("itinerary_code", itinerary.getCode());
 
-        deleteItinerary.setOnClickListener(v -> new MaterialAlertDialogBuilder(ItineraryManagement.this).
+        deleteItinerary.setOnClickListener(v -> new MaterialAlertDialogBuilder(ItineraryManagementActivity.this).
                 setTitle(getString(R.string.are_you_sure))
                 .setMessage(getString(R.string.confirm_delete))
                 .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteItineraryFromServer()))
@@ -88,9 +88,9 @@ public class ItineraryManagement extends ItineraryActivity {
 
 
         updateItinerary.setOnClickListener(v -> {
-            Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
+            Intent i = new Intent().setClass(v.getContext(), ItineraryUpdateActivity.class);
             i.putExtras(bundle);
-            startActivityForResult(i,ItineraryUpdate.RESULT_ITINERARY_UPDATED);
+            startActivityForResult(i, ItineraryUpdateActivity.RESULT_ITINERARY_UPDATED);
         });
 
 
@@ -102,8 +102,8 @@ public class ItineraryManagement extends ItineraryActivity {
     }
 
     public void deleteItineraryFromServer() {
-        ItineraryManager.deleteItinerary(this, itinerary, success -> Toast.makeText(ItineraryManagement.this, ItineraryManagement.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show());
-        ItineraryManagement.this.finish();
+        ItineraryManager.deleteItinerary(this, itinerary, success -> Toast.makeText(ItineraryManagementActivity.this, ItineraryManagementActivity.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show());
+        ItineraryManagementActivity.this.finish();
     }
 
     public void participatorsList(View view) {
@@ -129,7 +129,7 @@ public class ItineraryManagement extends ItineraryActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ItineraryUpdate.RESULT_ITINERARY_UPDATED && resultCode == Activity.RESULT_OK) {
+        if (requestCode == ItineraryUpdateActivity.RESULT_ITINERARY_UPDATED && resultCode == Activity.RESULT_OK) {
             finish();
             // TODO: Refresh itinerari?
         }

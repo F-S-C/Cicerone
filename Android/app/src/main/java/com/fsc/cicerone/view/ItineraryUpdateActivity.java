@@ -16,47 +16,36 @@
 
 package com.fsc.cicerone.view;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
-import com.fsc.cicerone.ImageSingleton;
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.manager.ItineraryManager;
+import com.fsc.cicerone.model.Itinerary;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Objects;
 
-
-public class ItineraryCreation extends AppCompatActivity {
+public class ItineraryUpdateActivity extends AppCompatActivity {
     EditText title;
     EditText description;
     EditText selectBeginningDate;
@@ -70,20 +59,31 @@ public class ItineraryCreation extends AppCompatActivity {
     EditText location;
     EditText fullPrice;
     EditText reducedPrice;
-    ImageView selectedImage;
     Button submit;
+    Itinerary currentItinerary;
     final Calendar myCalendar = Calendar.getInstance();
-    private Bitmap bitmapImage;
 
-    private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
-    private static final String DATE_FORMAT = "dd-MM-yyyy";
-    private static final int IMG_REQUEST = 1;
-    private boolean imgSelected = false;
+    private static final String ERROR_TAG = "ERROR IN " + ItineraryUpdateActivity.class.getName();
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final int RESULT_ITINERARY_UPDATED = 1050;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_itinerary_creation);
+        setContentView(R.layout.activity_itinerary_update);
+
+        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
+
+        Bundle bundle = getIntent().getExtras();
+        try {
+            currentItinerary = new Itinerary(new JSONObject(Objects.requireNonNull(bundle).getString("itinerary")));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.getMessage());
+            currentItinerary = new Itinerary();
+        }
+
 
         title = findViewById(R.id.inputTitle);
         description = findViewById(R.id.inputDescription);
@@ -99,10 +99,23 @@ public class ItineraryCreation extends AppCompatActivity {
         reducedPrice = findViewById(R.id.inputReducedPrice);
         fullPrice = findViewById(R.id.inputFullPrice);
         submit = findViewById(R.id.submit);
-        selectedImage = findViewById(R.id.itinerary_image);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        // Setting all the fields to the previous values
+        title.setText(currentItinerary.getTitle());
+        description.setText(currentItinerary.getDescription());
+        location.setText(currentItinerary.getLocation());
+        // TODO: Why is it crashing?
+        //SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        //selectBeginningDate.setText(String.valueOf(currentItinerary.getBeginningDate()));
+        //selectEndingDate.setText(formatter.format(currentItinerary.getEndingDate()));
+        //selectReservationDate.setText(formatter.format(currentItinerary.getReservationDate()));
+        minParticipants.setText(String.valueOf(currentItinerary.getMinParticipants()));
+        maxParticipants.setText(String.valueOf(currentItinerary.getMaxParticipants()));
+        durationHours.setText(currentItinerary.getDuration().substring(0, currentItinerary.getDuration().indexOf(":")));
+        durationMinutes.setText(currentItinerary.getDuration().substring(currentItinerary.getDuration().indexOf(":") + 1));
+        repetitions.setText(String.valueOf(currentItinerary.getRepetitions()));
+        reducedPrice.setText(String.valueOf(currentItinerary.getReducedPrice()));
+        fullPrice.setText(String.valueOf(currentItinerary.getFullPrice()));
 
         selectBeginningDate.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
@@ -168,7 +181,7 @@ public class ItineraryCreation extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String minutes = durationMinutes.getText().toString();
                 if (!minutes.equals("") && Integer.parseInt(minutes) > 60) {
-                    durationMinutes.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                    durationMinutes.setError(ItineraryUpdateActivity.this.getString(R.string.wrong_number));
                 }
             }
 
@@ -195,7 +208,6 @@ public class ItineraryCreation extends AppCompatActivity {
                         repetitions.setFocusable(false);
                     } else {
 
-
                         repetitions.setClickable(true);
                         repetitions.setFocusableInTouchMode(true);
                         repetitions.setFocusable(true);
@@ -221,7 +233,7 @@ public class ItineraryCreation extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String repInserted = repetitions.getText().toString();
                 if (!repInserted.equals("") && Integer.parseInt(repInserted) < 1) {
-                    repetitions.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                    repetitions.setError(ItineraryUpdateActivity.this.getString(R.string.wrong_number));
                 }
 
             }
@@ -263,7 +275,7 @@ public class ItineraryCreation extends AppCompatActivity {
                     reducedPrice.setFocusableInTouchMode(true);
                     if (!rPrice.equals("")) {
                         if (Float.parseFloat(rPrice) > Float.parseFloat(fPrice)) {
-                            fullPrice.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                            fullPrice.setError(ItineraryUpdateActivity.this.getString(R.string.wrong_number));
                         } else {
                             reducedPrice.setError(null);
                             fullPrice.setError(null);
@@ -291,7 +303,7 @@ public class ItineraryCreation extends AppCompatActivity {
                 String rPrice = reducedPrice.getText().toString();
                 if (!rPrice.equals("")) {
                     if (Float.parseFloat(rPrice) > Float.parseFloat(fPrice)) {
-                        reducedPrice.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                        reducedPrice.setError(ItineraryUpdateActivity.this.getString(R.string.wrong_number));
                     } else {
                         reducedPrice.setError(null);
                         fullPrice.setError(null);
@@ -306,59 +318,8 @@ public class ItineraryCreation extends AppCompatActivity {
                 // Do nothing
             }
         });
-
-        selectedImage.setOnClickListener(v -> selectImage());
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null) {
-            Uri imgPath = data.getData();
-            try {
-                bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath);
-                selectedImage.setBackground(null);
-                selectedImage.setImageBitmap(bitmapImage);
-            } catch (IOException e) {
-                Log.e(ERROR_TAG, e.toString());
-            }
-        }
-    }
-
-    public void sendData(View view) {
-        boolean canSend = allFilled();
-        if (canSend) {
-            if (imgSelected) {
-                uploadItineraryWithImage();
-            } else {
-                ItineraryManager.uploadItinerary(
-                        title.getText().toString(),
-                        description.getText().toString(),
-                        selectBeginningDate.getText().toString(),
-                        selectEndingDate.getText().toString(),
-                        selectReservationDate.getText().toString(),
-                        location.getText().toString(),
-                        durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
-                        Integer.parseInt(repetitions.getText().toString()),
-                        Integer.parseInt(minParticipants.getText().toString()),
-                        Integer.parseInt(maxParticipants.getText().toString()),
-                        Float.parseFloat(fullPrice.getText().toString()),
-                        Float.parseFloat(reducedPrice.getText().toString()),
-                        null, insStatus -> {
-                            if (insStatus.getResult()) {
-                                Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(i);
-                            } else {
-                                Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-        } else {
-            Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     public void setBeginningDate(View view) {
         DatePickerDialog.OnDateSetListener bDate = (view2, year, monthOfYear, dayOfMonth) -> {
@@ -367,7 +328,7 @@ public class ItineraryCreation extends AppCompatActivity {
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             updateBeginningDate();
         };
-        DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, bDate, myCalendar
+        DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryUpdateActivity.this, bDate, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -383,7 +344,7 @@ public class ItineraryCreation extends AppCompatActivity {
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             updateEndingDate();
         };
-        DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, eDate, myCalendar
+        DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryUpdateActivity.this, eDate, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH));
         Date minDate = null;
@@ -396,7 +357,7 @@ public class ItineraryCreation extends AppCompatActivity {
             datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
             datePickerDialog.show();
         } else {
-            Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ItineraryUpdateActivity.this, ItineraryUpdateActivity.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
         }
 
         selectEndingDate.clearFocus();
@@ -409,7 +370,7 @@ public class ItineraryCreation extends AppCompatActivity {
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             updateReservationDate();
         };
-        DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryCreation.this, rDate, myCalendar
+        DatePickerDialog datePickerDialog = new DatePickerDialog(ItineraryUpdateActivity.this, rDate, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH));
         Date minDate = null;
@@ -426,14 +387,43 @@ public class ItineraryCreation extends AppCompatActivity {
             datePickerDialog.show();
         } else {
             if (minDate == null) {
-                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ItineraryUpdateActivity.this, ItineraryUpdateActivity.this.getString(R.string.error_insert_beginning_date), Toast.LENGTH_SHORT).show();
             }
             if (maxDate == null) {
-                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_insert_ending_date), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ItineraryUpdateActivity.this, ItineraryUpdateActivity.this.getString(R.string.error_insert_ending_date), Toast.LENGTH_SHORT).show();
             }
         }
 
     }
+
+    public void sendData(View view) throws ParseException {
+        boolean canSend = allFilled();
+        DateFormat outputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+
+        if (canSend) {
+            currentItinerary.setTitle(title.getText().toString());
+            currentItinerary.setDescription(description.getText().toString());
+            currentItinerary.setBeginningDate(outputFormat.parse(selectBeginningDate.getText().toString()));
+            currentItinerary.setEndingDate(outputFormat.parse(selectEndingDate.getText().toString()));
+            currentItinerary.setReservationDate(outputFormat.parse(selectReservationDate.getText().toString()));
+            currentItinerary.setMaxParticipants(Integer.parseInt(maxParticipants.getText().toString()));
+            currentItinerary.setMinParticipants(Integer.parseInt(minParticipants.getText().toString()));
+            currentItinerary.setRepetitions(Integer.parseInt(repetitions.getText().toString()));
+            currentItinerary.setLocation(location.getText().toString());
+            currentItinerary.setDuration(durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
+            currentItinerary.setFullPrice(Float.parseFloat(fullPrice.getText().toString()));
+            currentItinerary.setReducedPrice(Float.parseFloat(reducedPrice.getText().toString()));
+            ItineraryManager.updateItinerary(this, currentItinerary, success -> { if(success) Toast.makeText(ItineraryUpdateActivity.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
+            });
+            setResult(Activity.RESULT_OK);
+            finish();
+
+        } else {
+            Toast.makeText(ItineraryUpdateActivity.this, ItineraryUpdateActivity.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     private boolean allFilled() {
         return !title.getText().toString().equals("")
@@ -448,8 +438,7 @@ public class ItineraryCreation extends AppCompatActivity {
                 && !durationMinutes.getText().toString().equals("")
                 && !location.getText().toString().equals("")
                 && !fullPrice.getText().toString().equals("")
-                && !reducedPrice.getText().toString().equals("")
-                && bitmapImage != null;
+                && !reducedPrice.getText().toString().equals("");
     }
 
     private void updateBeginningDate() {
@@ -476,85 +465,16 @@ public class ItineraryCreation extends AppCompatActivity {
             int max = Integer.parseInt(maxInserted);
             int min = Integer.parseInt(minInserted);
             if (min > max) {
-                currentEditText.setError(ItineraryCreation.this.getString(R.string.wrong_number));
+                currentEditText.setError(ItineraryUpdateActivity.this.getString(R.string.wrong_number));
             }
         }
     }
 
-    private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, IMG_REQUEST);
-        imgSelected = true;
-    }
-
-    private String imgToString(Bitmap image) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] imgByteArray = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imgByteArray, Base64.DEFAULT);
-    }
-
-    private void uploadItineraryWithImage() {
-        if (bitmapImage != null) {
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, ConnectorConstants.IMAGE_UPLOADER, response -> {
-                try {
-                    JSONObject result = new JSONObject(response);
-                    if (result.getBoolean("result")) {
-                        String imgURL = ConnectorConstants.IMG_FOLDER.concat(result.getString("name"));
-                        ItineraryManager.uploadItinerary(
-                                title.getText().toString(),
-                                description.getText().toString(),
-                                selectBeginningDate.getText().toString(),
-                                selectEndingDate.getText().toString(),
-                                selectReservationDate.getText().toString(),
-                                location.getText().toString(),
-                                durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
-                                Integer.parseInt(repetitions.getText().toString()),
-                                Integer.parseInt(minParticipants.getText().toString()),
-                                Integer.parseInt(maxParticipants.getText().toString()),
-                                Float.parseFloat(fullPrice.getText().toString()),
-                                Float.parseFloat(reducedPrice.getText().toString()),
-                                imgURL, insStatus -> {
-                                    if (insStatus.getResult()) {
-                                        Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(i);
-                                    } else {
-                                        Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else {
-                        Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    Log.e(ERROR_TAG, e.toString());
-                }
-            }, null) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("image", imgToString(bitmapImage));
-                    return params;
-                }
-            };
-            ImageSingleton.getInstance(ItineraryCreation.this).addToRequestQue(stringRequest);
-        }
-
-    }
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
+
 
 }
-
-

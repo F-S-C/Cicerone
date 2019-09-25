@@ -29,9 +29,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.view.admin_view.AdminItineraryDetails;
-import com.fsc.cicerone.view.ItineraryDetails;
-import com.fsc.cicerone.view.ItineraryManagement;
+import com.fsc.cicerone.view.admin_view.AdminItineraryDetailsActivity;
+import com.fsc.cicerone.view.ItineraryDetailsActivity;
+import com.fsc.cicerone.view.ItineraryManagementActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.view.WishlistFragment;
 import com.fsc.cicerone.manager.AccountManager;
@@ -94,12 +94,12 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             if (mData.get(position).getCicerone().equals(AccountManager.getCurrentLoggedUser())) {
-                i = new Intent().setClass(v.getContext(), ItineraryManagement.class);
+                i = new Intent().setClass(v.getContext(), ItineraryManagementActivity.class);
             } else {
                 if (AccountManager.isLogged() && AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                    i = new Intent(context, AdminItineraryDetails.class);
+                    i = new Intent(context, AdminItineraryDetailsActivity.class);
                 } else {
-                    i = new Intent(context, ItineraryDetails.class);
+                    i = new Intent(context, ItineraryDetailsActivity.class);
                 }
             }
             i.putExtra("itinerary", mData.get(position).toJSONObject().toString());

@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             });
             fabItinerary.setOnClickListener(v -> {
                 closeSubMenusFab();
-                Intent i = new Intent().setClass(MainActivity.this, ItineraryCreation.class);
+                Intent i = new Intent().setClass(MainActivity.this, ItineraryCreationActivity.class);
                 startActivity(i);
             });
             if (AccountManager.getCurrentLoggedUser().getUserType() != UserType.CICERONE)
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Fragment profileFragment = AccountManager.isLogged() ? new AccountDetails(swipeRefreshLayout) : null;
+        Fragment profileFragment = AccountManager.isLogged() ? new AccountDetailsFragment(swipeRefreshLayout) : null;
         WishlistFragment wishlistFragment = AccountManager.isLogged() ? new WishlistFragment() : null;
 
         navView.setOnNavigationItemSelectedListener(item -> {

@@ -44,8 +44,8 @@ import com.fsc.cicerone.view.GlobetrotterItineraryListFragment;
 /**
  * Class that specifying the details of registered user that the administrator is viewing.
  */
-public class AdminUserProfile extends AppCompatActivity {
-    private static final String ERROR_TAG = "ERROR IN " + AdminUserProfile.class.getName();
+public class AdminUserProfileActivity extends AppCompatActivity {
+    private static final String ERROR_TAG = "ERROR IN " + AdminUserProfileActivity.class.getName();
 
     TabLayout tabLayout;
     FrameLayout frameLayout;

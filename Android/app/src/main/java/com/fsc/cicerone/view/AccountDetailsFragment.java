@@ -41,7 +41,7 @@ import java.util.Objects;
 /**
  * Class that specifying the account detail page
  */
-public class AccountDetails extends Fragment implements Refreshable {
+public class AccountDetailsFragment extends Fragment implements Refreshable {
 
     private TabLayout tabLayout;
     private Fragment fragment = null;
@@ -50,11 +50,11 @@ public class AccountDetails extends Fragment implements Refreshable {
     private View holderView;
 
 
-    public AccountDetails() {
+    public AccountDetailsFragment() {
         // required empty constructor
     }
 
-    public AccountDetails(SwipeRefreshLayout swipeRefreshLayout){
+    public AccountDetailsFragment(SwipeRefreshLayout swipeRefreshLayout){
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 

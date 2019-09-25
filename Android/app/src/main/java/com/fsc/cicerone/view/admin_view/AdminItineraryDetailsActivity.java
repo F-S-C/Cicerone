@@ -23,14 +23,14 @@ import com.fsc.cicerone.R;
 
 import com.fsc.cicerone.view.ItineraryActivity;
 
-public class AdminItineraryDetails extends ItineraryActivity {
+public class AdminItineraryDetailsActivity extends ItineraryActivity {
 
-    public AdminItineraryDetails() {
+    public AdminItineraryDetailsActivity() {
         super();
         this.layout = R.layout.activity_admin_itinerary_details;
     }
 
-    public AdminItineraryDetails(int contentLayoutId) {
+    public AdminItineraryDetailsActivity(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_admin_itinerary_details;
     }
@@ -39,7 +39,7 @@ public class AdminItineraryDetails extends ItineraryActivity {
     public void goToAuthor(View view) {
         Bundle bundle = new Bundle();
         bundle.putString("user", itinerary.getCicerone().toJSONObject().toString());
-        startActivityWithData(AdminUserProfile.class, bundle);
+        startActivityWithData(AdminUserProfileActivity.class, bundle);
     }
 
 }

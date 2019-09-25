@@ -48,7 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ItineraryDetails extends ItineraryActivity {
+public class ItineraryDetailsActivity extends ItineraryActivity {
 
     RecyclerView.Adapter adapter;
     private Button requestReservation;
@@ -66,14 +66,14 @@ public class ItineraryDetails extends ItineraryActivity {
     private EditText numberOfAdultsInput;
     private EditText numberOfChildrenInput;
 
-    private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
+    private static final String ERROR_TAG = "ERROR IN " + ItineraryDetailsActivity.class.getName();
 
-    public ItineraryDetails() {
+    public ItineraryDetailsActivity() {
         super();
         this.layout = R.layout.activity_itinerary_details;
     }
 
-    public ItineraryDetails(int contentLayoutId) {
+    public ItineraryDetailsActivity(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_itinerary_details;
     }
@@ -111,7 +111,7 @@ public class ItineraryDetails extends ItineraryActivity {
         modifyWishlistButton.setOnClickListener(v -> {
             setResult(Activity.RESULT_OK);
             if (isInWishlist) {
-                new MaterialAlertDialogBuilder(ItineraryDetails.this).setTitle(getString(R.string.are_you_sure))
+                new MaterialAlertDialogBuilder(ItineraryDetailsActivity.this).setTitle(getString(R.string.are_you_sure))
                         .setMessage(getString(R.string.confirm_delete))
                         .setPositiveButton(getString(R.string.yes), ((dialog, which) -> deleteFromWishlist()))
                         .setNegativeButton(getString(R.string.no), null).show();
@@ -125,7 +125,7 @@ public class ItineraryDetails extends ItineraryActivity {
     public void addToWishlist() {
         WishlistManager.addToWishlist(this, itinerary, result -> {
             if (result.getResult()) {
-                Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_added),
+                Toast.makeText(ItineraryDetailsActivity.this, ItineraryDetailsActivity.this.getString(R.string.itinerary_added),
                         Toast.LENGTH_SHORT).show();
                 checkWishlist();
             }
@@ -135,7 +135,7 @@ public class ItineraryDetails extends ItineraryActivity {
     public void deleteFromWishlist() {
         WishlistManager.removeFromWishlist(this, itinerary, result -> {
             if (result.getResult()) {
-                Toast.makeText(ItineraryDetails.this, ItineraryDetails.this.getString(R.string.itinerary_deleted),
+                Toast.makeText(ItineraryDetailsActivity.this, ItineraryDetailsActivity.this.getString(R.string.itinerary_deleted),
                         Toast.LENGTH_SHORT).show();
                 checkWishlist();
             }
@@ -160,10 +160,10 @@ public class ItineraryDetails extends ItineraryActivity {
                     else
                         requestReservation.setText(getString(R.string.remove_request_reservation));
                 });
-                requestReservation.setOnClickListener(ItineraryDetails.this::removeReservation);
+                requestReservation.setOnClickListener(ItineraryDetailsActivity.this::removeReservation);
             } else {
                 requestReservation.setText(getString(R.string.request_reservation));
-                requestReservation.setOnClickListener(ItineraryDetails.this::askForReservation);
+                requestReservation.setOnClickListener(ItineraryDetailsActivity.this::askForReservation);
             }
         });
     }
@@ -182,13 +182,13 @@ public class ItineraryDetails extends ItineraryActivity {
                 ItineraryReview itineraryReview = (ItineraryReview) result;
                 addReview.setEnabled(true);
                 addReview.setText(getString(R.string.updateReview));
-                addReview.setOnClickListener(view -> ItineraryDetails.this.updateReview(itineraryReview));
+                addReview.setOnClickListener(view -> ItineraryDetailsActivity.this.updateReview(itineraryReview));
             } else {
                 ItineraryReview itineraryReview = new ItineraryReview.Builder(AccountManager.getCurrentLoggedUser(),
                         itinerary).build();
                 addReview.setEnabled(true);
                 addReview.setText(getString(R.string.add_review));
-                addReview.setOnClickListener(view -> ItineraryDetails.this.addReview(itineraryReview));
+                addReview.setOnClickListener(view -> ItineraryDetailsActivity.this.addReview(itineraryReview));
             }
 
         });
@@ -221,14 +221,14 @@ public class ItineraryDetails extends ItineraryActivity {
                 itineraryReview.setFeedback((int) feedbackReview.getRating());
                 if (allFilledReview()) {
                     ReviewManager.updateReviewItinerary(this, itineraryReview,
-                            success -> Toast.makeText(ItineraryDetails.this,
-                                    ItineraryDetails.this.getString(R.string.updated_review), Toast.LENGTH_SHORT)
+                            success -> Toast.makeText(ItineraryDetailsActivity.this,
+                                    ItineraryDetailsActivity.this.getString(R.string.updated_review), Toast.LENGTH_SHORT)
                                     .show());
                     isReviewed();
                     refresh();
                     dialogUpdate.dismiss();
                 } else
-                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
+                    Toast.makeText(this, ItineraryDetailsActivity.this.getString(R.string.error_fields_empty),
                             Toast.LENGTH_SHORT).show();
             });
             buttonNegative.setOnClickListener(view -> new MaterialAlertDialogBuilder(this)
@@ -236,7 +236,7 @@ public class ItineraryDetails extends ItineraryActivity {
                     .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
                         ReviewManager.deleteReviewItinerary(this, itineraryReview,
                                 success -> Toast.makeText(this,
-                                        ItineraryDetails.this.getString(R.string.deleted_review), Toast.LENGTH_SHORT)
+                                        ItineraryDetailsActivity.this.getString(R.string.deleted_review), Toast.LENGTH_SHORT)
                                         .show());
                         isReviewed();
                         refresh();
@@ -269,14 +269,14 @@ public class ItineraryDetails extends ItineraryActivity {
                     ReviewManager
                             .addReviewItinerary(this, itineraryReview,
                                     success -> Toast.makeText(this,
-                                            ItineraryDetails.this.getString(R.string.added_review), Toast.LENGTH_SHORT)
+                                            ItineraryDetailsActivity.this.getString(R.string.added_review), Toast.LENGTH_SHORT)
                                             .show());
 
                     isReviewed();
                     refresh();
                     dialogSubmit.dismiss();
                 } else
-                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
+                    Toast.makeText(this, ItineraryDetailsActivity.this.getString(R.string.error_fields_empty),
                             Toast.LENGTH_SHORT).show();
             });
         });
@@ -305,7 +305,7 @@ public class ItineraryDetails extends ItineraryActivity {
         };
 
         requestedDateInput.setOnClickListener(v1 -> {
-            DatePickerDialog dialog = new DatePickerDialog(ItineraryDetails.this, date, myCalendar.get(Calendar.YEAR),
+            DatePickerDialog dialog = new DatePickerDialog(ItineraryDetailsActivity.this, date, myCalendar.get(Calendar.YEAR),
                     myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
             dialog.getDatePicker().setMinDate(itinerary.getBeginningDate().getTime());
             dialog.getDatePicker().setMaxDate(itinerary.getEndingDate().getTime());
@@ -331,10 +331,10 @@ public class ItineraryDetails extends ItineraryActivity {
                         Log.e(ERROR_TAG, e.getMessage());
                     }
                     isReserved();
-                    Toast.makeText(ItineraryDetails.this, R.string.reservation_added, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItineraryDetailsActivity.this, R.string.reservation_added, Toast.LENGTH_SHORT).show();
                     dialogSubmit.dismiss();
                 } else
-                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
+                    Toast.makeText(this, ItineraryDetailsActivity.this.getString(R.string.error_fields_empty),
                             Toast.LENGTH_SHORT).show();
             });
         });
@@ -347,7 +347,7 @@ public class ItineraryDetails extends ItineraryActivity {
                 .setMessage(getString(R.string.sure_to_remove_reservation))
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
                     ReservationManager.removeReservation(itinerary);
-                    Toast.makeText(ItineraryDetails.this, R.string.reservation_removed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItineraryDetailsActivity.this, R.string.reservation_removed, Toast.LENGTH_SHORT).show();
 
                     isReserved();
                 }).setNegativeButton(getString(R.string.no), null).show();

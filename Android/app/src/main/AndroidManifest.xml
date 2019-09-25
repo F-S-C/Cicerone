@@ -29,17 +29,17 @@
         <activity android:name="com.fsc.cicerone.view.CiceroneItineraryListFragment" />
         <activity android:name="com.fsc.cicerone.view.admin_view.AdminDetailsUserFragment" />
         <activity android:name="com.fsc.cicerone.view.ReservationFragment" />
-        <activity android:name="com.fsc.cicerone.view.admin_view.AdminUserProfile" />
+        <activity android:name="com.fsc.cicerone.view.admin_view.AdminUserProfileActivity" />
         <activity android:name="com.fsc.cicerone.view.UsersListFragment" />
         <activity android:name="com.fsc.cicerone.view.RegistrationActivity" />
-        <activity android:name="com.fsc.cicerone.view.admin_view.AdminItineraryDetails" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.fsc.cicerone.view.admin_view.AdminItineraryDetailsActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.fsc.cicerone.view.admin_view.AdminReportDetailsActivity" />
         <activity android:name="com.fsc.cicerone.view.admin_view.AdminMainActivity" />
         <activity
             android:name="com.fsc.cicerone.view.ChangePasswordActivity"
             android:label="@string/change_password" />
         <activity android:name="com.fsc.cicerone.view.WishlistFragment" />
-        <activity android:name="com.fsc.cicerone.view.ItineraryUpdate" />
+        <activity android:name="com.fsc.cicerone.view.ItineraryUpdateActivity" />
         <activity
             android:name="com.fsc.cicerone.view.MainActivity"
             android:label="@string/app_name" />
@@ -50,10 +50,10 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name="com.fsc.cicerone.view.ItineraryManagement" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.fsc.cicerone.view.ItineraryDetails" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.fsc.cicerone.view.ItineraryManagementActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.fsc.cicerone.view.ItineraryDetailsActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.fsc.cicerone.view.ItineraryCreation"
+            android:name="com.fsc.cicerone.view.ItineraryCreationActivity"
             android:label="@string/create_itinerary"/>
         <activity android:name="com.fsc.cicerone.view.ProfileActivity" />
         <activity android:name="com.fsc.cicerone.view.LoginActivity" />

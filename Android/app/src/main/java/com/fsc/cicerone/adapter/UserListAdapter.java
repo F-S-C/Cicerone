@@ -29,7 +29,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.view.admin_view.AdminUserProfile;
+import com.fsc.cicerone.view.admin_view.AdminUserProfileActivity;
 import com.fsc.cicerone.view.ProfileActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
@@ -97,7 +97,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                i = new Intent(context, AdminUserProfile.class);
+                i = new Intent(context, AdminUserProfileActivity.class);
                 i.putExtra("user", mData.get(position).toJSONObject().toString());
                 context.startActivity(i);
             } else {
