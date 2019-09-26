@@ -8,6 +8,8 @@ require '/home/fsc/www/email_sender/sender.php';
 class Reset
 {
 
+    private $newP = null;
+
     private $email = null;
 
     private $sender;
@@ -20,7 +22,7 @@ class Reset
         if(!isset($_GET['token'])){
             $this->sendTokenViaMail();
         }else{
-            $this->resetPassword();
+            $this->resetP();
         }
     }
 
@@ -44,9 +46,32 @@ class Reset
         }
     }
 
-    private function resetPassword()
+    private function resetP()
     {
-        echo $_GET['token']; //TODO ATTENZIONE, QUI CREA UNA FUNCTION IN DBMANAGER CHE VERIFICA SE LA PASSWORD E L'EMAIL CORRISPONDINO, SE CORRETTE INVIA LA MAIL CON LA NUOVA PASSWORD GENERATA QUI
+        if(isset($_GET['token']) && isset($_GET['email'])) {
+            $this->DBManager->token = $_GET['token'];
+            $this->email = $_GET['email'];
+            $this->DBManager->usr_email = $this->email;
+            if($this->DBManager->checkUserToken()){
+                $newP = $this->randomString();
+                $this->DBManager->setUserP(password_hash($newP, PASSWORD_DEFAULT));
+                $this->sender->recipient_email = $this->email;
+                $this->sender->email_subject = "Ecco la tua password temporanea";
+                $this->sender->email_filename = "./resetPass.php";
+                $this->sender->email_data = array("p" => $newP);
+                $this->sender->sendEmail();
+            }
+        }
+    }
+
+    private function randomString(){
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ[].,-_#@=?^"*+';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 10; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }
 

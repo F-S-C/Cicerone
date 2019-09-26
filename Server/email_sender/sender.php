@@ -103,9 +103,8 @@ class Sender
         $mail->Subject = $this->email_subject;
         $mail->Body    = $this->getMailPage($this->email_data);
         $mail->AltBody = 'Please use your browser to see the e-mail.';
-        print($this->getMailPage($this->email_data));
         try {
-            //$mail->Send();
+            $mail->Send();
             if($mail->isError()) {
                 die('{"result":false, "error":"Mailer Error: ' . $mail->ErrorInfo . '"}');
             } else {

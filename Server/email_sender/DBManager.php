@@ -29,6 +29,8 @@ class DBManager
 
     public $usr_email = null;
 
+    public $token = null;
+
     public function __construct()
     {
         $this->mysqli = new mysqli(self::DB_HOSTNAME, self::DB_USERNAME, self::DB_P, self::DB_NAME);
@@ -92,4 +94,25 @@ class DBManager
         }
     }
 
+    public function checkUserToken() {
+        if($this->token != null && $this->usr_email != null) {
+            $sql = "SELECT * FROM registered_user WHERE email = '" . $this->usr_email . "' AND password = '" . $this->token . "'";
+            if ($result = $this->mysqli->query($sql)) {
+                return ($result->num_rows > 0);
+            } else {
+                die('{"result":false,"error":"Could not able to execute query. ' . $this->mysqli->error . '"}');
+            }
+        } else {
+            die('{"result":false, "error":"DBManager: Cannot execute the query, missing email and token!"}');
+        }
+    }
+
+    public function setUserP($p){
+        $sql = "UPDATE registered_user SET password = '" . $p . "' WHERE email = '" . $this->usr_email ."'";
+        if ($result = $this->mysqli->query($sql)) {
+            echo "Password resettata correttamente";
+        } else {
+            die('{"result":false,"error":"Could not able to execute query. ' . $this->mysqli->error . '"}');
+        }
+    }
 }
