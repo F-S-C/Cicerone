@@ -124,10 +124,10 @@
             text-decoration: none;
             border-radius: 4px;
             padding: 8px 17px;
-            border: 1px solid #c351e8;
+            border: 1px solid #85459A;
             display: inline-block;
             font-weight: bold;
-            background: #c351e8;
+            background: #85459A;
             text-align: center;
         }
 	</style>
