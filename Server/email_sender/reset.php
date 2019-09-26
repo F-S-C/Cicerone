@@ -51,12 +51,14 @@ class Reset
             $this->DBManager->token = $_GET['token'];
             if($this->DBManager->checkUserToken()){
                 $newP = $this->randomString();
-                $this->DBManager->setUserP(password_hash($newP, PASSWORD_DEFAULT));
-                $this->sender->recipient_email = $this->email;
-                $this->sender->email_subject = "Ecco la tua password temporanea";
-                $this->sender->email_filename = "./resetPass.php";
-                $this->sender->email_data = array_merge($this->userData, array("p" => $newP));
-                $this->sender->sendEmail();
+                if($this->DBManager->setUserP(password_hash($newP, PASSWORD_DEFAULT))) {
+                    $this->sender->recipient_email = $this->email;
+                    $this->sender->email_subject = "Ecco la tua password temporanea";
+                    $this->sender->email_filename = "./resetPass.php";
+                    $this->sender->email_data = array_merge($this->userData, array("p" => $newP));
+                    $this->sender->sendEmail();
+                    //REDIRECT A PAGINA LANDING
+                }//ELSE ERRORE
             }
         }
     }

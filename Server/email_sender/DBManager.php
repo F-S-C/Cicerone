@@ -109,10 +109,6 @@ class DBManager
 
     public function setUserP($p){
         $sql = "UPDATE registered_user SET password = '" . $p . "' WHERE email = '" . $this->usr_email ."'";
-        if ($result = $this->mysqli->query($sql)) {
-            echo "Password resettata correttamente";
-        } else {
-            die('{"result":false,"error":"Could not able to execute query. ' . $this->mysqli->error . '"}');
-        }
+        return $this->mysqli->query($sql);
     }
 }
