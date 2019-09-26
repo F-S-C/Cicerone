@@ -59,28 +59,26 @@ class Sender
     private $mysqli = null;
 
     /** @var string The email filename. */
-    private $email_name = "./reservationConfirmation.php";
+    private $email_name = null;
+
+    /** @var string The email Subject. */
+    private $email_subject = null;
 
     /**
     * Sender constructor.
     */
     public function __construct()
     {
-        if(isset($_POST['username']) && isset($_POST['itinerary_code']) && isset($_POST['recipient_email'])){
-            $this->username = $_POST['username'];
-            $this->itinerary_code = $_POST['itinerary_code'];
+        if(isset($_POST['recipient_email'])){
             $this->recipient_email = $_POST['recipient_email'];
-
             $this->mysqli = new mysqli(self::DB_HOSTNAME, self::DB_USERNAME, self::DB_P, self::DB_NAME);
             if($this->mysqli->connect_errno > 0){
                 die('{"result":false,"error":"Could not connect.  ' . $this->mysqli->connect_error . '"}');
             }else{
-                $this->email_data = $this->getDataFromDB();
-                $this->mysqli->close();
-                $this->sendEmail();
+                $this->setEmail();
             }
         }else{
-            die('{"result":false, "error":"Missing fields!"}');
+            die('{"result":false, "error":"Missing recipient e-mail field!"}');
         }
     }
 
@@ -89,7 +87,7 @@ class Sender
      */
     public function __destruct()
     {
-        //Do nothing
+        $this->mysqli->close();
     }
 
     /**
@@ -108,37 +106,53 @@ class Sender
     }
 
     /**
-     * Requires the user and itinerary data from the database.
+     * Requires the user from the database.
      * @return array Array of string to be inserted in the e-mail page.
      */
-    private function getDataFromDB() {
-        //USER DATA
-        $sql = "SELECT * FROM registered_user WHERE username = '" . $this->username . "'";
-        if($result = $this->mysqli->query($sql)){
-            if($result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                $user = array('name' => $row['name'],'surname' => $row['surname'],'email' => $row['email'],'cellphone' => $row['cellphone']);
-                $result->free();
-            }else{
-                die('{"result":false,"error":"Username not found."}');
+    private function getUserFromDB() {
+        if(isset($_POST['username'])) {
+            $this->username = $_POST['username'];
+            $sql = "SELECT * FROM registered_user WHERE username = '" . $this->username . "'";
+            if ($result = $this->mysqli->query($sql)) {
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $user = array('name' => $row['name'], 'surname' => $row['surname'], 'email' => $row['email'], 'cellphone' => $row['cellphone'], 'username' => $row['username']);
+                    $result->free();
+                    return $user;
+                } else {
+                    die('{"result":false,"error":"Username not found."}');
+                }
+            } else {
+                die('{"result":false,"error":"Could not able to execute $sql. ' . $this->mysqli->error . '"}');
             }
-        } else{
-            die('{"result":false,"error":"Could not able to execute $sql. ' . $this->mysqli->error . '"}');
+        }else{
+            die('{"result":false, "error":"Missing username field!"}');
         }
+    }
 
-        $sql = "SELECT * FROM itinerary WHERE itinerary_code = '" . $this->itinerary_code . "'";
-        if($result = $this->mysqli->query($sql)){
-            if($result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                $itinerary = array('title' => $row['title'],'location' => $row['location'],'beginning_date' => $row['beginning_date'],'ending_date' => $row['ending_date']);
-                $result->free();
-            }else{
-                die('{"result":false,"error":"Itinerary not found."}');
+    /**
+     * Requires the itinerary from the database.
+     * @return array Array of string to be inserted in the e-mail page.
+     */
+    private function getItineraryFromDB(){
+        if(isset($_POST['itinerary_code'])) {
+            $this->itinerary_code = $_POST['itinerary_code'];
+            $sql = "SELECT * FROM itinerary WHERE itinerary_code = '" . $this->itinerary_code . "'";
+            if ($result = $this->mysqli->query($sql)) {
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $itinerary = array('title' => $row['title'], 'location' => $row['location'], 'beginning_date' => $row['beginning_date'], 'ending_date' => $row['ending_date']);
+                    $result->free();
+                    return $itinerary;
+                } else {
+                    die('{"result":false,"error":"Itinerary not found."}');
+                }
+            } else {
+                die('{"result":false,"error":"Could not able to execute $sql. ' . $this->mysqli->error . '"}');
             }
-        } else{
-            die('{"result":false,"error":"Could not able to execute $sql. ' . $this->mysqli->error . '"}');
+        }else{
+            die('{"result":false,"error":"Missing itinerary field!"}');
         }
-        return array_merge($user, $itinerary);
     }
 
     /*
@@ -161,7 +175,7 @@ class Sender
 
         $mail->IsHTML(true);                                 // Set email format to HTML
 
-        $mail->Subject = 'Siamo pronti a partire!';
+        $mail->Subject = $this->email_subject;
         $mail->Body    = $this->getMailPage($this->email_data);
         $mail->AltBody = 'Please use your browser to see the e-mail.';
 
@@ -170,6 +184,35 @@ class Sender
             print '{"result":true}';
         } catch (Exception $e) {
             die('{"result":false, "error":"Mailer Error: ' . $mail->ErrorInfo . '"}');
+        }
+    }
+
+    /**
+     *
+     */
+    private function setEmail(){
+        if(isset($_POST['type'])){
+            switch($_POST['type']){
+                case "registrationConfirmed":
+                    $this->email_name = "./registrationConfirmed.php";
+                    $this->email_subject = "Registrazione completata!";
+                    $this->email_data = $this->getUserFromDB();
+                    $this->sendEmail();
+                    break;
+                case "reservationConfirmation":
+                    $this->email_name = "./reservationConfirmation.php";
+                    $this->email_subject = "Siamo pronti a partire!";
+                    $this->email_data = array_merge($this->getUserFromDB(), $this->getItineraryFromDB());
+                    $this->sendEmail();
+                    break;
+                default:
+                    $this->mysqli->close();
+                    die('{"result":false, "error":"Unknown type!"}');
+                    break;
+            }
+            $this->mysqli->close();
+        }else{
+            die('{"result":false, "error":"Missing type value!}"');
         }
     }
 }
