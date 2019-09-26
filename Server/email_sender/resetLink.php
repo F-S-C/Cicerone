@@ -223,7 +223,7 @@
 											<div
 												style="color:#555555 !important; font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif; line-height:100%; padding-top:0px; padding-right:10px; padding-left:10px;">
 												<div
-													style="line-height: 18px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; color: #555555;">
+													style="line-height: 18px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; color: #555555 !important;">
 													<p
 														style="line-height: 50px; font-size: 18px; margin: 0;">
 														<span style="font-size: 24px;"><?php if($sex == "female"){ echo "Cara "; }elseif($sex == "male"){ echo "Caro "; }else{ echo "Ciao ";} echo $name; ?>,</span></p>
