@@ -32,12 +32,12 @@ class Sender
     protected const SMTP_FROM_NAME = "Cicerone";
 
     /** @var array The array containing the user and itinerary data to be included in the email. */
-    private $email_data;
+    public $email_data;
 
     private $db_manager;
 
     /** @var string The recipient e-mail. */
-    private $recipient_email = null;
+    public $recipient_email = null;
 
     /** @var string The email filename. */
     public $email_filename = null;
@@ -51,6 +51,10 @@ class Sender
     public function __construct()
     {
         $this->db_manager = new DBManager();
+        if(basename($_SERVER[REQUEST_URI],".php") == "sender") {
+            $this->setEmail();
+            $this->sendEmail();
+        }
     }
 
     /**
@@ -99,8 +103,9 @@ class Sender
         $mail->Subject = $this->email_subject;
         $mail->Body    = $this->getMailPage($this->email_data);
         $mail->AltBody = 'Please use your browser to see the e-mail.';
+        print($this->getMailPage($this->email_data));
         try {
-            $mail->Send();
+            //$mail->Send();
             if($mail->isError()) {
                 die('{"result":false, "error":"Mailer Error: ' . $mail->ErrorInfo . '"}');
             } else {
@@ -109,8 +114,6 @@ class Sender
         } catch (Exception $e) {
             die('{"result":false, "error":"Exception: ' . $e . '"}');
         }
-
-
     }
 
     /**
@@ -151,5 +154,3 @@ class Sender
 }
 
 $sender = new Sender();
-$sender->setEmail();
-$sender->sendEmail();

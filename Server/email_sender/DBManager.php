@@ -50,7 +50,7 @@ class DBManager
         if($this->username != null) {
             $sql = "SELECT * FROM registered_user WHERE username = '" . $this->username . "'";
         }elseif ($this->usr_email != null){
-            $sql = "SELECT * FROM registered_user WHERE email = '" . $this->username . "'";
+            $sql = "SELECT * FROM registered_user WHERE email = '" . $this->usr_email . "'";
         }else{
             die('{"result":false, "error":"DBManager: Cannot execute the query, missing fields!"}');
         }
@@ -64,7 +64,7 @@ class DBManager
                 die('{"result":false,"error":"Username not found."}');
             }
         } else {
-            die('{"result":false,"error":"Could not able to execute $sql. ' . $this->mysqli->error . '"}');
+            die('{"result":false,"error":"Could not able to execute query. ' . $this->mysqli->error . '"}');
         }
     }
 
