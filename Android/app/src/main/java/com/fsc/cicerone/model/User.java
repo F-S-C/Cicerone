@@ -16,7 +16,10 @@
 
 package com.fsc.cicerone.model;
 
+import android.util.Log;
 import android.util.Patterns;
+
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +33,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 /**
  * An <i>entity</i> class that stores the data of a user.
@@ -66,6 +67,62 @@ public class User extends BusinessEntity {
         private static final String SEX_KEY = "sex";
         private static final String DOCUMENT_KEY = "document";
         private static final String LANGUAGES_KEY = "languages";
+    }
+
+    public static class Credentials extends BusinessEntity {
+        private String username;
+        private String password;
+
+        public Credentials(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+
+        public Credentials(JSONObject jsonObject) {
+            loadFromJSONObject(jsonObject);
+        }
+
+        public Credentials(String json) {
+            this(getJSONObject(json));
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public boolean isAllSet() {
+            return username != null && password != null && !username.isEmpty() && !password.isEmpty();
+        }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                if (username != null) jsonObject.put(Columns.USERNAME_KEY, username);
+                if (password != null) jsonObject.put(Columns.PASSWORD_KEY, password);
+            } catch (JSONException e) {
+                Log.e("CREDENTIALS_ERROR", e.getMessage());
+            }
+            return jsonObject;
+        }
+
+        @Override
+        protected void loadFromJSONObject(JSONObject jsonObject) {
+            try {
+                username = jsonObject.getString(Columns.USERNAME_KEY);
+            } catch (JSONException e) {
+                username = null;
+            }
+            try {
+                password = jsonObject.getString(Columns.PASSWORD_KEY);
+            } catch (JSONException e) {
+                password = null;
+            }
+        }
     }
 
     @Override
@@ -467,17 +524,10 @@ public class User extends BusinessEntity {
     /**
      * Get the user's credentials (username and password).
      *
-     * @return A JSON Object that contains the user's username and password.
+     * @return A Credentials Object that contains the user's username and password.
      */
-    public JSONObject getCredentials() {
-        JSONObject result = new JSONObject();
-        try {
-            result.put(Columns.PASSWORD_KEY, this.password);
-            result.put(Columns.USERNAME_KEY, this.username);
-        } catch (JSONException e) {
-            result = null;
-        }
-        return result;
+    public Credentials getCredentials() {
+        return new Credentials(username, password);
     }
 
     /**

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.functional_interfaces.RunnableUsingBusinessEntity;
@@ -68,18 +69,17 @@ public abstract class AccountManager {
     /**
      * Attempt the login.
      *
-     * @param username The user's username.
-     * @param password The user's password.
+     * @param credentials The credentials of the user.
      * @param onStart  A function to be executed before the login attempt.
      * @param onEnd    A function to be executed after the login attempt.
      */
-    public static void attemptLogin(Activity context, String username, String password, Runnable onStart, RunnableUsingBusinessEntity onEnd) {
+    public static void attemptLogin(Activity context, User.Credentials credentials, @Nullable DatabaseConnector.OnStartConnectionListener onStart, @Nullable RunnableUsingBusinessEntity onEnd) {
         Map<String, Object> params = new HashMap<>(2);
-        params.put(USERNAME_KEY, username);
-        params.put(PASSWORD_KEY, password);
+        params.put(USERNAME_KEY, credentials.getUsername());
+        params.put(PASSWORD_KEY, credentials.getPassword());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.LOGIN_CONNECTOR)
                 .setContext(context)
-                .setOnStartConnectionListener(onStart::run)
+                .setOnStartConnectionListener(onStart)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
                         // Get all the user's data.
@@ -87,19 +87,19 @@ public abstract class AccountManager {
                                 .setContext(context)
                                 .setOnEndConnectionListener(list -> {
                                     if (!list.isEmpty()) {
-                                        list.get(0).setPassword(password);
                                         currentLoggedUser = list.get(0);
-                                        onEnd.run(list.get(0), true);
+                                        currentLoggedUser.setPassword(credentials.getPassword());
+                                        if(onEnd != null) onEnd.run(currentLoggedUser, true);
                                     } else {
                                         BooleanConnector.BooleanResult booleanResult = new BooleanConnector.BooleanResult(false, "No user found");
-                                        onEnd.run(booleanResult, false);
+                                        if(onEnd != null) onEnd.run(booleanResult, false);
                                     }
                                 })
                                 .setObjectToSend(params)
                                 .build();
                         sendInPostConnector.execute();
                     } else {
-                        onEnd.run(result, false);
+                        if(onEnd != null) onEnd.run(result, false);
                     }
                 })
                 .setObjectToSend(params)

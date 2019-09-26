@@ -237,7 +237,6 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="end"
             android:text="@string/logout"/>
 
     </LinearLayout>
@@ -265,12 +264,10 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/deleteAccountButton"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        style="@style/AppTheme.Button.TextButton.Red"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/delete_your_account"
-        android:textColor="@android:color/holo_red_dark"
-        app:icon="@drawable/ic_outline_delete_24px"
-        app:iconTint="@android:color/holo_red_dark" />
+        app:icon="@drawable/ic_outline_delete_24px" />
 
 </LinearLayout>
