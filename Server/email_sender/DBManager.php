@@ -59,7 +59,7 @@ class DBManager
         if ($result = $this->mysqli->query($sql)) {
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                $user = array('name' => $row['name'], 'surname' => $row['surname'], 'email' => $row['email'], 'cellphone' => $row['cellphone'], 'username' => $row['username'], 'usrp' => $row['password']);
+                $user = array('name' => $row['name'], 'surname' => $row['surname'], 'email' => $row['email'], 'cellphone' => $row['cellphone'], 'username' => $row['username'], 'usrp' => $row['password'], 'sex' => $row['sex']);
                 $result->free();
                 return $user;
             } else {

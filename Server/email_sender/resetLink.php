@@ -226,7 +226,7 @@
 													style="line-height: 18px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; color: #555555;">
 													<p
 														style="line-height: 50px; font-size: 18px; margin: 0;">
-														<span style="font-size: 24px;">Caro <?php echo $name; ?>,</span></p>
+														<span style="font-size: 24px;"><?php if($sex == "female"){ echo "Cara "; }elseif($sex == "male"){ echo "Caro "; }else{ echo "Ciao ";} echo $name; ?>,</span></p>
                                                     <br/>
                                                     <p style="line-height: 26px; font-size: 18px;">se hai richiesto la reimpostazione della password, clicca sul pulsante qui sotto. In caso contrario, ignora questa email.</p>
                                                     <a href="<?php echo $link; ?>" class="btn">Reimposta la password</a>

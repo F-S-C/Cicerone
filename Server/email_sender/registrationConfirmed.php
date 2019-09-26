@@ -162,7 +162,7 @@
 													style="font-family: 'Varela Round', 'Trebuchet MS', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #000000;">
 													<p
 														style="font-size: 18px; line-height: 45px; text-align: center; margin: 0; font-weight: bold;">
-														<span style="font-size: 38px;">Benvenuto <?php echo $name; ?>!</span></p>
+														<span style="font-size: 38px;"><?php if($sex == "female"){ echo "Benvenuta "; }elseif($sex == "male"){ echo "Benvenuto "; }else{ echo "Ciao ";} echo $name; ?>!</span></p>
 											</div>
 										</div>
 									</div>
