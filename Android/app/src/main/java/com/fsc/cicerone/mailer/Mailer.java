@@ -29,6 +29,7 @@ import java.util.Map;
 
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.model.User;
 
 public class Mailer {
 
@@ -41,6 +42,15 @@ public class Mailer {
         data.put("username", reservation.getItinerary().getCicerone().getUsername());
         data.put("itinerary_code", reservation.getItinerary().getCode());
         data.put("recipient_email", reservation.getClient().getEmail());
+        data.put("type","reservationConfirmation");
+        sendEmail(context, data, callback);
+    }
+
+    public static void sendRegistrationConfirmationEmail(Activity context, User user, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(3);
+        data.put("username", user.getUsername());
+        data.put("recipient_email", user.getEmail());
+        data.put("type","registrationConfirmed");
         sendEmail(context, data, callback);
     }
 
