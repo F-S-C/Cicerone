@@ -8,21 +8,28 @@ require '/home/fsc/www/email_sender/sender.php';
 class Reset
 {
 
-    private $newP = null;
-
     private $email = null;
 
     private $sender;
+
+    private $userData;
 
     private $DBManager;
 
     public function __construct(){
         $this->sender = new Sender();
         $this->DBManager = new DBManager();
-        if(!isset($_GET['token'])){
-            $this->sendTokenViaMail();
+        if(isset($_POST['email']) || isset($_GET['email'])){
+            $this->email = isset($_GET['email']) ? $_GET['email'] : $_POST['email'];
+            $this->DBManager->usr_email = $this->email;
+            $this->userData = $this->DBManager->getUserFromDB();
+            if(!isset($_GET['token'])){
+                $this->sendTokenViaMail();
+            }else{
+                $this->resetP();
+            }
         }else{
-            $this->resetP();
+            die('{"result":false,"error":"Reset: Missing email field!"}');
         }
     }
 
@@ -31,34 +38,24 @@ class Reset
     }
 
     private function sendTokenViaMail(){
-        if(isset($_POST['email'])){
-            $this->email = $_POST['email'];
-            $this->DBManager->usr_email = $this->email;
-            $userData = $this->DBManager->getUserFromDB();
-
-            $this->sender->recipient_email = $this->email;
-            $this->sender->email_subject = "Recupera la tua password";
-            $this->sender->email_filename = "./resetLink.php";
-            $this->sender->email_data = array_merge($userData, array("link" => "https://fscgroup.ddns.net/email_sender/reset.php?token=" . $userData['usrp'] . "&email=" . $this->email));
-            $this->sender->sendEmail();
-        }else{
-            die('{"result":false,"error":"Reset: Missing email field!"}');
-        }
+        $this->sender->recipient_email = $this->email;
+        $this->sender->email_subject = "Recupera la tua password";
+        $this->sender->email_filename = "./resetLink.php";
+        $this->sender->email_data = array_merge($this->userData, array("link" => "https://fscgroup.ddns.net/email_sender/reset.php?token=" . $this->userData['usrp'] . "&email=" . $this->email));
+        $this->sender->sendEmail();
     }
 
     private function resetP()
     {
-        if(isset($_GET['token']) && isset($_GET['email'])) {
+        if(isset($_GET['token'])) {
             $this->DBManager->token = $_GET['token'];
-            $this->email = $_GET['email'];
-            $this->DBManager->usr_email = $this->email;
             if($this->DBManager->checkUserToken()){
                 $newP = $this->randomString();
                 $this->DBManager->setUserP(password_hash($newP, PASSWORD_DEFAULT));
                 $this->sender->recipient_email = $this->email;
                 $this->sender->email_subject = "Ecco la tua password temporanea";
                 $this->sender->email_filename = "./resetPass.php";
-                $this->sender->email_data = array("p" => $newP);
+                $this->sender->email_data = array_merge($this->userData, array("p" => $newP));
                 $this->sender->sendEmail();
             }
         }

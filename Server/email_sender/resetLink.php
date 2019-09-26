@@ -115,6 +115,21 @@
 				max-height: none !important;
 			}
 		}
+        
+        .btn{
+            margin: 0;
+            font-size: 12px;
+            font-family: 'HelveticaNeue','Helvetica Neue',Helvetica,Arial,sans-serif;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 4px;
+            padding: 8px 17px;
+            border: 1px solid #c351e8;
+            display: inline-block;
+            font-weight: bold;
+            background: #c351e8;
+            text-align: center;
+        }
 	</style>
 </head>
 
@@ -206,17 +221,15 @@
 												</tbody>
 											</table>
 											<div
-												style="color:#555555;font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif;line-height:100%;padding-top:0px;padding-right:10px;padding-left:10px;">
+												style="color:#555555 !important; font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif; line-height:100%; padding-top:0px; padding-right:10px; padding-left:10px;">
 												<div
 													style="line-height: 18px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; color: #555555;">
 													<p
 														style="line-height: 50px; font-size: 18px; margin: 0;">
 														<span style="font-size: 24px;">Caro <?php echo $name; ?>,</span></p>
                                                     <br/>
-                                                    <p style="line-height: 36px; font-size: 18px;">se hai richiesto la reimpostazione della password, clicca sul pulsante qui sotto. In caso contrario, ignora questa email.</p><br/>
-                                                    <form action="<?php echo $link; ?>">
-                                                        <input type="submit" value="Reimposta password" />
-                                                    </form>
+                                                    <p style="line-height: 26px; font-size: 18px;">se hai richiesto la reimpostazione della password, clicca sul pulsante qui sotto. In caso contrario, ignora questa email.</p>
+                                                    <a href="<?php echo $link; ?>" class="btn">Reimposta la password</a>
                                                     <br/>
                                                     <p style="color: #8899a6;line-height: 36px; font-size: 18px;">Se continui a ricevere email di questo tipo e non sei tu ad averle richieste, contatta un amministratore.</p>
 												</div>
