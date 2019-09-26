@@ -57,7 +57,7 @@ class Reset
                     $this->sender->email_filename = "./resetPass.php";
                     $this->sender->email_data = array_merge($this->userData, array("p" => $newP));
                     $this->sender->sendEmail();
-                    //REDIRECT A PAGINA LANDING
+                    header("Location: https://fscgroup.ddns.net/email_sender/resetCompleted.php");
                 }//ELSE ERRORE
             }
         }

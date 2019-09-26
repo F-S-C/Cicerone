@@ -38,12 +38,12 @@ public class Mailer {
     }
 
     public static void sendReservationConfirmationEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
-        Map<String, Object> data = new HashMap<>(3);
+        Map<String, Object> data = new HashMap<>(4);
         data.put("username", reservation.getItinerary().getCicerone().getUsername());
         data.put("itinerary_code", reservation.getItinerary().getCode());
         data.put("recipient_email", reservation.getClient().getEmail());
         data.put("type","reservationConfirmation");
-        sendEmail(context, data, callback);
+        sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
     public static void sendRegistrationConfirmationEmail(Activity context, User user, @Nullable BooleanRunnable callback) {
@@ -51,11 +51,18 @@ public class Mailer {
         data.put("username", user.getUsername());
         data.put("recipient_email", user.getEmail());
         data.put("type","registrationConfirmed");
-        sendEmail(context, data, callback);
+        sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
-    private static void sendEmail(Activity context, Map<String, Object> data, @Nullable BooleanRunnable callback) {
-        BooleanConnector sendEmailConnector = new BooleanConnector.Builder(ConnectorConstants.EMAIL_SENDER)
+    public static void sendPasswordResetLink(Activity context, String email, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("email", email);
+        Log.e("POST EMAIL", email);
+        sendEmail(context, data, ConnectorConstants.EMAIL_RESET_PASSWORD, callback);
+    }
+
+    private static void sendEmail(Activity context, Map<String, Object> data, String url, @Nullable BooleanRunnable callback) {
+        BooleanConnector sendEmailConnector = new BooleanConnector.Builder(url)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (callback != null) callback.accept(result.getResult());
