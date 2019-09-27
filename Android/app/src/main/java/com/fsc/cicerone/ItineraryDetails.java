@@ -325,7 +325,7 @@ public class ItineraryDetails extends ItineraryActivity {
                                 Integer.parseInt(numberOfAdultsInput.getText().toString()),
                                 Integer.parseInt(numberOfChildrenInput.getText().toString()),
                                 new SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                                        .parse(requestedDateInput.getText().toString()));
+                                        .parse(requestedDateInput.getText().toString()), this);
                     } catch (ParseException e) {
                         Log.e(ERROR_TAG, e.getMessage());
                     }

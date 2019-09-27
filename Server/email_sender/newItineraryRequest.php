@@ -136,9 +136,11 @@
 														style="line-height: 50px; text-align: center; font-size: 18px; margin: 0;">
 														<span style="font-size: 24px;"><?php echo $name; ?> la cerchia si allarga!</span></p>
                                                     <br/>
-                                                    <p style="line-height: 36px; font-size: 18px;">Hai appena ricevuto una nuova richiesta per il tuo itinerario <i>&ldquo;<?php echo $title; ?>&bdquo;</i>. Corri a scoprire chi &egrave; interessato a partecipare!</p>
-                                                    <br/>
-                                                    <center><a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=com.fsc.cicerone/.SplashActivity;end">Apri l'app</a></center>
+                                                    <center>
+                                                    <p style="line-height: 36px; font-size: 18px;">Hai appena ricevuto una nuova richiesta per il tuo itinerario <i>&ldquo;<?php echo $title; ?>&bdquo;</i>.<br/> Corri a scoprire chi &egrave; interessato a partecipare!</p>
+                                                    <br/><br/>
+                                                    <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=com.fsc.cicerone/.SplashActivity;end">Apri l'app</a>
+                                                    </center>
 												</div>
 											</div>
 										</div>

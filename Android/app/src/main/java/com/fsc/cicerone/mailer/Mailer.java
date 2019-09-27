@@ -61,6 +61,15 @@ public class Mailer {
         sendEmail(context, data, ConnectorConstants.EMAIL_RESET_PASSWORD, callback);
     }
 
+    public static void sendItineraryRequestEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("username", reservation.getItinerary().getCicerone().getUsername());
+        data.put("itinerary_code", reservation.getItinerary().getCode());
+        data.put("recipient_email", reservation.getItinerary().getCicerone().getEmail());
+        data.put("type","newItineraryRequest");
+        sendEmail(context, data, ConnectorConstants.EMAIL_RESET_PASSWORD, callback);
+    }
+
     private static void sendEmail(Activity context, Map<String, Object> data, String url, @Nullable BooleanRunnable callback) {
         BooleanConnector sendEmailConnector = new BooleanConnector.Builder(url)
                 .setContext(context)

@@ -17,6 +17,7 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -79,7 +80,7 @@ public abstract class ReservationManager {
      * @return The new reservation.
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static Reservation addReservation(Itinerary itinerary, int numberOfAdults, int numberOfChildren, Date requestedDate) {
+    public static Reservation addReservation(Itinerary itinerary, int numberOfAdults, int numberOfChildren, Date requestedDate, Activity context) {
         Reservation reservation = new Reservation.Builder(AccountManager.getCurrentLoggedUser(), itinerary)
                 .numberOfAdults(numberOfAdults)
                 .numberOfChildren(numberOfChildren)
@@ -91,7 +92,11 @@ public abstract class ReservationManager {
                 .setContext(null)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (!result.getResult())
-                        Log.e("INSERT_RESERVATION_ERR", result.getMessage()); //TODO: Send email to cicerone (IF-34)?
+                        Log.e("INSERT_RESERVATION_ERR", result.getMessage());
+                    else
+                        Mailer.sendItineraryRequestEmail(context, reservation, res ->{
+                            //Do nothing
+                        });
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
                 .build();
