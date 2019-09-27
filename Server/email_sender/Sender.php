@@ -173,6 +173,11 @@ class Sender
                             die('{"result":false, "error":"Sender: Missing itinerary_code, globetrotter_email, globetrotter_surname or globetrotter_name field!"}"');
                         }
                         break;
+                    case "accountDeleted":
+                        $this->email_filename = "./accountDeleted.php";
+                        $this->email_subject = "Il tuo account e' stato cancellato correttamente";
+                        $this->email_data = array("name" => $this->db_manager->username);
+                        break;
                     default:
                         die('{"result":false, "error":"Sender: Unknown type!"}');
                         break;

@@ -62,7 +62,7 @@
 													style="font-family: 'Varela Round', 'Trebuchet MS', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #000000;">
 													<p
 														style="font-size: 18px; line-height: 45px; text-align: center; margin: 0; font-weight: bold;">
-														<span style="font-size: 38px;"><?php if($sex == "female"){ echo "Benvenuta "; }elseif($sex == "male"){ echo "Benvenuto "; }else{ echo "Ciao ";} echo $name; ?>!</span></p>
+														<span style="font-size: 38px;">A presto!</span></p>
 											</div>
 										</div>
 									</div>
@@ -83,7 +83,7 @@
 												style="padding-right: 0px;padding-left: 0px;">
 												<img
 													align="center" alt="Image" border="0" class="center fixedwidth"
-													src="https://fscgroup.ddns.net/email_sender/include/fans.png"
+													src="https://fscgroup.ddns.net/email_sender/include/bye.png"
 													style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 500px; display: block;"
 													title="Image" width="500" />
 											</div>
@@ -134,9 +134,10 @@
 													style="line-height: 18px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; color: #555555;">
 													<p
 														style="line-height: 50px; text-align: center; font-size: 18px; margin: 0;">
-														<span style="font-size: 24px;">La registrazione è andata a buon fine.</span></p>
+														<span style="font-size: 24px;"><?php echo $name; ?> ci dispiace vederti andar via!</span></p>
                                                     <br/>
-                                                    <p style="line-height: 36px; font-size: 18px;">Il tuo nome utente &egrave; <?php echo $username; ?>.<br/>Goditi le tue esperienze, fai nuove amicizie e <b>divertiti</b>!</p>
+                                                    <p style="line-height: 36px; font-size: 18px;">Speriamo di rivederti presto. Nel frattempo ti comunichiamo che tutti i tuoi dati sono stati rimossi correttamente e completamente!
+                                                    <br/>Buon viaggio!</p>
 												</div>
 											</div>
 										</div>

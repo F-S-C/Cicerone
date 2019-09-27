@@ -33,6 +33,8 @@ import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.model.User;
 
+import javax.security.auth.callback.Callback;
+
 public class Mailer {
 
     private Mailer() {
@@ -85,6 +87,14 @@ public class Mailer {
         data.put("globetrotter_surname", AccountManager.getCurrentLoggedUser().getSurname());
         data.put("type","reservationRemove");
         sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
+    }
+
+    public static void sendAccountDeleteConfirmationEmail(@Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(3);
+        data.put("username", AccountManager.getCurrentLoggedUser().getName());
+        data.put("recipient_email", AccountManager.getCurrentLoggedUser().getEmail());
+        data.put("type","accountDeleted");
+        sendEmail(null, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
     public static void sendPasswordResetLink(Activity context, String email, @Nullable BooleanRunnable callback) {
