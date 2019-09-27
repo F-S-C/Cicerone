@@ -60,7 +60,7 @@ public class AccountDetails extends Fragment implements Refreshable {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        holderView = inflater.inflate(R.layout.activity_account_details, container, false);
+        holderView = inflater.inflate(R.layout.fragment_account_details, container, false);
 
         fragment = new ProfileFragment();
         FragmentManager fragmentManager = Objects.requireNonNull(getFragmentManager());

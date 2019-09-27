@@ -76,37 +76,40 @@
                             style="@style/Widget.MaterialComponents.TabLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            app:tabBackground="@android:color/transparent"
-                            app:tabIndicatorColor="@color/colorWhite">
+                            android:layout_marginTop="15dp">
 
                             <com.google.android.material.tabs.TabItem
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:icon="@drawable/account" />
+                                android:icon="@drawable/account"
+                                android:text="@string/account"/>
 
                             <com.google.android.material.tabs.TabItem
                                 android:id="@+id/tab_report"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:icon="@drawable/reports" />
+                                android:icon="@drawable/reports"
+                                android:text="@string/reports"/>
 
                             <com.google.android.material.tabs.TabItem
                                 android:id="@+id/tab_reviews"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:icon="@drawable/reviews" />
+                                android:icon="@drawable/reviews"
+                                android:text="@string/reviews"/>
 
                             <com.google.android.material.tabs.TabItem
                                 android:id="@+id/tab_itinerary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:icon="@drawable/itinerary" />
+                                android:icon="@drawable/itinerary"
+                                android:text="@string/my_itineraries"/>
 
                             <com.google.android.material.tabs.TabItem
                                 android:id="@+id/tab_request_reservation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@string/participations"
                                 android:icon="@drawable/assign_reservation" />
 
                         </com.google.android.material.tabs.TabLayout>
