@@ -41,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
         User.Credentials credentials = new User.Credentials(preferences.getString("session", ""));
 
-        if (credentials.isAllSet()) {
+        if (credentials.isValid()) {
             AccountManager.attemptLogin(this, credentials, null, success -> {
                 Class targetLoggedActivity = (AccountManager.isLogged() && AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) ?
                         activityToOpenIfLoggedAdmin : activityToOpenIfLogged;

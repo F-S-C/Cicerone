@@ -94,7 +94,7 @@ public class User extends BusinessEntity {
             return password;
         }
 
-        public boolean isAllSet() {
+        public boolean isValid() {
             return username != null && password != null && !username.isEmpty() && !password.isEmpty();
         }
 
@@ -143,22 +143,6 @@ public class User extends BusinessEntity {
      */
     public User() {
         // Automatically set everything to a default value
-        languages = new HashSet<>();
-    }
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-
-        this.name = null;
-        this.surname = null;
-        this.email = null;
-        this.sex = null;
-        this.taxCode = null;
-        this.userType = null;
-        this.cellphone = null;
-        this.birthDate = null;
-
         languages = new HashSet<>();
     }
 
@@ -386,15 +370,6 @@ public class User extends BusinessEntity {
     }
 
     /**
-     * Set the user's username.
-     *
-     * @param username The new user's username.
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
      * Get the user's type.
      *
      * @return The user's type.
@@ -548,5 +523,105 @@ public class User extends BusinessEntity {
      */
     public static boolean validateEmail(String emailInput) {
         return (Patterns.EMAIL_ADDRESS.matcher(emailInput).matches());
+    }
+
+    public User(Builder builder) {
+        this.name = builder.name;
+        this.surname = builder.surname;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.sex = builder.sex;
+        this.taxCode = builder.taxCode;
+        this.username = builder.username;
+        this.userType = builder.userType;
+        this.cellphone = builder.cellphone;
+        this.birthDate = builder.birthDate;
+        this.document = builder.document;
+        this.languages = builder.languages;
+    }
+
+    public static class Builder {
+        private String name;
+        private String surname;
+        private String email;
+        private String password;
+        private Sex sex;
+        private String taxCode;
+        private String username;
+        private UserType userType;
+        private String cellphone;
+        private Date birthDate;
+
+        private Document document;
+        private Set<Language> languages;
+
+        public Builder(String password, String username) {
+            this.password = password;
+            this.username = username;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setSurname(String surname) {
+            this.surname = surname;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder setSex(Sex sex) {
+            this.sex = sex;
+            return this;
+        }
+
+        public Builder setTaxCode(String taxCode) {
+            this.taxCode = taxCode;
+            return this;
+        }
+
+        public Builder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder setUserType(UserType userType) {
+            this.userType = userType;
+            return this;
+        }
+
+        public Builder setCellphone(String cellphone) {
+            this.cellphone = cellphone;
+            return this;
+        }
+
+        public Builder setBirthDate(Date birthDate) {
+            this.birthDate = birthDate;
+            return this;
+        }
+
+        public Builder setDocument(Document document) {
+            this.document = document;
+            return this;
+        }
+
+        public Builder setLanguages(Set<Language> languages) {
+            this.languages = languages;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 }

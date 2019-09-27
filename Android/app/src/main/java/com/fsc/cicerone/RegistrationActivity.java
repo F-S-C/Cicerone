@@ -356,18 +356,16 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private User setNewUser() {
-        User user = new User();
-        user.setUsername(username.getText().toString().trim().toLowerCase());
-        user.setPassword(password.getText().toString());
-        user.setUserType(UserType.GLOBETROTTER);
-        user.setSex(Sex.getValue(sex.getSelectedItem().toString().toLowerCase()));
-        user.setBirthDate(strToDate(birthDate.getText().toString()));
-        user.setCellphone(cellphone.getText().toString().trim());
-        user.setEmail(email.getText().toString().trim().toLowerCase());
-        user.setName(name.getText().toString().trim());
-        user.setSurname(surname.getText().toString().trim());
-        user.setTaxCode(fiscalCode.getText().toString().trim().toLowerCase());
-        return user;
+        return new User.Builder(username.getText().toString().trim().toLowerCase(), password.getText().toString())
+                .setUserType(UserType.GLOBETROTTER)
+                .setSex(Sex.getValue(sex.getSelectedItem().toString().toLowerCase()))
+                .setBirthDate(strToDate(birthDate.getText().toString()))
+                .setCellphone(cellphone.getText().toString().trim())
+                .setEmail(email.getText().toString().trim().toLowerCase())
+                .setName(name.getText().toString().trim())
+                .setSurname(surname.getText().toString().trim())
+                .setTaxCode(fiscalCode.getText().toString().trim().toLowerCase())
+                .build();
     }
 
     private Date strToDate(String text) {

@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
         subFabContainer.setVisibility(View.VISIBLE);
         layoutFabReport.setVisibility(View.VISIBLE);
         if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE)
-            layoutFabItinerary.setVisibility(View.GONE);
+            layoutFabItinerary.setVisibility(View.VISIBLE);
         fabSettings.setImageResource(R.drawable.ic_dialog_close_dark);
         isFabMenuExtended = true;
     }
