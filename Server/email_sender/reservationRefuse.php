@@ -140,7 +140,19 @@
                                                         Non ti scoraggiare, contatta il Cicerone personalmente, sappiamo che la situazione si risolver&agrave;!</p>
                                                     <br/><br/>
                                                     <div style="text-align: center;">
-                                                    <a class="btn" href="mailto:<?php echo $cicerone_email; ?>">Mandagli una mail</a>
+                                                        <a style="margin: 0;
+                                                            font-size: 12px;
+                                                            font-family: 'HelveticaNeue','Helvetica Neue',Helvetica,Arial,sans-serif;
+                                                            color: #ffffff !important;
+                                                            text-decoration: none;
+                                                            border-radius: 4px;
+                                                            padding: 8px 17px;
+                                                            border: 1px solid #85459A;
+                                                            display: inline-block;
+                                                            font-weight: bold;
+                                                            background: #85459A;
+                                                            text-align: center;"
+                                                           href="mailto:<?php echo $cicerone_email; ?>">Mandagli una mail</a>
                                                     </div>
 												</div>
 											</div>

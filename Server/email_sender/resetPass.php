@@ -115,6 +115,22 @@
                                                     <br/>
                                                     <p style="line-height: 26px; font-size: 18px;">ecco la tua nuova password temporanea: <b><?php echo $p; ?></b><br/>Ti suggeriamo di modificarla al più presto.</p>
                                                     <br/>
+                                                    <div style="text-align: center;">
+                                                        <a style="margin: 0;
+                                                            font-size: 12px;
+                                                            font-family: 'HelveticaNeue','Helvetica Neue',Helvetica,Arial,sans-serif;
+                                                            color: #ffffff !important;
+                                                            text-decoration: none;
+                                                            border-radius: 4px;
+                                                            padding: 8px 17px;
+                                                            border: 1px solid #85459A;
+                                                            display: inline-block;
+                                                            font-weight: bold;
+                                                            background: #85459A;
+                                                            text-align: center;"
+                                                           href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=com.fsc.cicerone/.SplashActivity;end">Apri l'app</a>
+                                                    </div>
+                                                    <br/>
                                                     <p style="color: #8899a6;line-height: 36px; font-size: 18px;">Se non sei stato tu a reimpostarla, cambiala immediatamente e contatta un amministratore.</p>
 												</div>
 											</div>

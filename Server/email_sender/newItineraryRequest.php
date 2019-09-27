@@ -136,11 +136,23 @@
 														style="line-height: 50px; text-align: center; font-size: 18px; margin: 0;">
 														<span style="font-size: 24px;"><?php echo $name; ?> la cerchia si allarga!</span></p>
                                                     <br/>
-                                                    <center>
+                                                    <div style="text-align: center;">
                                                     <p style="line-height: 36px; font-size: 18px;">Hai appena ricevuto una nuova richiesta per il tuo itinerario <i>&ldquo;<?php echo $title; ?>&rdquo;</i>.<br/> Corri a scoprire chi &egrave; interessato a partecipare!</p>
                                                     <br/><br/>
-                                                    <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=com.fsc.cicerone/.SplashActivity;end">Apri l'app</a>
-                                                    </center>
+                                                        <a style="margin: 0;
+                                                            font-size: 12px;
+                                                            font-family: 'HelveticaNeue','Helvetica Neue',Helvetica,Arial,sans-serif;
+                                                            color: #ffffff !important;
+                                                            text-decoration: none;
+                                                            border-radius: 4px;
+                                                            padding: 8px 17px;
+                                                            border: 1px solid #85459A;
+                                                            display: inline-block;
+                                                            font-weight: bold;
+                                                            background: #85459A;
+                                                            text-align: center;"
+                                                           href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=com.fsc.cicerone/.SplashActivity;end">Apri l'app</a>
+                                                    </div>
 												</div>
 											</div>
 										</div>

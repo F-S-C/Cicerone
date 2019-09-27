@@ -114,7 +114,21 @@
 														<span style="font-size: 24px;"><?php if($sex == "female"){ echo "Cara "; }elseif($sex == "male"){ echo "Caro "; }else{ echo "Ciao ";} echo $name; ?>,</span></p>
                                                     <br/>
                                                     <p style="line-height: 26px; font-size: 18px;">se hai richiesto la reimpostazione della password, clicca sul pulsante qui sotto. In caso contrario, ignora questa email.</p>
-                                                    <center><a href="<?php echo $link; ?>" class="btn">Reimposta la password</a></center>
+                                                    <div style="text-align: center;">
+                                                        <a style="margin: 0;
+                                                            font-size: 12px;
+                                                            font-family: 'HelveticaNeue','Helvetica Neue',Helvetica,Arial,sans-serif;
+                                                            color: #ffffff !important;
+                                                            text-decoration: none;
+                                                            border-radius: 4px;
+                                                            padding: 8px 17px;
+                                                            border: 1px solid #85459A;
+                                                            display: inline-block;
+                                                            font-weight: bold;
+                                                            background: #85459A;
+                                                            text-align: center;"
+                                                           href="<?php echo $link; ?>">Reimposta la password</a>
+                                                    </div>
                                                     <br/>
                                                     <p style="color: #8899a6;line-height: 36px; font-size: 18px;">Se continui a ricevere email di questo tipo e non sei tu ad averle richieste, contatta un amministratore.</p>
 												</div>

@@ -151,7 +151,7 @@ class Sender
                         break;
                     case "reservationRefuse":
                         $this->email_filename = "./reservationRefuse.php";
-                        $this->email_subject = "La tua richiesta non &egrave; stata accettata.";
+                        $this->email_subject = "La tua richiesta non e' stata accettata.";
                         if(isset($_POST['itinerary_code']) && isset($_POST['cicerone_email'])){
                             $this->db_manager->itinerary_code = $_POST['itinerary_code'];
                             $this->email_data = array_merge($this->db_manager->getUserFromDB(),
