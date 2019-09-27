@@ -16,8 +16,11 @@
 
 package com.fsc.cicerone;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,12 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReportManager;
@@ -46,24 +52,9 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     /**
-     * The home fragment (first tab).
-     */
-    private final Fragment homeFragment = new HomeFragment();
-
-    /**
-     * The discover fragment (second tab).
-     */
-    private final Fragment discoverFragment = new DiscoverFragment();
-
-    /**
-     * The fragment manager used to load, unload, show and hide the fragments.
-     */
-    private final FragmentManager fragmentManager = getSupportFragmentManager();
-
-    /**
      * The currently displayed fragment.
      */
-    private Fragment activeFragment = homeFragment;
+    private Fragment activeFragment;
 
     /**
      * The bottom navigation.
@@ -76,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout layoutFabItinerary;
     private FrameLayout subFabContainer;
 
+    private FragmentPagerAdapter fragmentPagerAdapter;
+    private ViewPager viewPager;
+    private MenuItem prevMenuItem;
 
     /**
      * Create the activity and load the layout.
@@ -86,10 +80,13 @@ public class MainActivity extends AppCompatActivity {
      *                           null. This value may be null. (From the official
      *                           <a href="https://developer.android.com/reference/android/app/Activity.html#onCreate(android.os.Bundle,%2520android.os.PersistableBundle)">Android Documentation</a>).
      */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setUpViewPager();
 
         navView = findViewById(R.id.bottom_navigation);
         if (!AccountManager.isLogged()) {
@@ -140,40 +137,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Fragment profileFragment = AccountManager.isLogged() ? new AccountDetails(swipeRefreshLayout) : null;
-        WishlistFragment wishlistFragment = AccountManager.isLogged() ? new WishlistFragment() : null;
+        // fix to make the ViewPager work with SwipeRefreshLayout
+        viewPager.setOnTouchListener((v, event) -> {
+            swipeRefreshLayout.setEnabled(false);
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                swipeRefreshLayout.setEnabled(true);
+            }
+            return false;
+        });
 
         navView.setOnNavigationItemSelectedListener(item -> {
             closeSubMenusFab();
-            ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
             boolean toReturn = false;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    changeCurrentFragment(homeFragment);
-                    supportActionBar.setTitle(getString(R.string.app_name));
+                    viewPager.setCurrentItem(0);
+                    toReturn = true;
+                    break;
+                case R.id.navigation_discover:
+                    viewPager.setCurrentItem(1);
                     toReturn = true;
                     break;
                 case R.id.navigation_favorites:
                     if (AccountManager.isLogged()) {
-                        changeCurrentFragment(wishlistFragment);
-                        supportActionBar.setTitle(getString(R.string.wishlist));
-                        if (wishlistFragment != null) wishlistFragment.refresh();
+                        viewPager.setCurrentItem(2);
                     } else {
                         Toast.makeText(this, R.string.access_denied, Toast.LENGTH_SHORT).show();
                     }
                     toReturn = AccountManager.isLogged();
                     break;
-                case R.id.navigation_discover:
-                    changeCurrentFragment(discoverFragment);
-                    supportActionBar.setTitle(getString(R.string.discover));
-                    toReturn = true;
-                    break;
                 case R.id.navigation_profile:
                     if (!AccountManager.isLogged()) {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     } else {
-                        changeCurrentFragment(profileFragment);
-                        supportActionBar.setTitle(getString(R.string.account));
+                        viewPager.setCurrentItem(3);
                     }
                     toReturn = true;
                     break;
@@ -182,33 +179,11 @@ public class MainActivity extends AppCompatActivity {
             }
             return toReturn;
         });
-
-        // Instantiate all of the fragments for usability purposes.
-        if (profileFragment != null)
-            fragmentManager.beginTransaction().add(R.id.main_container, profileFragment, "4").hide(profileFragment).commit();
-        if (wishlistFragment != null)
-            fragmentManager.beginTransaction().add(R.id.main_container, wishlistFragment, "3").hide(wishlistFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.main_container, discoverFragment, "2").hide(discoverFragment).commit();
-        // The last one is shown to the user
-        fragmentManager.beginTransaction().add(R.id.main_container, homeFragment, "1").commit();
-    }
-
-    /**
-     * Change the current displayed fragment.
-     *
-     * @param nextFragment The fragment to be loaded.
-     */
-    private void changeCurrentFragment(Fragment nextFragment) {
-        fragmentManager.beginTransaction().hide(activeFragment).show(nextFragment).commit();
-        activeFragment = nextFragment;
-        ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
-        supportActionBar.setDisplayHomeAsUpEnabled(!nextFragment.equals(homeFragment));
-        supportActionBar.setDisplayShowHomeEnabled(!nextFragment.equals(homeFragment));
     }
 
     @Override
     public void onBackPressed() {
-        if (activeFragment.equals(homeFragment)) {
+        if (activeFragment == fragmentPagerAdapter.getItem(0)) {
             new MaterialAlertDialogBuilder(this)
                     .setTitle(getString(R.string.are_you_sure))
                     .setMessage(getString(R.string.sure_to_exit))
@@ -300,5 +275,115 @@ public class MainActivity extends AppCompatActivity {
         });
 
         dialogSubmit.show();
+    }
+
+    private void setUpViewPager() {
+        viewPager = findViewById(R.id.main_container);
+        fragmentPagerAdapter = AccountManager.isLogged() ?
+                new MainActivityAfterLoginPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) :
+                new MainActivityPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        activeFragment = fragmentPagerAdapter.getItem(0);
+        viewPager.setAdapter(fragmentPagerAdapter);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Do nothing
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+                supportActionBar.setDisplayHomeAsUpEnabled(position != 0);
+                supportActionBar.setDisplayShowHomeEnabled(position != 0);
+                supportActionBar.setTitle(fragmentPagerAdapter.getPageTitle(position));
+
+                activeFragment = fragmentPagerAdapter.getItem(position);
+
+                if (prevMenuItem != null)
+                    prevMenuItem.setChecked(false);
+                else
+                    navView.getMenu().getItem(0).setChecked(false);
+
+                navView.getMenu().getItem(position < 2 ? position : position + 1).setChecked(true);
+                prevMenuItem = navView.getMenu().getItem(position < 2 ? position : position + 1);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Do nothing
+            }
+        });
+    }
+
+    private class MainActivityPagerAdapter extends FragmentPagerAdapter {
+        private final HomeFragment homeFragment = new HomeFragment();
+        private final DiscoverFragment discoverFragment = new DiscoverFragment();
+
+        MainActivityPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = discoverFragment;
+            if (position == 0) {
+                fragment = homeFragment;
+            }
+            return fragment;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            CharSequence title = getString(R.string.app_name);
+            if (position == 1) {
+                title = getString(R.string.discover);
+            }
+            return title;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+    }
+
+    private class MainActivityAfterLoginPagerAdapter extends MainActivityPagerAdapter {
+        private final WishlistFragment wishlistFragment = new WishlistFragment();
+        private final AccountDetails profileFragment = new AccountDetails();
+
+        MainActivityAfterLoginPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = super.getItem(position);
+            if (position == 2) {
+                fragment = wishlistFragment;
+            } else if (position == 3) {
+                fragment = profileFragment;
+            }
+            return fragment;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            CharSequence title = super.getPageTitle(position);
+            if (position == 2) {
+                title = getString(R.string.wishlist);
+            } else if (position == 3) {
+                title = getString(R.string.profile);
+            }
+            return title;
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
     }
 }
