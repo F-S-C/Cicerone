@@ -161,6 +161,18 @@ class Sender
                             die('{"result":false, "error":"Sender: Missing itinerary_code or cicerone_email field!"}"');
                         }
                         break;
+                    case "reservationRemove":
+                        $this->email_filename = "./reservationRemove.php";
+                        $this->email_subject = "Un'utente ha rimosso la sua prenotazione!";
+                        if(isset($_POST['itinerary_code']) && isset($_POST['globetrotter_email']) && isset($_POST['globetrotter_name']) && isset($_POST['globetrotter_surname'])){
+                            $this->db_manager->itinerary_code = $_POST['itinerary_code'];
+                            $this->email_data = array_merge($this->db_manager->getUserFromDB(),
+                                $this->db_manager->getItineraryFromDB(),
+                                array("globetrotter_email" => $_POST['globetrotter_email'], "globetrotter_name" => $_POST['globetrotter_name'], "globetrotter_surname" => $_POST['globetrotter_surname']));
+                        }else{
+                            die('{"result":false, "error":"Sender: Missing itinerary_code, globetrotter_email, globetrotter_surname or globetrotter_name field!"}"');
+                        }
+                        break;
                     default:
                         die('{"result":false, "error":"Sender: Unknown type!"}');
                         break;

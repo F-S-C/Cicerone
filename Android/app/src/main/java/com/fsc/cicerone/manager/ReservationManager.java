@@ -67,7 +67,11 @@ public abstract class ReservationManager {
      */
     public static void removeReservation(Itinerary itinerary) {
         Reservation reservation = new Reservation.Builder(AccountManager.getCurrentLoggedUser(), itinerary).build();
-        deleteReservationFromServer(reservation, null); // TODO: Check and send email to cicerone (IF-34)?
+        deleteReservationFromServer(reservation, v->{
+            if(v.getResult()){
+                Mailer.sendReservationRemoveEmail(null, itinerary, null);
+            }
+        });
     }
 
     /**
@@ -124,11 +128,12 @@ public abstract class ReservationManager {
     }
 
     /**
-     * Refuse a reservation's request. This action is performed by a cicerone.
+     * Remove a reservation's request.
      *
      * @param reservation The reservation to be refused.
+     * @param context The application context.
      */
-    public static void refuseReservation(Reservation reservation, Activity context) {
+    public static void removeReservation(Reservation reservation, Activity context) {
         deleteReservationFromServer(reservation, v -> {
             if(v.getResult()){
                 Mailer.sendReservationRefuseEmail(context, reservation, null);
@@ -137,11 +142,11 @@ public abstract class ReservationManager {
     }
 
     /**
-     * Remove a reservation's request. This action is performed by a globetrotter.
+     * Remove a reservation's request.
      *
      * @param reservation The reservation to be refused.
      */
-    public static void removeReservation(Reservation reservation) {
+    public static void deleteReservation(Reservation reservation) {
         deleteReservationFromServer(reservation, null);
     }
 
