@@ -16,6 +16,8 @@
 
 package com.fsc.cicerone.model;
 
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,8 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 /**
  * A document as represented in Cicerone. Each document is identified by a number.

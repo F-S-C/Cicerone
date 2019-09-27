@@ -34,7 +34,6 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -90,14 +89,14 @@ public class AdminDetailsUserFragment extends Fragment {
 
         user = new User(Objects.requireNonNull(bundle).getString("user"));
 
-        getDataUser(user);
+        getDataUser();
 
-        removeUser.setOnClickListener(v -> deleteAccount(user));
+        removeUser.setOnClickListener(v -> deleteAccount());
 
         return view;
     }
 
-    private void getDataUser(User user) {
+    private void getDataUser() {
         if (user.getUserType() == UserType.CICERONE) {
             avgEarn.setVisibility(View.VISIBLE);
             AccountManager.userAvgEarnings(context, user.getUsername(), avgEarn);
@@ -123,7 +122,7 @@ public class AdminDetailsUserFragment extends Fragment {
         documentExpiryDate.setText(data);
     }
 
-    private void deleteAccount(User user) {
+    private void deleteAccount() {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
             AccountManager.deleteAccount(context, user , success -> Toast.makeText(context,
                     context.getString(R.string.removed_user), Toast.LENGTH_SHORT)

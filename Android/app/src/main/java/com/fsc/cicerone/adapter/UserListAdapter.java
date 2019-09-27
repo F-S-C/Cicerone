@@ -71,7 +71,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User user = new User(mData.get(position).toString());
         String usernameStr = mData.get(position).getUsername();
         UserType type = mData.get(position).getUserType();
         String typeName;
@@ -92,13 +91,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         }
         holder.usrType.setText(typeName);
         holder.imageView.setImageResource(mData.get(position).getSex().getAvatarResource());
-        ReviewManager.getAvgUserFeedback(context, user, holder.avgRating::setRating);
+        ReviewManager.getAvgUserFeedback(context, mData.get(position), holder.avgRating::setRating);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
                 i = new Intent(context, AdminUserProfile.class);
-                i.putExtra("user", mData.get(position).toJSONObject().toString());
+                i.putExtra("user", mData.get(position).toString());
                 context.startActivity(i);
             } else {
                 i = new Intent().setClass(context, ProfileActivity.class);

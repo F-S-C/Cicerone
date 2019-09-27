@@ -489,7 +489,7 @@ public class User extends BusinessEntity {
                 result.put(Columns.BIRTH_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.birthDate));
             if (document != null)
                 result.put(Columns.DOCUMENT_KEY, this.document.toJSONObject());
-            if (!languages.isEmpty()) result.put(Columns.DOCUMENT_KEY, new JSONArray(languages));
+            if (languages != null) result.put(Columns.LANGUAGES_KEY, new JSONArray(languages));
         } catch (JSONException e) {
             result = null;
         }
