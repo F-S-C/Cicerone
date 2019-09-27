@@ -3,7 +3,7 @@
 
 namespace email_sender;
 
-require '/home/fsc/www/email_sender/sender.php';
+require '/home/fsc/www/email_sender/Sender.php';
 
 class Reset
 {
