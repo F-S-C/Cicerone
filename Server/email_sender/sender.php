@@ -139,6 +139,16 @@ class Sender
                             die('{"result":false, "error":"Missing itinerary code field!"}"');
                         }
                         break;
+                    case "newItineraryRequest":
+                        $this->email_filename = "./newItineraryRequest.php";
+                        $this->email_subject = "Hai una nuova richiesta!";
+                        if(isset($_POST['itinerary_code'])){
+                            $this->db_manager->itinerary_code = $_POST['itinerary_code'];
+                            $this->email_data = array_merge($this->db_manager->getUserFromDB(), $this->db_manager->getItineraryFromDB());
+                        }else{
+                            die('{"result":false, "error":"Missing itinerary code field!"}"');
+                        }
+                        break;
                     default:
                         die('{"result":false, "error":"Unknown type!"}');
                         break;
