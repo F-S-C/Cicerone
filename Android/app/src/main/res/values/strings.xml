@@ -260,4 +260,5 @@
     <string name="forgot_password_text">Enter your email, if correct you will be sent a link to reset the password.</string>
     <string name="send_link">Send the reset link</string>
     <string name="email_sent">E-mail sent</string>
+    <string name="reset_password">Reset password</string>
 </resources>
