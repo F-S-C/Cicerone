@@ -257,8 +257,9 @@
     <string name="removed_user">The user has been removed.</string>
     <string name="no_participants">No participants for this itinerary</string>
     <string name="error_send_email">An error occurred while sending the confirmation email</string>
-    <string name="forgot_password_text">Enter your email, if correct you will be sent a link to reset the password.</string>
+    <string name="forgot_password_text">Insert your email. If correct, you will be sent a link to reset the password.</string>
     <string name="send_link">Send the reset link</string>
     <string name="email_sent">E-mail sent</string>
+    <string name="reset_password">Reset password</string>
     <string name="reset_password">Reset password</string>
 </resources>

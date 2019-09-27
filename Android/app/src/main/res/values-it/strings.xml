@@ -237,4 +237,8 @@
     <string name="send_link">Invia il link di reset</string>
     <string name="email_sent">E-mail inviata</string>
     <string name="reset_password">Reimposta la password</string>
+    <string name="email_sent">E-mail inviata</string>
+    <string name="forgot_password_text">Inserisci la tua email. Se corretta, ti verrà inviato un link per reimpostare la password.</string>
+    <string name="send_link">Invia il link di reset</string>
+    <string name="reset_password">Reimposta la password</string>
 </resources>
