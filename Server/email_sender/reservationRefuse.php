@@ -62,7 +62,7 @@
 													style="font-family: 'Varela Round', 'Trebuchet MS', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #000000;">
 													<p
 														style="font-size: 18px; line-height: 45px; text-align: center; margin: 0; font-weight: bold;">
-														<span style="font-size: 38px;">Hai ricevuto una nuova richiesta!</span></p>
+														<span style="font-size: 38px;">Oh no!</span></p>
 											</div>
 										</div>
 									</div>
@@ -83,7 +83,7 @@
 												style="padding-right: 0px;padding-left: 0px;">
 												<img
 													align="center" alt="Image" border="0" class="center fixedwidth"
-													src="https://fscgroup.ddns.net/email_sender/include/accepted.png"
+													src="https://fscgroup.ddns.net/email_sender/include/rejected.png"
 													style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 500px; display: block;"
 													title="Image" width="500" />
 											</div>
@@ -134,13 +134,14 @@
 													style="line-height: 18px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; color: #555555;">
 													<p
 														style="line-height: 50px; text-align: center; font-size: 18px; margin: 0;">
-														<span style="font-size: 24px;"><?php echo $name; ?> la cerchia si allarga!</span></p>
+														<span style="font-size: 24px;"><?php echo $name; ?> abbiamo brutte notizie!</span></p>
                                                     <br/>
-                                                    <center>
-                                                    <p style="line-height: 36px; font-size: 18px;">Hai appena ricevuto una nuova richiesta per il tuo itinerario <i>&ldquo;<?php echo $title; ?>&rdquo;</i>.<br/> Corri a scoprire chi &egrave; interessato a partecipare!</p>
+                                                    <p style="line-height: 36px; font-size: 18px;">Il Cicerone dell'itinerario <i>&ldquo;<?php echo $title; ?>&rdquo;</i>&nbsp;ha rifiutato la tua richiesta di prenotazione.<br/>
+                                                        Non ti scoraggiare, contatta il Cicerone personalmente, sappiamo che la situazione si risolver&agrave;!</p>
                                                     <br/><br/>
-                                                    <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=com.fsc.cicerone/.SplashActivity;end">Apri l'app</a>
-                                                    </center>
+                                                    <div style="text-align: center;">
+                                                    <a class="btn" href="mailto:<?php echo $cicerone_email; ?>">Mandagli una mail</a>
+                                                    </div>
 												</div>
 											</div>
 										</div>

@@ -51,7 +51,7 @@ class Sender
     public function __construct()
     {
         $this->db_manager = new DBManager();
-        if(basename($_SERVER[REQUEST_URI],".php") == "sender") {
+        if(basename($_SERVER[REQUEST_URI],".php") == "Sender") {
             $this->setEmail();
             $this->sendEmail();
         }
@@ -106,12 +106,12 @@ class Sender
         try {
             $mail->Send();
             if($mail->isError()) {
-                die('{"result":false, "error":"Mailer Error: ' . $mail->ErrorInfo . '"}');
+                die('{"result":false, "error":"Sender: Mailer Error: ' . $mail->ErrorInfo . '"}');
             } else {
                 print '{"result":true}';
             }
         } catch (Exception $e) {
-            die('{"result":false, "error":"Exception: ' . $e . '"}');
+            die('{"result":false, "error":"Sender: Exception: ' . $e . '"}');
         }
     }
 
@@ -136,7 +136,7 @@ class Sender
                             $this->db_manager->itinerary_code = $_POST['itinerary_code'];
                             $this->email_data = array_merge($this->db_manager->getUserFromDB(), $this->db_manager->getItineraryFromDB());
                         }else{
-                            die('{"result":false, "error":"Missing itinerary code field!"}"');
+                            die('{"result":false, "error":"Sender: Missing itinerary_code field!"}"');
                         }
                         break;
                     case "newItineraryRequest":
@@ -146,18 +146,30 @@ class Sender
                             $this->db_manager->itinerary_code = $_POST['itinerary_code'];
                             $this->email_data = array_merge($this->db_manager->getUserFromDB(), $this->db_manager->getItineraryFromDB());
                         }else{
-                            die('{"result":false, "error":"Missing itinerary code field!"}"');
+                            die('{"result":false, "error":"Sender: Missing itinerary_code field!"}"');
+                        }
+                        break;
+                    case "reservationRefuse":
+                        $this->email_filename = "./reservationRefuse.php";
+                        $this->email_subject = "La tua richiesta non &egrave; stata accettata.";
+                        if(isset($_POST['itinerary_code']) && isset($_POST['cicerone_email'])){
+                            $this->db_manager->itinerary_code = $_POST['itinerary_code'];
+                            $this->email_data = array_merge($this->db_manager->getUserFromDB(),
+                                $this->db_manager->getItineraryFromDB(),
+                                array("cicerone_email" => $_POST['cicerone_email']));
+                        }else{
+                            die('{"result":false, "error":"Sender: Missing itinerary_code or cicerone_email field!"}"');
                         }
                         break;
                     default:
-                        die('{"result":false, "error":"Unknown type!"}');
+                        die('{"result":false, "error":"Sender: Unknown type!"}');
                         break;
                 }
             } else {
-                die('{"result":false, "error":"Missing type value!"}"');
+                die('{"result":false, "error":"Sender: Missing type value!"}"');
             }
         }else{
-            die('{"result":false, "error":"Missing recipient e-mail or username field!"}');
+            die('{"result":false, "error":"Sender: Missing recipient e-mail or username field!"}');
         }
     }
 }

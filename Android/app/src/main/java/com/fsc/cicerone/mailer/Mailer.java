@@ -22,6 +22,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Reservation;
 
 import java.util.HashMap;
@@ -60,6 +61,16 @@ public class Mailer {
         data.put("itinerary_code", reservation.getItinerary().getCode());
         data.put("recipient_email", reservation.getItinerary().getCicerone().getEmail());
         data.put("type","newItineraryRequest");
+        sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
+    }
+
+    public static void sendReservationRefuseEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(5);
+        data.put("username", reservation.getItinerary().getCicerone().getUsername());
+        data.put("itinerary_code", reservation.getItinerary().getCode());
+        data.put("recipient_email", reservation.getClient().getEmail());
+        data.put("cicerone_email", AccountManager.getCurrentLoggedUser().getEmail());
+        data.put("type","reservationRefuse");
         sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 

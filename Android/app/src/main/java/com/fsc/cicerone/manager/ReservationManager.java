@@ -128,9 +128,21 @@ public abstract class ReservationManager {
      *
      * @param reservation The reservation to be refused.
      */
-    public static void refuseReservation(Reservation reservation) {
-        deleteReservationFromServer(reservation, null); // TODO: Check and send email to globetrotter (IF-34)?
-        // Garbage collector has to destroy 'reservation'.
+    public static void refuseReservation(Reservation reservation, Activity context) {
+        deleteReservationFromServer(reservation, v -> {
+            if(v.getResult()){
+                Mailer.sendReservationRefuseEmail(context, reservation, null);
+            }
+        });
+    }
+
+    /**
+     * Remove a reservation's request. This action is performed by a globetrotter.
+     *
+     * @param reservation The reservation to be refused.
+     */
+    public static void removeReservation(Reservation reservation) {
+        deleteReservationFromServer(reservation, null);
     }
 
     /**
