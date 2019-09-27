@@ -70,10 +70,11 @@ public abstract class AccountManager {
      * Attempt the login.
      *
      * @param credentials The credentials of the user.
-     * @param onStart  A function to be executed before the login attempt.
-     * @param onEnd    A function to be executed after the login attempt.
+     * @param onStart     A function to be executed before the login attempt.
+     * @param onEnd       A function to be executed after the login attempt. The boolean value
+     *                    contains true if login was successful, false otherwise.
      */
-    public static void attemptLogin(Activity context, User.Credentials credentials, @Nullable DatabaseConnector.OnStartConnectionListener onStart, @Nullable RunnableUsingBusinessEntity onEnd) {
+    public static void attemptLogin(Activity context, User.Credentials credentials, @Nullable DatabaseConnector.OnStartConnectionListener onStart, @Nullable BooleanRunnable onEnd) {
         Map<String, Object> params = new HashMap<>(2);
         params.put(USERNAME_KEY, credentials.getUsername());
         params.put(PASSWORD_KEY, credentials.getPassword());
@@ -89,17 +90,16 @@ public abstract class AccountManager {
                                     if (!list.isEmpty()) {
                                         currentLoggedUser = list.get(0);
                                         currentLoggedUser.setPassword(credentials.getPassword());
-                                        if(onEnd != null) onEnd.run(currentLoggedUser, true);
+                                        if (onEnd != null) onEnd.accept(true);
                                     } else {
-                                        BooleanConnector.BooleanResult booleanResult = new BooleanConnector.BooleanResult(false, "No user found");
-                                        if(onEnd != null) onEnd.run(booleanResult, false);
+                                        if (onEnd != null) onEnd.accept(false);
                                     }
                                 })
                                 .setObjectToSend(params)
                                 .build();
                         sendInPostConnector.execute();
                     } else {
-                        if(onEnd != null) onEnd.run(result, false);
+                        if (onEnd != null) onEnd.accept(false);
                     }
                 })
                 .setObjectToSend(params)

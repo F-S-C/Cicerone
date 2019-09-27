@@ -127,8 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent().setClass(MainActivity.this, ItineraryCreation.class);
                 startActivity(i);
             });
-            if (AccountManager.getCurrentLoggedUser().getUserType() != UserType.CICERONE)
-                layoutFabItinerary.setVisibility(View.GONE);
         }
         closeSubMenusFab();
 
@@ -230,9 +228,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void closeSubMenusFab() {
-        subFabContainer.setVisibility(View.INVISIBLE);
-        layoutFabReport.setVisibility(View.INVISIBLE);
-        layoutFabItinerary.setVisibility(View.INVISIBLE);
+        subFabContainer.setVisibility(View.GONE);
+        layoutFabReport.setVisibility(View.GONE);
+        layoutFabItinerary.setVisibility(View.GONE);
         fabSettings.setImageResource(R.drawable.ic_add_black_24dp);
         isFabMenuExtended = false;
     }
@@ -240,8 +238,8 @@ public class MainActivity extends AppCompatActivity {
     private void openSubMenusFab() {
         subFabContainer.setVisibility(View.VISIBLE);
         layoutFabReport.setVisibility(View.VISIBLE);
-        layoutFabItinerary.setVisibility(View.VISIBLE);
-        //Change settings icon to 'X' icon
+        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE)
+            layoutFabItinerary.setVisibility(View.GONE);
         fabSettings.setImageResource(R.drawable.ic_dialog_close_dark);
         isFabMenuExtended = true;
     }
