@@ -54,19 +54,18 @@ public class Mailer {
         sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
-    public static void sendPasswordResetLink(Activity context, String email, @Nullable BooleanRunnable callback) {
-        Map<String, Object> data = new HashMap<>(1);
-        data.put("email", email);
-        Log.e("POST EMAIL", email);
-        sendEmail(context, data, ConnectorConstants.EMAIL_RESET_PASSWORD, callback);
-    }
-
     public static void sendItineraryRequestEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
         Map<String, Object> data = new HashMap<>(4);
         data.put("username", reservation.getItinerary().getCicerone().getUsername());
         data.put("itinerary_code", reservation.getItinerary().getCode());
         data.put("recipient_email", reservation.getItinerary().getCicerone().getEmail());
         data.put("type","newItineraryRequest");
+        sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
+    }
+
+    public static void sendPasswordResetLink(Activity context, String email, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("email", email);
         sendEmail(context, data, ConnectorConstants.EMAIL_RESET_PASSWORD, callback);
     }
 

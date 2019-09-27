@@ -15,7 +15,7 @@
 	<!--[if !mso]><!-->
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
 	<!--<![endif]-->
-    <link href="include/style.css" rel="stylesheet" type="text/css"/>
+    <link href="https://fscgroup.ddns.net/email_sender/include/style.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FCFCFC;">
