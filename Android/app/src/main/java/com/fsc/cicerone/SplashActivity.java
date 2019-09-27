@@ -20,16 +20,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class SplashActivity extends AppCompatActivity {
 

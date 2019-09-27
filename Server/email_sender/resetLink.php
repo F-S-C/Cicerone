@@ -114,7 +114,7 @@
 														<span style="font-size: 24px;"><?php if($sex == "female"){ echo "Cara "; }elseif($sex == "male"){ echo "Caro "; }else{ echo "Ciao ";} echo $name; ?>,</span></p>
                                                     <br/>
                                                     <p style="line-height: 26px; font-size: 18px;">se hai richiesto la reimpostazione della password, clicca sul pulsante qui sotto. In caso contrario, ignora questa email.</p>
-                                                    <a href="<?php echo $link; ?>" class="btn">Reimposta la password</a>
+                                                    <center><a href="<?php echo $link; ?>" class="btn">Reimposta la password</a></center>
                                                     <br/>
                                                     <p style="color: #8899a6;line-height: 36px; font-size: 18px;">Se continui a ricevere email di questo tipo e non sei tu ad averle richieste, contatta un amministratore.</p>
 												</div>

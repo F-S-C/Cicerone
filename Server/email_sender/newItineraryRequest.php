@@ -134,11 +134,11 @@
 													style="line-height: 18px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; color: #555555;">
 													<p
 														style="line-height: 50px; text-align: center; font-size: 18px; margin: 0;">
-														<span style="font-size: 24px;">Ciao <?php echo $name; ?></span></p>
+														<span style="font-size: 24px;"><?php echo $name; ?> la cerchia si allarga!</span></p>
                                                     <br/>
-                                                    <p style="line-height: 36px; font-size: 18px;">Hai appena ricevuto una nuova richiesta per il tuo itinerario &ldquo;<?php echo $title; ?>&bdquo;. Corri a scoprire chi &egrave; interessato a partecipare, basta un click nell'app!</p>
+                                                    <p style="line-height: 36px; font-size: 18px;">Hai appena ricevuto una nuova richiesta per il tuo itinerario <i>&ldquo;<?php echo $title; ?>&bdquo;</i>. Corri a scoprire chi &egrave; interessato a partecipare!</p>
                                                     <br/>
-                                                    <a class="btn" href="intent:#Intent;action=com.fsc.cicerone;category=android.intent.category.DEFAULT;category=android.intent.category.BROWSABLE;end">Apri l'app</a>
+                                                    <center><a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=com.fsc.cicerone/.SplashActivity;end">Apri l'app</a></center>
 												</div>
 											</div>
 										</div>
