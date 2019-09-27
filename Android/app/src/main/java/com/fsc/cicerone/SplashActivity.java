@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,19 +43,16 @@ public class SplashActivity extends AppCompatActivity {
         final Class activityToOpenIfLoggedAdmin = AdminMainActivity.class;
 
         SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-        String latestLoggedUserCredentials = preferences.getString("session", "");
+        User.Credentials credentials = new User.Credentials(preferences.getString("session", ""));
 
-        if (latestLoggedUserCredentials != null && !latestLoggedUserCredentials.equals("")) {
-            User.Credentials credentials = new User.Credentials(latestLoggedUserCredentials);
-            if (!credentials.isAllSet()) {
-                AccountManager.attemptLogin(this, credentials, null, (result, success) -> {
-                    Class targetLoggedActivity = (AccountManager.isLogged() && AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) ?
-                            activityToOpenIfLoggedAdmin : activityToOpenIfLogged;
-                    Intent intent = new Intent(SplashActivity.this, (success) ? targetLoggedActivity : activityToOpenIfNotLogged);
-                    startActivity(intent);
-                    finish();
-                });
-            }
+        if (credentials.isAllSet()) {
+            AccountManager.attemptLogin(this, credentials, null, success -> {
+                Class targetLoggedActivity = (AccountManager.isLogged() && AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) ?
+                        activityToOpenIfLoggedAdmin : activityToOpenIfLogged;
+                Intent intent = new Intent(SplashActivity.this, success ? targetLoggedActivity : activityToOpenIfNotLogged);
+                startActivity(intent);
+                finish();
+            });
         } else {
             startActivity(new Intent(SplashActivity.this, activityToOpenIfNotLogged));
             finish();
