@@ -261,5 +261,4 @@
     <string name="send_link">Send the reset link</string>
     <string name="email_sent">E-mail sent</string>
     <string name="reset_password">Reset password</string>
-    <string name="reset_password">Reset password</string>
 </resources>
