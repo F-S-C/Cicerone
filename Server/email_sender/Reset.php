@@ -41,7 +41,7 @@ class Reset
         $this->sender->recipient_email = $this->email;
         $this->sender->email_subject = "Recupera la tua password";
         $this->sender->email_filename = "./resetLink.php";
-        $this->sender->email_data = array_merge($this->userData, array("link" => "https://fscgroup.ddns.net/email_sender/reset.php?token=" . $this->userData['usrp'] . "&email=" . $this->email));
+        $this->sender->email_data = array_merge($this->userData, array("link" => "https://fscgroup.ddns.net/email_sender/Reset.php?token=" . $this->userData['usrp'] . "&email=" . $this->email));
         $this->sender->sendEmail();
     }
 
