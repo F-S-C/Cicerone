@@ -122,12 +122,12 @@ class Sender
             if (isset($_POST['type'])) {
                 switch ($_POST['type']) {
                     case "registrationConfirmed":
-                        $this->email_filename = "./registrationConfirmed.php";
+                        $this->email_filename = "./mail/registrationConfirmed.php";
                         $this->email_subject = "Registrazione completata!";
                         $this->email_data = $this->db_manager->getUserFromDB();
                         break;
                     case "reservationConfirmation":
-                        $this->email_filename = "./reservationConfirmation.php";
+                        $this->email_filename = "./mail/reservationConfirmation.php";
                         $this->email_subject = "Siamo pronti a partire!";
                         if(isset($_POST['itinerary_code'])){
                             $this->db_manager->itinerary_code = $_POST['itinerary_code'];
@@ -137,7 +137,7 @@ class Sender
                         }
                         break;
                     case "newItineraryRequest":
-                        $this->email_filename = "./newItineraryRequest.php";
+                        $this->email_filename = "./mail/newItineraryRequest.php";
                         $this->email_subject = "Hai una nuova richiesta!";
                         if(isset($_POST['itinerary_code'])){
                             $this->db_manager->itinerary_code = $_POST['itinerary_code'];
@@ -147,7 +147,7 @@ class Sender
                         }
                         break;
                     case "reservationRefuse":
-                        $this->email_filename = "./reservationRefuse.php";
+                        $this->email_filename = "./mail/reservationRefuse.php";
                         $this->email_subject = "La tua richiesta non e' stata accettata.";
                         if(isset($_POST['itinerary_code']) && isset($_POST['cicerone_email'])){
                             $this->db_manager->itinerary_code = $_POST['itinerary_code'];
@@ -159,7 +159,7 @@ class Sender
                         }
                         break;
                     case "reservationRemove":
-                        $this->email_filename = "./reservationRemove.php";
+                        $this->email_filename = "./mail/reservationRemove.php";
                         $this->email_subject = "Un'utente ha rimosso la sua prenotazione!";
                         if(isset($_POST['itinerary_code']) && isset($_POST['globetrotter_email']) && isset($_POST['globetrotter_name']) && isset($_POST['globetrotter_surname'])){
                             $this->db_manager->itinerary_code = $_POST['itinerary_code'];
@@ -171,7 +171,7 @@ class Sender
                         }
                         break;
                     case "accountDeleted":
-                        $this->email_filename = "./accountDeleted.php";
+                        $this->email_filename = "./mail/accountDeleted.php";
                         $this->email_subject = "Il tuo account e' stato cancellato correttamente";
                         $this->email_data = array("name" => $this->db_manager->username);
                         break;

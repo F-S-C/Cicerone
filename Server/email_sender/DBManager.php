@@ -118,8 +118,10 @@ class DBManager
     public function checkUserToken() {
         if($this->token != null && $this->usr_email != null) {
             $sql = "SELECT * FROM registered_user WHERE email = '" . $this->usr_email . "' AND password = '" . $this->token . "'";
-            if ($result = $this->mysqli->query($sql)) {
-                return ($result->num_rows > 0);
+            $stmt = $this->mysqli->prepare($sql);
+            $stmt->bind_param("ss",$p,$this->usr_email);
+            if ($stmt->execute()) {
+                return ($stmt->num_rows > 0);
             } else {
                 die('{"result":false,"error":"Could not able to execute query. ' . $this->mysqli->error . '"}');
             }
@@ -134,7 +136,9 @@ class DBManager
      * @return false|\mysqli_result False if the query failed. mysqli_result otherwise.
      */
     public function setUserP($p){
-        $sql = "UPDATE registered_user SET password = '" . $p . "' WHERE email = '" . $this->usr_email ."'";
-        return $this->mysqli->query($sql);
+        $sql = "UPDATE registered_user SET password = ? WHERE email = ?";
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->bind_param("ss",$p,$this->usr_email);
+        return $stmt->execute();
     }
 }
