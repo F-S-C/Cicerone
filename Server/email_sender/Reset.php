@@ -5,17 +5,27 @@ namespace email_sender;
 
 require '/home/fsc/www/email_sender/Sender.php';
 
+/**
+ * Class Reset: Send a reset e-mail and password to a given user.
+ * @package email_sender
+ */
 class Reset
 {
-
+    /** @var string The recipient e-mail.  */
     private $email = null;
 
+    /** @var Sender Variable useful for using the Sender class and sending e-mails to a user.  */
     private $sender;
 
+    /** @var array Array of strings containing the data of a given user. */
     private $userData;
 
+    /** @var DBManager Variable useful for using the DBManager class to request and write data to the database. */
     private $DBManager;
 
+    /**
+     * Reset constructor.
+     */
     public function __construct(){
         $this->sender = new Sender();
         $this->DBManager = new DBManager();
@@ -33,10 +43,9 @@ class Reset
         }
     }
 
-    public function __destruct(){
-        //Do nothing
-    }
-
+    /**
+     * Send an e-mail to the user containing a link to start the password reset process.
+     */
     private function sendTokenViaMail(){
         $this->sender->recipient_email = $this->email;
         $this->sender->email_subject = "Recupera la tua password";
@@ -45,6 +54,9 @@ class Reset
         $this->sender->sendEmail();
     }
 
+    /**
+     * Set a password for the user (randomly generated) and send the email with the new password.
+     */
     private function resetP()
     {
         if(isset($_GET['token'])) {
@@ -63,6 +75,10 @@ class Reset
         }
     }
 
+    /**
+     * Generates a string of 10 characters taken from an internal pattern and returns it to the caller.
+     * @return string Randomly generated string.
+     */
     private function randomString(){
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ[].,-_#@=?^"*+';
         $charactersLength = strlen($characters);

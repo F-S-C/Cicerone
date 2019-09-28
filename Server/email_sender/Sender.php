@@ -8,11 +8,15 @@ require '/home/fsc/www/email_sender/PHPMailer/src/PHPMailer.php';
 require '/home/fsc/www/email_sender/PHPMailer/src/SMTP.php';
 require '/home/fsc/www/email_sender/DBManager.php';
 
+/**
+ * PHPMailer library.
+ */
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
- * Send an e-mail to a given user.
+ * Class Sender: Send e-mail to a given user
+ * @package email_sender
  */
 class Sender
 {
@@ -34,6 +38,7 @@ class Sender
     /** @var array The array containing the user and itinerary data to be included in the email. */
     public $email_data;
 
+    /** @var DBManager Variable useful for using the DBManager class to request and write data to the database. */
     private $db_manager;
 
     /** @var string The recipient e-mail. */
@@ -55,14 +60,6 @@ class Sender
             $this->setEmail();
             $this->sendEmail();
         }
-    }
-
-    /**
-     * Sender destructor.
-     */
-    public function __destruct()
-    {
-
     }
 
     /**
@@ -116,7 +113,7 @@ class Sender
     }
 
     /**
-     *
+     * Based on the type value passed in post, the context of the email and its data changes.
      */
     public function setEmail(){
         if(isset($_POST['recipient_email']) && isset($_POST['username'])) {

@@ -3,9 +3,15 @@
 
 namespace email_sender;
 
-
+/**
+ * mysqli library.
+ */
 use mysqli;
 
+/**
+ * Class DBManager: Requires and writing data to the database.
+ * @package email_sender
+ */
 class DBManager
 {
     /** @var string The database's server's IP */
@@ -23,14 +29,21 @@ class DBManager
     /** @var mysqli The mysql variable used for the connection to the database. */
     private $mysqli = null;
 
+    /** @var string The username that can be searched in the database. */
     public $username = null;
 
+    /** @var integer The itinerary that can be searched in the database. */
     public $itinerary_code = null;
 
+    /** @var string The email that can be searched in the database.*/
     public $usr_email = null;
 
+    /** @var string The token that is searched with the email to verify that they are correct.*/
     public $token = null;
 
+    /**
+     * DBManager constructor. Connect to the database.
+     */
     public function __construct()
     {
         $this->mysqli = new mysqli(self::DB_HOSTNAME, self::DB_USERNAME, self::DB_P, self::DB_NAME);
@@ -39,6 +52,9 @@ class DBManager
         }
     }
 
+    /**
+     * DBManager destructor. Close the connection with the database.
+     */
     public function __destruct()
     {
         $this->mysqli->close();
@@ -94,6 +110,11 @@ class DBManager
         }
     }
 
+    /**
+     * Check that the combination email / password is correct.
+     * The password, being encrypted, is called "token".
+     * @return bool True if the data is correct. False otherwise.
+     */
     public function checkUserToken() {
         if($this->token != null && $this->usr_email != null) {
             $sql = "SELECT * FROM registered_user WHERE email = '" . $this->usr_email . "' AND password = '" . $this->token . "'";
@@ -107,6 +128,11 @@ class DBManager
         }
     }
 
+    /**
+     * Set a user's password.
+     * @param $p string The password to set.
+     * @return false|\mysqli_result False if the query failed. mysqli_result otherwise.
+     */
     public function setUserP($p){
         $sql = "UPDATE registered_user SET password = '" . $p . "' WHERE email = '" . $this->usr_email ."'";
         return $this->mysqli->query($sql);
