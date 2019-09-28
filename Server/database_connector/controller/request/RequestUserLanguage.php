@@ -34,7 +34,7 @@ class RequestUserLanguage extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT * FROM user_language";
+        $query = "SELECT user_language.username, user_language.language_code, language.language_name FROM user_language INNER JOIN language ON user_language.language_code = language.language_code";
 
         $conditions = array();
         $data = array();

@@ -72,15 +72,9 @@ public class AdminUserProfile extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         fragment.setArguments(bundle);
 
-        User user = null;
-        try {
-            user = new User(new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG,e.getMessage());
-        }
+        User user = new User(Objects.requireNonNull(bundle).getString("user"));
 
         TextView username = findViewById(R.id.admin_username_profile);
-        assert user != null;
 
         ImageView imageView = findViewById(R.id.avatar);
         imageView.setImageResource(user.getSex().getAvatarResource());

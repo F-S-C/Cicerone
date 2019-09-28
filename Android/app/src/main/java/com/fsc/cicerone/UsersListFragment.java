@@ -78,11 +78,7 @@ public class UsersListFragment extends Fragment implements Refreshable {
 
         if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE) {
             String s = Objects.requireNonNull(bundle).getString("itinerary");
-            try {
-                itinerary = new Itinerary(new JSONObject(s));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            itinerary = new Itinerary(s);
 
             getParticipators();
         } else {
@@ -101,7 +97,6 @@ public class UsersListFragment extends Fragment implements Refreshable {
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         AccountManager.getListUsers(getActivity(), () -> {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-
         }, list -> {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
             adapter = new UserListAdapter(getActivity(), list);
@@ -111,8 +106,6 @@ public class UsersListFragment extends Fragment implements Refreshable {
 
 
     public void getParticipators() {
-        Map<String, Object> parameters = new HashMap<>(1);
-        parameters.put("booked_itinerary", itinerary.getCode());
         ReservationManager.getReservations(getActivity(), itinerary, list -> {
             List<User> participators = new LinkedList<>();
             for (Reservation reservation : list) {
@@ -120,7 +113,6 @@ public class UsersListFragment extends Fragment implements Refreshable {
             }
             adapter = new UserListAdapter(getActivity(), participators);
             recyclerView.setAdapter(adapter);
-
         });
     }
 }

@@ -34,7 +34,7 @@ class RequestItineraryLanguage extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT * FROM itinerary_language";
+        $query = "SELECT itinerary_code, itinerary_language.language_code, language.language_name FROM itinerary_language INNER JOIN language ON itinerary_language.language_code = language.language_code";
 
         $conditions = array();
         $data = array();
