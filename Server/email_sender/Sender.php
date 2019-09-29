@@ -56,7 +56,7 @@ class Sender
     public function __construct()
     {
         $this->db_manager = new DBManager();
-        if(basename($_SERVER[REQUEST_URI],".php") == "Sender") {
+        if(basename($_SERVER['REQUEST_URI'],".php") == "Sender") {
             $this->setEmail();
             $this->sendEmail();
         }

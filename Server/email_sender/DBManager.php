@@ -66,17 +66,23 @@ class DBManager
      */
     public function getUserFromDB() {
         if($this->username != null) {
-            $sql = "SELECT * FROM registered_user WHERE username = '" . $this->username . "'";
+            $sql = "SELECT * FROM registered_user WHERE username = ?";
+            $stmt = $this->mysqli->prepare($sql);
+            $stmt->bind_param("s",$this->username);
         }elseif ($this->usr_email != null){
-            $sql = "SELECT * FROM registered_user WHERE email = '" . $this->usr_email . "'";
+            $sql = "SELECT * FROM registered_user WHERE email = ?";
+            $stmt = $this->mysqli->prepare($sql);
+            $stmt->bind_param("s",$this->usr_email);
         }else{
             die('{"result":false, "error":"DBManager: Cannot execute the query, missing fields!"}');
         }
-        if ($result = $this->mysqli->query($sql)) {
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $user = array('name' => $row['name'], 'surname' => $row['surname'], 'email' => $row['email'], 'cellphone' => $row['cellphone'], 'username' => $row['username'], 'usrp' => $row['password'], 'sex' => $row['sex']);
-                $result->free();
+                $result->free_result();
+                $stmt->close();
                 return $user;
             } else {
                 die('{"result":false,"error":"Username not found."}');
@@ -93,11 +99,15 @@ class DBManager
     public function getItineraryFromDB(){
         if($this->itinerary_code != null) {
             $sql = "SELECT * FROM itinerary WHERE itinerary_code = '" . $this->itinerary_code . "'";
-            if ($result = $this->mysqli->query($sql)) {
+            $stmt = $this->mysqli->prepare($sql);
+            $stmt->bind_param("i",$this->itinerary_code);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $itinerary = array('title' => $row['title'], 'location' => $row['location'], 'beginning_date' => $row['beginning_date'], 'ending_date' => $row['ending_date']);
-                    $result->free();
+                    $result->free_result();
+                    $stmt->close();
                     return $itinerary;
                 } else {
                     die('{"result":false,"error":"Itinerary not found."}');
@@ -117,11 +127,14 @@ class DBManager
      */
     public function checkUserToken() {
         if($this->token != null && $this->usr_email != null) {
-            $sql = "SELECT * FROM registered_user WHERE email = '" . $this->usr_email . "' AND password = '" . $this->token . "'";
+            $sql = "SELECT * FROM registered_user WHERE email = ? AND password = ?";
             $stmt = $this->mysqli->prepare($sql);
-            $stmt->bind_param("ss",$p,$this->usr_email);
+            $stmt->bind_param("ss",$this->usr_email, $this->token);
             if ($stmt->execute()) {
-                return ($stmt->num_rows > 0);
+                $stmt->store_result();
+                $numRows = $stmt->num_rows;
+                $stmt->close();
+                return ($numRows > 0);
             } else {
                 die('{"result":false,"error":"Could not able to execute query. ' . $this->mysqli->error . '"}');
             }
@@ -139,6 +152,8 @@ class DBManager
         $sql = "UPDATE registered_user SET password = ? WHERE email = ?";
         $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("ss",$p,$this->usr_email);
-        return $stmt->execute();
+        $value = $stmt->execute();
+        $stmt->close();
+        return $value;
     }
 }

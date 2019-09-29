@@ -49,7 +49,7 @@ class Reset
     private function sendTokenViaMail(){
         $this->sender->recipient_email = $this->email;
         $this->sender->email_subject = "Recupera la tua password";
-        $this->sender->email_filename = "./resetLink.php";
+        $this->sender->email_filename = "./mail/resetLink.php";
         $this->sender->email_data = array_merge($this->userData, array("link" => "https://fscgroup.ddns.net/email_sender/Reset.php?token=" . $this->userData['usrp'] . "&email=" . $this->email));
         $this->sender->sendEmail();
     }
@@ -66,7 +66,7 @@ class Reset
                 if($this->DBManager->setUserP(password_hash($newP, PASSWORD_DEFAULT))) {
                     $this->sender->recipient_email = $this->email;
                     $this->sender->email_subject = "Ecco la tua password temporanea";
-                    $this->sender->email_filename = "./resetPass.php";
+                    $this->sender->email_filename = "./mail/resetPass.php";
                     $this->sender->email_data = array_merge($this->userData, array("p" => $newP));
                     $this->sender->sendEmail();
                     header("Location: https://fscgroup.ddns.net/email_sender/mail/resetCompleted.php");
