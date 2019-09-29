@@ -23,6 +23,9 @@ class Reset
     /** @var DBManager Variable useful for using the DBManager class to request and write data to the database. */
     private $DBManager;
 
+    /** @var string|null Token used for the reset password process.  */
+    private $token = null;
+
     /**
      * Reset constructor.
      */
@@ -32,7 +35,8 @@ class Reset
         if(($this->email = $this->getEmail()) != null){
             $this->DBManager->usr_email = $this->email;
             $this->userData = $this->DBManager->getUserFromDB();
-            if(!isset($_GET['token'])){
+            $this->token = htmlspecialchars($_GET['token']);
+            if($this->token == null){
                 $this->sendTokenViaMail();
             }else{
                 $this->resetP();
@@ -47,13 +51,8 @@ class Reset
      * @return string|null The passed e-mail if exists. Null otherwise.
      */
     private function getEmail(){
-        if(isset($_POST['email'])){
-            return htmlspecialchars($_POST['email']);
-        }elseif (isset($_GET['email'])){
-            return htmlspecialchars($_GET['email']);
-        }else {
-            return null;
-        }
+        $temp = htmlspecialchars($_POST['email']);
+        return $temp != null ? $temp : htmlspecialchars($_GET['email']);
     }
 
     /**
@@ -73,7 +72,7 @@ class Reset
     private function resetP()
     {
         if(isset($_GET['token'])) {
-            $this->DBManager->token = htmlspecialchars($_GET['token']);
+            $this->DBManager->token = $this->token;
             if($this->DBManager->checkUserToken()){
                 $newP = $this->randomString();
                 if($this->DBManager->setUserP(password_hash($newP, PASSWORD_DEFAULT))) {
