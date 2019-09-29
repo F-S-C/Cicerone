@@ -117,10 +117,10 @@ class Sender
      */
     public function setEmail(){
         if(isset($_POST['recipient_email']) && isset($_POST['username'])) {
-            $this->recipient_email = $_POST['recipient_email'];
-            $this->db_manager->username = $_POST['username'];
+            $this->recipient_email = htmlspecialchars($_POST['recipient_email']);
+            $this->db_manager->username = htmlspecialchars($_POST['username']);
             if (isset($_POST['type'])) {
-                switch ($_POST['type']) {
+                switch (htmlspecialchars($_POST['type'])) {
                     case "registrationConfirmed":
                         $this->email_filename = "./mail/registrationConfirmed.php";
                         $this->email_subject = "Registrazione completata!";
@@ -130,7 +130,7 @@ class Sender
                         $this->email_filename = "./mail/reservationConfirmation.php";
                         $this->email_subject = "Siamo pronti a partire!";
                         if(isset($_POST['itinerary_code'])){
-                            $this->db_manager->itinerary_code = $_POST['itinerary_code'];
+                            $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code']);
                             $this->email_data = array_merge($this->db_manager->getUserFromDB(), $this->db_manager->getItineraryFromDB());
                         }else{
                             die('{"result":false, "error":"Sender: Missing itinerary_code field!"}"');
@@ -140,7 +140,7 @@ class Sender
                         $this->email_filename = "./mail/newItineraryRequest.php";
                         $this->email_subject = "Hai una nuova richiesta!";
                         if(isset($_POST['itinerary_code'])){
-                            $this->db_manager->itinerary_code = $_POST['itinerary_code'];
+                            $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code']);
                             $this->email_data = array_merge($this->db_manager->getUserFromDB(), $this->db_manager->getItineraryFromDB());
                         }else{
                             die('{"result":false, "error":"Sender: Missing itinerary_code field!"}"');
@@ -150,10 +150,10 @@ class Sender
                         $this->email_filename = "./mail/reservationRefuse.php";
                         $this->email_subject = "La tua richiesta non e' stata accettata.";
                         if(isset($_POST['itinerary_code']) && isset($_POST['cicerone_email'])){
-                            $this->db_manager->itinerary_code = $_POST['itinerary_code'];
+                            $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code']);
                             $this->email_data = array_merge($this->db_manager->getUserFromDB(),
                                 $this->db_manager->getItineraryFromDB(),
-                                array("cicerone_email" => $_POST['cicerone_email']));
+                                array("cicerone_email" => htmlspecialchars($_POST['cicerone_email'])));
                         }else{
                             die('{"result":false, "error":"Sender: Missing itinerary_code or cicerone_email field!"}"');
                         }
@@ -162,10 +162,10 @@ class Sender
                         $this->email_filename = "./mail/reservationRemove.php";
                         $this->email_subject = "Un'utente ha rimosso la sua prenotazione!";
                         if(isset($_POST['itinerary_code']) && isset($_POST['globetrotter_email']) && isset($_POST['globetrotter_name']) && isset($_POST['globetrotter_surname'])){
-                            $this->db_manager->itinerary_code = $_POST['itinerary_code'];
+                            $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code']);
                             $this->email_data = array_merge($this->db_manager->getUserFromDB(),
                                 $this->db_manager->getItineraryFromDB(),
-                                array("globetrotter_email" => $_POST['globetrotter_email'], "globetrotter_name" => $_POST['globetrotter_name'], "globetrotter_surname" => $_POST['globetrotter_surname']));
+                                array("globetrotter_email" => htmlspecialchars($_POST['globetrotter_email']), "globetrotter_name" => htmlspecialchars($_POST['globetrotter_name']), "globetrotter_surname" => htmlspecialchars($_POST['globetrotter_surname'])));
                         }else{
                             die('{"result":false, "error":"Sender: Missing itinerary_code, globetrotter_email, globetrotter_surname or globetrotter_name field!"}"');
                         }

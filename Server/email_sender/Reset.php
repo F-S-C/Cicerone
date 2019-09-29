@@ -29,8 +29,7 @@ class Reset
     public function __construct(){
         $this->sender = new Sender();
         $this->DBManager = new DBManager();
-        if(isset($_POST['email']) || isset($_GET['email'])){
-            $this->email = isset($_GET['email']) ? $_GET['email'] : $_POST['email'];
+        if(($this->email = $this->getEmail()) != null){
             $this->DBManager->usr_email = $this->email;
             $this->userData = $this->DBManager->getUserFromDB();
             if(!isset($_GET['token'])){
@@ -40,6 +39,20 @@ class Reset
             }
         }else{
             die('{"result":false,"error":"Reset: Missing email field!"}');
+        }
+    }
+
+    /**
+     * Return the e-mail passed via get or post method.
+     * @return string|null The passed e-mail if exists. Null otherwise.
+     */
+    private function getEmail(){
+        if(isset($_POST['email'])){
+            return htmlspecialchars($_POST['email']);
+        }elseif (isset($_GET['email'])){
+            return htmlspecialchars($_GET['email']);
+        }else {
+            return null;
         }
     }
 
@@ -60,7 +73,7 @@ class Reset
     private function resetP()
     {
         if(isset($_GET['token'])) {
-            $this->DBManager->token = $_GET['token'];
+            $this->DBManager->token = htmlspecialchars($_GET['token']);
             if($this->DBManager->checkUserToken()){
                 $newP = $this->randomString();
                 if($this->DBManager->setUserP(password_hash($newP, PASSWORD_DEFAULT))) {
