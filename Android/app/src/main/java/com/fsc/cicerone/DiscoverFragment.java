@@ -125,6 +125,7 @@ public class DiscoverFragment extends Fragment implements Refreshable {
         setBeginningDateBtn.setText(getString(R.string.beginning_date));
         beginningDate = null;
 
+        setEndingDateBtn.setEnabled(false);
         setButtonStyle(setEndingDateBtn, R.style.Widget_MaterialComponents_Button_OutlinedButton);
         setEndingDateBtn.setText(getString(R.string.ending_date));
         endingDate = null;
