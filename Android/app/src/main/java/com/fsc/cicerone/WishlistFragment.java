@@ -103,6 +103,7 @@ public class WishlistFragment extends Fragment implements Refreshable {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
 
             List<Itinerary> itineraryList = new ArrayList<>(list.size());
+            noItinerariesTextView.setVisibility(View.GONE);
             for (Wishlist item : list) {
                 itineraryList.add(item.getItinerary());
             }
