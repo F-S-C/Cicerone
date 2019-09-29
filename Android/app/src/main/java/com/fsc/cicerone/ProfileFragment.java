@@ -201,7 +201,14 @@ public class ProfileFragment extends Fragment implements Refreshable {
                     modifyButton.setText(view1.getContext().getString(R.string.modify));
                     updateUserData();
                 } else {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+                    if(name.getText().toString().equals("")) name.setError(getString(R.string.empty_name_error));
+                    if(surname.getText().toString().equals("")) surname.setError(getString(R.string.empty_surname_error));
+                    if(email.getText().toString().equals("")) email.setError(getString(R.string.empty_email_error));
+                    if(cellphone.getText().toString().equals("")) cellphone.setError(getString(R.string.empty_cellphone_error));
+                    if(birthDate.getText().toString().equals("")) birthDate.setError(getString(R.string.empty_birthday_error));
+                    if(documentNumber.getText().toString().equals("")) documentNumber.setError(getString(R.string.empty_document_number_error));
+                    if(documentType.getText().toString().equals("")) documentType.setError(getString(R.string.empty_document_type_error));
+                    if(documentExpiryDate.getText().toString().equals("")) documentExpiryDate.setError(getString(R.string.empty_document_expiry_date_error));
                 }
             }
         });

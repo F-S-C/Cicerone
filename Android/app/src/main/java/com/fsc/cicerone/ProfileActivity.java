@@ -181,9 +181,13 @@ public class ProfileActivity extends AppCompatActivity {
                     isReviewed();
                     requestDataForRecycleView(recyclerView);
                     dialogUpdate.dismiss();
-                } else
-                    Toast.makeText(this, ProfileActivity.this.getString(R.string.error_fields_empty),
+                } else{
+                    if(feedbackReview.getRating() ==0) Toast.makeText(this, ProfileActivity.this.getString(R.string.empty_feedback_error),
                             Toast.LENGTH_SHORT).show();
+                    if(descriptionReview.getText().toString().equals("")) descriptionReview.setError(getString(R.string.empty_description_error));
+
+                }
+
             });
             buttonNegative.setOnClickListener(view -> new MaterialAlertDialogBuilder(this)
                     .setTitle(getString(R.string.are_you_sure))
@@ -229,9 +233,12 @@ public class ProfileActivity extends AppCompatActivity {
                     isReviewed();
                     requestDataForRecycleView(recyclerView);
                     dialogSubmit.dismiss();
-                } else
-                    Toast.makeText(this, ProfileActivity.this.getString(R.string.error_fields_empty),
+                } else{
+                    if(feedbackReview.getRating() ==0) Toast.makeText(this, ProfileActivity.this.getString(R.string.empty_feedback_error),
                             Toast.LENGTH_SHORT).show();
+                    if(descriptionReview.getText().toString().equals("")) descriptionReview.setError(getString(R.string.empty_description_error));
+                }
+
             });
         });
         dialogSubmit.show();

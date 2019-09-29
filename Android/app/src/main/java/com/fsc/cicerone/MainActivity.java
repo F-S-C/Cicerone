@@ -266,20 +266,6 @@ public class MainActivity extends AppCompatActivity {
         dialogSubmit.setOnShowListener(dialogInterface -> {
 
             Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
-            /*button.setOnClickListener(view -> new MaterialAlertDialogBuilder(context)
-                    .setTitle(getString(R.string.are_you_sure))
-                    .setMessage(getString(R.string.sure_to_insert_report))
-                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                        if (allFilled()) {
-                            ReportManager.addNewReport(context, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString());
-                            refresh();
-                            dialogSubmit.dismiss();
-                        }else
-                            Toast.makeText(context, context.getString(R.string.error_fields_empty),
-                                    Toast.LENGTH_SHORT).show();
-                    })
-                    .setNegativeButton(getString(R.string.no), null)
-                    .show());*/
             button.setOnClickListener(view -> {
                 if (!object.getText().toString().equals("") && !body.getText().toString().equals("") && !users.getSelectedItem().equals("")) {
                     new MaterialAlertDialogBuilder(MainActivity.this)
@@ -293,8 +279,10 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .setNegativeButton(R.string.no, null)
                             .show();
-                } else
-                    Toast.makeText(MainActivity.this, getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+                } else{
+                 if(object.getText().toString().equals("")) object.setError(getString(R.string.empty_object_error));
+                 if(body.getText().toString().equals("")) body.setError(getString(R.string.empty_body_error));
+                }
             });
 
         });
