@@ -31,11 +31,12 @@
         android:text="@string/clear_wishlist" />
 
     <TextView
-        android:id="@+id/numberOfItineraries"
+        android:id="@+id/noItineraries"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="25dp"
-        android:text="@string/wishlist_number"
+        android:text="@string/empty_wishlist"
+        android:visibility="gone"
         android:textAlignment="center"
         android:textSize="18sp" />
 
