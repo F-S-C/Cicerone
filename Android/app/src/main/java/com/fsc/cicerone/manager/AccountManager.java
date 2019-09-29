@@ -29,6 +29,7 @@ import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.functional_interfaces.RunnableUsingBusinessEntity;
+import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Reservation;
@@ -127,13 +128,13 @@ public abstract class AccountManager {
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (!result.getResult()) {
                         Log.e("DELETE_USER_ERROR", result.getMessage());
+                    }else{
+                        Mailer.sendAccountDeleteConfirmationEmail(v -> logout());
                     }
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(currentLoggedUser.getCredentials()))
                 .build();
         connector.execute();
-
-        logout();
     }
 
     /**

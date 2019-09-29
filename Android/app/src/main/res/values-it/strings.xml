@@ -232,4 +232,9 @@
     <string name="remove_request_reservation">Rimuovi la richiesta di prenotazione</string>
     <string name="removed_user">L\'utente è stato rimosso.</string>
     <string name="no_participants">Nessun partecipante per questo itinerario</string>
+    <string name="error_send_email">Si è verificato un\'errore durante l\'invio della mail di conferma</string>
+    <string name="email_sent">E-mail inviata</string>
+    <string name="forgot_password_text">Inserisci la tua email. Se corretta, ti verrà inviato un link per reimpostare la password.</string>
+    <string name="send_link">Invia il link di reset</string>
+    <string name="reset_password">Reimposta la password</string>
 </resources>

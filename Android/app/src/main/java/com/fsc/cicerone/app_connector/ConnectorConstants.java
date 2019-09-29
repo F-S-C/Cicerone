@@ -237,9 +237,14 @@ public final class ConnectorConstants {
     public static final String UPDATE_RESERVATION = SERVER_URL + DB_CONNECTOR_FOLDER + UPDATE_SUBFOLDER + "/UpdateReservation.php";
 
     /**
-     * URL of the script that takes care of sending the e-mails.
+     * URL of the class that takes care of sending the e-mails.
      */
-    public static final String EMAIL_SENDER = SERVER_URL + "/email_sender/sender.php";
+    public static final String EMAIL_SENDER = SERVER_URL + "/email_sender/Sender.php";
+
+    /**
+     * URL of the class that takes care of sending the temporary password via e-mail.
+     */
+    public static final String EMAIL_RESET_PASSWORD = SERVER_URL + "/email_sender/Reset.php";
 
     /**
      * URL of the script that takes care of uploading the images to the server.

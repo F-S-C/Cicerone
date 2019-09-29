@@ -37,6 +37,7 @@ import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.LanguageManager;
 import com.fsc.cicerone.model.Document;
@@ -217,7 +218,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (validateSecondPageData()) {
                     signup.setText(R.string.loading);
                     signup.setEnabled(false);
-                    AccountManager.insertUser(this, setNewUser(), result -> {
+                    User newUser;
+                    AccountManager.insertUser(this, newUser = setNewUser(), result -> {
                         if (result) {
                             AccountManager.insertUserDocument(this, username.getText().toString().trim().toLowerCase(), new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()),
                                     ins -> {
@@ -227,6 +229,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                             Intent i = new Intent(this, SplashActivity.class);
                                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             Toast.makeText(this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
+                                            Mailer.sendRegistrationConfirmationEmail(this, newUser, res ->{
+                                                if(!res) {
+                                                    Toast.makeText(this, getString(R.string.error_send_email), Toast.LENGTH_LONG).show();
+                                                }
+                                            });
                                             startActivity(i);
                                         } else {
                                             signup.setText(R.string.sign_up);

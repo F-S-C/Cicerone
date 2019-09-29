@@ -17,6 +17,7 @@
 package com.fsc.cicerone.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,7 +118,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             holder.declineReservation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
                     .setTitle(context.getString(R.string.are_you_sure))
                     .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
-                        ReservationManager.refuseReservation(mData.get(position));
+                        ReservationManager.removeReservation(mData.get(position),null);
                         removeAt(position);
                         if(fragment != null && fragment instanceof Refreshable) ((Refreshable) fragment).refresh();
                     }))
@@ -129,7 +130,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             holder.removeParticipation.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
                     .setTitle(context.getString(R.string.are_you_sure))
                     .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> {
-                        ReservationManager.refuseReservation(mData.get(position));
+                        ReservationManager.deleteReservation(mData.get(position));
                         removeAt(position);
                         if(fragment != null && fragment instanceof Refreshable) ((Refreshable) fragment).refresh();
                     }))
