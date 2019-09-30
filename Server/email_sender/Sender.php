@@ -116,11 +116,11 @@ class Sender
      * Based on the type value passed in post, the context of the email and its data changes.
      */
     public function setEmail(){
-        if(isset($_POST['recipient_email']) && isset($_POST['username'])) {
-            $this->recipient_email = htmlspecialchars($_POST['recipient_email']);
-            $this->db_manager->username = htmlspecialchars($_POST['username']);
-            $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code']);
-            switch (htmlspecialchars($_POST['type'])) {
+        $this->recipient_email = htmlspecialchars($_POST['recipient_email'] ?? null);
+        $this->db_manager->username = htmlspecialchars($_POST['recipient_email'] ?? null);
+        $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code'] ?? null);
+        if($this->recipient_email != null && $this->db_manager->username != null) {
+            switch (htmlspecialchars($_POST['type'] ?? null)) {
                 case "registrationConfirmed":
                     $this->email_filename = "./mail/registrationConfirmed.php";
                     $this->email_subject = "Registrazione completata!";
@@ -141,14 +141,14 @@ class Sender
                     $this->email_subject = "La tua richiesta non e' stata accettata.";
                     $this->email_data = array_merge($this->db_manager->getUserFromDB(),
                         $this->db_manager->getItineraryFromDB(),
-                        array("cicerone_email" => htmlspecialchars($_POST['cicerone_email'])));
+                        array("cicerone_email" => htmlspecialchars($_POST['cicerone_email'] ?? "")));
                     break;
                 case "reservationRemove":
                     $this->email_filename = "./mail/reservationRemove.php";
                     $this->email_subject = "Un'utente ha rimosso la sua prenotazione!";
                     $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code']);
                     $this->email_data = array_merge($this->db_manager->getUserFromDB(), $this->db_manager->getItineraryFromDB(),
-                            array("globetrotter_email" => htmlspecialchars($_POST['globetrotter_email']), "globetrotter_name" => htmlspecialchars($_POST['globetrotter_name']), "globetrotter_surname" => htmlspecialchars($_POST['globetrotter_surname'])));
+                            array("globetrotter_email" => htmlspecialchars($_POST['globetrotter_email'] ?? ""), "globetrotter_name" => htmlspecialchars($_POST['globetrotter_name'] ?? ""), "globetrotter_surname" => htmlspecialchars($_POST['globetrotter_surname'] ?? "")));
                     break;
                 case "accountDeleted":
                     $this->email_filename = "./mail/accountDeleted.php";

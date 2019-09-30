@@ -32,10 +32,11 @@ class Reset
     public function __construct(){
         $this->sender = new Sender();
         $this->DBManager = new DBManager();
-        if(($this->email = $this->getEmail()) != null){
+        $this->email = htmlspecialchars($_POST['email'] ?? $_GET['email'] ?? null);
+        if($this->email != null){
             $this->DBManager->usr_email = $this->email;
             $this->userData = $this->DBManager->getUserFromDB();
-            $this->token = htmlspecialchars($_GET['token']);
+            $this->token = htmlspecialchars($_GET['token'] ?? null);
             if($this->token == null){
                 $this->sendTokenViaMail();
             }else{
@@ -44,15 +45,6 @@ class Reset
         }else{
             die('{"result":false,"error":"Reset: Missing email field!"}');
         }
-    }
-
-    /**
-     * Return the e-mail passed via get or post method.
-     * @return string|null The passed e-mail if exists. Null otherwise.
-     */
-    private function getEmail(){
-        $temp = htmlspecialchars($_POST['email']);
-        return $temp != null ? $temp : htmlspecialchars($_GET['email']);
     }
 
     /**
