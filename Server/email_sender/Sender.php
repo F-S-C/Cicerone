@@ -117,7 +117,7 @@ class Sender
      */
     public function setEmail(){
         $this->recipient_email = htmlspecialchars($_POST['recipient_email'] ?? null);
-        $this->db_manager->username = htmlspecialchars($_POST['recipient_email'] ?? null);
+        $this->db_manager->username = htmlspecialchars($_POST['username'] ?? null);
         $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code'] ?? null);
         if($this->recipient_email != null && $this->db_manager->username != null) {
             switch (htmlspecialchars($_POST['type'] ?? null)) {

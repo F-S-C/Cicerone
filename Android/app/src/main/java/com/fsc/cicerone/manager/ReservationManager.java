@@ -98,9 +98,7 @@ public abstract class ReservationManager {
                     if (!result.getResult())
                         Log.e("INSERT_RESERVATION_ERR", result.getMessage());
                     else
-                        Mailer.sendItineraryRequestEmail(context, reservation, res ->{
-                            //Do nothing
-                        });
+                        Mailer.sendItineraryRequestEmail(context, reservation, null);
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
                 .build();
