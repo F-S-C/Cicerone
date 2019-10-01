@@ -555,7 +555,7 @@ public class User extends BusinessEntity {
         private Document document;
         private Set<Language> languages;
 
-        public Builder(String password, String username) {
+        public Builder(String username, String password) {
             this.password = password;
             this.username = username;
         }
