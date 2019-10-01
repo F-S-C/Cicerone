@@ -440,6 +440,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/review_itinerary" />
 
+                        <TextView
+                            android:id="@+id/messageNoReview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/material_card_spacing"
+                            android:text="@string/no_review"
+                            android:textAlignment="center"
+                            android:textSize="16sp"
+                            android:visibility="gone" />
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_marginTop="@dimen/material_card_spacing"
                             android:id="@+id/reviewList"

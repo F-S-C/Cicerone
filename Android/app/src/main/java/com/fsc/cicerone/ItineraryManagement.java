@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -49,6 +50,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
     private RecyclerView.Adapter adapter;
     private Map<String, Object> code;
     private Itinerary currentItinerary;
+    private TextView messageNoReview;
 
 
     public ItineraryManagement() {
@@ -69,6 +71,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
         FloatingActionButton updateItinerary = findViewById(R.id.editItinerary);
 
         RecyclerView recyclerView = findViewById(R.id.reviewList);
+        messageNoReview = findViewById(R.id.messageNoReview);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -122,7 +125,8 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
                     if (!list.isEmpty()) {
                         adapter = new ReviewAdapter(this, list);
                         recyclerView.setAdapter(adapter);
-                    }
+                    }else
+                        messageNoReview.setVisibility(View.VISIBLE);
                 })
                 .setObjectToSend(parameters)
                 .build();

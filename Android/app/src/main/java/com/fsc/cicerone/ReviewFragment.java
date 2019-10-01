@@ -44,6 +44,7 @@ public class ReviewFragment extends Fragment implements Refreshable {
     private RecyclerView recyclerView;
     private TextView message;
 
+
     private SwipeRefreshLayout swipeRefreshLayout = null;
 
     /**
@@ -81,7 +82,6 @@ public class ReviewFragment extends Fragment implements Refreshable {
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         ReviewManager.requestUserReviews((Activity) getContext(), AccountManager.getCurrentLoggedUser(), () -> {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-            message.setVisibility(View.GONE);
         }, list -> {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
             if (!list.isEmpty()) {

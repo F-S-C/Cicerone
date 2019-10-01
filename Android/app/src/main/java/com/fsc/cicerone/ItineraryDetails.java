@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -56,6 +57,7 @@ public class ItineraryDetails extends ItineraryActivity {
 
     private boolean isInWishlist;
 
+    private TextView messageNoReview;
     private EditText descriptionReview;
     private RatingBar feedbackReview;
 
@@ -94,6 +96,7 @@ public class ItineraryDetails extends ItineraryActivity {
 
 
         recyclerView = findViewById(R.id.reviewList);
+        messageNoReview = findViewById(R.id.messageNoReview);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -226,10 +229,12 @@ public class ItineraryDetails extends ItineraryActivity {
                     isReviewed();
                     refresh();
                     dialogUpdate.dismiss();
-                } else{
-                    if(feedbackReview.getRating() ==0) Toast.makeText(this, ItineraryDetails.this.getString(R.string.empty_feedback_error),
-                            Toast.LENGTH_SHORT).show();
-                    if(descriptionReview.getText().toString().equals("")) descriptionReview.setError(getString(R.string.empty_description_error));
+                } else {
+                    if (feedbackReview.getRating() == 0)
+                        Toast.makeText(this, ItineraryDetails.this.getString(R.string.empty_feedback_error),
+                                Toast.LENGTH_SHORT).show();
+                    if (descriptionReview.getText().toString().equals(""))
+                        descriptionReview.setError(getString(R.string.empty_description_error));
                 }
 
             });
@@ -277,10 +282,12 @@ public class ItineraryDetails extends ItineraryActivity {
                     isReviewed();
                     refresh();
                     dialogSubmit.dismiss();
-                } else{
-                    if(feedbackReview.getRating() ==0) Toast.makeText(this, ItineraryDetails.this.getString(R.string.empty_feedback_error),
-                            Toast.LENGTH_SHORT).show();
-                    if(descriptionReview.getText().toString().equals("")) descriptionReview.setError(getString(R.string.empty_description_error));
+                } else {
+                    if (feedbackReview.getRating() == 0)
+                        Toast.makeText(this, ItineraryDetails.this.getString(R.string.empty_feedback_error),
+                                Toast.LENGTH_SHORT).show();
+                    if (descriptionReview.getText().toString().equals(""))
+                        descriptionReview.setError(getString(R.string.empty_description_error));
                 }
             });
         });
@@ -377,8 +384,11 @@ public class ItineraryDetails extends ItineraryActivity {
 
     private void requestDataForRecycleView() {
         ReviewManager.requestItineraryReviews(this, itinerary, list -> {
-            adapter = new ReviewAdapter(this, list);
-            recyclerView.setAdapter(adapter);
+            if (!list.isEmpty()) {
+                adapter = new ReviewAdapter(this, list);
+                recyclerView.setAdapter(adapter);
+            }else
+                messageNoReview.setVisibility(View.VISIBLE);
         });
     }
 

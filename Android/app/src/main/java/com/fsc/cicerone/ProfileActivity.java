@@ -58,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private TextView descriptionReview;
     private RatingBar feedbackReview;
+    private TextView messageNoReview;
 
     private User reviewedUser;
     private UserReview userReview;
@@ -75,6 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
         star = findViewById(R.id.avg_feedback);
         buttReview = findViewById(R.id.insertUserReview);
         recyclerView = findViewById(R.id.reviewUserList);
+        messageNoReview = findViewById(R.id.messageNoReview);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -251,8 +253,11 @@ public class ProfileActivity extends AppCompatActivity {
     private void requestDataForRecycleView(RecyclerView recyclerView) {
         ReviewManager.getAvgUserFeedback(this, reviewedUser, value -> star.setRating(value));
         ReviewManager.requestUserReviews(this, reviewedUser, null, list -> {
-            adapter = new ReviewAdapter(ProfileActivity.this, list);
-            recyclerView.setAdapter(adapter);
+            if(!list.isEmpty()) {
+                adapter = new ReviewAdapter(ProfileActivity.this, list);
+                recyclerView.setAdapter(adapter);
+            }else
+                messageNoReview.setVisibility(View.VISIBLE);
         });
     }
 }
