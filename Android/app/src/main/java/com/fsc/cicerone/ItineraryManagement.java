@@ -20,7 +20,6 @@ package com.fsc.cicerone;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -30,7 +29,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
@@ -139,28 +137,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
         }
     }
 
-    @Override
-    public void refresh() {
-        refresh(null);
-    }
 
-
-    @Override
-    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        ItineraryManager.requestItinerary(this, code, () -> {
-            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-
-        }, list -> {
-            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-            Log.e("it",list.get(0).toString());
-        });
-
-    }
-
-    @Override
-    public void bindDataToView() {
-        super.bindDataToView();
-    }
 }
 
 
