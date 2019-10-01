@@ -25,28 +25,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-
-import app_connector.BooleanConnector;
-import app_connector.ConnectorConstants;
-import app_connector.SendInPostConnector;
 
 /**
  * ProfileActivity is the class that allows you to build a user's profile activity.
@@ -66,9 +58,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private TextView descriptionReview;
     private RatingBar feedbackReview;
+    private TextView messageNoReview;
 
     private User reviewedUser;
-    private Map<String, Object> params;
     private UserReview userReview;
 
     @Override
@@ -84,43 +76,34 @@ public class ProfileActivity extends AppCompatActivity {
         star = findViewById(R.id.avg_feedback);
         buttReview = findViewById(R.id.insertUserReview);
         recyclerView = findViewById(R.id.reviewUserList);
+        messageNoReview = findViewById(R.id.messageNoReview);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        params = new HashMap<>();
 
         ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setTitle(R.string.profile);
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Bundle bundle =  Objects.requireNonNull(getIntent().getExtras());
-        reviewedUser = new User();
-        try {
-            reviewedUser = new User(new JSONObject(bundle.getString("reviewed_user")));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Bundle bundle = Objects.requireNonNull(getIntent().getExtras());
+        reviewedUser = new User(bundle.getString("reviewed_user"));
 
         //set TextView data user
         getData(reviewedUser);
-        //set avg feedback user
-        avgReviewUser(reviewedUser);
 
-        if(!AccountManager.isLogged()){
+        requestDataForRecycleView(recyclerView);
+
+        if (!AccountManager.isLogged()) {
             buttReview.setEnabled(false);
         }
 
-        if(AccountManager.isLogged()){
-            params.put("reviewed_user", reviewedUser.getUsername());
-            params.put("username",AccountManager.getCurrentLoggedUser().getUsername());
-            permissionReview(params);
+        if (AccountManager.isLogged()) {
+            permissionReview();
         }
         //set recycler review list
-        requestDataForRecycleView(params, recyclerView);
-
 
     }
 
@@ -139,163 +122,142 @@ public class ProfileActivity extends AppCompatActivity {
         imageView.setImageResource(reviewedUser.getSex().getAvatarResource());
     }
 
-    private void avgReviewUser(User reviewUser){
-
-        SendInPostConnector<UserReview> connectorReview = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
-                .setContext(this)
-                .setOnEndConnectionListener(list -> {
-                    int sum = 0;
-                    for (UserReview review : list) {
-                        sum += review.getFeedback();
-                    }
-                    star.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
-                })
-                .setObjectToSend(SendInPostConnector.paramsFromObject(reviewUser))
-                .build();
-        connectorReview.execute();
-
-    }
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
-    public void permissionReview(Map<String, Object> review) {
-
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.REQUEST_FOR_REVIEW)
-                .setContext(this)
-                .setOnStartConnectionListener(() -> buttReview.setEnabled(false))
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if(result.getResult())
-                        isReviewed(review);
-                })
-                .setObjectToSend(review)
-                .build();
-        connector.execute();
+    public void permissionReview() {
+        ReviewManager.permissionReviewUser(this, reviewedUser, AccountManager.getCurrentLoggedUser(), success -> {
+            if (success) isReviewed();
+        }, () -> buttReview.setEnabled(false));
     }
 
-    public void isReviewed(Map<String, Object> review) {
-        SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))                .setContext(this)
-                .setOnEndConnectionListener(list -> {
-                    if (!list.isEmpty()) {
-                        userReview = list.get(0);
-                        buttReview.setEnabled(true);
-                        buttReview.setText(getString(R.string.updateReview));
-                        buttReview.setOnClickListener(view -> ProfileActivity.this.updateReview());
+    public void isReviewed() {
 
-                    } else {
-                        userReview = new UserReview.Builder(AccountManager.getCurrentLoggedUser(), reviewedUser).build();
-                        buttReview.setEnabled(true);
-                        buttReview.setText(getString(R.string.add_review));
-                        buttReview.setOnClickListener(view -> ProfileActivity.this.addReview());
-                    }
-                })
-                .setObjectToSend(review)
-                .build();
-        connector.execute();
+        ReviewManager.isReviewedUser(this, reviewedUser, AccountManager.getCurrentLoggedUser(), (result, found) -> {
+            if (found) {
+                UserReview review = (UserReview) result;
+                buttReview.setEnabled(true);
+                buttReview.setText(getString(R.string.updateReview));
+                buttReview.setOnClickListener(view -> ProfileActivity.this.updateReview(review));
+            } else {
+                userReview = new UserReview.Builder(AccountManager.getCurrentLoggedUser(), reviewedUser).build();
+                buttReview.setEnabled(true);
+                buttReview.setText(getString(R.string.add_review));
+                buttReview.setOnClickListener(view -> ProfileActivity.this.addReview(userReview));
+            }
+
+        });
 
     }
 
-    private void updateReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
+    private void updateReview(UserReview userReview) {
+        View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
-        descriptionReview = view.findViewById(R.id.objectReview);
-        feedbackReview = view.findViewById(R.id.feedbackReview);
+        descriptionReview = viewReview.findViewById(R.id.objectReview);
+        feedbackReview = viewReview.findViewById(R.id.feedbackReview);
         descriptionReview.setText(userReview.getDescription());
         feedbackReview.setRating(userReview.getFeedback());
 
-        new MaterialAlertDialogBuilder(this)
+        AlertDialog dialogUpdate = new MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.update_review))
-                .setView(view)
-                .setPositiveButton(R.string.update_review, (dialog, id) -> {
-                    userReview.setDescription(descriptionReview.getText().toString());
-                    userReview.setFeedback((int) feedbackReview.getRating());
-                    if (allFilled()) {
-                        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_USER_REVIEW)
-                                .setContext(this)
-                                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                                    if (result.getResult()) {
-                                        Toast.makeText(this, ProfileActivity.this.getString(R.string.updated_review),
-                                                Toast.LENGTH_SHORT).show();
-                                        isReviewed(params);
-                                        requestDataForRecycleView(params,recyclerView);
-                                    }
-                                })
-                                .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
-                                .build();
-                        connector.execute();
-                    } else
-                        Toast.makeText(this, ProfileActivity.this.getString(R.string.error_fields_empty),
-                                Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton(R.string.delete_review, (dialog, id) -> {
-                    BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_USER_REVIEW)
-                            .setContext(this)
-                            .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                                if (result.getResult()) {
-                                    Toast.makeText(this, ProfileActivity.this.getString(R.string.deleted_review),
-                                            Toast.LENGTH_SHORT).show();
-                                    isReviewed(params);
-                                    requestDataForRecycleView(params,recyclerView);
-                                }
-                            })
-                            .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
-                            .build();
-                    connector.execute();
-                })
-                .show();
+                .setView(viewReview)
+                .setPositiveButton(R.string.update_review, null)
+                .setNegativeButton(R.string.delete_review, null)
+                .setNeutralButton(R.string.cancel,null)
+                .create();
+
+        dialogUpdate.setOnShowListener(dialogInterface -> {
+
+            Button buttonPositive = dialogUpdate.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button buttonNegative = dialogUpdate.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+            buttonPositive.setOnClickListener(view -> {
+                userReview.setDescription(descriptionReview.getText().toString());
+                userReview.setFeedback((int) feedbackReview.getRating());
+                if (allFilled()) {
+                    ReviewManager.updateReviewUser(this, userReview, success -> Toast.makeText(this, ProfileActivity.this.getString(R.string.updated_review),
+                            Toast.LENGTH_SHORT).show());
+                    isReviewed();
+                    requestDataForRecycleView(recyclerView);
+                    dialogUpdate.dismiss();
+                } else{
+                    if(feedbackReview.getRating() ==0) Toast.makeText(this, ProfileActivity.this.getString(R.string.empty_feedback_error),
+                            Toast.LENGTH_SHORT).show();
+                    if(descriptionReview.getText().toString().equals("")) descriptionReview.setError(getString(R.string.empty_description_error));
+
+                }
+
+            });
+            buttonNegative.setOnClickListener(view -> new MaterialAlertDialogBuilder(this)
+                    .setTitle(getString(R.string.are_you_sure))
+                    .setMessage(getString(R.string.sure_to_remove_review))
+                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                        ReviewManager.deleteReviewUser(this, userReview, success -> Toast.makeText(this, ProfileActivity.this.getString(R.string.deleted_review),
+                                Toast.LENGTH_SHORT).show());
+                        isReviewed();
+                        requestDataForRecycleView(recyclerView);
+                        dialogUpdate.dismiss();
+                    })
+                    .setNegativeButton(getString(R.string.no), null)
+                    .show());
+        });
+        dialogUpdate.show();
     }
 
-    private void addReview() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
+    private void addReview(UserReview userReview) {
+        View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
-        descriptionReview = view.findViewById(R.id.objectReview);
-        feedbackReview = view.findViewById(R.id.feedbackReview);
+        descriptionReview = viewReview.findViewById(R.id.objectReview);
+        feedbackReview = viewReview.findViewById(R.id.feedbackReview);
         descriptionReview.setText("");
         feedbackReview.setRating(0);
 
-
-        new MaterialAlertDialogBuilder(this)
+        AlertDialog dialogSubmit = new MaterialAlertDialogBuilder(this)
+                .setView(viewReview)
                 .setTitle(getString(R.string.add_review))
                 .setMessage(getString(R.string.review_dialog_message))
-                .setView(view)
-                .setPositiveButton(R.string.add_review, (dialog, id) -> {
-                    if (allFilled()) {
-                        userReview.setFeedback((int) feedbackReview.getRating());
-                        userReview.setDescription(descriptionReview.getText().toString());
-                        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_USER_REVIEW)
-                                .setContext(this)
-                                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                                    if (result.getResult())
-                                        Toast.makeText(this, ProfileActivity.this.getString(R.string.added_review),
-                                                Toast.LENGTH_SHORT).show();
-                                    isReviewed(params);
-                                    requestDataForRecycleView(params, recyclerView);
-                                })
-                                .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
-                                .build();
-                        connector.execute();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
+                .setPositiveButton(R.string.submit_review, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+
+        dialogSubmit.setOnShowListener(dialogInterface -> {
+
+            Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> {
+                userReview.setFeedback((int) feedbackReview.getRating());
+                userReview.setDescription(descriptionReview.getText().toString());
+                if (allFilled()) {
+                    ReviewManager.addReviewUser(this, userReview, success -> Toast.makeText(this, ProfileActivity.this.getString(R.string.added_review),
+                            Toast.LENGTH_SHORT).show());
+                    isReviewed();
+                    requestDataForRecycleView(recyclerView);
+                    dialogSubmit.dismiss();
+                } else{
+                    if(feedbackReview.getRating() ==0) Toast.makeText(this, ProfileActivity.this.getString(R.string.empty_feedback_error),
+                            Toast.LENGTH_SHORT).show();
+                    if(descriptionReview.getText().toString().equals("")) descriptionReview.setError(getString(R.string.empty_description_error));
+                }
+
+            });
+        });
+        dialogSubmit.show();
     }
 
     private boolean allFilled() {
         return !descriptionReview.getText().toString().equals("") && feedbackReview.getRating() > 0;
     }
 
-    private void requestDataForRecycleView(Map<String, Object> review, RecyclerView recyclerView) {
-        SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
-                .setContext(this)
-                .setOnEndConnectionListener(list -> {
-                    adapter = new ReviewAdapter(this, list);
-                    recyclerView.setAdapter(adapter);
-                })
-                .setObjectToSend(review)
-                .build();
-        connector.execute();
+    private void requestDataForRecycleView(RecyclerView recyclerView) {
+        ReviewManager.getAvgUserFeedback(this, reviewedUser, value -> star.setRating(value));
+        ReviewManager.requestUserReviews(this, reviewedUser, null, list -> {
+            if(!list.isEmpty()) {
+                adapter = new ReviewAdapter(ProfileActivity.this, list);
+                recyclerView.setAdapter(adapter);
+            }else
+                messageNoReview.setVisibility(View.VISIBLE);
+        });
     }
 }

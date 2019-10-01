@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.AdminItineraryGlobetrotterAdapter;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 
@@ -44,8 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import app_connector.ConnectorConstants;
-import app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Itinerary on the account details
@@ -89,25 +87,19 @@ public class GlobetrotterItineraryListFragment extends Fragment {
 
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         TextView message = view.findViewById(R.id.no_itinerary_history);
-        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(context)
-                .setOnStartConnectionListener(() -> message.setVisibility(View.GONE))
-                .setOnEndConnectionListener(list -> {
-                    List<Reservation> filteredList = new ArrayList<>(list.size());
-                    for (Reservation reservation : list) {
-                        if (reservation.isConfirmed())
-                            filteredList.add(reservation);
-                    }
-                    if (!filteredList.isEmpty()) {
-                        adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), filteredList);
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        message.setVisibility(View.VISIBLE);
-                    }
-                })
-                .setObjectToSend(parameters)
-                .build();
-        connector.execute();
-    }
 
+        ReservationManager.getListInvestments(context, parameters, () -> message.setVisibility(View.GONE), list -> {
+            List<Reservation> filteredList = new ArrayList<>(list.size());
+            for (Reservation reservation : list) {
+                if (reservation.isConfirmed())
+                    filteredList.add(reservation);
+            }
+            if (!filteredList.isEmpty()) {
+                adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), filteredList);
+                recyclerView.setAdapter(adapter);
+            } else {
+                message.setVisibility(View.VISIBLE);
+            }
+        });
+    }
 }

@@ -4,7 +4,7 @@ namespace database_connector\view\insert;
 
 use database_connector\controller\insert\InsertItinerary;
 
-require_once "/membri/fsc/database_connector/controller/insert/InsertItinerary.php";
+require_once "/home/fsc/www/database_connector/controller/insert/InsertItinerary.php";
 
 $connector = new InsertItinerary();
 $connector->add_value(array($_POST['title'],

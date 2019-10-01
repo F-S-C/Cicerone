@@ -17,10 +17,12 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -31,9 +33,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import app_connector.BooleanConnector;
-import app_connector.ConnectorConstants;
-import app_connector.SendInPostConnector;
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
+
 
 /**
  * The manager class for the Reservation data-type.
@@ -44,6 +47,19 @@ public abstract class ReservationManager {
         throw new IllegalStateException("Utility class");
     }
 
+    public static void getReservations(Activity context, Itinerary itinerary, @Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback){
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("booked_itinerary", itinerary.getCode());
+
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnStartConnectionListener(null)
+                .setOnEndConnectionListener(callback)
+                .setObjectToSend(parameters)
+                .build()
+                .execute();
+    }
+
     /**
      * Remove a reservation from an itinerary. This operation is performed by a globetrotter.
      *
@@ -51,7 +67,11 @@ public abstract class ReservationManager {
      */
     public static void removeReservation(Itinerary itinerary) {
         Reservation reservation = new Reservation.Builder(AccountManager.getCurrentLoggedUser(), itinerary).build();
-        deleteReservationFromServer(reservation, null); // TODO: Check and send email to cicerone (IF-34)?
+        deleteReservationFromServer(reservation, v->{
+            if(v.getResult()){
+                Mailer.sendReservationRemoveEmail(null, itinerary, null);
+            }
+        });
     }
 
     /**
@@ -64,7 +84,7 @@ public abstract class ReservationManager {
      * @return The new reservation.
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static Reservation addReservation(Itinerary itinerary, int numberOfAdults, int numberOfChildren, Date requestedDate) {
+    public static Reservation addReservation(Itinerary itinerary, int numberOfAdults, int numberOfChildren, Date requestedDate, Activity context) {
         Reservation reservation = new Reservation.Builder(AccountManager.getCurrentLoggedUser(), itinerary)
                 .numberOfAdults(numberOfAdults)
                 .numberOfChildren(numberOfChildren)
@@ -76,7 +96,9 @@ public abstract class ReservationManager {
                 .setContext(null)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (!result.getResult())
-                        Log.e("INSERT_RESERVATION_ERR", result.getMessage()); //TODO: Send email to cicerone (IF-34)?
+                        Log.e("INSERT_RESERVATION_ERR", result.getMessage());
+                    else
+                        Mailer.sendItineraryRequestEmail(context, reservation, null);
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
                 .build();
@@ -104,13 +126,26 @@ public abstract class ReservationManager {
     }
 
     /**
-     * Refuse a reservation's request. This action is performed by a cicerone.
+     * Remove a reservation's request.
+     *
+     * @param reservation The reservation to be refused.
+     * @param context The application context.
+     */
+    public static void removeReservation(Reservation reservation, Activity context) {
+        deleteReservationFromServer(reservation, v -> {
+            if(v.getResult()){
+                Mailer.sendReservationRefuseEmail(context, reservation, null);
+            }
+        });
+    }
+
+    /**
+     * Remove a reservation's request.
      *
      * @param reservation The reservation to be refused.
      */
-    public static void refuseReservation(Reservation reservation) {
-        deleteReservationFromServer(reservation, null); // TODO: Check and send email to globetrotter (IF-34)?
-        // Garbage collector has to destroy 'reservation'.
+    public static void deleteReservation(Reservation reservation) {
+        deleteReservationFromServer(reservation, null);
     }
 
     /**
@@ -128,6 +163,13 @@ public abstract class ReservationManager {
         connector.execute();
     }
 
+    /**
+     * Check if an itinerary is already reserved.
+     *
+     * @param context The context of the caller.
+     * @param itinerary The itinerary of the reservation.
+     * @param callback    A callback to be executed after the operation is completed.
+     */
     public static void isReserved(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);
@@ -143,5 +185,46 @@ public abstract class ReservationManager {
                     .build()
                     .execute();
         }
+    }
+
+    /**
+     * Check if an reservation is already confirmed.
+     *
+     * @param context The context of the caller.
+     * @param itinerary The itinerary of the reservation.
+     * @param callback    A callback to be executed after the operation is completed.
+     */
+    public static void isConfirmed(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+        if(AccountManager.isLogged()){
+            Map<String, Object> params = new HashMap<>(2);
+            params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
+            params.put("booked_itinerary", itinerary.getCode());
+
+            new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
+                    .setContext(context)
+                    .setOnEndConnectionListener(list -> {
+                        if(callback != null) callback.accept(list.get(0).isConfirmed());
+                    })
+                    .setObjectToSend(params)
+                    .build()
+                    .execute();
+        }
+    }
+
+    /**
+     * Get investments'list of the user.
+     * @param context The context of the caller.
+     * @param parameters The user of the investments'list.
+     * @param callback A callback to be executed after the operation is completed.
+     */
+    public static void getListInvestments(Activity context, Map<String,Object> parameters, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener,@Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback ){
+
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+                .setContext(context)
+                .setOnStartConnectionListener(onStartConnectionListener)
+                .setOnEndConnectionListener(callback)
+                .setObjectToSend(parameters)
+                .build()
+                .execute();
     }
 }

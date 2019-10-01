@@ -5,7 +5,7 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 
-require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
+require_once "/home/fsc/www/database_connector/controller/JsonConnector.php";
 
 /**
  * Request the languages in which an itinerary is available.
@@ -34,7 +34,7 @@ class RequestItineraryLanguage extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT * FROM itinerary_language";
+        $query = "SELECT itinerary_code, itinerary_language.language_code, language.language_name FROM itinerary_language INNER JOIN language ON itinerary_language.language_code = language.language_code";
 
         $conditions = array();
         $data = array();

@@ -20,9 +20,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,20 +48,28 @@ import java.util.Objects;
 public class WishlistFragment extends Fragment implements Refreshable {
 
     private ItineraryAdapter adapter;
-    private TextView numberOfItinerariesTextView;
-    private Button clearWishlistButton;
+    private TextView noItinerariesTextView;
     private RecyclerView recyclerView;
+    private Activity context;
+
 
 
     public static final int REQUEST_UPDATE_WISHLIST = 1031;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
-        numberOfItinerariesTextView = view.findViewById(R.id.numberOfItineraries);
-        clearWishlistButton = view.findViewById(R.id.clearWishlist);
+        context = Objects.requireNonNull(getActivity());
+
+        noItinerariesTextView = view.findViewById(R.id.noItineraries);
 
 
         // set up the RecyclerView
@@ -68,12 +78,6 @@ public class WishlistFragment extends Fragment implements Refreshable {
 
         refresh();
 
-        clearWishlistButton.setOnClickListener(v -> new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()))
-                .setTitle(getString(R.string.are_you_sure))
-                .setMessage(getString(R.string.confirm_delete_wishlist))
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> clearWish())
-                .setNegativeButton(getString(R.string.no), null)
-                .show());
 
         return view;
     }
@@ -103,16 +107,41 @@ public class WishlistFragment extends Fragment implements Refreshable {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
 
             List<Itinerary> itineraryList = new ArrayList<>(list.size());
+            noItinerariesTextView.setVisibility(View.GONE);
             for (Wishlist item : list) {
                 itineraryList.add(item.getItinerary());
             }
             adapter = new ItineraryAdapter(getActivity(), itineraryList, this);
 
-            numberOfItinerariesTextView.setText(String.format(getString(R.string.wishlist_number), list.size()));
             if (list.isEmpty())
-                clearWishlistButton.setVisibility(View.GONE);
+            {
+                noItinerariesTextView.setVisibility(View.VISIBLE);
+            }
+
 
             recyclerView.setAdapter(adapter);
         });
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.wishlist_menu, menu);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_clearWishlist) {
+            new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()))
+                    .setTitle(getString(R.string.are_you_sure))
+                    .setMessage(getString(R.string.confirm_delete_wishlist))
+                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> clearWish())
+                    .setNegativeButton(getString(R.string.no), null)
+                    .show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

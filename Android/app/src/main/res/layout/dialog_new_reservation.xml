@@ -21,40 +21,48 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/number_of_adults_input"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="@string/number_of_adults"
-        android:inputType="number" />
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/default_margin"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/number_of_children_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="@string/number_of_children"
-        android:inputType="number" />
+        <EditText
+            android:id="@+id/number_of_adults_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:hint="@string/number_of_adults"
+            android:inputType="number" />
 
-    <EditText
-        android:id="@+id/requested_date_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:focusable="false"
-        android:hint="@string/requested_date"
-        android:inputType="none"
-        tools:ignore="KeyboardInaccessibleWidget,TextFields" />
+        <EditText
+            android:id="@+id/number_of_children_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:hint="@string/number_of_children"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/requested_date_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:hint="@string/requested_date"
+            android:inputType="none"
+            tools:ignore="KeyboardInaccessibleWidget,TextFields" />
+
+    </LinearLayout>
 
 </LinearLayout>

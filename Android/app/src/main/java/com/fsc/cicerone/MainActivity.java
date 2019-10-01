@@ -18,17 +18,28 @@ package com.fsc.cicerone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ReportManager;
+import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserType;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -59,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private BottomNavigationView navView;
 
+    private boolean isFabMenuExtended = false;
+    private FloatingActionButton fabSettings;
+    private LinearLayout layoutFabReport;
+    private LinearLayout layoutFabItinerary;
+    private FrameLayout subFabContainer;
+
 
     /**
      * Create the activity and load the layout.
@@ -75,7 +92,43 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         navView = findViewById(R.id.bottom_navigation);
-        navView.getMenu().removeItem(AccountManager.isLogged() ? R.id.navigation_login : R.id.navigation_profile);
+        if (!AccountManager.isLogged()) {
+            navView.getMenu().findItem(R.id.navigation_profile).setTitle(getString(R.string.login));
+            navView.getMenu().findItem(R.id.navigation_profile).setIcon(getDrawable(R.drawable.ic_login));
+            navView.getMenu().removeItem(R.id.empty_menu_item);
+        }
+        fabSettings = findViewById(R.id.fab);
+        layoutFabReport = findViewById(R.id.layout_fab_new_report);
+        layoutFabItinerary = findViewById(R.id.layout_fab_new_itinerary);
+        subFabContainer = findViewById(R.id.fabFrame);
+
+        subFabContainer.setOnClickListener(v -> closeSubMenusFab());
+
+        FloatingActionButton fabReport = layoutFabReport.findViewById(R.id.fab_new_report);
+        FloatingActionButton fabItinerary = layoutFabItinerary.findViewById(R.id.fab_new_itinerary);
+
+        if (!AccountManager.isLogged()) {
+            fabSettings.setVisibility(View.GONE);
+        } else {
+            fabSettings.setOnClickListener(v -> {
+                if (isFabMenuExtended) {
+                    closeSubMenusFab();
+                } else {
+                    openSubMenusFab();
+                }
+            });
+
+            fabReport.setOnClickListener(v -> {
+                insertReport();
+                closeSubMenusFab();
+            });
+            fabItinerary.setOnClickListener(v -> {
+                closeSubMenusFab();
+                Intent i = new Intent().setClass(MainActivity.this, ItineraryCreation.class);
+                startActivity(i);
+            });
+        }
+        closeSubMenusFab();
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.main_activity_swipe_refresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
@@ -87,10 +140,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Fragment profileFragment = AccountManager.isLogged() ? new AccountDetails() : null;
+        Fragment profileFragment = AccountManager.isLogged() ? new AccountDetails(swipeRefreshLayout) : null;
         WishlistFragment wishlistFragment = AccountManager.isLogged() ? new WishlistFragment() : null;
 
         navView.setOnNavigationItemSelectedListener(item -> {
+            closeSubMenusFab();
             ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
             boolean toReturn = false;
             switch (item.getItemId()) {
@@ -115,12 +169,13 @@ public class MainActivity extends AppCompatActivity {
                     toReturn = true;
                     break;
                 case R.id.navigation_profile:
-                    changeCurrentFragment(profileFragment);
-                    supportActionBar.setTitle(getString(R.string.account));
+                    if (!AccountManager.isLogged()) {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    } else {
+                        changeCurrentFragment(profileFragment);
+                        supportActionBar.setTitle(getString(R.string.account));
+                    }
                     toReturn = true;
-                    break;
-                case R.id.navigation_login:
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     break;
                 default:
                     break;
@@ -170,5 +225,68 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void closeSubMenusFab() {
+        subFabContainer.setVisibility(View.GONE);
+        layoutFabReport.setVisibility(View.GONE);
+        layoutFabItinerary.setVisibility(View.GONE);
+        fabSettings.setImageResource(R.drawable.ic_add_black_24dp);
+        isFabMenuExtended = false;
+    }
+
+    private void openSubMenusFab() {
+        subFabContainer.setVisibility(View.VISIBLE);
+        layoutFabReport.setVisibility(View.VISIBLE);
+        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE)
+            layoutFabItinerary.setVisibility(View.VISIBLE);
+        fabSettings.setImageResource(R.drawable.ic_dialog_close_dark);
+        isFabMenuExtended = true;
+    }
+
+    private void insertReport() {
+        View reportView = getLayoutInflater().inflate(R.layout.dialog_new_report, null);
+
+        EditText object = reportView.findViewById(R.id.object);
+        EditText body = reportView.findViewById(R.id.body);
+        Spinner users = reportView.findViewById(R.id.users);
+
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
+
+        AccountManager.setUsersInSpinner(this, users);
+
+        AlertDialog dialogSubmit = new MaterialAlertDialogBuilder(this)
+                .setView(reportView)
+                .setTitle(getString(R.string.insert_report))
+                .setMessage(getString(R.string.report_dialog_message))
+                .setPositiveButton(R.string.insert_report, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+
+        dialogSubmit.setOnShowListener(dialogInterface -> {
+
+            Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> {
+                if (!object.getText().toString().equals("") && !body.getText().toString().equals("") && !users.getSelectedItem().equals("")) {
+                    new MaterialAlertDialogBuilder(MainActivity.this)
+                            .setTitle(R.string.insert_report)
+                            .setMessage(R.string.sure_to_insert_report)
+                            .setPositiveButton(R.string.yes, (dialog, witch) -> {
+                                ReportManager.addNewReport(MainActivity.this, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString(), success ->
+                                        Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show());
+//                                refresh();
+                                dialogSubmit.dismiss();
+                            })
+                            .setNegativeButton(R.string.no, null)
+                            .show();
+                } else{
+                 if(object.getText().toString().equals("")) object.setError(getString(R.string.empty_object_error));
+                 if(body.getText().toString().equals("")) body.setError(getString(R.string.empty_body_error));
+                }
+            });
+
+        });
+
+        dialogSubmit.show();
     }
 }

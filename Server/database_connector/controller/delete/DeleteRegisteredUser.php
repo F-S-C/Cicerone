@@ -6,7 +6,7 @@ namespace database_connector\controller\delete;
 use Exception;
 use mysqli_sql_exception;
 
-require_once "/membri/fsc/database_connector/controller/delete/DeleteConnector.php";
+require_once "/home/fsc/www/database_connector/controller/delete/DeleteConnector.php";
 
 
 class DeleteRegisteredUser extends DeleteConnector

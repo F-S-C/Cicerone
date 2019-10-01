@@ -18,10 +18,13 @@ package com.fsc.cicerone.model;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A language as represented in the system Cicerone. A language is composed by a code and a name
@@ -54,6 +57,20 @@ public class Language extends BusinessEntity {
 
     public Language(String json) {
         this(getJSONObject(json));
+    }
+
+    public static Set<Language> getSetFromJSONArray(JSONArray jsonArray) {
+        Set<Language> toReturn = new HashSet<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                toReturn.add(new Language(jsonArray.getJSONObject(i)));
+            } catch (JSONException e) {
+                Log.e("LANGUAGE_ERROR", "Error while parsing JSON. Error: " + e.getMessage());
+            }
+        }
+
+        return toReturn;
     }
 
     /**

@@ -7,7 +7,7 @@ use database_connector\controller\BooleanConnector;
 use Exception;
 use mysqli_sql_exception;
 
-require_once "/membri/fsc/database_connector/controller/BooleanConnector.php";
+require_once "/home/fsc/www/database_connector/controller/BooleanConnector.php";
 
 /**
  * A generic connector used to add data to a table in a database.
@@ -43,7 +43,6 @@ abstract class InsertConnector extends BooleanConnector
     {
         $query = "INSERT INTO " . $this::TABLE_NAME . "(" . $this::COLUMNS . ") VALUES ";
         foreach ($this->values_to_add as $value) {
-            unset($value);
             $prepared = substr(str_repeat("?,", substr_count($this::COLUMNS, ",") + 1), 0, -1);
             $query .= "(" . $prepared . "), ";
         }

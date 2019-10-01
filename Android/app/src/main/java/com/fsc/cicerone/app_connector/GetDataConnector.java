@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app_connector;
+package com.fsc.cicerone.app_connector;
 
 import android.app.Activity;
 import android.util.Log;

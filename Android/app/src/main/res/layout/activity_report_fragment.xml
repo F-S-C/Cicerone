@@ -20,12 +20,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context="com.fsc.cicerone.AccountDetails">
+    tools:context="com.fsc.cicerone.ReportFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="2.5dp"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -35,13 +34,6 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <Button
-            android:id="@+id/newReport"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="25dp"
-            android:text="@string/new_report" />
     </LinearLayout>
 
 </FrameLayout>

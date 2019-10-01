@@ -4,7 +4,7 @@ import os
 
 def substitute(content, file):
     file = re.sub(r"\\", r"/", file)
-    m = re.search(r'require_once "(.*?)";', content)
+    m = re.search(r'require_once "/home/fsc/www/(.*?)";', content)
     if m:
         found = m.group(1)
         path = os.path.join(file, found)

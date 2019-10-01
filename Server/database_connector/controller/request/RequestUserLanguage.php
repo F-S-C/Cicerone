@@ -5,7 +5,7 @@ namespace database_connector\controller\request;
 
 use database_connector\controller\JsonConnector;
 
-require_once "/membri/fsc/database_connector/controller/JsonConnector.php";
+require_once "/home/fsc/www/database_connector/controller/JsonConnector.php";
 
 /**
  * Request the languages that a user speaks.
@@ -34,7 +34,7 @@ class RequestUserLanguage extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT * FROM user_language";
+        $query = "SELECT user_language.username, user_language.language_code, language.language_name FROM user_language INNER JOIN language ON user_language.language_code = language.language_code";
 
         $conditions = array();
         $data = array();

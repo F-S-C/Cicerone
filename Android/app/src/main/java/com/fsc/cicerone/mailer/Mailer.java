@@ -22,13 +22,18 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import app_connector.BooleanConnector;
-import app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.model.User;
+
+import javax.security.auth.callback.Callback;
 
 public class Mailer {
 
@@ -37,15 +42,69 @@ public class Mailer {
     }
 
     public static void sendReservationConfirmationEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
-        Map<String, Object> data = new HashMap<>(3);
+        Map<String, Object> data = new HashMap<>(4);
         data.put("username", reservation.getItinerary().getCicerone().getUsername());
         data.put("itinerary_code", reservation.getItinerary().getCode());
         data.put("recipient_email", reservation.getClient().getEmail());
-        sendEmail(context, data, callback);
+        data.put("type","reservationConfirmation");
+        sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
-    private static void sendEmail(Activity context, Map<String, Object> data, @Nullable BooleanRunnable callback) {
-        BooleanConnector sendEmailConnector = new BooleanConnector.Builder(ConnectorConstants.EMAIL_SENDER)
+    public static void sendRegistrationConfirmationEmail(Activity context, User user, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(3);
+        data.put("username", user.getUsername());
+        data.put("recipient_email", user.getEmail());
+        data.put("type","registrationConfirmed");
+        sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
+    }
+
+    public static void sendItineraryRequestEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("username", reservation.getItinerary().getCicerone().getUsername());
+        data.put("itinerary_code", reservation.getItinerary().getCode());
+        data.put("recipient_email", reservation.getItinerary().getCicerone().getEmail());
+        data.put("type","newItineraryRequest");
+        sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
+    }
+
+    public static void sendReservationRefuseEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(5);
+        data.put("username", reservation.getItinerary().getCicerone().getUsername());
+        data.put("itinerary_code", reservation.getItinerary().getCode());
+        data.put("recipient_email", reservation.getClient().getEmail());
+        data.put("cicerone_email", AccountManager.getCurrentLoggedUser().getEmail());
+        data.put("type","reservationRefuse");
+        sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
+    }
+
+    public static void sendReservationRemoveEmail(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(7);
+        data.put("username", itinerary.getCicerone().getUsername());
+        data.put("itinerary_code", itinerary.getCode());
+        data.put("recipient_email", itinerary.getCicerone().getEmail());
+        data.put("globetrotter_email", AccountManager.getCurrentLoggedUser().getEmail());
+        data.put("globetrotter_name", AccountManager.getCurrentLoggedUser().getName());
+        data.put("globetrotter_surname", AccountManager.getCurrentLoggedUser().getSurname());
+        data.put("type","reservationRemove");
+        sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
+    }
+
+    public static void sendAccountDeleteConfirmationEmail(@Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(3);
+        data.put("username", AccountManager.getCurrentLoggedUser().getName());
+        data.put("recipient_email", AccountManager.getCurrentLoggedUser().getEmail());
+        data.put("type","accountDeleted");
+        sendEmail(null, data, ConnectorConstants.EMAIL_SENDER, callback);
+    }
+
+    public static void sendPasswordResetLink(Activity context, String email, @Nullable BooleanRunnable callback) {
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("email", email);
+        sendEmail(context, data, ConnectorConstants.EMAIL_RESET_PASSWORD, callback);
+    }
+
+    private static void sendEmail(Activity context, Map<String, Object> data, String url, @Nullable BooleanRunnable callback) {
+        BooleanConnector sendEmailConnector = new BooleanConnector.Builder(url)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (callback != null) callback.accept(result.getResult());

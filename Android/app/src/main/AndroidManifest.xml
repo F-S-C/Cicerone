@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 FSC - Five Students of Computer Science
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fsc.cicerone">
 
@@ -25,18 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GlobetrotterItineraryListFragment"/>
+        <activity android:name=".ForgotPassword"
+            android:label="@string/reset_password"/>
+        <activity android:name=".GlobetrotterItineraryListFragment" />
         <activity android:name=".CiceroneItineraryListFragment" />
         <activity android:name=".AdminDetailsUserFragment" />
         <activity android:name=".ReservationFragment" />
         <activity android:name=".AdminUserProfile" />
         <activity android:name=".UsersListFragment" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".AdminItineraryDetails" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".AdminItineraryDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AdminReportDetailsActivity" />
         <activity android:name=".AdminMainActivity" />
         <activity
-            android:name=".ChangePassword"
+            android:name=".ChangePasswordActivity"
             android:label="@string/change_password" />
         <activity android:name=".WishlistFragment" />
         <activity android:name=".ItineraryUpdate" />
@@ -50,11 +38,15 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".ItineraryManagement" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ItineraryDetails" android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ItineraryManagement"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ItineraryDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ItineraryCreation"
-            android:label="@string/create_itinerary"/>
+            android:label="@string/create_itinerary" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
         <activity
@@ -64,12 +56,14 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

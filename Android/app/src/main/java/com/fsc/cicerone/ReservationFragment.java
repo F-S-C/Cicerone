@@ -33,7 +33,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReservationAdapter;
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.Reservation;
 
 import java.util.ArrayList;
@@ -41,9 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import app_connector.ConnectorConstants;
-import app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Reservation on the account
@@ -56,11 +53,17 @@ public class ReservationFragment extends Fragment implements Refreshable {
     private RecyclerView recyclerView;
     private TextView message;
 
+    private SwipeRefreshLayout swipeRefreshLayout = null;
+
     /**
      * Empty constructor
      */
     public ReservationFragment() {
         // Required empty public constructor
+    }
+
+    public ReservationFragment(SwipeRefreshLayout swipeRefreshLayout) {
+        this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
     @Override
@@ -74,7 +77,7 @@ public class ReservationFragment extends Fragment implements Refreshable {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        refresh();
+        refresh(swipeRefreshLayout);
 
         return view;
     }
@@ -89,30 +92,24 @@ public class ReservationFragment extends Fragment implements Refreshable {
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("cicerone", AccountManager.getCurrentLoggedUser().getUsername());
 
-        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
-                .setContext(context)
-                .setOnStartConnectionListener(() -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-                    message.setVisibility(View.GONE);
-                })
-                .setOnEndConnectionListener(list -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                    List<Reservation> filtered = new ArrayList<>(list.size());
-                    for (Reservation reservation : list) {
-                        if (!reservation.isConfirmed()) {
-                            filtered.add(reservation);
-                        }
-                    }
-                    if (!filtered.isEmpty()) {
-                        adapter = new ReservationAdapter(getActivity(), filtered);
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        message.setVisibility(View.VISIBLE);
-                    }
-                })
-                .setObjectToSend(parameters)
-                .build();
-        connector.execute();
-    }
+        ReservationManager.getListInvestments(context, parameters, () -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+            message.setVisibility(View.GONE);
 
+        }, list -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+            List<Reservation> filtered = new ArrayList<>(list.size());
+            for (Reservation reservation : list) {
+                if (!reservation.isConfirmed()) {
+                    filtered.add(reservation);
+                }
+            }
+            if (!filtered.isEmpty()) {
+                adapter = new ReservationAdapter(getActivity(), filtered, ReservationFragment.this);
+                recyclerView.setAdapter(adapter);
+            } else {
+                message.setVisibility(View.VISIBLE);
+            }
+        });
+    }
 }

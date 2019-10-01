@@ -43,10 +43,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -70,14 +70,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 
-import app_connector.BooleanConnector;
-import app_connector.ConnectorConstants;
-import app_connector.SendInPostConnector;
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Itinerary on the account details page.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements Refreshable {
 
     private static final String ERROR_TAG = "ERROR IN " + ProfileFragment.class.getName();
     private TextInputEditText name;
@@ -142,15 +142,12 @@ public class ProfileFragment extends Fragment {
         };
 
         addItemsSex(sexList);
-        requestUserData(sexList);
-        final Map<String, Object> updateParams = new HashMap<>(2);
-        updateParams.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-        updateParams.put("user_type", AccountManager.getCurrentLoggedUser().getUserType().toInt());
+        refresh();
 
         switchButton.setOnClickListener(view1 -> new MaterialAlertDialogBuilder(context)
                 .setTitle(context.getString(R.string.are_you_sure))
                 .setMessage(context.getString(R.string.answer_switch_to_cicerone))
-                .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> switchToCicerone(updateParams)))
+                .setPositiveButton(context.getString(R.string.yes), ((dialog, which) -> switchToCicerone()))
                 .setNegativeButton(context.getString(R.string.no), null)
                 .show());
 
@@ -204,7 +201,14 @@ public class ProfileFragment extends Fragment {
                     modifyButton.setText(view1.getContext().getString(R.string.modify));
                     updateUserData();
                 } else {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+                    if(name.getText().toString().equals("")) name.setError(getString(R.string.empty_name_error));
+                    if(surname.getText().toString().equals("")) surname.setError(getString(R.string.empty_surname_error));
+                    if(email.getText().toString().equals("")) email.setError(getString(R.string.empty_email_error));
+                    if(cellphone.getText().toString().equals("")) cellphone.setError(getString(R.string.empty_cellphone_error));
+                    if(birthDate.getText().toString().equals("")) birthDate.setError(getString(R.string.empty_birthday_error));
+                    if(documentNumber.getText().toString().equals("")) documentNumber.setError(getString(R.string.empty_document_number_error));
+                    if(documentType.getText().toString().equals("")) documentType.setError(getString(R.string.empty_document_type_error));
+                    if(documentExpiryDate.getText().toString().equals("")) documentExpiryDate.setError(getString(R.string.empty_document_expiry_date_error));
                 }
             }
         });
@@ -218,7 +222,7 @@ public class ProfileFragment extends Fragment {
                 expCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
         changePaswButton.setOnClickListener(view1 -> {
-            Intent i = new Intent(getActivity(), ChangePassword.class);
+            Intent i = new Intent(getActivity(), ChangePasswordActivity.class);
             getActivity().startActivity(i);
         });
 
@@ -250,15 +254,16 @@ public class ProfileFragment extends Fragment {
         spinner.setAdapter(dataAdapter);
     }
 
-    private void requestUserData(Spinner spinner) {
+    @Override
+    public void refresh() {
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
         if (currentLoggedUser.getSex() == Sex.MALE) {
-            spinner.setSelection(0);
+            sexList.setSelection(0);
         } else if (currentLoggedUser.getSex() == Sex.FEMALE) {
-            spinner.setSelection(1);
+            sexList.setSelection(1);
         } else {
-            spinner.setSelection(2);
+            sexList.setSelection(2);
         }
         name.setText(currentLoggedUser.getName());
         surname.setText(currentLoggedUser.getSurname());
@@ -269,6 +274,11 @@ public class ProfileFragment extends Fragment {
         } else {
             switchButton.setVisibility(View.VISIBLE);
         }
+
+        if (getParentFragment() instanceof AccountDetails) {
+            ((AccountDetails) getParentFragment()).refresh();
+        }
+
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         birthDate.setText(outputFormat.format(currentLoggedUser.getBirthDate()));
         Map<String, Object> parameters = new HashMap<>(1);
@@ -288,10 +298,18 @@ public class ProfileFragment extends Fragment {
         userDocumentConnector.execute();
     }
 
-    private void switchToCicerone(Map<String, Object> parameters) {
+    @Override
+    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
+        refresh();
+        if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void switchToCicerone() {
+        final Map<String, Object> parameters = new HashMap<>(2);
+        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
         parameters.put("user_type", UserType.CICERONE.toInt());
 
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
@@ -305,8 +323,8 @@ public class ProfileFragment extends Fragment {
 
                 })
                 .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+                .build()
+                .execute();
 
     }
 
@@ -373,13 +391,8 @@ public class ProfileFragment extends Fragment {
                     if (!result.getResult())
                         Toast.makeText(getActivity(), getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
                     Document newUserDoc = new Document(documentNumber.getText().toString(), documentType.getText().toString(), strToDate(documentExpiryDate.getText().toString()));
-                    user.setCurrentDocument(newUserDoc);
-                    ProfileFragment fragment = new ProfileFragment();
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
-                    fragmentTransaction.replace(R.id.frame, fragment);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
+                    user.setDocument(newUserDoc);
+                    refresh();
                 })
                 .setObjectToSend(documentData)
                 .build();

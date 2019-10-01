@@ -20,6 +20,10 @@ import android.app.Activity;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
@@ -27,11 +31,6 @@ import com.fsc.cicerone.model.Wishlist;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import app_connector.BooleanConnector;
-import app_connector.ConnectorConstants;
-import app_connector.DatabaseConnector;
-import app_connector.SendInPostConnector;
 
 public abstract class WishlistManager {
 

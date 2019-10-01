@@ -19,34 +19,34 @@ package com.fsc.cicerone;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReportAdapter;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
+import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
+import com.fsc.cicerone.model.ReportStatus;
+import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-
-import app_connector.ConnectorConstants;
-import app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Report on the account details page.
@@ -56,9 +56,9 @@ public class ReportFragment extends Fragment implements Refreshable {
     RecyclerView.Adapter adapter;
     Fragment fragment = null;
     private RecyclerView recyclerView;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
     public static final int RESULT_SHOULD_REPORT_BE_RELOADED = 1030;
+    private SwipeRefreshLayout swipeRefreshLayout = null;
+
 
     /**
      * Empty Constructor
@@ -67,33 +67,24 @@ public class ReportFragment extends Fragment implements Refreshable {
         // Required empty public constructor
     }
 
+    public ReportFragment(SwipeRefreshLayout swipeRefreshLayout){
+        this.swipeRefreshLayout = swipeRefreshLayout;
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_report_fragment, container, false);
-        Button insertReport = view.findViewById(R.id.newReport);
 
         recyclerView = view.findViewById(R.id.report_list);
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        refresh();
-
-        insertReport.setVisibility(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN ? View.GONE : View.VISIBLE);
-
-        insertReport.setOnClickListener(v -> {
-            fragment = new InsertReportFragment();
-            fragmentManager = getFragmentManager();
-            fragmentTransaction = Objects.requireNonNull(fragmentManager).beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment);
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
-        });
+        refresh(swipeRefreshLayout);
 
         return view;
     }
-
 
     @Override
     public void refresh() {
@@ -102,28 +93,27 @@ public class ReportFragment extends Fragment implements Refreshable {
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        final Map<String, Object> parameters = new HashMap<>(1); //Connection params
-        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-        // set up the RecyclerView
-        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-            parameters.remove("username");
-        }
+        User user = null;
+        if (!(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) )
+            user = AccountManager.getCurrentLoggedUser();
 
-        Log.e("TAG", parameters.toString());
 
-        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
-                .setContext(getActivity())
-                .setOnStartConnectionListener(() -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-                })
-                .setOnEndConnectionListener(list -> {
-                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                    adapter = new ReportAdapter(getActivity(), list, this);
-                    recyclerView.setAdapter(adapter);
-                })
-                .setObjectToSend(parameters)
-                .build()
-                .execute();
+        ReportManager.requestReport(getActivity(), user, () -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+        }, list -> {
+            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+            if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN){
+                List<Report> filtered = new ArrayList<>(list.size());
+                for (Report report : list){
+                    if(!(report.getStatus() == ReportStatus.CLOSED || report.getStatus() == ReportStatus.CANCELED))
+                        filtered.add(report);
+                }
+                adapter = new ReportAdapter(getActivity(), filtered, this);
+            }else
+                adapter = new ReportAdapter(getActivity(), list, this);
+
+            recyclerView.setAdapter(adapter);
+        });
     }
 
     @Override
@@ -133,4 +123,7 @@ public class ReportFragment extends Fragment implements Refreshable {
                 refresh();
         }
     }
+
+
+
 }

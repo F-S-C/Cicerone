@@ -4,7 +4,7 @@ namespace database_connector\view\insert;
 
 use database_connector\controller\insert\InsertDocument;
 
-require_once "/membri/fsc/database_connector/controller/insert/InsertDocument.php";
+require_once "/home/fsc/www/database_connector/controller/insert/InsertDocument.php";
 
 $connector = new InsertDocument();
 $connector->add_value(array(strtolower($_POST['username']),

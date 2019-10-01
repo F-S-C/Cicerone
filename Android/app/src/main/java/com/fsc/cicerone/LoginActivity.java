@@ -70,11 +70,11 @@ public class LoginActivity extends AppCompatActivity {
         final String username = usernameEditText.getText() != null ? usernameEditText.getText().toString().trim() : "";
         final String password = passwordEditText.getText() != null ? passwordEditText.getText().toString() : "";
 
-        if (username.length() == 0) {
+        if (username.isEmpty()) {
             usernameEditTextContainer.setError(getString(R.string.empty_username_error));
             return;
         }
-        if (password.length() == 0) {
+        if (password.isEmpty()) {
             passwordEditTextContainer.setError(getString(R.string.empty_password_error));
             return;
         }
@@ -83,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void forgotPassword(View view) {
-        Toast.makeText(this, "Sorry, Work In Progress", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(LoginActivity.this, ForgotPassword.class));
+        finish();
     }
 
     public void skipLogin(View view) {
@@ -99,11 +100,13 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptLogin(String username, String password) {
         RelativeLayout progressBar = findViewById(R.id.loginProgressBarContainer);
 
-        AccountManager.attemptLogin(this, username, password, () -> {
+        User.Credentials credentials = new User.Credentials(username, password);
+
+        AccountManager.attemptLogin(this, credentials, () -> {
             progressBar.setVisibility(View.VISIBLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        }, (result, success) -> {
+        }, success -> {
             progressBar.setVisibility(View.GONE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             if (!success) {
@@ -116,14 +119,11 @@ public class LoginActivity extends AppCompatActivity {
             CheckBox rememberMeCheckBox = findViewById(R.id.rememberMeCheckBox);
             if (rememberMeCheckBox.isChecked()) {
                 SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
-                preferences.edit().putString("session", new User(username, password).toJSONObject().toString()).apply();
+                preferences.edit().putString("session", credentials.toString()).apply();
             }
 
-            if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                startActivity(new Intent(LoginActivity.this, AdminMainActivity.class));
-            } else {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            }
+            Class targetActivity = (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) ? AdminMainActivity.class : MainActivity.class;
+            startActivity(new Intent(LoginActivity.this, targetActivity));
             finish();
         });
     }

@@ -32,6 +32,12 @@
         <item name="android:windowBackground">@drawable/splash_theme</item>
     </style>
 
+    <style name="AppTheme.Button.TextButton.Red" parent="Widget.MaterialComponents.Button.TextButton.Icon" >
+        <item name="android:textColor">@drawable/red_text_button_color</item>
+        <item name="iconTint">@drawable/red_text_button_color</item>
+        <item name="rippleColor">@drawable/red_text_button_ripple_color</item>
+    </style>
+
     <style name="dialog_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -44,7 +50,7 @@
     <style name="AppTheme.DarkOutlinedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
         <item name="android:textColorHint">@color/colorTransparentWhite</item>
         <item name="boxBackgroundColor">@color/editTextBackground</item>
-        <item name="endIconTint">@color/colorWhite</item>
+        <item name="endIconTint">@color/colorTransparentWhite</item>
     </style>
 
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem" />

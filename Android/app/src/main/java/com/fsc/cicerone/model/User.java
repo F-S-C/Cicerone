@@ -16,8 +16,12 @@
 
 package com.fsc.cicerone.model;
 
+import android.util.Log;
 import android.util.Patterns;
 
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,8 +33,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import app_connector.ConnectorConstants;
 
 /**
  * An <i>entity</i> class that stores the data of a user.
@@ -49,8 +51,8 @@ public class User extends BusinessEntity {
     private String cellphone;
     private Date birthDate;
 
-    private Document currentDocument;
-    private Set<Document> documents;
+    private Document document;
+    private Set<Language> languages;
 
     private static class Columns {
         private static final String USERNAME_KEY = "username";
@@ -63,6 +65,64 @@ public class User extends BusinessEntity {
         private static final String CELLPHONE_KEY = "cellphone";
         private static final String BIRTH_DATE_KEY = "birth_date";
         private static final String SEX_KEY = "sex";
+        private static final String DOCUMENT_KEY = "document";
+        private static final String LANGUAGES_KEY = "languages";
+    }
+
+    public static class Credentials extends BusinessEntity {
+        private String username;
+        private String password;
+
+        public Credentials(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+
+        public Credentials(JSONObject jsonObject) {
+            loadFromJSONObject(jsonObject);
+        }
+
+        public Credentials(String json) {
+            this(getJSONObject(json));
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public boolean isValid() {
+            return username != null && password != null && !username.isEmpty() && !password.isEmpty();
+        }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                if (username != null) jsonObject.put(Columns.USERNAME_KEY, username);
+                if (password != null) jsonObject.put(Columns.PASSWORD_KEY, password);
+            } catch (JSONException e) {
+                Log.e("CREDENTIALS_ERROR", e.getMessage());
+            }
+            return jsonObject;
+        }
+
+        @Override
+        protected void loadFromJSONObject(JSONObject jsonObject) {
+            try {
+                username = jsonObject.getString(Columns.USERNAME_KEY);
+            } catch (JSONException e) {
+                username = null;
+            }
+            try {
+                password = jsonObject.getString(Columns.PASSWORD_KEY);
+            } catch (JSONException e) {
+                password = null;
+            }
+        }
     }
 
     @Override
@@ -78,31 +138,11 @@ public class User extends BusinessEntity {
         return Objects.hash(username);
     }
 
-    private Set<Language> languages;
-
     /**
      * Default empty constructor.
      */
     public User() {
         // Automatically set everything to a default value
-        documents = new HashSet<>();
-        languages = new HashSet<>();
-    }
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-
-        this.name = null;
-        this.surname = null;
-        this.email = null;
-        this.sex = null;
-        this.taxCode = null;
-        this.userType = null;
-        this.cellphone = null;
-        this.birthDate = null;
-
-        documents = new HashSet<>();
         languages = new HashSet<>();
     }
 
@@ -199,8 +239,17 @@ public class User extends BusinessEntity {
             birthDate = null;
         }
 
-        documents = new HashSet<>();
-        languages = new HashSet<>();
+        try {
+            document = new Document(user.getJSONObject(Columns.DOCUMENT_KEY));
+        } catch (JSONException e) {
+            document = null;
+        }
+
+        try {
+            languages = Language.getSetFromJSONArray(user.getJSONArray(Columns.LANGUAGES_KEY));
+        } catch (JSONException e) {
+            languages = new HashSet<>();
+        }
     }
 
     /**
@@ -321,15 +370,6 @@ public class User extends BusinessEntity {
     }
 
     /**
-     * Set the user's username.
-     *
-     * @param username The new user's username.
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
      * Get the user's type.
      *
      * @return The user's type.
@@ -388,44 +428,17 @@ public class User extends BusinessEntity {
      *
      * @return The user's current document.
      */
-    public Document getCurrentDocument() {
-        return currentDocument;
+    public Document getDocument() {
+        return document;
     }
 
     /**
      * Set the user's current (last added and valid) document.
      *
-     * @param currentDocument The new user's current document.
+     * @param document The new user's current document.
      */
-    public void setCurrentDocument(Document currentDocument) {
-        this.currentDocument = currentDocument;
-    }
-
-    /**
-     * Get all the user's documents.
-     *
-     * @return A set containing all the user's documents.
-     */
-    public Set<Document> getDocuments() {
-        return documents;
-    }
-
-    /**
-     * Add a document to the user's documents' list if it doesn't exists, otherwise do nothing.
-     *
-     * @param document The document to be added.
-     */
-    public void addDocument(Document document) {
-        this.documents.add(document);
-    }
-
-    /**
-     * Remove a document from the user's documents' list if it exists, otherwise do nothing.
-     *
-     * @param document The document to be removed.
-     */
-    public void removeDocument(Document document) {
-        this.documents.remove(document);
+    public void setDocument(Document document) {
+        this.document = document;
     }
 
     /**
@@ -474,6 +487,9 @@ public class User extends BusinessEntity {
             if (this.cellphone != null) result.put(Columns.CELLPHONE_KEY, this.cellphone);
             if (this.birthDate != null)
                 result.put(Columns.BIRTH_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.birthDate));
+            if (document != null)
+                result.put(Columns.DOCUMENT_KEY, this.document.toJSONObject());
+            if (languages != null) result.put(Columns.LANGUAGES_KEY, new JSONArray(languages));
         } catch (JSONException e) {
             result = null;
         }
@@ -483,17 +499,10 @@ public class User extends BusinessEntity {
     /**
      * Get the user's credentials (username and password).
      *
-     * @return A JSON Object that contains the user's username and password.
+     * @return A Credentials Object that contains the user's username and password.
      */
-    public JSONObject getCredentials() {
-        JSONObject result = new JSONObject();
-        try {
-            result.put(Columns.PASSWORD_KEY, this.password);
-            result.put(Columns.USERNAME_KEY, this.username);
-        } catch (JSONException e) {
-            result = null;
-        }
-        return result;
+    public Credentials getCredentials() {
+        return new Credentials(username, password);
     }
 
     /**
@@ -514,5 +523,105 @@ public class User extends BusinessEntity {
      */
     public static boolean validateEmail(String emailInput) {
         return (Patterns.EMAIL_ADDRESS.matcher(emailInput).matches());
+    }
+
+    public User(Builder builder) {
+        this.name = builder.name;
+        this.surname = builder.surname;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.sex = builder.sex;
+        this.taxCode = builder.taxCode;
+        this.username = builder.username;
+        this.userType = builder.userType;
+        this.cellphone = builder.cellphone;
+        this.birthDate = builder.birthDate;
+        this.document = builder.document;
+        this.languages = builder.languages;
+    }
+
+    public static class Builder {
+        private String name;
+        private String surname;
+        private String email;
+        private String password;
+        private Sex sex;
+        private String taxCode;
+        private String username;
+        private UserType userType;
+        private String cellphone;
+        private Date birthDate;
+
+        private Document document;
+        private Set<Language> languages;
+
+        public Builder(String username, String password) {
+            this.password = password;
+            this.username = username;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setSurname(String surname) {
+            this.surname = surname;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder setSex(Sex sex) {
+            this.sex = sex;
+            return this;
+        }
+
+        public Builder setTaxCode(String taxCode) {
+            this.taxCode = taxCode;
+            return this;
+        }
+
+        public Builder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder setUserType(UserType userType) {
+            this.userType = userType;
+            return this;
+        }
+
+        public Builder setCellphone(String cellphone) {
+            this.cellphone = cellphone;
+            return this;
+        }
+
+        public Builder setBirthDate(Date birthDate) {
+            this.birthDate = birthDate;
+            return this;
+        }
+
+        public Builder setDocument(Document document) {
+            this.document = document;
+            return this;
+        }
+
+        public Builder setLanguages(Set<Language> languages) {
+            this.languages = languages;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 }

@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 public class Reservation extends BusinessEntity {
 

@@ -27,11 +27,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ItineraryAdapter;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
@@ -39,9 +41,6 @@ import com.fsc.cicerone.model.Itinerary;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-
-import app_connector.ConnectorConstants;
-import app_connector.GetDataConnector;
 
 
 /**
@@ -64,7 +63,7 @@ public class HomeFragment extends Fragment implements Refreshable {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         context = Objects.requireNonNull(getActivity());
         recyclerView = view.findViewById(R.id.itinerary_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
         noActiveItineraries = view.findViewById(R.id.noActiveItineraries);
 
         refresh();

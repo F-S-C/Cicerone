@@ -3,7 +3,7 @@
 
 namespace database_connector\controller;
 
-require_once "/membri/fsc/database_connector/controller/DatabaseConnector.php";
+require_once "/home/fsc/www/database_connector/controller/DatabaseConnector.php";
 
 /**
  * A generic connector to a database that returns a boolean value (true or false) and a message.

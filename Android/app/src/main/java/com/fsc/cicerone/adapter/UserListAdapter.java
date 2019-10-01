@@ -33,17 +33,11 @@ import com.fsc.cicerone.AdminUserProfile;
 import com.fsc.cicerone.ProfileActivity;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
+import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.model.User;
-import com.fsc.cicerone.model.UserReview;
 import com.fsc.cicerone.model.UserType;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import app_connector.ConnectorConstants;
-import app_connector.SendInPostConnector;
 
 /**
  * The ReviewAdapter of the Recycler View for the styles present in the app.
@@ -53,7 +47,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     private final Activity context;
     private List<User> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener = null;
 
     /**
      * Constructor.
@@ -98,20 +91,20 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         }
         holder.usrType.setText(typeName);
         holder.imageView.setImageResource(mData.get(position).getSex().getAvatarResource());
-        setAvgRating(usernameStr, holder);
+        ReviewManager.getAvgUserFeedback(context, mData.get(position), holder.avgRating::setRating);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
-                i = new Intent(v.getContext(), AdminUserProfile.class);
-                i.putExtra("user", mData.get(position).toJSONObject().toString());
-                v.getContext().startActivity(i);
+                i = new Intent(context, AdminUserProfile.class);
+                i.putExtra("user", mData.get(position).toString());
+                context.startActivity(i);
             } else {
-                i = new Intent().setClass(v.getContext(), ProfileActivity.class);
+                i = new Intent().setClass(context, ProfileActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("reviewed_user", mData.get(position).getUsername());
+                bundle.putString("reviewed_user", mData.get(position).toString());
                 i.putExtras(bundle);
-                v.getContext().startActivity(i);
+                context.startActivity(i);
             }
 
 
@@ -132,7 +125,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     /**
      * ViewHolder stores and recycles reports as they are scrolled off screen.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView usr;
         TextView usrType;
@@ -145,38 +138,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             usrType = itemView.findViewById(R.id.usrType);
             avgRating = itemView.findViewById(R.id.ratingBar2);
             imageView = itemView.findViewById(R.id.imageView2);
-            itemView.setOnClickListener(this);
         }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
-    }
-
-
-    /**
-     * Item Click Listener for parent activity will implement this method to respond to click events.
-     */
-    interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    private void setAvgRating(String usr, ViewHolder holder) {
-        Map<String, Object> params = new HashMap<>(1);
-        params.put("reviewed_user", usr);
-        SendInPostConnector<UserReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
-                .setContext(context)
-                .setOnEndConnectionListener(list -> {
-                    int sum = 0;
-                    for (UserReview review : list) {
-                        sum += review.getFeedback();
-                    }
-                    holder.avgRating.setRating((!list.isEmpty()) ? ((float) sum / list.size()) : 0);
-                })
-                .setObjectToSend(params)
-                .build();
-        connector.execute();
     }
 }
 
