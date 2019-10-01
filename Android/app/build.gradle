@@ -15,6 +15,7 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 28
@@ -31,6 +32,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+//            testCoverageEnabled = true
+        }
     }
     compileOptions {
         sourceCompatibility = '1.8'
@@ -38,6 +42,11 @@ android {
     }
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
     }
 }
 
@@ -56,4 +65,19 @@ dependencies {
     implementation 'com.hootsuite.android:nachos:1.1.1'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'androidx.mediarouter:mediarouter:1.1.0'
+}
+
+jacoco {
+    toolVersion = '0.8.4'
+}
+
+jacocoAndroidUnitTestReport {
+    csv.enabled false
+    html.enabled true
+    xml.enabled true
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
 }
