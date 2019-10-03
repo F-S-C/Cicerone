@@ -20,7 +20,6 @@ package com.fsc.cicerone;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -137,8 +136,6 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ItineraryUpdate.RESULT_ITINERARY_UPDATED && resultCode == Activity.RESULT_OK) {
-            Log.e("hello", "arrivo qui");
-            // TODO: Refresh itinerari?
             ItineraryManager.requestItinerary(this, code, () -> {
                 if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
 
