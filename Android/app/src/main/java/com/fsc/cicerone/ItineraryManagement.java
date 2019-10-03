@@ -36,7 +36,6 @@ import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,10 +44,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ItineraryManagement extends ItineraryActivity implements Refreshable {
+    public static final int RESULT_ITINERARY_DELETED = 1020;
     private Fragment fragment = new UsersListFragment();
     private RecyclerView.Adapter adapter;
     private Map<String, Object> code;
-    private Itinerary currentItinerary;
     private TextView messageNoReview;
 
 
@@ -108,6 +107,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
 
     public void deleteItineraryFromServer() {
         ItineraryManager.deleteItinerary(this, itinerary, success -> Toast.makeText(ItineraryManagement.this, ItineraryManagement.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show());
+        setResult(Activity.RESULT_OK);
         ItineraryManagement.this.finish();
     }
 
