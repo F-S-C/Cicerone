@@ -5,5 +5,8 @@ var searchData=
   ['tablecreator_2ephp',['TableCreator.php',['../_table_creator_8php.html',1,'']]],
   ['to_5fcicerone_5fnew_5freservation',['TO_CICERONE_NEW_RESERVATION',['../classnotifications_1_1_push.html#a75b816c46eb6f4b16603ad73cf241c0d',1,'notifications::Push']]],
   ['to_5fcicerone_5fremoved_5freservation',['TO_CICERONE_REMOVED_RESERVATION',['../classnotifications_1_1_push.html#a1a1398f3fb7ccdbfda62a8a812f6b85d',1,'notifications::Push']]],
-  ['to_5fglobetrotter_5fconfirmed_5freservation',['TO_GLOBETROTTER_CONFIRMED_RESERVATION',['../classnotifications_1_1_push.html#a18bd3dcb859d932b87ded56ae6a7adf7',1,'notifications::Push']]]
+  ['to_5fglobetrotter_5fconfirmed_5freservation',['TO_GLOBETROTTER_CONFIRMED_RESERVATION',['../classnotifications_1_1_push.html#a18bd3dcb859d932b87ded56ae6a7adf7',1,'notifications::Push']]],
+  ['to_5fglobetrotter_5fdeleted_5fitinerary',['TO_GLOBETROTTER_DELETED_ITINERARY',['../classnotifications_1_1_push.html#aee6306f13a7491dcca6eeceb58cf5f79',1,'notifications::Push']]],
+  ['to_5fglobetrotter_5frefused_5freservation',['TO_GLOBETROTTER_REFUSED_RESERVATION',['../classnotifications_1_1_push.html#a526f802fd3f495d1f3cb4a3b64fe6cd0',1,'notifications::Push']]],
+  ['to_5fglobetrotter_5fupdated_5fitinerary',['TO_GLOBETROTTER_UPDATED_ITINERARY',['../classnotifications_1_1_push.html#af87616dd4a3b0cba07d61fba3a879bda',1,'notifications::Push']]]
 ];

@@ -9,5 +9,8 @@ var classnotifications_1_1_push =
     [ "set_title", "classnotifications_1_1_push.html#a249cbd1c6049b3c3565a228ee59cec38", null ],
     [ "TO_CICERONE_NEW_RESERVATION", "classnotifications_1_1_push.html#a75b816c46eb6f4b16603ad73cf241c0d", null ],
     [ "TO_CICERONE_REMOVED_RESERVATION", "classnotifications_1_1_push.html#a1a1398f3fb7ccdbfda62a8a812f6b85d", null ],
-    [ "TO_GLOBETROTTER_CONFIRMED_RESERVATION", "classnotifications_1_1_push.html#a18bd3dcb859d932b87ded56ae6a7adf7", null ]
+    [ "TO_GLOBETROTTER_CONFIRMED_RESERVATION", "classnotifications_1_1_push.html#a18bd3dcb859d932b87ded56ae6a7adf7", null ],
+    [ "TO_GLOBETROTTER_DELETED_ITINERARY", "classnotifications_1_1_push.html#aee6306f13a7491dcca6eeceb58cf5f79", null ],
+    [ "TO_GLOBETROTTER_REFUSED_RESERVATION", "classnotifications_1_1_push.html#a526f802fd3f495d1f3cb4a3b64fe6cd0", null ],
+    [ "TO_GLOBETROTTER_UPDATED_ITINERARY", "classnotifications_1_1_push.html#af87616dd4a3b0cba07d61fba3a879bda", null ]
 ];

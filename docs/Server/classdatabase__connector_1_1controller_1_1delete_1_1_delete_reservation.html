@@ -119,9 +119,9 @@ Inheritance diagram for DeleteReservation:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a52edd91969f7b46849ef2705dce23bf3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#a52edd91969f7b46849ef2705dce23bf3">__construct</a> (string $username, int $itinerary)</td></tr>
-<tr class="memdesc:a52edd91969f7b46849ef2705dce23bf3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html" title="A connector that deletes an reservation from the reservation table.">DeleteReservation</a> constructor.  <a href="#a52edd91969f7b46849ef2705dce23bf3">More...</a><br /></td></tr>
-<tr class="separator:a52edd91969f7b46849ef2705dce23bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74b150fe821d6445676c5eb500117382"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#a74b150fe821d6445676c5eb500117382">__construct</a> (string $username, int $itinerary, bool $deleted_by_cicerone=false)</td></tr>
+<tr class="memdesc:a74b150fe821d6445676c5eb500117382"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html" title="A connector that deletes an reservation from the reservation table.">DeleteReservation</a> constructor.  <a href="#a74b150fe821d6445676c5eb500117382">More...</a><br /></td></tr>
+<tr class="separator:a74b150fe821d6445676c5eb500117382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c96b134b24ec7120296945f11f251e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#ae5c96b134b24ec7120296945f11f251e">get_content</a> ()</td></tr>
 <tr class="memdesc:ae5c96b134b24ec7120296945f11f251e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the object from the database and get the result of the operation.  <a href="#ae5c96b134b24ec7120296945f11f251e">More...</a><br /></td></tr>
 <tr class="separator:ae5c96b134b24ec7120296945f11f251e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,8 +205,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A connector that deletes an reservation from the reservation table. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a52edd91969f7b46849ef2705dce23bf3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52edd91969f7b46849ef2705dce23bf3">&#9670;&nbsp;</a></span>__construct()</h2>
+<a id="a74b150fe821d6445676c5eb500117382"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74b150fe821d6445676c5eb500117382">&#9670;&nbsp;</a></span>__construct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -221,7 +221,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>$itinerary</em>&#160;</td>
+          <td class="paramname"><em>$itinerary</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>$deleted_by_cicerone</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -236,6 +242,7 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$username</td><td>The author of the review. </td></tr>
     <tr><td class="paramtype">int</td><td class="paramname">$itinerary</td><td>The code of the booked itinerary. </td></tr>
+    <tr><td class="paramtype">bool</td><td class="paramname">$deleted_by_cicerone</td><td>Whether or not the delete request was made by the cicerone of the itinerary. </td></tr>
   </table>
   </dd>
 </dl>

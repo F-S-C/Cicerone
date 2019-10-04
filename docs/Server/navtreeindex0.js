@@ -68,7 +68,7 @@ var NAVTREEINDEX0 =
 "classdatabase__connector_1_1controller_1_1delete_1_1_delete_registered_user.html#ae5c96b134b24ec7120296945f11f251e":[1,0,0,0,0,4,1],
 "classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html":[1,0,0,0,0,5],
 "classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#a2251427819e5dce996c7ad74c683e6ec":[1,0,0,0,0,5,3],
-"classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#a52edd91969f7b46849ef2705dce23bf3":[1,0,0,0,0,5,0],
+"classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#a74b150fe821d6445676c5eb500117382":[1,0,0,0,0,5,0],
 "classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#aa715ae25d23b82a83749d2375a8ec961":[1,0,0,0,0,5,2],
 "classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#ada7e57b2275989a5d42f45e675c91ae3":[1,0,0,0,0,5,4],
 "classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#ae5c96b134b24ec7120296945f11f251e":[1,0,0,0,0,5,1],
@@ -220,9 +220,10 @@ var NAVTREEINDEX0 =
 "classdatabase__connector_1_1controller_1_1update_1_1_update_document.html#aa715ae25d23b82a83749d2375a8ec961":[1,0,0,0,4,1,0],
 "classdatabase__connector_1_1controller_1_1update_1_1_update_document.html#ada7e57b2275989a5d42f45e675c91ae3":[1,0,0,0,4,1,2],
 "classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html":[1,0,0,0,4,2],
-"classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#a2251427819e5dce996c7ad74c683e6ec":[1,0,0,0,4,2,1],
-"classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#aa715ae25d23b82a83749d2375a8ec961":[1,0,0,0,4,2,0],
-"classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#ada7e57b2275989a5d42f45e675c91ae3":[1,0,0,0,4,2,2],
+"classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#a2251427819e5dce996c7ad74c683e6ec":[1,0,0,0,4,2,2],
+"classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#aa715ae25d23b82a83749d2375a8ec961":[1,0,0,0,4,2,1],
+"classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#ada7e57b2275989a5d42f45e675c91ae3":[1,0,0,0,4,2,3],
+"classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#ae5c96b134b24ec7120296945f11f251e":[1,0,0,0,4,2,0],
 "classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary_review.html":[1,0,0,0,4,3],
 "classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary_review.html#a2251427819e5dce996c7ad74c683e6ec":[1,0,0,0,4,3,3],
 "classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary_review.html#aa715ae25d23b82a83749d2375a8ec961":[1,0,0,0,4,3,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html#a2251427819e5dce996c7ad74c683e6ec":[1,0,0,0,4,7,3],
 "classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html#aa715ae25d23b82a83749d2375a8ec961":[1,0,0,0,4,7,2],
 "classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html#ada7e57b2275989a5d42f45e675c91ae3":[1,0,0,0,4,7,4],
-"classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html#ae5c96b134b24ec7120296945f11f251e":[1,0,0,0,4,7,1],
-"classemail__sender_1_1_d_b_manager.html":[1,0,1,0]
+"classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html#ae5c96b134b24ec7120296945f11f251e":[1,0,0,0,4,7,1]
 };
