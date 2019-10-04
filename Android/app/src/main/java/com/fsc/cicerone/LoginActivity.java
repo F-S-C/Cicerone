@@ -83,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void forgotPassword(View view) {
-        Toast.makeText(this, "Sorry, Work In Progress", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(LoginActivity.this, ForgotPassword.class));
+        finish();
     }
 
     public void skipLogin(View view) {
@@ -117,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
 
             CheckBox rememberMeCheckBox = findViewById(R.id.rememberMeCheckBox);
             if (rememberMeCheckBox.isChecked()) {
-                SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
                 preferences.edit().putString("session", credentials.toString()).apply();
             }
 

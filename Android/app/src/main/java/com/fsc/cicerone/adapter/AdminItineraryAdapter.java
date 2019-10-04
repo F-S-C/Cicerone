@@ -26,21 +26,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.manager.ReservationManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * The adapter useful to show data in the admin part of the application.

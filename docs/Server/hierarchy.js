@@ -2,7 +2,7 @@ var hierarchy =
 [
     [ "DatabaseConnector", "classdatabase__connector_1_1controller_1_1_database_connector.html", [
       [ "BooleanConnector", "classdatabase__connector_1_1controller_1_1_boolean_connector.html", [
-        [ "DeleteConnector", "classdatabase__connector_1_1controller_1_1_delete_connector.html", [
+        [ "DeleteConnector", "classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html", [
           [ "ClearWishlist", "classdatabase__connector_1_1controller_1_1delete_1_1_clear_wishlist.html", null ],
           [ "DeleteItinerary", "classdatabase__connector_1_1controller_1_1delete_1_1_delete_itinerary.html", null ],
           [ "DeleteItineraryReview", "classdatabase__connector_1_1controller_1_1delete_1_1_delete_itinerary_review.html", null ],
@@ -28,10 +28,12 @@ var hierarchy =
         [ "CheckIfUserCanReviewUser", "classdatabase__connector_1_1controller_1_1request_1_1_check_if_user_can_review_user.html", null ],
         [ "UserLogin", "classdatabase__connector_1_1controller_1_1request_1_1_user_login.html", null ],
         [ "UpdateConnector", "classdatabase__connector_1_1controller_1_1update_1_1_update_connector.html", [
+          [ "UpdateDocument", "classdatabase__connector_1_1controller_1_1update_1_1_update_document.html", null ],
           [ "UpdateItinerary", "classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html", null ],
           [ "UpdateItineraryReview", "classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary_review.html", null ],
           [ "UpdateRegisteredUser", "classdatabase__connector_1_1controller_1_1update_1_1_update_registered_user.html", null ],
           [ "UpdateReportDetails", "classdatabase__connector_1_1controller_1_1update_1_1_update_report_details.html", null ],
+          [ "UpdateReservation", "classdatabase__connector_1_1controller_1_1update_1_1_update_reservation.html", null ],
           [ "UpdateUserReview", "classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html", null ]
         ] ]
       ] ],
@@ -55,7 +57,11 @@ var hierarchy =
         [ "RequestWishlistJoinItinerary", "classdatabase__connector_1_1controller_1_1request_1_1_request_wishlist_join_itinerary.html", null ]
       ] ]
     ] ],
+    [ "DBManager", "classemail__sender_1_1_d_b_manager.html", null ],
+    [ "Firebase", "classnotifications_1_1_firebase.html", null ],
+    [ "Push", "classnotifications_1_1_push.html", null ],
+    [ "Reset", "classemail__sender_1_1_reset.html", null ],
     [ "Sender", "classemail__sender_1_1_sender.html", null ],
-    [ "TableCreator", "classdatabase__connector_1_1controller_1_1utilities_1_1_table_creator.html", null ],
+    [ "TableCreator", "classdatabase__connector_1_1controller_1_1download_1_1utilities_1_1_table_creator.html", null ],
     [ "Uploader", "classimg__uploader_1_1_uploader.html", null ]
 ];

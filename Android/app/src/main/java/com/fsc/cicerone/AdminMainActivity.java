@@ -113,7 +113,7 @@ public class AdminMainActivity extends AppCompatActivity {
                             .setTitle(getString(R.string.are_you_sure))
                             .setMessage(getString(R.string.exit_confirm_answer))
                             .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                                AccountManager.logout();
+                                AccountManager.logout(AdminMainActivity.this);
                                 Intent i = new Intent(this, LoginActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(i);

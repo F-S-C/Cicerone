@@ -18,10 +18,7 @@ package com.fsc.cicerone;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,6 +34,7 @@ import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.LanguageManager;
 import com.fsc.cicerone.model.Document;
@@ -134,33 +132,29 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
         next.setOnClickListener(view -> {
-            if (checkConnection()) {
-                if (validateFirstPageData()) {
-                    next.setText(R.string.loading);
-                    next.setEnabled(false);
-                    AccountManager.checkIfUsernameExists(RegistrationActivity.this, username.getText().toString().trim().toLowerCase(), resultUser -> {
-                        if (resultUser) {
-                            username.setError(getString(R.string.username_already_exists));
-                            next.setText(R.string.next);
-                            next.setEnabled(true);
-                        } else {
-                            AccountManager.checkIfEmailExists(RegistrationActivity.this, email.getText().toString().trim().toLowerCase(), resultEmail -> {
-                                if (resultEmail) {
-                                    email.setError(getString(R.string.email_already_exists));
-                                    next.setText(R.string.next);
-                                    next.setEnabled(true);
-                                } else {
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, languages.getLanguagesNames());
-                                    nachoTextView.setAdapter(adapter);
-                                    nachoTextView.disableEditChipOnTouch();
-                                    viewFlipper.showNext();
-                                }
-                            });
-                        }
-                    });
-                }
-            } else {
-                Toast.makeText(this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+            if (validateFirstPageData()) {
+                next.setText(R.string.loading);
+                next.setEnabled(false);
+                AccountManager.checkIfUsernameExists(RegistrationActivity.this, username.getText().toString().trim().toLowerCase(), resultUser -> {
+                    if (resultUser) {
+                        username.setError(getString(R.string.username_already_exists));
+                        next.setText(R.string.next);
+                        next.setEnabled(true);
+                    } else {
+                        AccountManager.checkIfEmailExists(RegistrationActivity.this, email.getText().toString().trim().toLowerCase(), resultEmail -> {
+                            if (resultEmail) {
+                                email.setError(getString(R.string.email_already_exists));
+                                next.setText(R.string.next);
+                                next.setEnabled(true);
+                            } else {
+                                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, languages.getLanguagesNames());
+                                nachoTextView.setAdapter(adapter);
+                                nachoTextView.disableEditChipOnTouch();
+                                viewFlipper.showNext();
+                            }
+                        });
+                    }
+                });
             }
         });
 
@@ -213,36 +207,38 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
         signup.setOnClickListener(view -> {
-            if (checkConnection()) {
-                if (validateSecondPageData()) {
-                    signup.setText(R.string.loading);
-                    signup.setEnabled(false);
-                    AccountManager.insertUser(this, setNewUser(), result -> {
-                        if (result) {
-                            AccountManager.insertUserDocument(this, username.getText().toString().trim().toLowerCase(), new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()),
-                                    ins -> {
-                                        if (ins) {
-                                            ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());
-                                            languages.setUserLanguages(username.getText().toString().trim().toLowerCase(), languages.getLanguagesFromNames(lanSelected));
-                                            Intent i = new Intent(this, SplashActivity.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            Toast.makeText(this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
-                                            startActivity(i);
-                                        } else {
-                                            signup.setText(R.string.sign_up);
-                                            signup.setEnabled(true);
-                                            Toast.makeText(this, getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                        } else {
-                            signup.setText(R.string.sign_up);
-                            signup.setEnabled(true);
-                            Toast.makeText(this, getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            } else {
-                Toast.makeText(this, getString(R.string.connection_error), Toast.LENGTH_LONG).show();
+            if (validateSecondPageData()) {
+                signup.setText(R.string.loading);
+                signup.setEnabled(false);
+                User newUser;
+                AccountManager.insertUser(this, newUser = setNewUser(), result -> {
+                    if (result) {
+                        AccountManager.insertUserDocument(this, username.getText().toString().trim().toLowerCase(), new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()),
+                                ins -> {
+                                    if (ins) {
+                                        ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());
+                                        languages.setUserLanguages(username.getText().toString().trim().toLowerCase(), languages.getLanguagesFromNames(lanSelected));
+                                        Intent i = new Intent(this, SplashActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        Toast.makeText(this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
+                                        Mailer.sendRegistrationConfirmationEmail(this, newUser, res -> {
+                                            if (!res) {
+                                                Toast.makeText(this, getString(R.string.error_send_email), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                        startActivity(i);
+                                    } else {
+                                        signup.setText(R.string.sign_up);
+                                        signup.setEnabled(true);
+                                        Toast.makeText(this, getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                    } else {
+                        signup.setText(R.string.sign_up);
+                        signup.setEnabled(true);
+                        Toast.makeText(this, getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
@@ -387,9 +383,4 @@ public class RegistrationActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private boolean checkConnection() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
-    }
 }

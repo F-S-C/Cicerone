@@ -18,6 +18,8 @@ package com.fsc.cicerone.model;
 
 import android.util.Log;
 
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,8 +27,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 public class Reservation extends BusinessEntity {
 

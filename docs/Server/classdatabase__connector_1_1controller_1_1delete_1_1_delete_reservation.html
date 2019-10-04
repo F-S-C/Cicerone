@@ -20,6 +20,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -105,7 +111,7 @@ Inheritance diagram for DeleteReservation:</div>
  <div class="center">
   <img src="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.png" usemap="#DeleteReservation_map" alt=""/>
   <map id="DeleteReservation_map" name="DeleteReservation_map">
-<area href="classdatabase__connector_1_1controller_1_1_delete_connector.html" title="A generic connector that deletes data from a database." alt="DeleteConnector" shape="rect" coords="0,112,124,136"/>
+<area href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html" title="A generic connector that deletes data from a database." alt="DeleteConnector" shape="rect" coords="0,112,124,136"/>
 <area href="classdatabase__connector_1_1controller_1_1_boolean_connector.html" title="A generic connector to a database that returns a boolean value (true or false) and a message." alt="BooleanConnector" shape="rect" coords="0,56,124,80"/>
 <area href="classdatabase__connector_1_1controller_1_1_database_connector.html" title="A generic connector to a database." alt="DatabaseConnector" shape="rect" coords="0,0,124,24"/>
   </map>
@@ -113,19 +119,19 @@ Inheritance diagram for DeleteReservation:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac07ecc0658188bd01040b096d50a1832"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#ac07ecc0658188bd01040b096d50a1832">__construct</a> (string $username=null, int $itinerary=null)</td></tr>
-<tr class="memdesc:ac07ecc0658188bd01040b096d50a1832"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html" title="A connector that deletes an reservation from the reservation table.">DeleteReservation</a> constructor.  <a href="#ac07ecc0658188bd01040b096d50a1832">More...</a><br /></td></tr>
-<tr class="separator:ac07ecc0658188bd01040b096d50a1832"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74b150fe821d6445676c5eb500117382"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#a74b150fe821d6445676c5eb500117382">__construct</a> (string $username, int $itinerary, bool $deleted_by_cicerone=false)</td></tr>
+<tr class="memdesc:a74b150fe821d6445676c5eb500117382"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html" title="A connector that deletes an reservation from the reservation table.">DeleteReservation</a> constructor.  <a href="#a74b150fe821d6445676c5eb500117382">More...</a><br /></td></tr>
+<tr class="separator:a74b150fe821d6445676c5eb500117382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c96b134b24ec7120296945f11f251e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#ae5c96b134b24ec7120296945f11f251e">get_content</a> ()</td></tr>
 <tr class="memdesc:ae5c96b134b24ec7120296945f11f251e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the object from the database and get the result of the operation.  <a href="#ae5c96b134b24ec7120296945f11f251e">More...</a><br /></td></tr>
 <tr class="separator:ae5c96b134b24ec7120296945f11f251e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classdatabase__connector_1_1controller_1_1_delete_connector"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdatabase__connector_1_1controller_1_1_delete_connector')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html">DeleteConnector</a></td></tr>
-<tr class="memitem:a097e584f65bcb36481ad71d63b984e83 inherit pub_methods_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#a097e584f65bcb36481ad71d63b984e83">__construct</a> (string $id=null)</td></tr>
-<tr class="memdesc:a097e584f65bcb36481ad71d63b984e83 inherit pub_methods_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html" title="A generic connector that deletes data from a database.">DeleteConnector</a> constructor.  <a href="classdatabase__connector_1_1controller_1_1_delete_connector.html#a097e584f65bcb36481ad71d63b984e83">More...</a><br /></td></tr>
-<tr class="separator:a097e584f65bcb36481ad71d63b984e83 inherit pub_methods_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5c96b134b24ec7120296945f11f251e inherit pub_methods_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#ae5c96b134b24ec7120296945f11f251e">get_content</a> ()</td></tr>
-<tr class="memdesc:ae5c96b134b24ec7120296945f11f251e inherit pub_methods_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the object from the database and get the result of the operation.  <a href="classdatabase__connector_1_1controller_1_1_delete_connector.html#ae5c96b134b24ec7120296945f11f251e">More...</a><br /></td></tr>
-<tr class="separator:ae5c96b134b24ec7120296945f11f251e inherit pub_methods_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html">DeleteConnector</a></td></tr>
+<tr class="memitem:a097e584f65bcb36481ad71d63b984e83 inherit pub_methods_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#a097e584f65bcb36481ad71d63b984e83">__construct</a> (string $id=null)</td></tr>
+<tr class="memdesc:a097e584f65bcb36481ad71d63b984e83 inherit pub_methods_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html" title="A generic connector that deletes data from a database.">DeleteConnector</a> constructor.  <a href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#a097e584f65bcb36481ad71d63b984e83">More...</a><br /></td></tr>
+<tr class="separator:a097e584f65bcb36481ad71d63b984e83 inherit pub_methods_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5c96b134b24ec7120296945f11f251e inherit pub_methods_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#ae5c96b134b24ec7120296945f11f251e">get_content</a> ()</td></tr>
+<tr class="memdesc:ae5c96b134b24ec7120296945f11f251e inherit pub_methods_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the object from the database and get the result of the operation.  <a href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#ae5c96b134b24ec7120296945f11f251e">More...</a><br /></td></tr>
+<tr class="separator:ae5c96b134b24ec7120296945f11f251e inherit pub_methods_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdatabase__connector_1_1controller_1_1_database_connector"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdatabase__connector_1_1controller_1_1_database_connector')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html">DatabaseConnector</a></td></tr>
 <tr class="memitem:a095c5d389db211932136b53f25f39685 inherit pub_methods_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#a095c5d389db211932136b53f25f39685">__construct</a> ()</td></tr>
 <tr class="memdesc:a095c5d389db211932136b53f25f39685 inherit pub_methods_classdatabase__connector_1_1controller_1_1_database_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html" title="A generic connector to a database.">DatabaseConnector</a> constructor.  <a href="classdatabase__connector_1_1controller_1_1_database_connector.html#a095c5d389db211932136b53f25f39685">More...</a><br /></td></tr>
@@ -145,15 +151,15 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:aa715ae25d23b82a83749d2375a8ec961"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2251427819e5dce996c7ad74c683e6ec"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#a2251427819e5dce996c7ad74c683e6ec">ID_COLUMN_TYPE</a> = &quot;s&quot;</td></tr>
 <tr class="separator:a2251427819e5dce996c7ad74c683e6ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html">DeleteConnector</a></td></tr>
-<tr class="memitem:ada7e57b2275989a5d42f45e675c91ae3 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#ada7e57b2275989a5d42f45e675c91ae3">TABLE_NAME</a> = &quot;table&quot;</td></tr>
-<tr class="separator:ada7e57b2275989a5d42f45e675c91ae3 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa715ae25d23b82a83749d2375a8ec961 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#aa715ae25d23b82a83749d2375a8ec961">ID_COLUMN</a> = &quot;id_col&quot;</td></tr>
-<tr class="separator:aa715ae25d23b82a83749d2375a8ec961 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2251427819e5dce996c7ad74c683e6ec inherit pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#a2251427819e5dce996c7ad74c683e6ec">ID_COLUMN_TYPE</a> = &quot;s&quot;</td></tr>
-<tr class="separator:a2251427819e5dce996c7ad74c683e6ec inherit pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae97941710d863131c700f069b109991e inherit pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#ae97941710d863131c700f069b109991e">$id</a></td></tr>
-<tr class="separator:ae97941710d863131c700f069b109991e inherit pro_attribs_classdatabase__connector_1_1controller_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html">DeleteConnector</a></td></tr>
+<tr class="memitem:ada7e57b2275989a5d42f45e675c91ae3 inherit pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#ada7e57b2275989a5d42f45e675c91ae3">TABLE_NAME</a> = &quot;table&quot;</td></tr>
+<tr class="separator:ada7e57b2275989a5d42f45e675c91ae3 inherit pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa715ae25d23b82a83749d2375a8ec961 inherit pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#aa715ae25d23b82a83749d2375a8ec961">ID_COLUMN</a> = &quot;id_col&quot;</td></tr>
+<tr class="separator:aa715ae25d23b82a83749d2375a8ec961 inherit pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2251427819e5dce996c7ad74c683e6ec inherit pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#a2251427819e5dce996c7ad74c683e6ec">ID_COLUMN_TYPE</a> = &quot;s&quot;</td></tr>
+<tr class="separator:a2251427819e5dce996c7ad74c683e6ec inherit pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae97941710d863131c700f069b109991e inherit pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#ae97941710d863131c700f069b109991e">$id</a></td></tr>
+<tr class="separator:ae97941710d863131c700f069b109991e inherit pro_attribs_classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdatabase__connector_1_1controller_1_1_boolean_connector"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdatabase__connector_1_1controller_1_1_boolean_connector')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdatabase__connector_1_1controller_1_1_boolean_connector.html">BooleanConnector</a></td></tr>
 <tr class="memitem:a19d90604a0342a855b4520ec453b9fd3 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_boolean_connector.html#a19d90604a0342a855b4520ec453b9fd3">RESULT_KEY</a> = &quot;result&quot;</td></tr>
 <tr class="memdesc:a19d90604a0342a855b4520ec453b9fd3 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight">The key for the boolean result.  <a href="classdatabase__connector_1_1controller_1_1_boolean_connector.html#a19d90604a0342a855b4520ec453b9fd3">More...</a><br /></td></tr>
@@ -171,7 +177,7 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:abb7390a8906b1822e4ac48ec48fd6f56 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cd9fad4cf3e38962d4f32870d25ccec inherit pro_attribs_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#a3cd9fad4cf3e38962d4f32870d25ccec">DB_P</a> = &quot;89n@W[&quot;</td></tr>
 <tr class="separator:a3cd9fad4cf3e38962d4f32870d25ccec inherit pro_attribs_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5db0d3504f917f268614c50b02c53e2 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#ab5db0d3504f917f268614c50b02c53e2">DB_NAME</a> = &quot;my_fsc&quot;</td></tr>
+<tr class="memitem:ab5db0d3504f917f268614c50b02c53e2 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#ab5db0d3504f917f268614c50b02c53e2">DB_NAME</a> = &quot;cicerone&quot;</td></tr>
 <tr class="separator:ab5db0d3504f917f268614c50b02c53e2 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d9c79b9b86b3f5891c6d3892f12c6a0 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#a0d9c79b9b86b3f5891c6d3892f12c6a0">$connection</a> = null</td></tr>
 <tr class="separator:a0d9c79b9b86b3f5891c6d3892f12c6a0 inherit pro_attribs_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,9 +195,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memdesc:a68f888c2d365899e5a497ff1f1c6bc98 inherit pro_methods_classdatabase__connector_1_1controller_1_1_database_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a result from another Database connector.  <a href="classdatabase__connector_1_1controller_1_1_database_connector.html#a68f888c2d365899e5a497ff1f1c6bc98">More...</a><br /></td></tr>
 <tr class="separator:a68f888c2d365899e5a497ff1f1c6bc98 inherit pro_methods_classdatabase__connector_1_1controller_1_1_database_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classdatabase__connector_1_1controller_1_1_boolean_connector.html">BooleanConnector</a></td></tr>
-<tr class="memitem:a62755f0cbbafbc2cc08125b1d6da81b4 inherit pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_boolean_connector.html#a62755f0cbbafbc2cc08125b1d6da81b4">get_true</a> (string $message=null)</td></tr>
-<tr class="memdesc:a62755f0cbbafbc2cc08125b1d6da81b4 inherit pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the "true" answer.  <a href="classdatabase__connector_1_1controller_1_1_boolean_connector.html#a62755f0cbbafbc2cc08125b1d6da81b4">More...</a><br /></td></tr>
-<tr class="separator:a62755f0cbbafbc2cc08125b1d6da81b4 inherit pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a727f0b4ff03021668a3d3f24cdfb3e3c inherit pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_boolean_connector.html#a727f0b4ff03021668a3d3f24cdfb3e3c">get_true</a> ($message=null)</td></tr>
+<tr class="memdesc:a727f0b4ff03021668a3d3f24cdfb3e3c inherit pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the "true" answer.  <a href="classdatabase__connector_1_1controller_1_1_boolean_connector.html#a727f0b4ff03021668a3d3f24cdfb3e3c">More...</a><br /></td></tr>
+<tr class="separator:a727f0b4ff03021668a3d3f24cdfb3e3c inherit pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa370250f39d059bdc5ba545c6bdbd3ed inherit pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_boolean_connector.html#aa370250f39d059bdc5ba545c6bdbd3ed">get_false</a> (string $error=null)</td></tr>
 <tr class="memdesc:aa370250f39d059bdc5ba545c6bdbd3ed inherit pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the "false" answer.  <a href="classdatabase__connector_1_1controller_1_1_boolean_connector.html#aa370250f39d059bdc5ba545c6bdbd3ed">More...</a><br /></td></tr>
 <tr class="separator:aa370250f39d059bdc5ba545c6bdbd3ed inherit pro_static_methods_classdatabase__connector_1_1controller_1_1_boolean_connector"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,8 +205,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A connector that deletes an reservation from the reservation table. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac07ecc0658188bd01040b096d50a1832"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac07ecc0658188bd01040b096d50a1832">&#9670;&nbsp;</a></span>__construct()</h2>
+<a id="a74b150fe821d6445676c5eb500117382"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74b150fe821d6445676c5eb500117382">&#9670;&nbsp;</a></span>__construct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,13 +215,19 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">__construct </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>$username</em> = <code>null</code>, </td>
+          <td class="paramname"><em>$username</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>$itinerary</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>$itinerary</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>$deleted_by_cicerone</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -230,6 +242,7 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$username</td><td>The author of the review. </td></tr>
     <tr><td class="paramtype">int</td><td class="paramname">$itinerary</td><td>The code of the booked itinerary. </td></tr>
+    <tr><td class="paramtype">bool</td><td class="paramname">$deleted_by_cicerone</td><td>Whether or not the delete request was made by the cicerone of the itinerary. </td></tr>
   </table>
   </dd>
 </dl>
@@ -255,7 +268,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Delete the object from the database and get the result of the operation. </p>
 <dl class="section return"><dt>Returns</dt><dd>string The result of the operation. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#ae5c96b134b24ec7120296945f11f251e" title="Delete the object from the database and get the result of the operation.">DeleteConnector::get_content()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#ae5c96b134b24ec7120296945f11f251e" title="Delete the object from the database and get the result of the operation.">DeleteConnector::get_content()</a> </dd></dl>
 
 </div>
 </div>

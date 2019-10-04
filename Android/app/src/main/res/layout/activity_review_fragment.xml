@@ -29,7 +29,8 @@
         android:padding="25dp"
         android:text="@string/no_review"
         android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/review_list"

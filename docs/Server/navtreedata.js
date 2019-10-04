@@ -28,7 +28,6 @@ var NAVTREE =
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
-        [ "Functions", "namespacemembers_func.html", null ],
         [ "Variables", "namespacemembers_vars.html", null ]
       ] ]
     ] ],
@@ -37,7 +36,7 @@ var NAVTREE =
       [ "Data Structure Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Data Fields", "functions.html", [
-        [ "All", "functions.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ]
       ] ]
@@ -45,8 +44,8 @@ var NAVTREE =
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
-        [ "All", "globals.html", "globals_dup" ],
-        [ "Variables", "globals_vars.html", "globals_vars" ]
+        [ "All", "globals.html", null ],
+        [ "Variables", "globals_vars.html", null ]
       ] ]
     ] ]
   ] ]
@@ -54,14 +53,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"0067c24ac45a0f66_8php.html",
-"35530c799b6063bb_8php.html#ab6a5dcc2780078e858666e274cd35d5e",
-"74e1ef3cba687c5b_8php.html#a6efc15b5a2314dd4b5aaa556a375c6d6",
-"a4a5ef20073badd5_8php.html",
-"classdatabase__connector_1_1controller_1_1delete_1_1_delete_itinerary.html#ada7e57b2275989a5d42f45e675c91ae3",
-"correct-for-altervista_8py.html#afafecb95aca5e0525fd6959a5602fb89",
-"dir_cb0894f7f7e1cfeb40ebc01403d8a655.html",
-"view_2insert_2_insert_document_8php.html"
+"_boolean_connector_8php.html",
+"classemail__sender_1_1_d_b_manager.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

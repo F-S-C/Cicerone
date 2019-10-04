@@ -1,0 +1,9 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <PHPCodeStyleSettings>
+      <option name="PHPDOC_BLANK_LINE_BEFORE_TAGS" value="true" />
+      <option name="PHPDOC_WRAP_LONG_LINES" value="true" />
+      <option name="VARIABLE_NAMING_STYLE" value="SNAKE_CASE" />
+    </PHPCodeStyleSettings>
+  </code_scheme>
+</component>

@@ -18,19 +18,16 @@ package com.fsc.cicerone.manager;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.fsc.cicerone.adapter.AdminItineraryAdapter;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
-import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
-import com.fsc.cicerone.model.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,7 +65,7 @@ public abstract class ItineraryManager {
      * @return The new itinerary.
      */
 
-    public static Itinerary uploadItinerary(String title, String description, String beginDate, String endDate, String endReservationDate, String location, String duration, int repetitions, int minParticipants, int maxParticipants, float fullPrice, float reducedPrice, String imageUrl, BooleanConnector.OnEndConnectionListener callback) {
+    public static Itinerary uploadItinerary(String title, String description, String beginDate, String endDate, String endReservationDate, String location, String duration, int repetitions, int minParticipants, int maxParticipants, float fullPrice, float reducedPrice, String imageUrl, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         SimpleDateFormat in = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date beginningDate;
         Date endingDate;
@@ -122,7 +119,7 @@ public abstract class ItineraryManager {
      * @param itinerary The code of the itinerary to delete.
      * @param callback  A callback to be executed after the operation is completed.
      */
-    public static void deleteItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+    public static void deleteItinerary(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> params = new HashMap<>(1);
         params.put("itinerary_code", itinerary.getCode());
         new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
@@ -142,7 +139,7 @@ public abstract class ItineraryManager {
      * @param itinerary The itinerary to update
      * @param callback  A callback to be executed after the operation is completed.
      */
-    public static void updateItinerary(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+    public static void updateItinerary(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
@@ -158,10 +155,11 @@ public abstract class ItineraryManager {
 
     /**
      * Request itinerary.
-     * @param context The context of the caller.
-     * @param parameters The parameters of the request.
+     *
+     * @param context                   The context of the caller.
+     * @param parameters                The parameters of the request.
      * @param onStartConnectionListener On start connection callback.
-     * @param callback A callback to be executed after the operation is completed.
+     * @param callback                  A callback to be executed after the operation is completed.
      */
     public static void requestItinerary(Activity context, Map<String, Object> parameters, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable DatabaseConnector.OnEndConnectionListener<Itinerary> callback) {
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))

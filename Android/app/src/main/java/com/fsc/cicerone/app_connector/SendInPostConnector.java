@@ -68,6 +68,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
      */
     @Override
     protected String doInBackground(Void... voids) {
+        super.doInBackground(voids);
         try {
             URL url = new URL(fileUrl);
             HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();

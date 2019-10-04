@@ -2,19 +2,19 @@ package com.fsc.cicerone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.model.Itinerary;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -25,6 +25,7 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
     Itinerary itinerary;
     int layout = R.layout.activity_itinerary_details;
     SwipeRefreshLayout swipeRefreshLayout;
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     public ItineraryActivity() {
         super();
@@ -43,13 +44,10 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         String s = Objects.requireNonNull(bundle).getString("itinerary");
         itinerary = new Itinerary(s);
 
-        // Setting toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
-        supportActionBar.setDisplayShowHomeEnabled(true);
-        supportActionBar.setTitle(itinerary.getTitle());
+
+        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+        collapsingToolbarLayout.setTitle(itinerary.getTitle());
+
 
         swipeRefreshLayout = findViewById(R.id.itinerary_activity_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this::refresh);
@@ -92,7 +90,12 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         rDate.setText(out.format(itinerary.getReservationDate()));
         imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
 
+
         ReviewManager.getAvgItineraryFeedback(ItineraryActivity.this, itinerary, review::setRating);
+
+        Log.e("titolo", itinerary.getTitle());
+        collapsingToolbarLayout.setTitle(itinerary.getTitle());
+
 
         swipeRefreshLayout.setRefreshing(false);
     }

@@ -24,7 +24,7 @@ import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
-import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.ReportStatus;
@@ -49,7 +49,7 @@ public abstract class ReportManager {
      * @param body                  The body of the report.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void addNewReport(Activity context, User author, String reportedUserUsername, String object, String body, @Nullable BooleanRunnable callback)
+    public static void addNewReport(Activity context, User author, String reportedUserUsername, String object, String body, @Nullable Consumer<Boolean> callback)
     {
         Map<String, Object> param = new HashMap<>(5);
         param.put("username", author.getUsername());
@@ -75,7 +75,7 @@ public abstract class ReportManager {
      * @param report  The report to close.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void takeCharge(Activity context, Report report, @Nullable BooleanRunnable callback)
+    public static void takeCharge(Activity context, Report report, @Nullable Consumer<Boolean> callback)
     {
         Map<String, Object> param = new HashMap<>(2);
         param.put("report_code", report.getCode());
@@ -99,7 +99,7 @@ public abstract class ReportManager {
      * @param report   The report to close.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void  removeReport (Activity context, Report report, @Nullable BooleanRunnable callback)
+    public static void  removeReport (Activity context, Report report, @Nullable Consumer<Boolean> callback)
     {
         Map<String, Object> param = new HashMap<>(2);
         param.put("report_code", report.getCode());
@@ -124,7 +124,7 @@ public abstract class ReportManager {
      * @param report  The report to close.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void  closeReport (Activity context, Report report, @Nullable BooleanRunnable callback)
+    public static void  closeReport (Activity context, Report report, @Nullable Consumer<Boolean> callback)
     {
         Map<String, Object> param = new HashMap<>(2);
         param.put("report_code", report.getCode());

@@ -26,11 +26,11 @@ abstract class BooleanConnector extends DatabaseConnector
 
     /**
      * Get the "true" answer.
-     * @param string|null $message The message. Ignored if null.
+     * @param string|array|null $message The message. Ignored if null.
      * @return array The answer. It is an associative array that has <pre>"result" => true</pre> and (if available)
      * <pre>"message" => "custom message"</pre>.
      */
-    protected static function get_true(string $message = null): array
+    protected static function get_true($message = null): array
     {
         return ($message != null) ? array(self::RESULT_KEY => true, self::MESSAGE_KEY => $message) : array(self::RESULT_KEY => true);
     }

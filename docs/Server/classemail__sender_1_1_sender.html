@@ -20,6 +20,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -91,36 +97,37 @@ $(document).ready(function(){initNavTree('classemail__sender_1_1_sender.html',''
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Data Fields</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">Sender Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Send an e-mail to a given user.  
- <a href="classemail__sender_1_1_sender.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a095c5d389db211932136b53f25f39685"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a095c5d389db211932136b53f25f39685">__construct</a> ()</td></tr>
-<tr class="memdesc:a095c5d389db211932136b53f25f39685"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classemail__sender_1_1_sender.html" title="Send an e-mail to a given user.">Sender</a> constructor.  <a href="#a095c5d389db211932136b53f25f39685">More...</a><br /></td></tr>
+<tr class="memdesc:a095c5d389db211932136b53f25f39685"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classemail__sender_1_1_sender.html">Sender</a> constructor.  <a href="#a095c5d389db211932136b53f25f39685">More...</a><br /></td></tr>
 <tr class="separator:a095c5d389db211932136b53f25f39685"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a421831a265621325e1fdd19aace0c758"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a421831a265621325e1fdd19aace0c758">__destruct</a> ()</td></tr>
-<tr class="memdesc:a421831a265621325e1fdd19aace0c758"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classemail__sender_1_1_sender.html" title="Send an e-mail to a given user.">Sender</a> destructor.  <a href="#a421831a265621325e1fdd19aace0c758">More...</a><br /></td></tr>
-<tr class="separator:a421831a265621325e1fdd19aace0c758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6665aeb6e312ea89283ce785f0dfad60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a6665aeb6e312ea89283ce785f0dfad60">sendEmail</a> ()</td></tr>
+<tr class="separator:a6665aeb6e312ea89283ce785f0dfad60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9953049c098fb5ce2082aa774ee90ed7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a9953049c098fb5ce2082aa774ee90ed7">setEmail</a> ()</td></tr>
+<tr class="memdesc:a9953049c098fb5ce2082aa774ee90ed7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Based on the type value passed in post, the context of the email and its data changes.  <a href="#a9953049c098fb5ce2082aa774ee90ed7">More...</a><br /></td></tr>
+<tr class="separator:a9953049c098fb5ce2082aa774ee90ed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:acb077bb08ba787858ed6a3749276254a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#acb077bb08ba787858ed6a3749276254a">$email_data</a></td></tr>
+<tr class="separator:acb077bb08ba787858ed6a3749276254a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4aaa749b9b8920df20fdd99f86c405a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#aa4aaa749b9b8920df20fdd99f86c405a">$recipient_email</a> = null</td></tr>
+<tr class="separator:aa4aaa749b9b8920df20fdd99f86c405a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fe63353b2e0099099bc8b3e67c66993"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a9fe63353b2e0099099bc8b3e67c66993">$email_filename</a> = null</td></tr>
+<tr class="separator:a9fe63353b2e0099099bc8b3e67c66993"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b423a7af7e669b288eacca16f0aab0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a8b423a7af7e669b288eacca16f0aab0b">$email_subject</a> = null</td></tr>
+<tr class="separator:a8b423a7af7e669b288eacca16f0aab0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a0a7a63d1486a7d1b4be184fdec7a8ae5"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a0a7a63d1486a7d1b4be184fdec7a8ae5">DB_SERVER_NAME</a> = &quot;127.0.0.1&quot;</td></tr>
-<tr class="separator:a0a7a63d1486a7d1b4be184fdec7a8ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb7390a8906b1822e4ac48ec48fd6f56"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#abb7390a8906b1822e4ac48ec48fd6f56">DB_USERNAME</a> = &quot;fsc&quot;</td></tr>
-<tr class="separator:abb7390a8906b1822e4ac48ec48fd6f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cd9fad4cf3e38962d4f32870d25ccec"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a3cd9fad4cf3e38962d4f32870d25ccec">DB_P</a> = &quot;89n@W[&quot;</td></tr>
-<tr class="separator:a3cd9fad4cf3e38962d4f32870d25ccec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5db0d3504f917f268614c50b02c53e2"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#ab5db0d3504f917f268614c50b02c53e2">DB_NAME</a> = &quot;cicerone&quot;</td></tr>
-<tr class="separator:ab5db0d3504f917f268614c50b02c53e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae30abde3d49a3f7432f277314ccdedb0"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#ae30abde3d49a3f7432f277314ccdedb0">EMAIL_FILENAME</a> = &quot;./mail.php&quot;</td></tr>
-<tr class="separator:ae30abde3d49a3f7432f277314ccdedb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a029f649757f0a4720728e222817daa26"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a029f649757f0a4720728e222817daa26">SMTP_HOST</a> = &quot;smtp.gmail.com&quot;</td></tr>
 <tr class="separator:a029f649757f0a4720728e222817daa26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44811471e7789d3131cd145a749ffd8f"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a44811471e7789d3131cd145a749ffd8f">SMTP_PORT</a> = 587</td></tr>
@@ -132,9 +139,7 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a563f9106021fac70cc86d78d374aa7ba"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html#a563f9106021fac70cc86d78d374aa7ba">SMTP_FROM_NAME</a> = &quot;Cicerone&quot;</td></tr>
 <tr class="separator:a563f9106021fac70cc86d78d374aa7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Send an e-mail to a given user. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a095c5d389db211932136b53f25f39685"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a095c5d389db211932136b53f25f39685">&#9670;&nbsp;</a></span>__construct()</h2>
 
@@ -150,18 +155,19 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classemail__sender_1_1_sender.html" title="Send an e-mail to a given user.">Sender</a> constructor. </p>
+<p><a class="el" href="classemail__sender_1_1_sender.html">Sender</a> constructor. </p>
 
 </div>
 </div>
-<a id="a421831a265621325e1fdd19aace0c758"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a421831a265621325e1fdd19aace0c758">&#9670;&nbsp;</a></span>__destruct()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6665aeb6e312ea89283ce785f0dfad60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6665aeb6e312ea89283ce785f0dfad60">&#9670;&nbsp;</a></span>sendEmail()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">__destruct </td>
+          <td class="memname">sendEmail </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -169,117 +175,80 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classemail__sender_1_1_sender.html" title="Send an e-mail to a given user.">Sender</a> destructor. </p>
+</div>
+</div>
+<a id="a9953049c098fb5ce2082aa774ee90ed7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9953049c098fb5ce2082aa774ee90ed7">&#9670;&nbsp;</a></span>setEmail()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">setEmail </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Based on the type value passed in post, the context of the email and its data changes. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
-<a id="ab5db0d3504f917f268614c50b02c53e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5db0d3504f917f268614c50b02c53e2">&#9670;&nbsp;</a></span>DB_NAME</h2>
+<a id="acb077bb08ba787858ed6a3749276254a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb077bb08ba787858ed6a3749276254a">&#9670;&nbsp;</a></span>$email_data</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const DB_NAME = &quot;cicerone&quot;</td>
+          <td class="memname">$email_data</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a3cd9fad4cf3e38962d4f32870d25ccec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cd9fad4cf3e38962d4f32870d25ccec">&#9670;&nbsp;</a></span>DB_P</h2>
+<a id="a9fe63353b2e0099099bc8b3e67c66993"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fe63353b2e0099099bc8b3e67c66993">&#9670;&nbsp;</a></span>$email_filename</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const DB_P = &quot;89n@W[&quot;</td>
+          <td class="memname">$email_filename = null</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a0a7a63d1486a7d1b4be184fdec7a8ae5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a7a63d1486a7d1b4be184fdec7a8ae5">&#9670;&nbsp;</a></span>DB_SERVER_NAME</h2>
+<a id="a8b423a7af7e669b288eacca16f0aab0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b423a7af7e669b288eacca16f0aab0b">&#9670;&nbsp;</a></span>$email_subject</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const DB_SERVER_NAME = &quot;127.0.0.1&quot;</td>
+          <td class="memname">$email_subject = null</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="abb7390a8906b1822e4ac48ec48fd6f56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb7390a8906b1822e4ac48ec48fd6f56">&#9670;&nbsp;</a></span>DB_USERNAME</h2>
+<a id="aa4aaa749b9b8920df20fdd99f86c405a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4aaa749b9b8920df20fdd99f86c405a">&#9670;&nbsp;</a></span>$recipient_email</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const DB_USERNAME = &quot;fsc&quot;</td>
+          <td class="memname">$recipient_email = null</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae30abde3d49a3f7432f277314ccdedb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae30abde3d49a3f7432f277314ccdedb0">&#9670;&nbsp;</a></span>EMAIL_FILENAME</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const EMAIL_FILENAME = &quot;./mail.php&quot;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -395,7 +364,7 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>Server/email_sender/<a class="el" href="sender_8php.html">sender.php</a></li>
+<li>Server/email_sender/<a class="el" href="_sender_8php.html">Sender.php</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -48,6 +48,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
@@ -69,10 +72,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Itinerary on the account details page.
@@ -112,7 +111,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
         context = Objects.requireNonNull(getActivity());
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+        preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
         name = view.findViewById(R.id.name);
         surname = view.findViewById(R.id.surname);
         email = view.findViewById(R.id.email);
@@ -165,7 +164,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
                 .setTitle(context.getString(R.string.are_you_sure))
                 .setMessage(context.getString(R.string.exit_confirm_answer))
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    AccountManager.logout();
+                    AccountManager.logout(getActivity());
                     preferences.edit().remove("session").apply();
                     Intent i = new Intent(getActivity(), SplashActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -201,7 +200,14 @@ public class ProfileFragment extends Fragment implements Refreshable {
                     modifyButton.setText(view1.getContext().getString(R.string.modify));
                     updateUserData();
                 } else {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+                    if(name.getText().toString().equals("")) name.setError(getString(R.string.empty_name_error));
+                    if(surname.getText().toString().equals("")) surname.setError(getString(R.string.empty_surname_error));
+                    if(email.getText().toString().equals("")) email.setError(getString(R.string.empty_email_error));
+                    if(cellphone.getText().toString().equals("")) cellphone.setError(getString(R.string.empty_cellphone_error));
+                    if(birthDate.getText().toString().equals("")) birthDate.setError(getString(R.string.empty_birthday_error));
+                    if(documentNumber.getText().toString().equals("")) documentNumber.setError(getString(R.string.empty_document_number_error));
+                    if(documentType.getText().toString().equals("")) documentType.setError(getString(R.string.empty_document_type_error));
+                    if(documentExpiryDate.getText().toString().equals("")) documentExpiryDate.setError(getString(R.string.empty_document_expiry_date_error));
                 }
             }
         });

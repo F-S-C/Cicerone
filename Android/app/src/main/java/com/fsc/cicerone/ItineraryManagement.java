@@ -20,9 +20,9 @@ package com.fsc.cicerone;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,14 +30,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,10 +44,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ItineraryManagement extends ItineraryActivity implements Refreshable {
+    public static final int RESULT_ITINERARY_DELETED = 1020;
     private Fragment fragment = new UsersListFragment();
     private RecyclerView.Adapter adapter;
     private Map<String, Object> code;
-    private Itinerary currentItinerary;
+    private TextView messageNoReview;
 
 
     public ItineraryManagement() {
@@ -70,6 +69,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
         FloatingActionButton updateItinerary = findViewById(R.id.editItinerary);
 
         RecyclerView recyclerView = findViewById(R.id.reviewList);
+        messageNoReview = findViewById(R.id.messageNoReview);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -107,6 +107,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
 
     public void deleteItineraryFromServer() {
         ItineraryManager.deleteItinerary(this, itinerary, success -> Toast.makeText(ItineraryManagement.this, ItineraryManagement.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show());
+        setResult(Activity.RESULT_OK);
         ItineraryManagement.this.finish();
     }
 
@@ -123,7 +124,8 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
                     if (!list.isEmpty()) {
                         adapter = new ReviewAdapter(this, list);
                         recyclerView.setAdapter(adapter);
-                    }
+                    }else
+                        messageNoReview.setVisibility(View.VISIBLE);
                 })
                 .setObjectToSend(parameters)
                 .build();
@@ -134,32 +136,15 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ItineraryUpdate.RESULT_ITINERARY_UPDATED && resultCode == Activity.RESULT_OK) {
-            refresh();
-            // TODO: Refresh itinerari?
+            ItineraryManager.requestItinerary(this, code, () -> {
+                if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+
+            }, list -> {
+                if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+                itinerary = list.get(0);
+                ItineraryManagement.this.refresh();
+            });
         }
-    }
-
-    @Override
-    public void refresh() {
-        refresh(null);
-    }
-
-
-    @Override
-    public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        ItineraryManager.requestItinerary(this, code, () -> {
-            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
-
-        }, list -> {
-            if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-            Log.e("it",list.get(0).toString());
-        });
-
-    }
-
-    @Override
-    public void bindDataToView() {
-        super.bindDataToView();
     }
 }
 

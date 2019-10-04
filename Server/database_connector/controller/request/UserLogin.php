@@ -40,12 +40,12 @@ class UserLogin extends BooleanConnector
      */
     public function get_content(): string
     {
-        $query = "SELECT password FROM registered_user WHERE username = ?";
+        $query = "SELECT * FROM registered_user WHERE username = ?";
         if ($statement = $this->connection->prepare($query)) {
             $statement->bind_param("s", $this->username);
             if ($statement->execute()) {
                 if ($row = $statement->get_result()->fetch_assoc()) {
-                    $to_return = password_verify($this->password, $row['password']) ? self::get_true() : self::get_false("Wrong username or password");
+                    $to_return = password_verify($this->password, $row['password']) ? self::get_true($row) : self::get_false("Wrong username or password");
                 } else {
                     $to_return = self::get_false("Wrong username or password");
                 }

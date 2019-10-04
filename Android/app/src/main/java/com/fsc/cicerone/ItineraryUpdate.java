@@ -418,7 +418,19 @@ public class ItineraryUpdate extends AppCompatActivity {
             finish();
 
         } else {
-            Toast.makeText(ItineraryUpdate.this, ItineraryUpdate.this.getString(R.string.error_fields_empty), Toast.LENGTH_SHORT).show();
+            if(title.getText().toString().equals("")) title.setError(getString(R.string.empty_title_error));
+            if(description.getText().toString().equals("")) description.setError(getString(R.string.empty_description_itineary_error));
+            if(selectBeginningDate.getText().toString().equals("")) selectBeginningDate.setError(getString(R.string.empty_beginningdate_error));
+            if(selectEndingDate.getText().toString().equals("")) selectEndingDate.setError(getString(R.string.empty_endingdate_error));
+            if(selectReservationDate.getText().toString().equals("")) selectReservationDate.setError(getString(R.string.empty_reservationdate_error));
+            if(location.getText().toString().equals("")) location.setError(getString(R.string.empty_location_error));
+            if(repetitions.getText().toString().equals("")) repetitions.setError(getString(R.string.empty_repetitions_error));
+            if(durationHours.getText().toString().equals("")) durationHours.setError(getString(R.string.empty_duration_hours_error));
+            if(durationMinutes.getText().toString().equals("")) durationMinutes.setError(getString(R.string.empty_duration_minutes_error));
+            if(maxParticipants.getText().toString().equals("")) maxParticipants.setError(getString(R.string.empty_max_participants_error));
+            if(minParticipants.getText().toString().equals("")) minParticipants.setError(getString(R.string.empty_min_participants_error));
+            if(fullPrice.getText().toString().equals("")) fullPrice.setError(getString(R.string.empty_fullprice_error));
+            if(reducedPrice.getText().toString().equals("")) reducedPrice.setError(getString(R.string.empty_reduced_price_error));
         }
     }
 

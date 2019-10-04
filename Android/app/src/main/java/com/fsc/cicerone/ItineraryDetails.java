@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -56,6 +57,7 @@ public class ItineraryDetails extends ItineraryActivity {
 
     private boolean isInWishlist;
 
+    private TextView messageNoReview;
     private EditText descriptionReview;
     private RatingBar feedbackReview;
 
@@ -94,6 +96,7 @@ public class ItineraryDetails extends ItineraryActivity {
 
 
         recyclerView = findViewById(R.id.reviewList);
+        messageNoReview = findViewById(R.id.messageNoReview);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -226,9 +229,14 @@ public class ItineraryDetails extends ItineraryActivity {
                     isReviewed();
                     refresh();
                     dialogUpdate.dismiss();
-                } else
-                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
-                            Toast.LENGTH_SHORT).show();
+                } else {
+                    if (feedbackReview.getRating() == 0)
+                        Toast.makeText(this, ItineraryDetails.this.getString(R.string.empty_feedback_error),
+                                Toast.LENGTH_SHORT).show();
+                    if (descriptionReview.getText().toString().equals(""))
+                        descriptionReview.setError(getString(R.string.empty_description_error));
+                }
+
             });
             buttonNegative.setOnClickListener(view -> new MaterialAlertDialogBuilder(this)
                     .setTitle(getString(R.string.are_you_sure)).setMessage(getString(R.string.sure_to_remove_review))
@@ -274,9 +282,13 @@ public class ItineraryDetails extends ItineraryActivity {
                     isReviewed();
                     refresh();
                     dialogSubmit.dismiss();
-                } else
-                    Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
-                            Toast.LENGTH_SHORT).show();
+                } else {
+                    if (feedbackReview.getRating() == 0)
+                        Toast.makeText(this, ItineraryDetails.this.getString(R.string.empty_feedback_error),
+                                Toast.LENGTH_SHORT).show();
+                    if (descriptionReview.getText().toString().equals(""))
+                        descriptionReview.setError(getString(R.string.empty_description_error));
+                }
             });
         });
         dialogSubmit.show();
@@ -321,7 +333,8 @@ public class ItineraryDetails extends ItineraryActivity {
             button.setOnClickListener(view1 -> {
                 if (allFilledReservation()) {
                     try {
-                        ReservationManager.addReservation(itinerary,
+                        ReservationManager.addReservation(this,
+                                itinerary,
                                 Integer.parseInt(numberOfAdultsInput.getText().toString()),
                                 Integer.parseInt(numberOfChildrenInput.getText().toString()),
                                 new SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -372,8 +385,11 @@ public class ItineraryDetails extends ItineraryActivity {
 
     private void requestDataForRecycleView() {
         ReviewManager.requestItineraryReviews(this, itinerary, list -> {
-            adapter = new ReviewAdapter(this, list);
-            recyclerView.setAdapter(adapter);
+            if (!list.isEmpty()) {
+                adapter = new ReviewAdapter(this, list);
+                recyclerView.setAdapter(adapter);
+            }else
+                messageNoReview.setVisibility(View.VISIBLE);
         });
     }
 
