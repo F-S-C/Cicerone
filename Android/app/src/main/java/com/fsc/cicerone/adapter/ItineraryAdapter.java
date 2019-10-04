@@ -16,7 +16,7 @@
 
 package com.fsc.cicerone.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +49,7 @@ import java.util.Locale;
  */
 public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.ViewHolder> {
 
-    private final Context context;
+    private final Activity context;
     private List<Itinerary> mData;
     private LayoutInflater mInflater;
     private Fragment fragment;
@@ -61,7 +61,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
      * @param context The parent Context.
      * @param list    The array of Itineraries objects in the wishlist.
      */
-    public ItineraryAdapter(Context context, List<Itinerary> list, @Nullable Fragment fragment) {
+    public ItineraryAdapter(Activity context, List<Itinerary> list, @Nullable Fragment fragment) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
         this.context = context;
@@ -106,7 +106,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
             if (fragment != null) {
                 fragment.startActivityForResult(i, WishlistFragment.REQUEST_UPDATE_WISHLIST);
             }else{
-                context.startActivity(i);
+                context.startActivityForResult(i, ItineraryManagement.RESULT_ITINERARY_DELETED);
             }
         });
     }

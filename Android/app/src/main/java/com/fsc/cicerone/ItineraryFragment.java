@@ -17,6 +17,7 @@
 package com.fsc.cicerone;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -191,6 +192,14 @@ public class ItineraryFragment extends Fragment implements Refreshable {
                 adapter2 = new ReservationAdapter(getActivity(), filtered, ItineraryFragment.this, R.layout.participation_list);
                 itineraryList.setAdapter(adapter2);
             });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ItineraryManagement.RESULT_ITINERARY_DELETED && resultCode == Activity.RESULT_OK) {
+            refresh();
         }
     }
 }

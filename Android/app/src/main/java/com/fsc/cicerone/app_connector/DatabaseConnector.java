@@ -17,6 +17,9 @@
 package com.fsc.cicerone.app_connector;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -121,7 +124,13 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
      * @return The string that contains the result of the connection.
      */
     @Override
-    protected abstract String doInBackground(Void... voids);
+    protected String doInBackground(Void... voids) {
+        if (!checkConnection()) {
+            setError(new Exception(context.get().getString(R.string.connection_error)));
+            return null;
+        }
+        return "";
+    }
 
     protected void setError(Exception error) {
         this.error = error;
@@ -143,6 +152,12 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
                     System.exit(1);
                 })
                 .show();
+    }
+
+    private boolean checkConnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.get().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
     }
 
     protected DatabaseConnector(Builder<T> builder) {
