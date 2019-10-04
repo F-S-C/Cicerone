@@ -98,7 +98,7 @@ class DBManager
      */
     public function getItineraryFromDB(){
         if($this->itinerary_code != null) {
-            $sql = "SELECT * FROM itinerary WHERE itinerary_code = '" . $this->itinerary_code . "'";
+            $sql = "SELECT * FROM itinerary WHERE itinerary_code = ?";
             $stmt = $this->mysqli->prepare($sql);
             $stmt->bind_param("i",$this->itinerary_code);
             if ($stmt->execute()) {

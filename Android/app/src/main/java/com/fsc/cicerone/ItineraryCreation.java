@@ -18,13 +18,9 @@ package com.fsc.cicerone;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,23 +31,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.manager.ImageManager;
 import com.fsc.cicerone.manager.ItineraryManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 
 public class ItineraryCreation extends AppCompatActivity {
@@ -69,14 +57,12 @@ public class ItineraryCreation extends AppCompatActivity {
     EditText fullPrice;
     EditText reducedPrice;
     ImageView selectedImage;
+    private ImageManager image;
     Button submit;
     final Calendar myCalendar = Calendar.getInstance();
-    private Bitmap bitmapImage;
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryCreation.class.getName();
     private static final String DATE_FORMAT = "dd-MM-yyyy";
-    private static final int IMG_REQUEST = 1;
-    private boolean imgSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +84,7 @@ public class ItineraryCreation extends AppCompatActivity {
         fullPrice = findViewById(R.id.inputFullPrice);
         submit = findViewById(R.id.submit);
         selectedImage = findViewById(R.id.itinerary_image);
+        image = new ImageManager(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -198,9 +185,7 @@ public class ItineraryCreation extends AppCompatActivity {
                         repetitions.setFocusableInTouchMode(true);
                         repetitions.setFocusable(true);
                     }
-
                 }
-
             }
 
             @Override
@@ -221,7 +206,6 @@ public class ItineraryCreation extends AppCompatActivity {
                 if (!repInserted.equals("") && Integer.parseInt(repInserted) < 1) {
                     repetitions.setError(ItineraryCreation.this.getString(R.string.wrong_number));
                 }
-
             }
 
             @Override
@@ -268,7 +252,6 @@ public class ItineraryCreation extends AppCompatActivity {
                         }
                     }
                 }
-
             }
 
             @Override
@@ -293,10 +276,8 @@ public class ItineraryCreation extends AppCompatActivity {
                     } else {
                         reducedPrice.setError(null);
                         fullPrice.setError(null);
-
                     }
                 }
-
             }
 
             @Override
@@ -305,69 +286,78 @@ public class ItineraryCreation extends AppCompatActivity {
             }
         });
 
-        selectedImage.setOnClickListener(v -> selectImage());
+        selectedImage.setOnClickListener(v -> image.selectImage());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null) {
-            Uri imgPath = data.getData();
-            try {
-                bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath);
-                selectedImage.setBackground(null);
-                selectedImage.setImageBitmap(bitmapImage);
-            } catch (IOException e) {
-                Log.e(ERROR_TAG, e.toString());
-            }
-        }
+        image.manageResult(requestCode, resultCode, data, selectedImage);
     }
 
     public void sendData(View view) {
         boolean canSend = allFilled();
         if (canSend) {
-            if (imgSelected) {
-                uploadItineraryWithImage();
-            } else {
-                ItineraryManager.uploadItinerary(
-                        title.getText().toString(),
-                        description.getText().toString(),
-                        selectBeginningDate.getText().toString(),
-                        selectEndingDate.getText().toString(),
-                        selectReservationDate.getText().toString(),
-                        location.getText().toString(),
-                        durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
-                        Integer.parseInt(repetitions.getText().toString()),
-                        Integer.parseInt(minParticipants.getText().toString()),
-                        Integer.parseInt(maxParticipants.getText().toString()),
-                        Float.parseFloat(fullPrice.getText().toString()),
-                        Float.parseFloat(reducedPrice.getText().toString()),
-                        null, insStatus -> {
-                            if (insStatus.getResult()) {
-                                Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(i);
-                            } else {
-                                Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
+            image.upload(response -> {
+                if (response.getResult()) {
+                    String imgURL = ConnectorConstants.IMG_FOLDER.concat(response.getMessage());
+                    ItineraryManager.uploadItinerary(
+                            title.getText().toString(),
+                            description.getText().toString(),
+                            selectBeginningDate.getText().toString(),
+                            selectEndingDate.getText().toString(),
+                            selectReservationDate.getText().toString(),
+                            location.getText().toString(),
+                            durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
+                            Integer.parseInt(repetitions.getText().toString()),
+                            Integer.parseInt(minParticipants.getText().toString()),
+                            Integer.parseInt(maxParticipants.getText().toString()),
+                            Float.parseFloat(fullPrice.getText().toString()),
+                            Float.parseFloat(reducedPrice.getText().toString()),
+                            imgURL,
+                            insStatus -> {
+                                if (insStatus.getResult()) {
+                                    Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(i);
+                                } else {
+                                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
-            if(title.getText().toString().equals("")) title.setError(getString(R.string.empty_title_error));
-            if(description.getText().toString().equals("")) description.setError(getString(R.string.empty_description_itineary_error));
-            if(selectBeginningDate.getText().toString().equals("")) selectBeginningDate.setError(getString(R.string.empty_beginningdate_error));
-            if(selectEndingDate.getText().toString().equals("")) selectEndingDate.setError(getString(R.string.empty_endingdate_error));
-            if(selectReservationDate.getText().toString().equals("")) selectReservationDate.setError(getString(R.string.empty_reservationdate_error));
-            if(location.getText().toString().equals("")) location.setError(getString(R.string.empty_location_error));
-            if(repetitions.getText().toString().equals("")) repetitions.setError(getString(R.string.empty_repetitions_error));
-            if(durationHours.getText().toString().equals("")) durationHours.setError(getString(R.string.empty_duration_hours_error));
-            if(durationMinutes.getText().toString().equals("")) durationMinutes.setError(getString(R.string.empty_duration_minutes_error));
-            if(maxParticipants.getText().toString().equals("")) maxParticipants.setError(getString(R.string.empty_max_participants_error));
-            if(minParticipants.getText().toString().equals("")) minParticipants.setError(getString(R.string.empty_min_participants_error));
-            if(fullPrice.getText().toString().equals("")) fullPrice.setError(getString(R.string.empty_fullprice_error));
-            if(reducedPrice.getText().toString().equals("")) reducedPrice.setError(getString(R.string.empty_reduced_price_error));
-            if(selectedImage == null) Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_image_error), Toast.LENGTH_SHORT).show();
+            if (title.getText().toString().equals(""))
+                title.setError(getString(R.string.empty_title_error));
+            if (description.getText().toString().equals(""))
+                description.setError(getString(R.string.empty_description_itineary_error));
+            if (selectBeginningDate.getText().toString().equals(""))
+                selectBeginningDate.setError(getString(R.string.empty_beginningdate_error));
+            if (selectEndingDate.getText().toString().equals(""))
+                selectEndingDate.setError(getString(R.string.empty_endingdate_error));
+            if (selectReservationDate.getText().toString().equals(""))
+                selectReservationDate.setError(getString(R.string.empty_reservationdate_error));
+            if (location.getText().toString().equals(""))
+                location.setError(getString(R.string.empty_location_error));
+            if (repetitions.getText().toString().equals(""))
+                repetitions.setError(getString(R.string.empty_repetitions_error));
+            if (durationHours.getText().toString().equals(""))
+                durationHours.setError(getString(R.string.empty_duration_hours_error));
+            if (durationMinutes.getText().toString().equals(""))
+                durationMinutes.setError(getString(R.string.empty_duration_minutes_error));
+            if (maxParticipants.getText().toString().equals(""))
+                maxParticipants.setError(getString(R.string.empty_max_participants_error));
+            if (minParticipants.getText().toString().equals(""))
+                minParticipants.setError(getString(R.string.empty_min_participants_error));
+            if (fullPrice.getText().toString().equals(""))
+                fullPrice.setError(getString(R.string.empty_fullprice_error));
+            if (reducedPrice.getText().toString().equals(""))
+                reducedPrice.setError(getString(R.string.empty_reduced_price_error));
+            if (selectedImage == null)
+                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_image_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -460,7 +450,7 @@ public class ItineraryCreation extends AppCompatActivity {
                 && !location.getText().toString().equals("")
                 && !fullPrice.getText().toString().equals("")
                 && !reducedPrice.getText().toString().equals("")
-                && bitmapImage != null;
+                && image.isSelected();
     }
 
     private void updateBeginningDate() {
@@ -490,70 +480,6 @@ public class ItineraryCreation extends AppCompatActivity {
                 currentEditText.setError(ItineraryCreation.this.getString(R.string.wrong_number));
             }
         }
-    }
-
-    private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, IMG_REQUEST);
-        imgSelected = true;
-    }
-
-    private String imgToString(Bitmap image) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] imgByteArray = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imgByteArray, Base64.DEFAULT);
-    }
-
-    private void uploadItineraryWithImage() {
-        if (bitmapImage != null) {
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, ConnectorConstants.IMAGE_UPLOADER, response -> {
-                try {
-                    JSONObject result = new JSONObject(response);
-                    if (result.getBoolean("result")) {
-                        String imgURL = ConnectorConstants.IMG_FOLDER.concat(result.getString("name"));
-                        ItineraryManager.uploadItinerary(
-                                title.getText().toString(),
-                                description.getText().toString(),
-                                selectBeginningDate.getText().toString(),
-                                selectEndingDate.getText().toString(),
-                                selectReservationDate.getText().toString(),
-                                location.getText().toString(),
-                                durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
-                                Integer.parseInt(repetitions.getText().toString()),
-                                Integer.parseInt(minParticipants.getText().toString()),
-                                Integer.parseInt(maxParticipants.getText().toString()),
-                                Float.parseFloat(fullPrice.getText().toString()),
-                                Float.parseFloat(reducedPrice.getText().toString()),
-                                imgURL, insStatus -> {
-                                    if (insStatus.getResult()) {
-                                        Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(i);
-                                    } else {
-                                        Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else {
-                        Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    Log.e(ERROR_TAG, e.toString());
-                }
-            }, null) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("image", imgToString(bitmapImage));
-                    return params;
-                }
-            };
-            ImageSingleton.getInstance(ItineraryCreation.this).addToRequestQue(stringRequest);
-        }
-
     }
 
     @Override
