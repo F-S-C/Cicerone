@@ -48,6 +48,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
@@ -69,10 +72,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * Class that contains the elements of the TAB Itinerary on the account details page.

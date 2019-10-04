@@ -17,7 +17,6 @@
 package com.fsc.cicerone;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,9 +30,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.tabs.TabLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Objects;
 

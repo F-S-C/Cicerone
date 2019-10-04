@@ -24,7 +24,7 @@ import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
-import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Wishlist;
@@ -98,7 +98,7 @@ public abstract class WishlistManager {
         }
     }
 
-    public static void isInWishlist(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+    public static void isInWishlist(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);
             params.put(ITINERARY_KEY, itinerary.getCode());

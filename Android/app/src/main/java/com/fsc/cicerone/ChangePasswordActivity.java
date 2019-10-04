@@ -25,14 +25,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 

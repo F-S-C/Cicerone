@@ -25,10 +25,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.GetDataConnector;
-import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
-import com.fsc.cicerone.functional_interfaces.RunnableUsingBusinessEntity;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
+import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
@@ -40,10 +42,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 /**
  * A <i>control</i> class that manages the users' accounts.
@@ -75,7 +73,7 @@ public abstract class AccountManager {
      * @param onEnd       A function to be executed after the login attempt. The boolean value
      *                    contains true if login was successful, false otherwise.
      */
-    public static void attemptLogin(Activity context, User.Credentials credentials, @Nullable DatabaseConnector.OnStartConnectionListener onStart, @Nullable BooleanRunnable onEnd) {
+    public static void attemptLogin(Activity context, User.Credentials credentials, @Nullable DatabaseConnector.OnStartConnectionListener onStart, @Nullable Consumer<Boolean> onEnd) {
         Map<String, Object> params = new HashMap<>(2);
         params.put(USERNAME_KEY, credentials.getUsername());
         params.put(PASSWORD_KEY, credentials.getPassword());
@@ -138,7 +136,7 @@ public abstract class AccountManager {
      * @param user   The username to verify.
      * @param result A function to be executed after the check.
      */
-    public static void checkIfUsernameExists(Activity context, String user, BooleanRunnable result) {
+    public static void checkIfUsernameExists(Activity context, String user, Consumer<Boolean> result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put(USERNAME_KEY, user);
         SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
@@ -155,7 +153,7 @@ public abstract class AccountManager {
      * @param email  The email to verify.
      * @param result A function to be executed after the check.
      */
-    public static void checkIfEmailExists(Activity context, String email, BooleanRunnable result) {
+    public static void checkIfEmailExists(Activity context, String email, Consumer<Boolean> result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put("email", email);
         SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
@@ -172,7 +170,7 @@ public abstract class AccountManager {
      * @param user     User to insert in the database.
      * @param callback A function to be executed after the insert attempt.
      */
-    public static void insertUser(Activity context, User user, BooleanRunnable callback) {
+    public static void insertUser(Activity context, User user, Consumer<Boolean> callback) {
         Log.i("USERDATA", user.toJSONObject().toString());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_USER)
                 .setContext(context)
@@ -192,7 +190,7 @@ public abstract class AccountManager {
      * @param document Document to insert in the database.
      * @param callback A function to be executed after the insert attempt.
      */
-    public static void insertUserDocument(Activity context, String username, Document document, BooleanRunnable callback) {
+    public static void insertUserDocument(Activity context, String username, Document document, Consumer<Boolean> callback) {
         Map<String, Object> doc = SendInPostConnector.paramsFromObject(document);
         doc.put(USERNAME_KEY, username);
         Log.i("DOCUMENT", doc.toString());
@@ -272,7 +270,7 @@ public abstract class AccountManager {
      * @param user     The user to be deleted.
      * @param callback A function to be executed after the insert attempt.
      */
-    public static void deleteAccount(Activity context, User user, @Nullable BooleanRunnable callback) {
+    public static void deleteAccount(Activity context, User user, @Nullable Consumer<Boolean> callback) {
         new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {

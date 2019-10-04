@@ -8,8 +8,7 @@ import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
-import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
-import com.fsc.cicerone.functional_interfaces.FloatRunnable;
+import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.functional_interfaces.RunnableUsingBusinessEntity;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
@@ -35,7 +34,7 @@ public abstract class ReviewManager {
      * @param itinerary The itinerary of the feedback's average.
      * @param callback  A callback to be executed after the operation is completed.
      */
-    public static void getAvgItineraryFeedback(Activity context, Itinerary itinerary, @Nullable FloatRunnable callback) {
+    public static void getAvgItineraryFeedback(Activity context, Itinerary itinerary, @Nullable Consumer<Float> callback) {
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("reviewed_itinerary", itinerary.getCode());
         new SendInPostConnector.Builder<>(ConnectorConstants.ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
@@ -62,7 +61,7 @@ public abstract class ReviewManager {
      * @param onStartConnectionListener On start connection callback.
      * @param callback                  A callback to be executed after the operation is completed.
      */
-    public static void permissionReviewItinerary(Activity context, User user, Itinerary itinerary, @Nullable BooleanRunnable callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
+    public static void permissionReviewItinerary(Activity context, User user, Itinerary itinerary, @Nullable Consumer<Boolean> callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("username", user.getUsername());
         parameters.put("booked_itinerary", itinerary.getCode());
@@ -111,7 +110,7 @@ public abstract class ReviewManager {
      * @param itineraryReview Review of the itinerary.
      * @param callback        A callback to be executed after the operation is completed.
      */
-    public static void updateReviewItinerary(Activity context, ItineraryReview itineraryReview, @Nullable BooleanRunnable callback) {
+    public static void updateReviewItinerary(Activity context, ItineraryReview itineraryReview, @Nullable Consumer<Boolean> callback) {
 
         new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY_REVIEW)
                 .setContext(context)
@@ -130,7 +129,7 @@ public abstract class ReviewManager {
      * @param itineraryReview Review of the itinerary.
      * @param callback        A callback to be executed after the operation is completed.
      */
-    public static void deleteReviewItinerary(Activity context, ItineraryReview itineraryReview, @Nullable BooleanRunnable callback) {
+    public static void deleteReviewItinerary(Activity context, ItineraryReview itineraryReview, @Nullable Consumer<Boolean> callback) {
         new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY_REVIEW)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
@@ -148,7 +147,7 @@ public abstract class ReviewManager {
      * @param itineraryReview Review of the itinerary.
      * @param callback        A callback to be executed after the operation is completed.
      */
-    public static void addReviewItinerary(Activity context, ItineraryReview itineraryReview, @Nullable BooleanRunnable callback) {
+    public static void addReviewItinerary(Activity context, ItineraryReview itineraryReview, @Nullable Consumer<Boolean> callback) {
         new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY_REVIEW)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
@@ -166,7 +165,7 @@ public abstract class ReviewManager {
      * @param user     The user of the feedback's avarage.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void getAvgUserFeedback(Activity context, User user, @Nullable FloatRunnable callback) {
+    public static void getAvgUserFeedback(Activity context, User user, @Nullable Consumer<Float> callback) {
         Map<String,Object> parameter = new HashMap<>();
         parameter.put("reviewed_user", user.getUsername());
         SendInPostConnector<UserReview> connectorReview = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
@@ -193,7 +192,7 @@ public abstract class ReviewManager {
      * @param callback                  A callback to be executed after the operation is completed.
      * @param onStartConnectionListener On start connection callback.
      */
-    public static void permissionReviewUser(Activity context, User reviewed_user, User user, @Nullable BooleanRunnable callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
+    public static void permissionReviewUser(Activity context, User reviewed_user, User user, @Nullable Consumer<Boolean> callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("username", user.getUsername());
         parameters.put("reviewed_user", reviewed_user.getUsername());
@@ -238,7 +237,7 @@ public abstract class ReviewManager {
      * @param userReview Review of the user.
      * @param callback   A callback to be executed after the operation is completed.
      */
-    public static void updateReviewUser(Activity context, UserReview userReview, @Nullable BooleanRunnable callback) {
+    public static void updateReviewUser(Activity context, UserReview userReview, @Nullable Consumer<Boolean> callback) {
 
         new BooleanConnector.Builder(ConnectorConstants.UPDATE_USER_REVIEW)
                 .setContext(context)
@@ -257,7 +256,7 @@ public abstract class ReviewManager {
      * @param userReview Review of the user.
      * @param callback   A callback to be executed after the operation is completed.
      */
-    public static void deleteReviewUser(Activity context, UserReview userReview, @Nullable BooleanRunnable callback) {
+    public static void deleteReviewUser(Activity context, UserReview userReview, @Nullable Consumer<Boolean> callback) {
         new BooleanConnector.Builder(ConnectorConstants.DELETE_USER_REVIEW)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
@@ -275,7 +274,7 @@ public abstract class ReviewManager {
      * @param userReview Review of the user.
      * @param callback   A callback to be executed after the operation is completed.
      */
-    public static void addReviewUser(Activity context, UserReview userReview, @Nullable BooleanRunnable callback) {
+    public static void addReviewUser(Activity context, UserReview userReview, @Nullable Consumer<Boolean> callback) {
         new BooleanConnector.Builder(ConnectorConstants.INSERT_USER_REVIEW)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {

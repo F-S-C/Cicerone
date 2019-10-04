@@ -31,27 +31,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.adapter.UserListAdapter;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReservationManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.GetDataConnector;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 public class UsersListFragment extends Fragment implements Refreshable {
 

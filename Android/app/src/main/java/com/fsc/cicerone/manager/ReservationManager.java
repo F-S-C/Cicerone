@@ -17,13 +17,15 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.DatabaseConnector;
-import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
+import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
@@ -32,10 +34,6 @@ import com.fsc.cicerone.model.Reservation;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 
 
 /**
@@ -170,7 +168,7 @@ public abstract class ReservationManager {
      * @param itinerary The itinerary of the reservation.
      * @param callback    A callback to be executed after the operation is completed.
      */
-    public static void isReserved(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+    public static void isReserved(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);
             params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
@@ -194,7 +192,7 @@ public abstract class ReservationManager {
      * @param itinerary The itinerary of the reservation.
      * @param callback    A callback to be executed after the operation is completed.
      */
-    public static void isConfirmed(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+    public static void isConfirmed(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
         if(AccountManager.isLogged()){
             Map<String, Object> params = new HashMap<>(2);
             params.put("username", AccountManager.getCurrentLoggedUser().getUsername());

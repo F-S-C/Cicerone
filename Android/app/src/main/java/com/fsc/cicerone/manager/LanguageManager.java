@@ -18,6 +18,9 @@ package com.fsc.cicerone.manager;
 
 import android.util.Log;
 
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Language;
 
@@ -26,10 +29,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.GetDataConnector;
 
 /**
  * LanguageManager is used to manage multiple instances of the Language class and to interact

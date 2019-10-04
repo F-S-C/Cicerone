@@ -1,14 +1,12 @@
 package com.fsc.cicerone;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.User;

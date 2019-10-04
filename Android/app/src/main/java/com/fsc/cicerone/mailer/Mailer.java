@@ -21,19 +21,16 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.fsc.cicerone.functional_interfaces.BooleanRunnable;
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
+import com.fsc.cicerone.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.model.User;
-
-import javax.security.auth.callback.Callback;
 
 public class Mailer {
 
@@ -41,7 +38,7 @@ public class Mailer {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void sendReservationConfirmationEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
+    public static void sendReservationConfirmationEmail(Activity context, Reservation reservation, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> data = new HashMap<>(4);
         data.put("username", reservation.getItinerary().getCicerone().getUsername());
         data.put("itinerary_code", reservation.getItinerary().getCode());
@@ -50,7 +47,7 @@ public class Mailer {
         sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
-    public static void sendRegistrationConfirmationEmail(Activity context, User user, @Nullable BooleanRunnable callback) {
+    public static void sendRegistrationConfirmationEmail(Activity context, User user, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> data = new HashMap<>(3);
         data.put("username", user.getUsername());
         data.put("recipient_email", user.getEmail());
@@ -58,7 +55,7 @@ public class Mailer {
         sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
-    public static void sendItineraryRequestEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
+    public static void sendItineraryRequestEmail(Activity context, Reservation reservation, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> data = new HashMap<>(4);
         data.put("username", reservation.getItinerary().getCicerone().getUsername());
         data.put("itinerary_code", reservation.getItinerary().getCode());
@@ -67,7 +64,7 @@ public class Mailer {
         sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
-    public static void sendReservationRefuseEmail(Activity context, Reservation reservation, @Nullable BooleanRunnable callback) {
+    public static void sendReservationRefuseEmail(Activity context, Reservation reservation, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> data = new HashMap<>(5);
         data.put("username", reservation.getItinerary().getCicerone().getUsername());
         data.put("itinerary_code", reservation.getItinerary().getCode());
@@ -77,7 +74,7 @@ public class Mailer {
         sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
-    public static void sendReservationRemoveEmail(Activity context, Itinerary itinerary, @Nullable BooleanRunnable callback) {
+    public static void sendReservationRemoveEmail(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> data = new HashMap<>(7);
         data.put("username", itinerary.getCicerone().getUsername());
         data.put("itinerary_code", itinerary.getCode());
@@ -89,7 +86,7 @@ public class Mailer {
         sendEmail(context, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
-    public static void sendAccountDeleteConfirmationEmail(@Nullable BooleanRunnable callback) {
+    public static void sendAccountDeleteConfirmationEmail(@Nullable Consumer<Boolean> callback) {
         Map<String, Object> data = new HashMap<>(3);
         data.put("username", AccountManager.getCurrentLoggedUser().getName());
         data.put("recipient_email", AccountManager.getCurrentLoggedUser().getEmail());
@@ -97,13 +94,13 @@ public class Mailer {
         sendEmail(null, data, ConnectorConstants.EMAIL_SENDER, callback);
     }
 
-    public static void sendPasswordResetLink(Activity context, String email, @Nullable BooleanRunnable callback) {
+    public static void sendPasswordResetLink(Activity context, String email, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> data = new HashMap<>(1);
         data.put("email", email);
         sendEmail(context, data, ConnectorConstants.EMAIL_RESET_PASSWORD, callback);
     }
 
-    private static void sendEmail(Activity context, Map<String, Object> data, String url, @Nullable BooleanRunnable callback) {
+    private static void sendEmail(Activity context, Map<String, Object> data, String url, @Nullable Consumer<Boolean> callback) {
         BooleanConnector sendEmailConnector = new BooleanConnector.Builder(url)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
