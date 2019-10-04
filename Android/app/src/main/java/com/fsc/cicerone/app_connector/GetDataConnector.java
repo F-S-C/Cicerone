@@ -44,6 +44,7 @@ public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnecto
      */
     @Override
     protected String doInBackground(Void... voids) {
+        super.doInBackground(voids);
         try {
             URL url = new URL(fileUrl);
             HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
