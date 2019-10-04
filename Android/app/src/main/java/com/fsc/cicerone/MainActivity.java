@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout layoutFabItinerary;
     private FrameLayout subFabContainer;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private FragmentPagerAdapter fragmentPagerAdapter;
     private ViewPager viewPager;
     private MenuItem prevMenuItem;
@@ -74,17 +76,28 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Create the activity and load the layout.
      *
-     * @param savedInstanceState if the activity is being re-initialized after previously being
-     *                           shut down then this Bundle contains the data it most recently
-     *                           supplied in onSaveInstanceState(Bundle). Note: Otherwise it is
-     *                           null. This value may be null. (From the official
-     *                           <a href="https://developer.android.com/reference/android/app/Activity.html#onCreate(android.os.Bundle,%2520android.os.PersistableBundle)">Android Documentation</a>).
+     * @param savedInstanceState if the activity is being re-initialized after previously being shut
+     *                           down then this Bundle contains the data it most recently supplied
+     *                           in onSaveInstanceState(Bundle). Note: Otherwise it is null. This
+     *                           value may be null. (From the official
+     *                           <a href="https://developer.android.com/reference/android/app/Activity.html#onCreate(android.os.Bundle,%2520android.os.PersistableBundle)">Android
+     *                           Documentation</a>).
      */
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        swipeRefreshLayout = findViewById(R.id.main_activity_swipe_refresh);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (activeFragment instanceof Refreshable) {
+                ((Refreshable) activeFragment).refresh(swipeRefreshLayout);
+            } else {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         setUpViewPager();
 
@@ -126,16 +139,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         closeSubMenusFab();
-
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.main_activity_swipe_refresh);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (activeFragment instanceof Refreshable) {
-                ((Refreshable) activeFragment).refresh(swipeRefreshLayout);
-            } else {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
         // fix to make the ViewPager work with SwipeRefreshLayout
         viewPager.setOnTouchListener((v, event) -> {
@@ -254,9 +257,11 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .setNegativeButton(R.string.no, null)
                             .show();
-                } else{
-                 if(object.getText().toString().equals("")) object.setError(getString(R.string.empty_object_error));
-                 if(body.getText().toString().equals("")) body.setError(getString(R.string.empty_body_error));
+                } else {
+                    if (object.getText().toString().equals(""))
+                        object.setError(getString(R.string.empty_object_error));
+                    if (body.getText().toString().equals(""))
+                        body.setError(getString(R.string.empty_body_error));
                 }
             });
 
@@ -268,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpViewPager() {
         viewPager = findViewById(R.id.main_container);
         fragmentPagerAdapter = AccountManager.isLogged() ?
-                new MainActivityAfterLoginPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) :
+                new MainActivityAfterLoginPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, swipeRefreshLayout) :
                 new MainActivityPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         activeFragment = fragmentPagerAdapter.getItem(0);
         viewPager.setAdapter(fragmentPagerAdapter);
@@ -340,10 +345,11 @@ public class MainActivity extends AppCompatActivity {
 
     private class MainActivityAfterLoginPagerAdapter extends MainActivityPagerAdapter {
         private final WishlistFragment wishlistFragment = new WishlistFragment();
-        private final AccountDetails profileFragment = new AccountDetails();
+        private final AccountDetails profileFragment;
 
-        MainActivityAfterLoginPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+        MainActivityAfterLoginPagerAdapter(@NonNull FragmentManager fm, int behavior, SwipeRefreshLayout swipeRefreshLayout) {
             super(fm, behavior);
+            profileFragment = new AccountDetails(swipeRefreshLayout);
         }
 
         @NonNull
