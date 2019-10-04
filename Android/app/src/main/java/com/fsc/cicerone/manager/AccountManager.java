@@ -84,24 +84,10 @@ public abstract class AccountManager {
                 .setOnStartConnectionListener(onStart)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
-                        // Get all the user's data.
-                        SendInPostConnector<User> sendInPostConnector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
-                                .setContext(context)
-                                .setOnEndConnectionListener(list -> {
-                                    if (!list.isEmpty()) {
-                                        currentLoggedUser = list.get(0);
-                                        currentLoggedUser.setPassword(credentials.getPassword());
-                                        if (onEnd != null) onEnd.accept(true);
-                                    } else {
-                                        if (onEnd != null) onEnd.accept(false);
-                                    }
-                                })
-                                .setObjectToSend(params)
-                                .build();
-                        sendInPostConnector.execute();
-                    } else {
-                        if (onEnd != null) onEnd.accept(false);
+                        currentLoggedUser = new User(result.getMessage());
+                        currentLoggedUser.setPassword(credentials.getPassword());
                     }
+                    if (onEnd != null) onEnd.accept(result.getResult());
                 })
                 .setObjectToSend(params)
                 .build();
@@ -123,18 +109,18 @@ public abstract class AccountManager {
         if (!isLogged())
             return;
 
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
+        new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (!result.getResult()) {
                         Log.e("DELETE_USER_ERROR", result.getMessage());
-                    }else{
+                    } else {
                         Mailer.sendAccountDeleteConfirmationEmail(v -> logout());
                     }
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(currentLoggedUser.getCredentials()))
-                .build();
-        connector.execute();
+                .build()
+                .execute();
     }
 
     /**
