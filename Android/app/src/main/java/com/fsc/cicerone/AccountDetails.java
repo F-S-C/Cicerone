@@ -43,6 +43,11 @@ import java.util.Objects;
 public class AccountDetails extends Fragment implements Refreshable {
 
     private TabLayout tabLayout;
+    private ProfileFragment profileFragment;
+    private ReportFragment reportFragment;
+    private ReviewFragment reviewFragment;
+    private ItineraryFragment itineraryFragment;
+    private ReservationFragment reservationFragment;
     private Fragment fragment = null;
     private SwipeRefreshLayout swipeRefreshLayout = null;
 
@@ -53,7 +58,7 @@ public class AccountDetails extends Fragment implements Refreshable {
         // required empty constructor
     }
 
-    public AccountDetails(SwipeRefreshLayout swipeRefreshLayout){
+    public AccountDetails(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
@@ -62,7 +67,13 @@ public class AccountDetails extends Fragment implements Refreshable {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         holderView = inflater.inflate(R.layout.fragment_account_details, container, false);
 
-        fragment = new ProfileFragment();
+        profileFragment = new ProfileFragment();
+        reportFragment = new ReportFragment(swipeRefreshLayout);
+        reviewFragment = new ReviewFragment(swipeRefreshLayout);
+        itineraryFragment = new ItineraryFragment();
+        reservationFragment = AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE ? new ReservationFragment(swipeRefreshLayout) : null;
+
+        fragment = profileFragment;
         FragmentManager fragmentManager = Objects.requireNonNull(getFragmentManager());
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment);
@@ -86,19 +97,20 @@ public class AccountDetails extends Fragment implements Refreshable {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        fragment = new ProfileFragment();
+                        fragment = profileFragment;
                         break;
                     case 1:
-                        fragment = new ReportFragment(swipeRefreshLayout);
+                        fragment = reportFragment;
                         break;
                     case 2:
-                        fragment = new ReviewFragment(swipeRefreshLayout);
+                        fragment = reviewFragment;
                         break;
                     case 3:
-                        fragment = new ItineraryFragment();
+                        fragment = itineraryFragment;
                         break;
                     case 4:
-                        fragment = new ReservationFragment(swipeRefreshLayout);
+                        if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.CICERONE)
+                            fragment = reservationFragment;
                         break;
                     default:
                         break;
