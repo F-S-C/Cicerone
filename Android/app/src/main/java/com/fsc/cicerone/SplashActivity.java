@@ -26,6 +26,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
+import com.fsc.cicerone.notifications.Config;
+import com.fsc.cicerone.notifications.NotificationUtils;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -38,7 +40,9 @@ public class SplashActivity extends AppCompatActivity {
         final Class activityToOpenIfNotLogged = LoginActivity.class;
         final Class activityToOpenIfLoggedAdmin = AdminMainActivity.class;
 
-        SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+        NotificationUtils.subscribeToTopic(this, Config.TOPIC_GLOBAL);
+
+        SharedPreferences preferences = getSharedPreferences(com.fsc.cicerone.Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
         User.Credentials credentials = new User.Credentials(preferences.getString("session", ""));
 
         if (credentials.isValid()) {

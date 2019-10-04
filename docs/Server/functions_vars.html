@@ -20,6 +20,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -95,12 +101,36 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>$connection
 : <a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#a0d9c79b9b86b3f5891c6d3892f12c6a0">DatabaseConnector</a>
 </li>
+<li>$email_data
+: <a class="el" href="classemail__sender_1_1_sender.html#acb077bb08ba787858ed6a3749276254a">Sender</a>
+</li>
+<li>$email_filename
+: <a class="el" href="classemail__sender_1_1_sender.html#a9fe63353b2e0099099bc8b3e67c66993">Sender</a>
+</li>
+<li>$email_subject
+: <a class="el" href="classemail__sender_1_1_sender.html#a8b423a7af7e669b288eacca16f0aab0b">Sender</a>
+</li>
 <li>$id
-: <a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#ae97941710d863131c700f069b109991e">DeleteConnector</a>
+: <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#ae97941710d863131c700f069b109991e">DeleteConnector</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_connector.html#ae97941710d863131c700f069b109991e">UpdateConnector</a>
+</li>
+<li>$itinerary_code
+: <a class="el" href="classemail__sender_1_1_d_b_manager.html#a042ca31db7a7f14e020b1905b9fe5a1f">DBManager</a>
+</li>
+<li>$recipient_email
+: <a class="el" href="classemail__sender_1_1_sender.html#aa4aaa749b9b8920df20fdd99f86c405a">Sender</a>
+</li>
+<li>$token
+: <a class="el" href="classemail__sender_1_1_d_b_manager.html#a00ae4fcafb1145f5e968bdf920f83e2e">DBManager</a>
 </li>
 <li>$types
 : <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_connector.html#a92d70a97331cc6fc0a79d9da50895be8">UpdateConnector</a>
+</li>
+<li>$username
+: <a class="el" href="classemail__sender_1_1_d_b_manager.html#a0eb82aa5f81cf845de4b36cd653c42cf">DBManager</a>
+</li>
+<li>$usr_email
+: <a class="el" href="classemail__sender_1_1_d_b_manager.html#a011da4768c9515d7104d8182b60dc996">DBManager</a>
 </li>
 <li>$values_to_add
 : <a class="el" href="classdatabase__connector_1_1controller_1_1insert_1_1_insert_connector.html#a34d76286ab69abcbc29cf03022f8c482">InsertConnector</a>
@@ -146,29 +176,28 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a id="index_d"></a>- d -</h3><ul>
+<li>DB_HOSTNAME
+: <a class="el" href="classemail__sender_1_1_d_b_manager.html#aacad27ff799e17f015cfa32708078786">DBManager</a>
+</li>
 <li>DB_NAME
 : <a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#ab5db0d3504f917f268614c50b02c53e2">DatabaseConnector</a>
-, <a class="el" href="classemail__sender_1_1_sender.html#ab5db0d3504f917f268614c50b02c53e2">Sender</a>
+, <a class="el" href="classemail__sender_1_1_d_b_manager.html#ab5db0d3504f917f268614c50b02c53e2">DBManager</a>
 </li>
 <li>DB_P
 : <a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#a3cd9fad4cf3e38962d4f32870d25ccec">DatabaseConnector</a>
-, <a class="el" href="classemail__sender_1_1_sender.html#a3cd9fad4cf3e38962d4f32870d25ccec">Sender</a>
+, <a class="el" href="classemail__sender_1_1_d_b_manager.html#a3cd9fad4cf3e38962d4f32870d25ccec">DBManager</a>
 </li>
 <li>DB_SERVER_NAME
 : <a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#a0a7a63d1486a7d1b4be184fdec7a8ae5">DatabaseConnector</a>
-, <a class="el" href="classemail__sender_1_1_sender.html#a0a7a63d1486a7d1b4be184fdec7a8ae5">Sender</a>
 </li>
 <li>DB_USERNAME
 : <a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#abb7390a8906b1822e4ac48ec48fd6f56">DatabaseConnector</a>
-, <a class="el" href="classemail__sender_1_1_sender.html#abb7390a8906b1822e4ac48ec48fd6f56">Sender</a>
+, <a class="el" href="classemail__sender_1_1_d_b_manager.html#abb7390a8906b1822e4ac48ec48fd6f56">DBManager</a>
 </li>
 </ul>
 
 
 <h3><a id="index_e"></a>- e -</h3><ul>
-<li>EMAIL_FILENAME
-: <a class="el" href="classemail__sender_1_1_sender.html#ae30abde3d49a3f7432f277314ccdedb0">Sender</a>
-</li>
 <li>ERROR_KEY
 : <a class="el" href="classdatabase__connector_1_1controller_1_1_boolean_connector.html#a1282b2989b251c1b93d23604560740c3">BooleanConnector</a>
 </li>
@@ -178,34 +207,38 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <h3><a id="index_i"></a>- i -</h3><ul>
 <li>ID_COLUMN
 : <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_clear_wishlist.html#aa715ae25d23b82a83749d2375a8ec961">ClearWishlist</a>
+, <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#aa715ae25d23b82a83749d2375a8ec961">DeleteConnector</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_itinerary.html#aa715ae25d23b82a83749d2375a8ec961">DeleteItinerary</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_itinerary_review.html#aa715ae25d23b82a83749d2375a8ec961">DeleteItineraryReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_registered_user.html#aa715ae25d23b82a83749d2375a8ec961">DeleteRegisteredUser</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#aa715ae25d23b82a83749d2375a8ec961">DeleteReservation</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_user_review.html#aa715ae25d23b82a83749d2375a8ec961">DeleteUserReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_wishlist.html#aa715ae25d23b82a83749d2375a8ec961">DeleteWishlist</a>
-, <a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#aa715ae25d23b82a83749d2375a8ec961">DeleteConnector</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_connector.html#aa715ae25d23b82a83749d2375a8ec961">UpdateConnector</a>
+, <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_document.html#aa715ae25d23b82a83749d2375a8ec961">UpdateDocument</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#aa715ae25d23b82a83749d2375a8ec961">UpdateItinerary</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary_review.html#aa715ae25d23b82a83749d2375a8ec961">UpdateItineraryReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_registered_user.html#aa715ae25d23b82a83749d2375a8ec961">UpdateRegisteredUser</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_report_details.html#aa715ae25d23b82a83749d2375a8ec961">UpdateReportDetails</a>
+, <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_reservation.html#aa715ae25d23b82a83749d2375a8ec961">UpdateReservation</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html#aa715ae25d23b82a83749d2375a8ec961">UpdateUserReview</a>
 </li>
 <li>ID_COLUMN_TYPE
 : <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_clear_wishlist.html#a2251427819e5dce996c7ad74c683e6ec">ClearWishlist</a>
+, <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#a2251427819e5dce996c7ad74c683e6ec">DeleteConnector</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_itinerary.html#a2251427819e5dce996c7ad74c683e6ec">DeleteItinerary</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_itinerary_review.html#a2251427819e5dce996c7ad74c683e6ec">DeleteItineraryReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_registered_user.html#a2251427819e5dce996c7ad74c683e6ec">DeleteRegisteredUser</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#a2251427819e5dce996c7ad74c683e6ec">DeleteReservation</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_user_review.html#a2251427819e5dce996c7ad74c683e6ec">DeleteUserReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_wishlist.html#a2251427819e5dce996c7ad74c683e6ec">DeleteWishlist</a>
-, <a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#a2251427819e5dce996c7ad74c683e6ec">DeleteConnector</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_connector.html#a2251427819e5dce996c7ad74c683e6ec">UpdateConnector</a>
+, <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_document.html#a2251427819e5dce996c7ad74c683e6ec">UpdateDocument</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#a2251427819e5dce996c7ad74c683e6ec">UpdateItinerary</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary_review.html#a2251427819e5dce996c7ad74c683e6ec">UpdateItineraryReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_registered_user.html#a2251427819e5dce996c7ad74c683e6ec">UpdateRegisteredUser</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_report_details.html#a2251427819e5dce996c7ad74c683e6ec">UpdateReportDetails</a>
+, <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_reservation.html#a2251427819e5dce996c7ad74c683e6ec">UpdateReservation</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html#a2251427819e5dce996c7ad74c683e6ec">UpdateUserReview</a>
 </li>
 </ul>
@@ -247,13 +280,13 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <h3><a id="index_t"></a>- t -</h3><ul>
 <li>TABLE_NAME
 : <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_clear_wishlist.html#ada7e57b2275989a5d42f45e675c91ae3">ClearWishlist</a>
+, <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html#ada7e57b2275989a5d42f45e675c91ae3">DeleteConnector</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_itinerary.html#ada7e57b2275989a5d42f45e675c91ae3">DeleteItinerary</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_itinerary_review.html#ada7e57b2275989a5d42f45e675c91ae3">DeleteItineraryReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_registered_user.html#ada7e57b2275989a5d42f45e675c91ae3">DeleteRegisteredUser</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_reservation.html#ada7e57b2275989a5d42f45e675c91ae3">DeleteReservation</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_user_review.html#ada7e57b2275989a5d42f45e675c91ae3">DeleteUserReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_wishlist.html#ada7e57b2275989a5d42f45e675c91ae3">DeleteWishlist</a>
-, <a class="el" href="classdatabase__connector_1_1controller_1_1_delete_connector.html#ada7e57b2275989a5d42f45e675c91ae3">DeleteConnector</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1insert_1_1_insert_connector.html#ada7e57b2275989a5d42f45e675c91ae3">InsertConnector</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1insert_1_1_insert_document.html#ada7e57b2275989a5d42f45e675c91ae3">InsertDocument</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1insert_1_1_insert_itinerary.html#ada7e57b2275989a5d42f45e675c91ae3">InsertItinerary</a>
@@ -268,11 +301,22 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 , <a class="el" href="classdatabase__connector_1_1controller_1_1insert_1_1_insert_user_review.html#ada7e57b2275989a5d42f45e675c91ae3">InsertUserReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1insert_1_1_insert_wishlist.html#ada7e57b2275989a5d42f45e675c91ae3">InsertWishlist</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_connector.html#ada7e57b2275989a5d42f45e675c91ae3">UpdateConnector</a>
+, <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_document.html#ada7e57b2275989a5d42f45e675c91ae3">UpdateDocument</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary.html#ada7e57b2275989a5d42f45e675c91ae3">UpdateItinerary</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_itinerary_review.html#ada7e57b2275989a5d42f45e675c91ae3">UpdateItineraryReview</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_registered_user.html#ada7e57b2275989a5d42f45e675c91ae3">UpdateRegisteredUser</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_report_details.html#ada7e57b2275989a5d42f45e675c91ae3">UpdateReportDetails</a>
+, <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_reservation.html#ada7e57b2275989a5d42f45e675c91ae3">UpdateReservation</a>
 , <a class="el" href="classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html#ada7e57b2275989a5d42f45e675c91ae3">UpdateUserReview</a>
+</li>
+<li>TO_CICERONE_NEW_RESERVATION
+: <a class="el" href="classnotifications_1_1_push.html#a75b816c46eb6f4b16603ad73cf241c0d">Push</a>
+</li>
+<li>TO_CICERONE_REMOVED_RESERVATION
+: <a class="el" href="classnotifications_1_1_push.html#a1a1398f3fb7ccdbfda62a8a812f6b85d">Push</a>
+</li>
+<li>TO_GLOBETROTTER_CONFIRMED_RESERVATION
+: <a class="el" href="classnotifications_1_1_push.html#a18bd3dcb859d932b87ded56ae6a7adf7">Push</a>
 </li>
 </ul>
 

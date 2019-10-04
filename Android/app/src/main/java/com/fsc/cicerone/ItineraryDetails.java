@@ -333,11 +333,12 @@ public class ItineraryDetails extends ItineraryActivity {
             button.setOnClickListener(view1 -> {
                 if (allFilledReservation()) {
                     try {
-                        ReservationManager.addReservation(itinerary,
+                        ReservationManager.addReservation(this,
+                                itinerary,
                                 Integer.parseInt(numberOfAdultsInput.getText().toString()),
                                 Integer.parseInt(numberOfChildrenInput.getText().toString()),
                                 new SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                                        .parse(requestedDateInput.getText().toString()), this);
+                                        .parse(requestedDateInput.getText().toString()));
                     } catch (ParseException e) {
                         Log.e(ERROR_TAG, e.getMessage());
                     }

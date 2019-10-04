@@ -65,7 +65,7 @@ public abstract class ItineraryManager {
      * @return The new itinerary.
      */
 
-    public static Itinerary uploadItinerary(String title, String description, String beginDate, String endDate, String endReservationDate, String location, String duration, int repetitions, int minParticipants, int maxParticipants, float fullPrice, float reducedPrice, String imageUrl, BooleanConnector.OnEndConnectionListener callback) {
+    public static Itinerary uploadItinerary(String title, String description, String beginDate, String endDate, String endReservationDate, String location, String duration, int repetitions, int minParticipants, int maxParticipants, float fullPrice, float reducedPrice, String imageUrl, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         SimpleDateFormat in = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date beginningDate;
         Date endingDate;
@@ -155,10 +155,11 @@ public abstract class ItineraryManager {
 
     /**
      * Request itinerary.
-     * @param context The context of the caller.
-     * @param parameters The parameters of the request.
+     *
+     * @param context                   The context of the caller.
+     * @param parameters                The parameters of the request.
      * @param onStartConnectionListener On start connection callback.
-     * @param callback A callback to be executed after the operation is completed.
+     * @param callback                  A callback to be executed after the operation is completed.
      */
     public static void requestItinerary(Activity context, Map<String, Object> parameters, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable DatabaseConnector.OnEndConnectionListener<Itinerary> callback) {
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))

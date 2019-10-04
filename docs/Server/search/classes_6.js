@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sender',['Sender',['../classemail__sender_1_1_sender.html',1,'email_sender']]]
+  ['push',['Push',['../classnotifications_1_1_push.html',1,'notifications']]]
 ];

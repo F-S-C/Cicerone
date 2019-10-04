@@ -287,4 +287,14 @@
     <string name="empty_reduced_price_error">Enter your itinerary\'s reduced price</string>
     <string name="empty_image_error">Enter your itinerary\'s image</string>
     <string name="empty_wishlist">At the moment, there are no itineraries in your wishlist.</string>
+    <string name="notification_to_cicerone_new_reservation">You have a new reservation request on the itinerary \"%1$s\"!</string>
+    <string name="notification_title_to_cicerone_new_reservation">New reservation request</string>
+    <string name="notification_to_cicerone_removed_reservation">A reservation to the itinerary \"%1$s\" by %2$s has been deleted!</string>
+    <string name="notification_title_to_cicerone_removed_reservation">Reservation deleted</string>
+    <string name="notification_to_globetrotter_confirmed_reservation">Your reservation request to the itinerary \"%1$s\" by %2$s has been confirmed!</string>
+    <string name="notification_title_to_globetrotter_confirmed_reservation">Reservation request confirmed</string>
+    <string name="notification_to_globetrotter_deleted_itinerary">The itinerary \"%1$s\" by %2$s has been deleted.</string>
+    <string name="notification_title_to_globetrotter_deleted_itinerary">Itinerary deleted</string>
+    <string name="notification_to_globetrotter_updated_itinerary">The itinerary \"%1$s\" by  %2$s has been updated. Be sure to check out its new information.</string>
+    <string name="notification_title_to_globetrotter_updated_itinerary">Itinerary updated</string>
 </resources>

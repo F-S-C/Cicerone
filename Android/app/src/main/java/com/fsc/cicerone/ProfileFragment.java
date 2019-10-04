@@ -111,7 +111,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
         context = Objects.requireNonNull(getActivity());
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+        preferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
         name = view.findViewById(R.id.name);
         surname = view.findViewById(R.id.surname);
         email = view.findViewById(R.id.email);
@@ -164,7 +164,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
                 .setTitle(context.getString(R.string.are_you_sure))
                 .setMessage(context.getString(R.string.exit_confirm_answer))
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    AccountManager.logout();
+                    AccountManager.logout(getActivity());
                     preferences.edit().remove("session").apply();
                     Intent i = new Intent(getActivity(), SplashActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

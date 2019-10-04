@@ -17,6 +17,7 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -42,6 +43,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import com.fsc.cicerone.app_connector.BooleanConnector;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.SendInPostConnector;
+import com.fsc.cicerone.model.UserType;
+import com.fsc.cicerone.notifications.Config;
+import com.fsc.cicerone.notifications.NotificationUtils;
 
 /**
  * A <i>control</i> class that manages the users' accounts.
@@ -84,6 +92,10 @@ public abstract class AccountManager {
                     if (result.getResult()) {
                         currentLoggedUser = new User(result.getMessage());
                         currentLoggedUser.setPassword(credentials.getPassword());
+                            NotificationUtils.subscribeToTopic(context, Config.TOPIC_GLOBETROTTER(currentLoggedUser));
+                        if (currentLoggedUser.getUserType() == UserType.CICERONE) {
+                            NotificationUtils.subscribeToTopic(context, Config.TOPIC_CICERONE(currentLoggedUser));
+                        }
                     }
                     if (onEnd != null) onEnd.accept(result.getResult());
                 })
@@ -96,8 +108,9 @@ public abstract class AccountManager {
     /**
      * Logout the current user.
      */
-    public static void logout() {
+    public static void logout(Context context) {
         currentLoggedUser = null;
+        NotificationUtils.unsubscribeFromAllTopics(context);
     }
 
     /**
@@ -112,8 +125,8 @@ public abstract class AccountManager {
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (!result.getResult()) {
                         Log.e("DELETE_USER_ERROR", result.getMessage());
-                    } else {
-                        Mailer.sendAccountDeleteConfirmationEmail(v -> logout());
+                    }else{
+                        Mailer.sendAccountDeleteConfirmationEmail(v -> logout(context));
                     }
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(currentLoggedUser.getCredentials()))

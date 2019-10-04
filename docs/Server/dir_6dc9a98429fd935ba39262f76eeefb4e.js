@@ -24,7 +24,7 @@ var dir_6dc9a98429fd935ba39262f76eeefb4e =
     [ "InsertReport.php", "controller_2insert_2_insert_report_8php.html", [
       [ "InsertReport", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_report.html", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_report" ]
     ] ],
-    [ "InsertReportDetails.php", "controller_2insert_2_insert_report_details_8php.html", [
+    [ "InsertReportDetails.php", "_insert_report_details_8php.html", [
       [ "InsertReportDetails", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_report_details.html", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_report_details" ]
     ] ],
     [ "InsertReservation.php", "controller_2insert_2_insert_reservation_8php.html", [

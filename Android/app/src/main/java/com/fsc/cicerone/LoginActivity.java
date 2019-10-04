@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
 
             CheckBox rememberMeCheckBox = findViewById(R.id.rememberMeCheckBox);
             if (rememberMeCheckBox.isChecked()) {
-                SharedPreferences preferences = getSharedPreferences("com.fsc.cicerone", Context.MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
                 preferences.edit().putString("session", credentials.toString()).apply();
             }
 

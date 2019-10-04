@@ -20,6 +20,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -96,19 +102,45 @@ $(document).ready(function(){initNavTree('namespaceemail__sender.html','');});
 <div class="title">email_sender Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class <a class="el" href="classemail__sender_1_1_d_b_manager.html">DBManager</a>: Requires and writing data to the database.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_d_b_manager.html">DBManager</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_reset.html">Reset</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classemail__sender_1_1_sender.html">Sender</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send an e-mail to a given user.  <a href="classemail__sender_1_1_sender.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a8ce36ea943153596f82b8c93f4091f7d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceemail__sender.html#a8ce36ea943153596f82b8c93f4091f7d">$reset</a> = new <a class="el" href="classemail__sender_1_1_reset.html">Reset</a>()</td></tr>
+<tr class="separator:a8ce36ea943153596f82b8c93f4091f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8ae061906feacabc1f902c4bd881d15"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceemail__sender.html#af8ae061906feacabc1f902c4bd881d15">$sender</a> = new <a class="el" href="classemail__sender_1_1_sender.html">Sender</a>()</td></tr>
 <tr class="separator:af8ae061906feacabc1f902c4bd881d15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Variable Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class <a class="el" href="classemail__sender_1_1_d_b_manager.html">DBManager</a>: Requires and writing data to the database. </p>
+<p>Class <a class="el" href="classemail__sender_1_1_sender.html">Sender</a>: Send e-mail to a given user.</p>
+<p>Class <a class="el" href="classemail__sender_1_1_reset.html">Reset</a>: Send a reset e-mail and password to a given user. </p>
+</div><h2 class="groupheader">Variable Documentation</h2>
+<a id="a8ce36ea943153596f82b8c93f4091f7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce36ea943153596f82b8c93f4091f7d">&#9670;&nbsp;</a></span>$reset</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$reset = new <a class="el" href="classemail__sender_1_1_reset.html">Reset</a>()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="af8ae061906feacabc1f902c4bd881d15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af8ae061906feacabc1f902c4bd881d15">&#9670;&nbsp;</a></span>$sender</h2>
 

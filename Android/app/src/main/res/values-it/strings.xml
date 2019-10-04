@@ -263,4 +263,14 @@
     <string name="empty_reservationdate_error">Inserisci la data di fine delle prenotazioni del tuo itinerario</string>
     <string name="empty_title_error">Inserisci il titolo del tuo itinerario</string>
     <string name="empty_wishlist">Al momento, non ci sono itinerari nella tua wishlist.</string>
+    <string name="notification_to_cicerone_new_reservation">Hai una nuova richiesta di prenotazione all\'itinerario \"%1$s\"!</string>
+    <string name="notification_title_to_cicerone_new_reservation">Nuova richiesta di prenotazione</string>
+    <string name="notification_title_to_cicerone_removed_reservation">Prenotazione rimossa</string>
+    <string name="notification_to_cicerone_removed_reservation">Una prenotazione all\'itineario \"%1$s\" creata da %2$s è stata eliminata!</string>
+    <string name="notification_title_to_globetrotter_confirmed_reservation">Richiesta di prenotazione confermata</string>
+    <string name="notification_to_globetrotter_confirmed_reservation">La tua richiesta di prenotazione all\'itinerario \"%1$s\" di %2$s è stata confermata!</string>
+    <string name="notification_title_to_globetrotter_deleted_itinerary">Itinerario cancellato</string>
+    <string name="notification_to_globetrotter_deleted_itinerary">L\'itinerario \"%1$s\" di %2$s è stato cancellato.</string>
+    <string name="notification_title_to_globetrotter_updated_itinerary">Itinerario aggiornato</string>
+    <string name="notification_to_globetrotter_updated_itinerary">L\'itinerario \"%1$s\" di %2$s è stato aggiornato. Assicurati di controllare le sue nuove informazioni.</string>
 </resources>

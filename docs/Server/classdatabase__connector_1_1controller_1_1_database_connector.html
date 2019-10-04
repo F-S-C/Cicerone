@@ -20,6 +20,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -109,7 +115,7 @@ Inheritance diagram for DatabaseConnector:</div>
 <area href="classdatabase__connector_1_1controller_1_1_boolean_connector.html" title="A generic connector to a database that returns a boolean value (true or false) and a message." alt="BooleanConnector" shape="rect" coords="0,56,194,80"/>
 <area href="classdatabase__connector_1_1controller_1_1download_1_1_user_data_downloader.html" title="Download all the stored data regarding a user." alt="UserDataDownloader" shape="rect" coords="204,56,398,80"/>
 <area href="classdatabase__connector_1_1controller_1_1_json_connector.html" title="A type of connector that fetches data from a Database and converts the results of the interrogation t..." alt="JsonConnector" shape="rect" coords="408,56,602,80"/>
-<area href="classdatabase__connector_1_1controller_1_1_delete_connector.html" title="A generic connector that deletes data from a database." alt="DeleteConnector" shape="rect" coords="204,112,398,136"/>
+<area href="classdatabase__connector_1_1controller_1_1delete_1_1_delete_connector.html" title="A generic connector that deletes data from a database." alt="DeleteConnector" shape="rect" coords="204,112,398,136"/>
 <area href="classdatabase__connector_1_1controller_1_1insert_1_1_insert_connector.html" title="A generic connector used to add data to a table in a database." alt="InsertConnector" shape="rect" coords="204,168,398,192"/>
 <area href="classdatabase__connector_1_1controller_1_1request_1_1_check_if_user_can_review_user.html" title="Request for control over the existence of a possible connection between the possible reviewer and the..." alt="CheckIfUserCanReviewUser" shape="rect" coords="204,224,398,248"/>
 <area href="classdatabase__connector_1_1controller_1_1request_1_1_user_login.html" title="A special connector to log the user in." alt="UserLogin" shape="rect" coords="204,280,398,304"/>
@@ -165,7 +171,7 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:abb7390a8906b1822e4ac48ec48fd6f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cd9fad4cf3e38962d4f32870d25ccec"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#a3cd9fad4cf3e38962d4f32870d25ccec">DB_P</a> = &quot;89n@W[&quot;</td></tr>
 <tr class="separator:a3cd9fad4cf3e38962d4f32870d25ccec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5db0d3504f917f268614c50b02c53e2"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#ab5db0d3504f917f268614c50b02c53e2">DB_NAME</a> = &quot;my_fsc&quot;</td></tr>
+<tr class="memitem:ab5db0d3504f917f268614c50b02c53e2"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#ab5db0d3504f917f268614c50b02c53e2">DB_NAME</a> = &quot;cicerone&quot;</td></tr>
 <tr class="separator:ab5db0d3504f917f268614c50b02c53e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d9c79b9b86b3f5891c6d3892f12c6a0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase__connector_1_1controller_1_1_database_connector.html#a0d9c79b9b86b3f5891c6d3892f12c6a0">$connection</a> = null</td></tr>
 <tr class="separator:a0d9c79b9b86b3f5891c6d3892f12c6a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -402,7 +408,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const DB_NAME = &quot;my_fsc&quot;</td>
+          <td class="memname">const DB_NAME = &quot;cicerone&quot;</td>
         </tr>
       </table>
   </td>
