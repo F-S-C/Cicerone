@@ -72,7 +72,7 @@ class Uploader
         if (($saved_file === false) || ($saved_file == -1)) {
             print('{"result":false,"error":"Couldn\'t save the image!"}');
         } else {
-            print('{"result":true,"name":"' . $name . '.jpg"}');
+            print('{"result":true,"message":"' . $name . '.jpg"}');
         }
     }
 }
