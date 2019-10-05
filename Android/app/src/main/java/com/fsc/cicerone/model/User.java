@@ -147,8 +147,8 @@ public class User extends BusinessEntity {
     }
 
     /**
-     * Create a new User object based on a JSON Object.
-     * The JSON Object <i>must</i> contain <i>at least</i> the following values:
+     * Create a new User object based on a JSON Object. The JSON Object <i>must</i> contain <i>at
+     * least</i> the following values:
      * <pre>
      * {@code
      * {
