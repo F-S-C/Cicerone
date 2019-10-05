@@ -16,14 +16,20 @@
 
 package com.fsc.cicerone;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.fsc.cicerone.manager.AccountManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,44 +40,30 @@ import java.util.Objects;
 public class AdminMainActivity extends AppCompatActivity {
 
     /**
-     * The itinerary active fragment (first tab).
-     */
-    private final Fragment itineraryActiveFragment = new HomeFragment();
-
-    /**
-     * The reports list fragment (second tab).
-     */
-    private final Fragment reportsFragment = new ReportFragment();
-
-    /**
-     * The registered users list fragment (third tab).
-     */
-    private final Fragment usersListFragment = new UsersListFragment();
-
-    /**
-     * The fragment manager used to load, unload, show and hide the fragments.
-     */
-    private final FragmentManager fragmentManager = getSupportFragmentManager();
-
-    /**
      * The currently displayed fragment.
      */
-    private Fragment activeFragment = itineraryActiveFragment;
+    private Fragment activeFragment;
 
     /**
      * The bottom navigation.
      */
     private BottomNavigationView navView;
 
+    private FragmentPagerAdapter fragmentPagerAdapter;
+    private ViewPager viewPager;
+    private MenuItem prevMenuItem;
+
     /**
      * Create the activity and load the layout.
      *
-     * @param savedInstanceState if the activity is being re-initialized after previously being
-     *                           shut down then this Bundle contains the data it most recently
-     *                           supplied in onSaveInstanceState(Bundle). Note: Otherwise it is
-     *                           null. This value may be null. (From the official
-     *                           <a href="https://developer.android.com/reference/android/app/Activity.html#onCreate(android.os.Bundle,%2520android.os.PersistableBundle)">Android Documentation</a>).
+     * @param savedInstanceState if the activity is being re-initialized after previously being shut
+     *                           down then this Bundle contains the data it most recently supplied
+     *                           in onSaveInstanceState(Bundle). Note: Otherwise it is null. This
+     *                           value may be null. (From the official
+     *                           <a href="https://developer.android.com/reference/android/app/Activity.html#onCreate(android.os.Bundle,%2520android.os.PersistableBundle)">Android
+     *                           Documentation</a>).
      */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,23 +81,31 @@ public class AdminMainActivity extends AppCompatActivity {
             }
         });
 
+        setUpViewPager();
+
+        // fix to make the ViewPager work with SwipeRefreshLayout
+        viewPager.setOnTouchListener((v, event) -> {
+            swipeRefreshLayout.setEnabled(false);
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                swipeRefreshLayout.setEnabled(true);
+            }
+            return false;
+        });
+
         navView = findViewById(R.id.bottom_navigation_admin);
         navView.setOnNavigationItemSelectedListener(item -> {
             boolean toReturn = false;
             switch (item.getItemId()) {
                 case R.id.navigation_itineraries_active_admin:
-                    changeCurrentFragment(itineraryActiveFragment);
-                    supportActionBar.setTitle(getString(R.string.active_itineraries));
+                    viewPager.setCurrentItem(0);
                     toReturn = true;
                     break;
                 case R.id.navigation_reports_admin:
-                    changeCurrentFragment(reportsFragment);
-                    supportActionBar.setTitle(getString(R.string.reports));
+                    viewPager.setCurrentItem(1);
                     toReturn = true;
                     break;
                 case R.id.navigation_users_admin:
-                    changeCurrentFragment(usersListFragment);
-                    supportActionBar.setTitle(getString(R.string.list_users));
+                    viewPager.setCurrentItem(2);
                     toReturn = true;
                     break;
                 case R.id.navigation_logout_admin:
@@ -127,30 +127,11 @@ public class AdminMainActivity extends AppCompatActivity {
             }
             return toReturn;
         });
-
-        // Instantiate all of the fragments for usability purposes.
-        fragmentManager.beginTransaction().add(R.id.main_container_admin, usersListFragment, "3").hide(usersListFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.main_container_admin, reportsFragment, "2").hide(reportsFragment).commit();
-        // The last one is shown to the user
-        fragmentManager.beginTransaction().add(R.id.main_container_admin, itineraryActiveFragment, "1").commit();
-    }
-
-    /**
-     * Change the current displayed fragment.
-     *
-     * @param nextFragment The fragment to be loaded.
-     */
-    private void changeCurrentFragment(Fragment nextFragment) {
-        fragmentManager.beginTransaction().hide(activeFragment).show(nextFragment).commit();
-        activeFragment = nextFragment;
-        ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
-        supportActionBar.setDisplayHomeAsUpEnabled(!nextFragment.equals(itineraryActiveFragment));
-        supportActionBar.setDisplayShowHomeEnabled(!nextFragment.equals(itineraryActiveFragment));
     }
 
     @Override
     public void onBackPressed() {
-        if (activeFragment.equals(itineraryActiveFragment)) {
+        if (activeFragment == fragmentPagerAdapter.getItem(0)) {
             new MaterialAlertDialogBuilder(this)
                     .setTitle(getString(R.string.are_you_sure))
                     .setMessage(getString(R.string.sure_to_exit))
@@ -163,9 +144,85 @@ public class AdminMainActivity extends AppCompatActivity {
         }
     }
 
+    private void setUpViewPager() {
+        viewPager = findViewById(R.id.main_container);
+        fragmentPagerAdapter = new AdminMainActivityPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        activeFragment = fragmentPagerAdapter.getItem(0);
+        viewPager.setAdapter(fragmentPagerAdapter);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Do nothing
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+                supportActionBar.setDisplayHomeAsUpEnabled(position != 0);
+                supportActionBar.setDisplayShowHomeEnabled(position != 0);
+                supportActionBar.setTitle(fragmentPagerAdapter.getPageTitle(position));
+
+                activeFragment = fragmentPagerAdapter.getItem(position);
+
+                if (prevMenuItem != null)
+                    prevMenuItem.setChecked(false);
+                else
+                    navView.getMenu().getItem(0).setChecked(false);
+
+                navView.getMenu().getItem(position).setChecked(true);
+                prevMenuItem = navView.getMenu().getItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Do nothing
+            }
+        });
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private class AdminMainActivityPagerAdapter extends FragmentPagerAdapter {
+        private final HomeFragment homeFragment = new HomeFragment();
+        private final ReportFragment reportFragment = new ReportFragment();
+        private final UsersListFragment usersFragment = new UsersListFragment();
+
+        AdminMainActivityPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = homeFragment;
+            if (position == 1) {
+                fragment = reportFragment;
+            } else if (position == 2) {
+                fragment = usersFragment;
+            }
+            return fragment;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            CharSequence title = getString(R.string.active_itineraries);
+            if (position == 1) {
+                title = getString(R.string.reports);
+            } else if (position == 2) {
+                title = getString(R.string.list_users);
+            }
+            return title;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
     }
 }
