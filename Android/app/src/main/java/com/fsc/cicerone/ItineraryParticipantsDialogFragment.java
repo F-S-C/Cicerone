@@ -21,6 +21,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,8 +74,14 @@ public class ItineraryParticipantsDialogFragment extends DialogFragment {
                     if (reservation.isConfirmed())
                         participants.add(reservation.getClient());
                 }
-                if (participants.isEmpty()){
-                    builder.setMessage(getActivity().getString(R.string.no_participants));
+                if (participants.isEmpty()) {
+                    TextView message = new TextView(getActivity());
+                    message.setText(getActivity().getString(R.string.no_participants));
+                    message.setLayoutParams(new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    LinearLayout linearLayout = view.findViewById(R.id.user_list_container);
+                    linearLayout.addView(message);
                 }
                 adapter = new UserListAdapter(getActivity(), participants);
                 recyclerView.setAdapter(adapter);
