@@ -77,9 +77,10 @@ public class ItineraryParticipantsDialogFragment extends DialogFragment {
                 if (participants.isEmpty()) {
                     TextView message = new TextView(getActivity());
                     message.setText(getActivity().getString(R.string.no_participants));
-                    message.setLayoutParams(new ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    int margin = (int) getActivity().getResources().getDimension(R.dimen.material_card_spacing);
+                    params.setMargins(0, margin, 0, margin);
+                    message.setLayoutParams(params);
                     LinearLayout linearLayout = view.findViewById(R.id.user_list_container);
                     linearLayout.addView(message);
                 }
