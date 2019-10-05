@@ -54,19 +54,23 @@ public class User extends BusinessEntity {
     private Document document;
     private Set<Language> languages;
 
-    private static class Columns {
-        private static final String USERNAME_KEY = "username";
-        private static final String PASSWORD_KEY = "password";
-        private static final String TAX_CODE_KEY = "tax_code";
-        private static final String NAME_KEY = "name";
-        private static final String SURNAME_KEY = "surname";
-        private static final String EMAIL_KEY = "email";
-        private static final String USER_TYPE_KEY = "user_type";
-        private static final String CELLPHONE_KEY = "cellphone";
-        private static final String BIRTH_DATE_KEY = "birth_date";
-        private static final String SEX_KEY = "sex";
-        private static final String DOCUMENT_KEY = "document";
-        private static final String LANGUAGES_KEY = "languages";
+    /**
+     * A utility class that contains various strings to be used as keys to communicate with the
+     * remote server.
+     */
+    public static class Columns {
+        public static final String USERNAME_KEY = "username";
+        public static final String PASSWORD_KEY = "password";
+        public static final String TAX_CODE_KEY = "tax_code";
+        public static final String NAME_KEY = "name";
+        public static final String SURNAME_KEY = "surname";
+        public static final String EMAIL_KEY = "email";
+        public static final String USER_TYPE_KEY = "user_type";
+        public static final String CELLPHONE_KEY = "cellphone";
+        public static final String BIRTH_DATE_KEY = "birth_date";
+        public static final String SEX_KEY = "sex";
+        public static final String DOCUMENT_KEY = "document";
+        public static final String LANGUAGES_KEY = "languages";
     }
 
     public static class Credentials extends BusinessEntity {

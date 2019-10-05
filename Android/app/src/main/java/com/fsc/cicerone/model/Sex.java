@@ -115,7 +115,7 @@ public enum Sex {
                 toReturn = "other";
                 break;
             default:
-                toReturn = null;
+                throw new IllegalArgumentException();
         }
         return toReturn;
     }

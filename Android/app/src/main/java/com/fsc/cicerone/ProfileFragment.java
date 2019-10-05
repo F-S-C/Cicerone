@@ -343,19 +343,19 @@ public class ProfileFragment extends Fragment implements Refreshable {
         userData.put("surname", surname.getText());
         userData.put("email", email.getText());
         userData.put("cellphone", cellphone.getText());
-        String sexSelected;
+        Sex sexSelected;
         switch (sexList.getSelectedItemPosition()) {
             case 0:
-                sexSelected = "male";
+                sexSelected = Sex.MALE;
                 break;
             case 1:
-                sexSelected = "female";
+                sexSelected = Sex.FEMALE;
                 break;
             default:
-                sexSelected = "other";
+                sexSelected = Sex.OTHER;
                 break;
         }
-        userData.put("sex", sexSelected);
+        userData.put("sex", sexSelected.toString());
         userData.put("birth_date", Objects.requireNonNull(itDateToServerDate(birthDate.getText().toString())));
 
         BooleanConnector updateRegisteredUser = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)

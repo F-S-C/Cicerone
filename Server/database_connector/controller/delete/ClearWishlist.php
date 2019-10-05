@@ -2,7 +2,7 @@
 
 namespace database_connector\controller\delete;
 
-require_once "/home/fsc/www/database_connector/controller/DeleteConnector.php";
+require_once "/home/fsc/www/database_connector/controller/delete/DeleteConnector.php";
 
 /**
  * A connector that deletes an itinerary.

@@ -53,7 +53,6 @@ public class WishlistFragment extends Fragment implements Refreshable {
     private Activity context;
 
 
-
     public static final int REQUEST_UPDATE_WISHLIST = 1031;
 
     @Override
@@ -83,12 +82,16 @@ public class WishlistFragment extends Fragment implements Refreshable {
     }
 
     private void clearWish() {
-        WishlistManager.clearWishlist(getActivity(), result -> {
-            if (result.getResult()) {
-                Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
-                refresh();
-            }
-        });
+        if (Objects.requireNonNull(recyclerView.getAdapter()).getItemCount() == 0) {
+            Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.empty_wishlist), Toast.LENGTH_SHORT).show();
+        } else {
+            WishlistManager.clearWishlist(getActivity(), result -> {
+                if (result.getResult()) {
+                    Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.wishlist_deleted), Toast.LENGTH_SHORT).show();
+                    refresh();
+                }
+            });
+        }
     }
 
     @Override
@@ -113,8 +116,7 @@ public class WishlistFragment extends Fragment implements Refreshable {
             }
             adapter = new ItineraryAdapter(getActivity(), itineraryList, this);
 
-            if (list.isEmpty())
-            {
+            if (list.isEmpty()) {
                 noItinerariesTextView.setVisibility(View.VISIBLE);
             }
 
