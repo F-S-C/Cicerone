@@ -37,7 +37,6 @@ import java.util.Objects;
  * Class that specifying the details of registered user that the administrator is viewing.
  */
 public class AdminUserProfile extends AppCompatActivity {
-    private static final String ERROR_TAG = "ERROR IN " + AdminUserProfile.class.getName();
 
     TabLayout tabLayout;
     FrameLayout frameLayout;

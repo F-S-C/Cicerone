@@ -82,8 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject payload = data.getJSONObject(Keys.PAYLOAD);
             if (payload.has(Keys.PAYLOAD_MESSAGE_TYPE)) {
                 try {
-                    String notificationType = payload.getString(Keys.PAYLOAD_MESSAGE_TYPE);
-                    switch (notificationType) {
+                    switch (payload.getString(Keys.PAYLOAD_MESSAGE_TYPE)) {
                         case "to_cicerone_new_reservation":
                             message = getString(R.string.notification_to_cicerone_new_reservation, payload.getString(Keys.PAYLOAD_PARAM(0)));
                             title = getString(R.string.notification_title_to_cicerone_new_reservation);
@@ -103,6 +102,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         case "to_globetrotter_updated_itinerary":
                             message = getString(R.string.notification_to_globetrotter_updated_itinerary, payload.getString(Keys.PAYLOAD_PARAM(0)), payload.getString(Keys.PAYLOAD_PARAM(1)));
                             title = getString(R.string.notification_title_to_globetrotter_updated_itinerary);
+                            break;
+                        default:
                             break;
                     }
                 } catch (JSONException e) {

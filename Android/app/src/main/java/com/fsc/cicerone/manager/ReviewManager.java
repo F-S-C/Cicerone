@@ -188,14 +188,14 @@ public abstract class ReviewManager {
      *
      * @param context                   The context of the caller.
      * @param user                      The user reviewer.
-     * @param reviewed_user             The user reviewed.
+     * @param reviewedUser             The user reviewed.
      * @param callback                  A callback to be executed after the operation is completed.
      * @param onStartConnectionListener On start connection callback.
      */
-    public static void permissionReviewUser(Activity context, User reviewed_user, User user, @Nullable Consumer<Boolean> callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
+    public static void permissionReviewUser(Activity context, User reviewedUser, User user, @Nullable Consumer<Boolean> callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("username", user.getUsername());
-        parameters.put("reviewed_user", reviewed_user.getUsername());
+        parameters.put("reviewed_user", reviewedUser.getUsername());
         new BooleanConnector.Builder(ConnectorConstants.REQUEST_FOR_REVIEW)
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)
@@ -212,13 +212,13 @@ public abstract class ReviewManager {
      *
      * @param context       The context of the caller.
      * @param user          Reviewer of the itinerary.
-     * @param reviewed_user The user reviewed.
+     * @param reviewedUser The user reviewed.
      * @param callback      A callback to be executed after the operation is completed.
      */
-    public static void isReviewedUser(Activity context, User reviewed_user, User user, @Nullable RunnableUsingBusinessEntity callback) {
+    public static void isReviewedUser(Activity context, User reviewedUser, User user, @Nullable RunnableUsingBusinessEntity callback) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("username", user.getUsername());
-        parameters.put("reviewed_user", reviewed_user.getUsername());
+        parameters.put("reviewed_user", reviewedUser.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {

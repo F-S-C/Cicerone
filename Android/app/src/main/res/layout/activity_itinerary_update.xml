@@ -398,7 +398,6 @@
             android:clickable="true"
             android:enabled="true"
             android:focusable="true"
-            android:onClick="sendData"
             android:text="@string/edit_itinerary"
             android:textColor="@color/colorWhite"
             android:visibility="visible" />

@@ -50,9 +50,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.AccountManager;
-import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Sex;
 import com.fsc.cicerone.model.User;
@@ -200,14 +198,22 @@ public class ProfileFragment extends Fragment implements Refreshable {
                     modifyButton.setText(view1.getContext().getString(R.string.modify));
                     updateUserData();
                 } else {
-                    if(name.getText().toString().equals("")) name.setError(getString(R.string.empty_name_error));
-                    if(surname.getText().toString().equals("")) surname.setError(getString(R.string.empty_surname_error));
-                    if(email.getText().toString().equals("")) email.setError(getString(R.string.empty_email_error));
-                    if(cellphone.getText().toString().equals("")) cellphone.setError(getString(R.string.empty_cellphone_error));
-                    if(birthDate.getText().toString().equals("")) birthDate.setError(getString(R.string.empty_birthday_error));
-                    if(documentNumber.getText().toString().equals("")) documentNumber.setError(getString(R.string.empty_document_number_error));
-                    if(documentType.getText().toString().equals("")) documentType.setError(getString(R.string.empty_document_type_error));
-                    if(documentExpiryDate.getText().toString().equals("")) documentExpiryDate.setError(getString(R.string.empty_document_expiry_date_error));
+                    if (name.getText().toString().equals(""))
+                        name.setError(getString(R.string.empty_name_error));
+                    if (surname.getText().toString().equals(""))
+                        surname.setError(getString(R.string.empty_surname_error));
+                    if (email.getText().toString().equals(""))
+                        email.setError(getString(R.string.empty_email_error));
+                    if (cellphone.getText().toString().equals(""))
+                        cellphone.setError(getString(R.string.empty_cellphone_error));
+                    if (birthDate.getText().toString().equals(""))
+                        birthDate.setError(getString(R.string.empty_birthday_error));
+                    if (documentNumber.getText().toString().equals(""))
+                        documentNumber.setError(getString(R.string.empty_document_number_error));
+                    if (documentType.getText().toString().equals(""))
+                        documentType.setError(getString(R.string.empty_document_type_error));
+                    if (documentExpiryDate.getText().toString().equals(""))
+                        documentExpiryDate.setError(getString(R.string.empty_document_expiry_date_error));
                 }
             }
         });
@@ -280,21 +286,9 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         birthDate.setText(outputFormat.format(currentLoggedUser.getBirthDate()));
-        Map<String, Object> parameters = new HashMap<>(1);
-        parameters.put("username", currentLoggedUser.getUsername());
-        SendInPostConnector<Document> userDocumentConnector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_DOCUMENT, BusinessEntityBuilder.getFactory(Document.class))
-                .setContext(context)
-                .setOnEndConnectionListener(list -> {
-                    if (list.isEmpty())
-                        return;
-                    Document data = list.get(0);
-                    documentNumber.setText(data.getNumber());
-                    documentType.setText(data.getType());
-                    documentExpiryDate.setText(outputFormat.format(data.getExpirationDate()));
-                })
-                .setObjectToSend(parameters)
-                .build();
-        userDocumentConnector.execute();
+        documentNumber.setText(currentLoggedUser.getDocument().getNumber());
+        documentType.setText(currentLoggedUser.getDocument().getType());
+        documentType.setText(outputFormat.format(currentLoggedUser.getDocument().getExpirationDate()));
     }
 
     @Override

@@ -37,19 +37,15 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.model.UserType;
+import com.fsc.cicerone.notifications.Config;
+import com.fsc.cicerone.notifications.NotificationUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
-import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.SendInPostConnector;
-import com.fsc.cicerone.model.UserType;
-import com.fsc.cicerone.notifications.Config;
-import com.fsc.cicerone.notifications.NotificationUtils;
 
 /**
  * A <i>control</i> class that manages the users' accounts.

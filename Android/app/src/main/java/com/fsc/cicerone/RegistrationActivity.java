@@ -210,8 +210,8 @@ public class RegistrationActivity extends AppCompatActivity {
             if (validateSecondPageData()) {
                 signup.setText(R.string.loading);
                 signup.setEnabled(false);
-                User newUser;
-                AccountManager.insertUser(this, newUser = setNewUser(), result -> {
+                User newUser = setNewUser();
+                AccountManager.insertUser(this, newUser, result -> {
                     if (result) {
                         AccountManager.insertUserDocument(this, username.getText().toString().trim().toLowerCase(), new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()),
                                 ins -> {

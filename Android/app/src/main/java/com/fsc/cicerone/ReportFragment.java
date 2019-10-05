@@ -61,7 +61,7 @@ public class ReportFragment extends Fragment implements Refreshable {
         // Required empty public constructor
     }
 
-    public ReportFragment(SwipeRefreshLayout swipeRefreshLayout){
+    public ReportFragment(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
@@ -88,7 +88,7 @@ public class ReportFragment extends Fragment implements Refreshable {
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         User user = null;
-        if (!(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) )
+        if (AccountManager.getCurrentLoggedUser().getUserType() != UserType.ADMIN)
             user = AccountManager.getCurrentLoggedUser();
 
 
@@ -96,14 +96,14 @@ public class ReportFragment extends Fragment implements Refreshable {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         }, list -> {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-            if(AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN){
+            if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
                 List<Report> filtered = new ArrayList<>(list.size());
-                for (Report report : list){
-                    if(!(report.getStatus() == ReportStatus.CLOSED || report.getStatus() == ReportStatus.CANCELED))
+                for (Report report : list) {
+                    if (!(report.getStatus() == ReportStatus.CLOSED || report.getStatus() == ReportStatus.CANCELED))
                         filtered.add(report);
                 }
                 adapter = new ReportAdapter(getActivity(), filtered, this);
-            }else
+            } else
                 adapter = new ReportAdapter(getActivity(), list, this);
 
             recyclerView.setAdapter(adapter);
@@ -114,10 +114,9 @@ public class ReportFragment extends Fragment implements Refreshable {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ReportFragment.RESULT_SHOULD_REPORT_BE_RELOADED && resultCode == Activity.RESULT_OK) {
-                refresh();
+            refresh();
         }
     }
-
 
 
 }
