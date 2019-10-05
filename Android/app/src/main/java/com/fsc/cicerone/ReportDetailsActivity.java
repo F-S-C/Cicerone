@@ -75,11 +75,10 @@ public class ReportDetailsActivity extends AppCompatActivity {
     }
 
     private void bindDataToView(Report report) {
-        if (report.getStatus().toString().equals("Open"))
+        if (report.getStatus().toString().equals("Open")){
             cancButton.setVisibility(View.VISIBLE);
-        cancButton.setEnabled(true);
-
-        if (report.getStatus().toString().equals("Canceled")) {
+            cancButton.setEnabled(true);
+        }else{
             cancButton.setEnabled(false);
             cancButton.setTextColor(Color.GRAY);
         }
