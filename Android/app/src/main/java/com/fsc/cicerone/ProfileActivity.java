@@ -181,8 +181,8 @@ public class ProfileActivity extends AppCompatActivity {
                     ReviewManager.updateReviewUser(this, userReview, success -> Toast.makeText(this, ProfileActivity.this.getString(R.string.updated_review),
                             Toast.LENGTH_SHORT).show());
                     isReviewed();
-                    requestDataForRecycleView(recyclerView);
                     dialogUpdate.dismiss();
+                    requestDataForRecycleView(recyclerView);
                 } else{
                     if(feedbackReview.getRating() ==0) Toast.makeText(this, ProfileActivity.this.getString(R.string.empty_feedback_error),
                             Toast.LENGTH_SHORT).show();
@@ -198,8 +198,8 @@ public class ProfileActivity extends AppCompatActivity {
                         ReviewManager.deleteReviewUser(this, userReview, success -> Toast.makeText(this, ProfileActivity.this.getString(R.string.deleted_review),
                                 Toast.LENGTH_SHORT).show());
                         isReviewed();
-                        requestDataForRecycleView(recyclerView);
                         dialogUpdate.dismiss();
+                        requestDataForRecycleView(recyclerView);
                     })
                     .setNegativeButton(getString(R.string.no), null)
                     .show());
@@ -254,10 +254,13 @@ public class ProfileActivity extends AppCompatActivity {
         ReviewManager.getAvgUserFeedback(this, reviewedUser, value -> star.setRating(value));
         ReviewManager.requestUserReviews(this, reviewedUser, null, list -> {
             if(!list.isEmpty()) {
+                messageNoReview.setVisibility(View.GONE);
                 adapter = new ReviewAdapter(ProfileActivity.this, list);
                 recyclerView.setAdapter(adapter);
-            }else
+            }else {
                 messageNoReview.setVisibility(View.VISIBLE);
+                recyclerView.setAdapter(null);
+            }
         });
     }
 }

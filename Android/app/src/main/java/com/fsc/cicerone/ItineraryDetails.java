@@ -386,10 +386,13 @@ public class ItineraryDetails extends ItineraryActivity {
     private void requestDataForRecycleView() {
         ReviewManager.requestItineraryReviews(this, itinerary, list -> {
             if (!list.isEmpty()) {
+                messageNoReview.setVisibility(View.GONE);
                 adapter = new ReviewAdapter(this, list);
                 recyclerView.setAdapter(adapter);
-            }else
+            }else {
                 messageNoReview.setVisibility(View.VISIBLE);
+                recyclerView.setAdapter(null);
+            }
         });
     }
 
