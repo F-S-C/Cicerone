@@ -38,9 +38,8 @@ import java.util.List;
 
 
 /**
- * Generic connector to a database.
- * This class gives an interface to communicate with a database. It needs the URL of the server-side
- * script that generates and handles the data.
+ * Generic connector to a database. This class gives an interface to communicate with a database. It
+ * needs the URL of the server-side script that generates and handles the data.
  */
 public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncTask<Void, Void, String> {
 
@@ -95,7 +94,8 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
     }
 
     /**
-     * A function that will be executed after the connection ends. It should call onEndConnectionListener.onEndConnection in its body.
+     * A function that will be executed after the connection ends. It should call
+     * onEndConnectionListener.onEndConnection in its body.
      *
      * @param s A string containing the connection result.
      * @see OnEndConnectionListener#onEndConnection(List)
@@ -155,6 +155,8 @@ public abstract class DatabaseConnector<T extends BusinessEntity> extends AsyncT
     }
 
     private boolean checkConnection() {
+        if (context == null)
+            return true;
         ConnectivityManager connectivityManager = (ConnectivityManager) context.get().getSystemService(Context.CONNECTIVITY_SERVICE);
         return (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
