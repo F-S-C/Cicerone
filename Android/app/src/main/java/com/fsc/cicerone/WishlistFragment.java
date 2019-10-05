@@ -50,7 +50,6 @@ public class WishlistFragment extends Fragment implements Refreshable {
     private ItineraryAdapter adapter;
     private TextView noItinerariesTextView;
     private RecyclerView recyclerView;
-    private Activity context;
 
 
     public static final int REQUEST_UPDATE_WISHLIST = 1031;
@@ -66,7 +65,6 @@ public class WishlistFragment extends Fragment implements Refreshable {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
-        context = Objects.requireNonNull(getActivity());
 
         noItinerariesTextView = view.findViewById(R.id.noItineraries);
 
