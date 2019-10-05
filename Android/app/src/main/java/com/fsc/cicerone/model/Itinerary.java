@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * An <i>entity</i> class that stores the data of an itinerary.
@@ -33,6 +34,34 @@ public class Itinerary extends BusinessEntity {
     private User cicerone;
     private String title;
     private String description;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Itinerary itinerary = (Itinerary) o;
+        return code == itinerary.code &&
+                minParticipants == itinerary.minParticipants &&
+                maxParticipants == itinerary.maxParticipants &&
+                repetitions == itinerary.repetitions &&
+                Float.compare(itinerary.fullPrice, fullPrice) == 0 &&
+                Float.compare(itinerary.reducedPrice, reducedPrice) == 0 &&
+                Objects.equals(cicerone, itinerary.cicerone) &&
+                Objects.equals(title, itinerary.title) &&
+                Objects.equals(description, itinerary.description) &&
+                Objects.equals(beginningDate, itinerary.beginningDate) &&
+                Objects.equals(endingDate, itinerary.endingDate) &&
+                Objects.equals(reservationDate, itinerary.reservationDate) &&
+                Objects.equals(location, itinerary.location) &&
+                Objects.equals(duration, itinerary.duration) &&
+                Objects.equals(imageUrl, itinerary.imageUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, cicerone, title, description, beginningDate, endingDate, reservationDate, minParticipants, maxParticipants, location, repetitions, duration, fullPrice, reducedPrice, imageUrl);
+    }
+
     private Date beginningDate;
     private Date endingDate;
     private Date reservationDate;
@@ -59,8 +88,8 @@ public class Itinerary extends BusinessEntity {
 
 
     /**
-     * Create a new Itinerary object based on a JSON Object.
-     * The JSON Object <i>must</i> contain <i>at least</i> the following values:
+     * Create a new Itinerary object based on a JSON Object. The JSON Object <i>must</i> contain
+     * <i>at least</i> the following values:
      * <pre>
      * {@code
      * {
