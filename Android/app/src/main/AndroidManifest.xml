@@ -9,48 +9,84 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ForgotPassword"
-            android:label="@string/reset_password"/>
-        <activity android:name=".GlobetrotterItineraryListFragment" />
-        <activity android:name=".CiceroneItineraryListFragment" />
-        <activity android:name=".AdminDetailsUserFragment" />
-        <activity android:name=".ReservationFragment" />
-        <activity android:name=".AdminUserProfile" />
-        <activity android:name=".UsersListFragment" />
-        <activity android:name=".RegistrationActivity" />
+        <activity
+            android:name=".ForgotPassword"
+            android:label="@string/reset_password"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".GlobetrotterItineraryListFragment"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".CiceroneItineraryListFragment"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".AdminDetailsUserFragment"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".ReservationFragment"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".AdminUserProfile"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".UsersListFragment"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".AdminItineraryDetails"
+            android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AdminReportDetailsActivity" />
-        <activity android:name=".AdminMainActivity" />
+        <activity
+            android:name=".AdminReportDetailsActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".AdminMainActivity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ChangePasswordActivity"
-            android:label="@string/change_password" />
-        <activity android:name=".WishlistFragment" />
-        <activity android:name=".ItineraryUpdate" />
+            android:label="@string/change_password"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".WishlistFragment"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".ItineraryUpdate"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ReportDetailsActivity"
-            android:label="@string/report_details_title">
+            android:label="@string/report_details_title"
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ItineraryManagement"
+            android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ItineraryDetails"
+            android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ItineraryCreation"
-            android:label="@string/create_itinerary" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".LoginActivity" />
+            android:label="@string/create_itinerary"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".ProfileActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".SplashActivity"
+            android:screenOrientation="nosensor"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,24 +98,18 @@
         </activity>
 
         <!-- Firebase Notifications -->
-        <service android:name=".notifications.MyFirebaseMessagingService"
+        <service
+            android:name=".notifications.MyFirebaseMessagingService"
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-<!--        <service android:name=".service.MyFirebaseInstanceIDService">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
-        <!-- ./Firebase Notifications -->
-
     </application>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>
