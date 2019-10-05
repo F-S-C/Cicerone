@@ -66,8 +66,9 @@ public class ItineraryUpdate extends ItineraryModifier {
         durationHours.setText(currentItinerary.getDuration().substring(0, currentItinerary.getDuration().indexOf(":")));
         durationMinutes.setText(currentItinerary.getDuration().substring(currentItinerary.getDuration().indexOf(":") + 1));
         repetitions.setText(String.valueOf(currentItinerary.getRepetitions()));
-        reducedPrice.setText(String.valueOf(currentItinerary.getReducedPrice()));
+
         fullPrice.setText(String.valueOf(currentItinerary.getFullPrice()));
+        reducedPrice.setText(String.valueOf(currentItinerary.getReducedPrice()));
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.fsc.cicerone;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -93,7 +92,6 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
 
         ReviewManager.getAvgItineraryFeedback(ItineraryActivity.this, itinerary, review::setRating);
 
-        Log.e("titolo", itinerary.getTitle());
         collapsingToolbarLayout.setTitle(itinerary.getTitle());
 
 
