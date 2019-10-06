@@ -498,60 +498,26 @@ public class ItineraryTest {
     }
 
     @Test
-    public void toJSONObject() throws ParseException {
-        /*final String code = "1";
-        final String title = "title_test";
-        final String string = "{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$nXW4njlKyYR4EmQoiQg3iee5xw9RfC7VeD\\/Z5t\\/UnX0xWAasnurq.\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-02-25\"},\"languages\":[]}";
-        final User cicerone = new User(string);
-        final String description = "description_test";
-        final String theDate = "2019-03-31";
-        final String duration = "1";
-        final String location = "location_test";
-        final String minParticipants = "1";
-        final String maxParticipants = "2";
-        final String repetitions = "1";
-        final String full = "1.5";
-        final String reduced ="1.2";
-        final String image = "image_test";
+    public void toJSONObject() throws JSONException, ParseException {
 
-        JSONObject result = new JSONObject();
-        try {
-            result.put("itinerary_code", Integer.parseInt(code));
-            result.put("title", title);
-            result.put("username", cicerone);
-            result.put("description", description);
-            result.put("beginning_date", new SimpleDateFormat("yyyy-MM-dd").parse(theDate));
-            result.put("ending_date", new SimpleDateFormat("yyyy-MM-dd").parse(theDate));
-            result.put("end_reservations_date", new SimpleDateFormat("yyyy-MM-dd").parse(theDate));
-            result.put("duration", Integer.parseInt(duration));
-            result.put("location", location);
-            result.put("minimum_participants_number", Integer.parseInt(minParticipants));
-            result.put("maximum_participants_number",Integer.parseInt(maxParticipants));
-            result.put("repetitions_per_day", Integer.parseInt(repetitions));
-            result.put("full_price", Float.parseFloat(full));
-            result.put("reduced_price", Float.parseFloat(reduced));
-            result.put("image_url", image);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        JSONObject jsonObject = new JSONObject("{\"itinerary_code\":9,\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$nXW4njlKyYR4EmQoiQg3iee5xw9RfC7VeD\\/Z5t\\/UnX0xWAasnurq.\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-02-25\"},\"languages\":[]},\"title\":\"Pausa con Pizzutillo\",\"description\":\"Facciamo una pausa\",\"beginning_date\":\"2019-10-03\",\"ending_date\":\"2019-10-31\",\"end_reservations_date\":\"2019-10-31\",\"maximum_participants_number\":15,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"}");
 
-        Itinerary itinerary = new Itinerary();
-        itinerary.setCode(Integer.parseInt(code));
-        itinerary.setTitle(title);
-        itinerary.setCicerone(cicerone);
-        itinerary.setDescription(description);
-        itinerary.setBeginningDate(new SimpleDateFormat("yyyy-MM-dd").parse(theDate));
-        itinerary.setEndingDate(new SimpleDateFormat("yyyy-MM-dd").parse(theDate));
-        itinerary.setReservationDate(new SimpleDateFormat("yyyy-MM-dd").parse(theDate));
-        itinerary.setDuration(duration);
-        itinerary.setLocation(location);
-        itinerary.setMinParticipants(Integer.parseInt(minParticipants));
-        itinerary.setMaxParticipants(Integer.parseInt(maxParticipants));
-        itinerary.setRepetitions(Integer.parseInt(repetitions));
-        itinerary.setFullPrice(Float.parseFloat(full));
-        itinerary.setReducedPrice(Float.parseFloat(reduced));
-        itinerary.setImageUrl(image);
+        Itinerary itinerary = new Itinerary(jsonObject);
 
-        assertEquals("Fields didn't match", itinerary.toJSONObject().toString(), result.toString());*/
+        assertEquals("Fields didn't match", itinerary.getCode(), jsonObject.getInt("itinerary_code"));
+        assertEquals("Fields didn't match", itinerary.getTitle(), jsonObject.getString("title"));
+        assertEquals("Fields didn't match", itinerary.getCicerone(), new User(jsonObject.getJSONObject("username")));
+        assertEquals("Fields didn't match", itinerary.getDescription(), jsonObject.getString("description"));
+        assertEquals("Fields didn't match", itinerary.getBeginningDate(), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("beginning_date")));
+        assertEquals("Fields didn't match", itinerary.getEndingDate(), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("ending_date")));
+        assertEquals("Fields didn't match", itinerary.getReservationDate() , new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("end_reservations_date")));
+        assertEquals("Fields didn't match", itinerary.getDuration(), jsonObject.getString("duration"));
+        assertEquals("Fields didn't match", itinerary.getLocation(), jsonObject.getString("location"));
+        assertEquals("Fields didn't match", itinerary.getMinParticipants(), jsonObject.getInt("minimum_participants_number"));
+        assertEquals("Fields didn't match", itinerary.getMaxParticipants(), jsonObject.getInt("maximum_participants_number"));
+        assertEquals("Fields didn't match", itinerary.getRepetitions(), jsonObject.getInt("repetitions_per_day"));
+        assertEquals("Fields didn't match", itinerary.getFullPrice(),Float.parseFloat(jsonObject.getString("full_price")),0);
+        assertEquals("Fields didn't match", itinerary.getReducedPrice(), Float.parseFloat(jsonObject.getString("reduced_price")),0);
+        assertEquals("Fields didn't match", itinerary.getImageUrl(), jsonObject.getString("image_url"));
     }
 }
