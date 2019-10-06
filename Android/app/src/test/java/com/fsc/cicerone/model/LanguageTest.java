@@ -113,11 +113,26 @@ public class LanguageTest {
 
     @Test
     public void equals1() {
-        //TODO: UnitTest
+        final String string = "{\"language_code\":\"IT\",\"language_name\":\"Italian\"}";
+        final String string1 = "{\"language_code\":\"EN\",\"language_name\":\"English\"}";
+        Language l1 = new Language(string);
+        Language l2 = new Language(string);
+        Language l3 = new Language(string1);
+
+        assertEquals("field wasn't retrieved properly", l1, l2);
+        assertNotEquals("field wasn't retrieved properly", l1, l3);
+        assertEquals("field wasn't retrieved properly", l1, l1);
     }
 
     @Test
     public void hashCode1() {
-        //TODO: UnitTest
+        final String string = "{\"language_code\":\"IT\",\"language_name\":\"Italian\"}";
+
+        Language l1 = new Language(string);
+        Language l2 = new Language(string);
+
+        assertEquals("field wasn't retrieved properly", l1.hashCode(),l2.hashCode());
+        assertEquals("field wasn't retrieved properly", l1.hashCode(),l1.hashCode());
+
     }
 }
