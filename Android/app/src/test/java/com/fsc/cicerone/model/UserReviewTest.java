@@ -18,9 +18,13 @@ package com.fsc.cicerone.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+
+import java.lang.reflect.Field;
+import java.util.Objects;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -69,5 +73,35 @@ public class UserReviewTest {
         assertEquals("Fields didn't match", new User(obj.getJSONObject("username")), new User(jsonObject.getJSONObject("username")));
         assertEquals("Fields didn't match", obj.getInt("feedback"), jsonObject.getInt("feedback"));
         assertEquals("Fields didn't match", obj.getString("description"), jsonObject.getString("description"));
+    }
+
+    @Test
+    public void setFeedback() throws JSONException, NoSuchFieldException, IllegalAccessException {
+        JSONObject jsonObject = new JSONObject("{\"username\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"reviewed_user\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"feedback\":2,\"description\":\"ciao\"}");
+        //given
+        final UserReview userReview = new UserReview(jsonObject);
+
+        //when
+        userReview.setFeedback(4);
+
+        //then
+        final Field field = Objects.requireNonNull(userReview.getClass().getSuperclass()).getDeclaredField("feedback");
+        field.setAccessible(true);
+        Assert.assertEquals("field wasn't retrieved properly", field.get(userReview), 4);
+    }
+
+    @Test
+    public void setDescription() throws JSONException, NoSuchFieldException, IllegalAccessException {
+        JSONObject jsonObject = new JSONObject("{\"username\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"reviewed_user\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"feedback\":2,\"description\":\"ciao\"}");
+        //given
+        final UserReview userReview = new UserReview(jsonObject);
+
+        //when
+        userReview.setDescription("test_description");
+
+        //then
+        final Field field = Objects.requireNonNull(userReview.getClass().getSuperclass()).getDeclaredField("description");
+        field.setAccessible(true);
+        Assert.assertEquals("field wasn't retrieved properly", field.get(userReview), "test_description");
     }
 }
