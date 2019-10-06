@@ -16,6 +16,8 @@
 
 package com.fsc.cicerone.model;
 
+import com.fsc.cicerone.app_connector.ConnectorConstants;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -27,10 +29,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -38,14 +42,53 @@ public class UserTest {
 
     @Test
     public void equals1() {
+        final String string = "{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}";
+        final String string2 = "{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]}";
+
+        User u1 = new User(string);
+        User u2 = new User(string);
+        User u3 = new User(string2);
+
+        assertEquals("field wasn't retrieved properly", u1, u2);
+        assertNotEquals("field wasn't retrieved properly", u1, u3);
+        assertEquals("field wasn't retrieved properly", u1, u1);
     }
 
     @Test
     public void hashCode1() {
+        final String string = "{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}";
+
+        User u1 = new User(string);
+        User u2 = new User(string);
+
+        assertEquals("field wasn't retrieved properly", u1.hashCode(), u2.hashCode());
+        assertEquals("field wasn't retrieved properly", u1.hashCode(), u1.hashCode());
     }
 
     @Test
-    public void loadFromJSONObject() {
+    public void loadFromJSONObject() throws JSONException {
+        final String string = "{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}";
+
+        final JSONObject jsonObject = new JSONObject(string);
+        final User user = new User(jsonObject);
+
+        final SimpleDateFormat output = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
+        final String TAG = "Fields not setted properly";
+        assertEquals(TAG, user.getUsername(), jsonObject.getString("username"));
+        assertEquals(TAG, user.getCredentials().getUsername(), jsonObject.getString("username"));
+        assertEquals(TAG, user.getPassword(), jsonObject.getString("password"));
+        assertEquals(TAG, user.getCredentials().getPassword(), jsonObject.getString("password"));
+        assertEquals(TAG, user.getName(), jsonObject.getString("name"));
+        assertEquals(TAG, user.getTaxCode(), jsonObject.getString("tax_code"));
+        assertEquals(TAG, user.getSurname(), jsonObject.getString("surname"));
+        assertEquals(TAG, user.getEmail(), jsonObject.getString("email"));
+        assertEquals(TAG, user.getUserType().toInt().intValue(), jsonObject.getInt("user_type"));
+        assertEquals(TAG, user.getCellphone(), jsonObject.getString("cellphone"));
+        assertEquals(TAG, output.format(user.getBirthDate()), jsonObject.getString("birth_date"));
+        assertEquals(TAG, user.getSex().toString(), jsonObject.getString("sex"));
+        assertEquals(TAG, user.getDocument(), new Document(jsonObject.getString("document")));
+
+        //TODO: insert assert for languages' set
     }
 
     @Test
@@ -448,8 +491,8 @@ public class UserTest {
 
 
         //then
-        assertTrue( user.validateUsername(user.getUsername()));
-        assertFalse( user.validateUsername("test?username"));
+        assertTrue( User.validateUsername(user.getUsername()));
+        assertFalse( User.validateUsername("test?username"));
 
     }
 
@@ -460,8 +503,8 @@ public class UserTest {
 
 
         //then
-        assertTrue( user.validateEmail(user.getEmail()));
-        assertFalse( user.validateEmail("test_email"));
+        assertTrue( User.validateEmail(user.getEmail()));
+        assertFalse( User.validateEmail("test_email"));
 
     }
 }

@@ -23,7 +23,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class UserReviewTest {
