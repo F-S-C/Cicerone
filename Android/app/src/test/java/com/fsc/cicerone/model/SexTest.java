@@ -32,7 +32,7 @@ public class SexTest {
         assertEquals("field wasn't retrieved properly", Sex.getValue("maschio"),Sex.MALE);
         assertEquals("field wasn't retrieved properly", Sex.getValue("femmina"),Sex.FEMALE);
         assertEquals("field wasn't retrieved properly", Sex.getValue("altro"),Sex.OTHER);
-        assertNull("field wasn't retrieved properly",Sex.getValue("ciaone"));
+        assertNull("field wasn't retrieved properly", Sex.getValue("ciaone"));
 
     }
 
