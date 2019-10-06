@@ -3,6 +3,8 @@ package com.fsc.cicerone.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;
@@ -11,6 +13,7 @@ import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(RobolectricTestRunner.class)
 public class DocumentTest {
 
     @Test
@@ -112,6 +115,7 @@ public class DocumentTest {
         jsonObject.put("document_number", number);
         jsonObject.put("document_type", type);
         jsonObject.put("expiry_date", date);
+
 
         Document document = new Document();
         document.setType(type);
