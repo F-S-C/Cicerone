@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class DocumentTest {
@@ -123,5 +124,31 @@ public class DocumentTest {
         document.setNumber(number);
 
         assertEquals("Fields didn't match", document.toJSONObject().toString(), jsonObject.toString());
+    }
+
+
+    @Test
+    public void equals1() {
+        final String string = "{\"document_number\":\"at98\",\"document_type\":\"identit\\u00e0\",\"expiry_date\":\"2019-09-29\"}";
+        final String string2 = "{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"}";
+
+        Document d1 = new Document(string);
+        Document d2 = new Document(string);
+        Document d3 = new Document(string2);
+
+        assertEquals("field wasn't retrieved properly", d1, d2);
+        assertNotEquals("field wasn't retrieved properly", d1, d3);
+        assertEquals("field wasn't retrieved properly", d1, d1);
+    }
+
+    @Test
+    public void hashCode1() {
+        final String string = "{\"document_number\":\"at98\",\"document_type\":\"identit\\u00e0\",\"expiry_date\":\"2019-09-29\"}";
+
+        Document d1 = new Document(string);
+        Document d2 = new Document(string);
+
+        assertEquals("field wasn't retrieved properly", d1, d2);
+        assertEquals("field wasn't retrieved properly", d1, d1);
     }
 }
