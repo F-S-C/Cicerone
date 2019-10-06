@@ -80,8 +80,9 @@ public class WishlistTest {
     public void toJSONObject() throws JSONException{
         JSONObject jsonObject = new JSONObject("{\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"itinerary_in_wishlist\":{\"itinerary_code\":6,\"username\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"title\":\"dfefef\",\"description\":\"feffef\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-21\",\"maximum_participants_number\":1,\"minimum_participants_number\":1,\"location\":\"Lizzano\",\"repetitions_per_day\":1,\"duration\":\"00:04:00\",\"image_url\":\"https:\\/\\/media.internazionale.it\\/images\\/2019\\/02\\/27\\/148022-hd.jpg\",\"full_price\":\"1.00\",\"reduced_price\":\"1.00\"}}");
         Wishlist wishlist= new Wishlist(jsonObject);
+        JSONObject obj = wishlist.toJSONObject();
 
-        assertEquals("Fields didn't match", wishlist.getUser(), new User(jsonObject.getJSONObject("username")));
-        assertEquals("Fields didn't match", wishlist.getItinerary(), new Itinerary(jsonObject.getJSONObject("itinerary_in_wishlist")));
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("username")), new User(jsonObject.getJSONObject("username")));
+        assertEquals("Fields didn't match", new Itinerary(obj.getJSONObject("itinerary_in_wishlist")), new Itinerary(jsonObject.getJSONObject("itinerary_in_wishlist")));
     }
 }

@@ -158,12 +158,13 @@ public class ReportTest {
     public void toJSONObject()  throws JSONException {
         JSONObject jsonObject = new JSONObject("{\"report_code\":93,\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"reported_user\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"report_body\":\"Funghi?\",\"state\":3,\"object\":\"ciao\"}");
         Report report = new Report(jsonObject);
+        JSONObject obj = report.toJSONObject();
 
-        assertEquals("Fields didn't match", report.getCode(), jsonObject.getInt("report_code"));
-        assertEquals("Fields didn't match", report.getObject(), jsonObject.getString("object"));
-        assertEquals("Fields didn't match", report.getBody(), jsonObject.getString("report_body"));
-        assertEquals("Fields didn't match", report.getStatus().toInt().toString(), jsonObject.getString("state"));
-        assertEquals("Fields didn't match", report.getAuthor(),new User(jsonObject.getJSONObject("username")));
-        assertEquals("Fields didn't match", report.getReportedUser(), new User(jsonObject.getJSONObject("reported_user")));
+        assertEquals("Fields didn't match", obj.getInt("report_code"), jsonObject.getInt("report_code"));
+        assertEquals("Fields didn't match", obj.getString("object"), jsonObject.getString("object"));
+        assertEquals("Fields didn't match", obj.getString("report_body"), jsonObject.getString("report_body"));
+        assertEquals("Fields didn't match", obj.getString("state"), jsonObject.getString("state"));
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("username")),new User(jsonObject.getJSONObject("username")));
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("reported_user")), new User(jsonObject.getJSONObject("reported_user")));
     }
 }

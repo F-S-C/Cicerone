@@ -63,10 +63,11 @@ public class UserReviewTest {
         JSONObject jsonObject = new JSONObject("{\"username\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"reviewed_user\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"feedback\":2,\"description\":\"ciao\"}");
 
         UserReview userReview = new UserReview(jsonObject);
+        JSONObject obj = userReview.toJSONObject();
 
-        assertEquals("Fields didn't match", userReview.getReviewedUser(), new User(jsonObject.getJSONObject("reviewed_user")));
-        assertEquals("Fields didn't match", userReview.getAuthor(), new User(jsonObject.getJSONObject("username")));
-        assertEquals("Fields didn't match", userReview.getFeedback(), jsonObject.getInt("feedback"));
-        assertEquals("Fields didn't match", userReview.getDescription(), jsonObject.getString("description"));
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("reviewed_user")), new User(jsonObject.getJSONObject("reviewed_user")));
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("username")), new User(jsonObject.getJSONObject("username")));
+        assertEquals("Fields didn't match", obj.getInt("feedback"), jsonObject.getInt("feedback"));
+        assertEquals("Fields didn't match", obj.getString("description"), jsonObject.getString("description"));
     }
 }

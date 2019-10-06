@@ -71,9 +71,10 @@ public class LanguageTest {
     public void toJSONObject() throws JSONException {
         JSONObject jsonObject = new JSONObject("{\"language_code\":\"IT\",\"language_name\":\"Italian\"}");
         Language language = new Language(jsonObject);
+        JSONObject obj = language.toJSONObject();
 
-        assertEquals("Fields didn't match", language.getCode(), jsonObject.getString("language_code"));
-        assertEquals("Fields didn't match", language.getName(), jsonObject.getString("language_name"));
+        assertEquals("Fields didn't match", obj.getString("language_code"), jsonObject.getString("language_code"));
+        assertEquals("Fields didn't match", obj.getString("language_name"), jsonObject.getString("language_name"));
     }
 
     @Test

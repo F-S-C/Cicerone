@@ -459,19 +459,20 @@ public class UserTest {
         JSONObject jsonObject = new JSONObject("{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc/zhzmM.zhgx9ptLNFmG0/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25/02/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}");
 
         User user = new User(jsonObject);
+        JSONObject obj = user.toJSONObject();
 
-        assertEquals("Fields didn't match", user.getName(), jsonObject.getString("name"));
-        assertEquals("Fields didn't match", user.getSurname(), jsonObject.getString("surname"));
-        assertEquals("Fields didn't match", user.getUsername(), jsonObject.getString("username"));
-        assertEquals("Fields didn't match", user.getPassword(), jsonObject.getString("password"));
-        assertEquals("Fields didn't match", user.getEmail(), jsonObject.getString("email"));
-        assertEquals("Fields didn't match", user.getUserType().toInt().intValue(), jsonObject.getInt("user_type"));
-        assertEquals("Fields didn't match", user.getCellphone(), jsonObject.getString("cellphone"));
-        assertEquals("Fields didn't match", user.getBirthDate(), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("birth_date")));
-        assertEquals("Fields didn't match", user.getSex().toString(), jsonObject.getString("sex"));
-        assertEquals("Fields didn't match", user.getTaxCode(), jsonObject.getString("tax_code"));
-        assertEquals("Fields didn't match", user.getDocument().toString(), jsonObject.getString("document"));
-        assertEquals("Fields didn't match", user.getLanguages().toString(), jsonObject.getString("languages"));
+        assertEquals("Fields didn't match", obj.getString("name"), jsonObject.getString("name"));
+        assertEquals("Fields didn't match", obj.getString("surname"), jsonObject.getString("surname"));
+        assertEquals("Fields didn't match", obj.getString("username"), jsonObject.getString("username"));
+        assertEquals("Fields didn't match", obj.getString("password"), jsonObject.getString("password"));
+        assertEquals("Fields didn't match", obj.getString("email"), jsonObject.getString("email"));
+        assertEquals("Fields didn't match", obj.getInt("user_type"), jsonObject.getInt("user_type"));
+        assertEquals("Fields didn't match", obj.getString("cellphone"), jsonObject.getString("cellphone"));
+        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("birth_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("birth_date")));
+        assertEquals("Fields didn't match", obj.getString("sex"), jsonObject.getString("sex"));
+        assertEquals("Fields didn't match", obj.getString("tax_code"), jsonObject.getString("tax_code"));
+        assertEquals("Fields didn't match", obj.getString("document"), jsonObject.getString("document"));
+        assertEquals("Fields didn't match", obj.getString("languages"), jsonObject.getString("languages"));
 
     }
 

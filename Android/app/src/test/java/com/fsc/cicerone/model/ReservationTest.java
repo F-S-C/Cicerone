@@ -196,15 +196,16 @@ public class ReservationTest {
     public void toJSONObject() throws JSONException, ParseException {
         JSONObject jsonObject = new JSONObject("{\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"booked_itinerary\":{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"},\"number_of_children\":1,\"number_of_adults\":1,\"total\":\"30.00\",\"requested_date\":\"2019-09-23\",\"forwading_date\":\"2019-09-24\",\"confirm_date\":\"2019-09-30\"}");
         Reservation reservation = new Reservation(jsonObject);
+        JSONObject obj = reservation.toJSONObject();
 
-        assertEquals("Fields didn't match", reservation.getClient(),new User(jsonObject.getJSONObject("username")));
-        assertEquals("Fields didn't match", reservation.getItinerary(), new Itinerary(jsonObject.getJSONObject("booked_itinerary")));
-        assertEquals("Fields didn't match", reservation.getConfirmationDate(), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("confirm_date")));
-        assertEquals("Fields didn't match", reservation.getForwardingDate(), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("forwading_date")));
-        assertEquals("Fields didn't match", reservation.getRequestedDate() , new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("requested_date")));
-        assertEquals("Fields didn't match", reservation.getNumberOfAdults(), jsonObject.getInt("number_of_adults"));
-        assertEquals("Fields didn't match", reservation.getNumberOfChildren(), jsonObject.getInt("number_of_children"));
-        assertEquals("Fields didn't match", reservation.getTotal(), Float.parseFloat(jsonObject.getString("total")),0);
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("username")),new User(jsonObject.getJSONObject("username")));
+        assertEquals("Fields didn't match", new Itinerary(obj.getJSONObject("booked_itinerary")), new Itinerary(jsonObject.getJSONObject("booked_itinerary")));
+        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("confirm_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("confirm_date")));
+        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("forwarding_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("forwading_date")));
+        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("requested_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("requested_date")));
+        assertEquals("Fields didn't match", obj.getInt("number_of_adults"), jsonObject.getInt("number_of_adults"));
+        assertEquals("Fields didn't match", obj.getInt("number_of_children"), jsonObject.getInt("number_of_children"));
+        assertEquals("Fields didn't match", Float.parseFloat(obj.getString("total")), Float.parseFloat(jsonObject.getString("total")),0);
     }
 
     @Test
