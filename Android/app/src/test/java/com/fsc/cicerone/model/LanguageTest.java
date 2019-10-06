@@ -19,16 +19,19 @@ package com.fsc.cicerone.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
 
 import static org.junit.Assert.*;
 
+@RunWith(RobolectricTestRunner.class)
 public class LanguageTest {
 
     @Test
     public void getSetFromJSONArray() {
-        //TODO: ???
+        //TODO: UnitTest
     }
 
     @Test
@@ -106,5 +109,15 @@ public class LanguageTest {
         final Field field = language.getClass().getDeclaredField("name");
         field.setAccessible(true);
         assertEquals("field wasn't retrieved properly", field.get(language), "name_test");
+    }
+
+    @Test
+    public void equals1() {
+        //TODO: UnitTest
+    }
+
+    @Test
+    public void hashCode1() {
+        //TODO: UnitTest
     }
 }
