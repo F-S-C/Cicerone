@@ -16,6 +16,7 @@
 
 package com.fsc.cicerone.model;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -23,6 +24,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -30,8 +34,22 @@ import static org.junit.Assert.*;
 public class LanguageTest {
 
     @Test
-    public void getSetFromJSONArray() {
-        //TODO: UnitTest
+    public void getSetFromJSONArray() throws JSONException {
+        
+        final String string ="[{\"language_code\":\"fr\",\"language_name\":\"French\"},{\"language_code\":\"de\",\"language_name\":\"German\"},{\"language_code\":\"es\",\"language_name\":\"Spanish\"},{\"language_code\":\"uk\",\"language_name\":\"English (UK)\"},{\"language_code\":\"us\",\"language_name\":\"English (US)\"},{\"language_code\":\"it\",\"language_name\":\"Italian\"}]";
+        JSONArray jsonArray = new JSONArray(string);
+        Set<Language> languages = Language.getSetFromJSONArray(jsonArray);
+
+        assertEquals("Size is different", languages.size(), jsonArray.length());
+
+        for(Language language : languages) {
+            JSONObject obj = null;
+            for(int i = 0; i < jsonArray.length(); i++){
+                if(jsonArray.getJSONObject(i).getString("language_code").equals(language.getCode()))
+                    obj = jsonArray.getJSONObject(i);
+            }
+            assertEquals("field wasn't retrieved properly", language.toString(), Objects.requireNonNull(obj).toString());
+        }
     }
 
     @Test
