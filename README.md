@@ -5,6 +5,7 @@
 
 ## Quality<!-- omit in toc -->
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=alert_status)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=ncloc)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=sqale_index)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fsc%3Acicerone&metric=bugs)](https://sonarcloud.io/dashboard?id=fsc%3Acicerone)
