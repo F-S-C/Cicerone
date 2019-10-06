@@ -147,7 +147,7 @@ public class DocumentTest {
         Document d1 = new Document(string);
         Document d2 = new Document(string);
 
-        assertEquals("field wasn't retrieved properly", d1, d2);
-        assertEquals("field wasn't retrieved properly", d1, d1);
+        assertEquals("field wasn't retrieved properly", d1.hashCode(), d2.hashCode());
+        assertEquals("field wasn't retrieved properly", d1.hashCode(), d1.hashCode());
     }
 }

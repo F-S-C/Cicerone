@@ -545,7 +545,7 @@ public class ItineraryTest {
         Itinerary i1 = new Itinerary(string);
         Itinerary i2 = new Itinerary(string);
 
-        assertEquals("field wasn't retrieved properly", i1, i2);
-        assertEquals("field wasn't retrieved properly", i1, i1);
+        assertEquals("field wasn't retrieved properly", i1.hashCode(), i2.hashCode());
+        assertEquals("field wasn't retrieved properly", i1.hashCode(), i1.hashCode());
     }
 }
