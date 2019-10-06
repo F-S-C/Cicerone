@@ -126,7 +126,6 @@ public class DocumentTest {
         assertEquals("Fields didn't match", document.toJSONObject().toString(), jsonObject.toString());
     }
 
-
     @Test
     public void equals1() {
         final String string = "{\"document_number\":\"at98\",\"document_type\":\"identit\\u00e0\",\"expiry_date\":\"2019-09-29\"}";

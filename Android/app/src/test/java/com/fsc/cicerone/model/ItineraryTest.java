@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class ItineraryTest {
@@ -504,20 +505,47 @@ public class ItineraryTest {
 
         Itinerary itinerary = new Itinerary(jsonObject);
 
-        assertEquals("Fields didn't match", itinerary.getCode(), jsonObject.getInt("itinerary_code"));
-        assertEquals("Fields didn't match", itinerary.getTitle(), jsonObject.getString("title"));
-        assertEquals("Fields didn't match", itinerary.getCicerone(), new User(jsonObject.getJSONObject("username")));
-        assertEquals("Fields didn't match", itinerary.getDescription(), jsonObject.getString("description"));
-        assertEquals("Fields didn't match", itinerary.getBeginningDate(), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("beginning_date")));
-        assertEquals("Fields didn't match", itinerary.getEndingDate(), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("ending_date")));
-        assertEquals("Fields didn't match", itinerary.getReservationDate() , new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("end_reservations_date")));
-        assertEquals("Fields didn't match", itinerary.getDuration(), jsonObject.getString("duration"));
-        assertEquals("Fields didn't match", itinerary.getLocation(), jsonObject.getString("location"));
-        assertEquals("Fields didn't match", itinerary.getMinParticipants(), jsonObject.getInt("minimum_participants_number"));
-        assertEquals("Fields didn't match", itinerary.getMaxParticipants(), jsonObject.getInt("maximum_participants_number"));
-        assertEquals("Fields didn't match", itinerary.getRepetitions(), jsonObject.getInt("repetitions_per_day"));
-        assertEquals("Fields didn't match", itinerary.getFullPrice(),Float.parseFloat(jsonObject.getString("full_price")),0);
-        assertEquals("Fields didn't match", itinerary.getReducedPrice(), Float.parseFloat(jsonObject.getString("reduced_price")),0);
-        assertEquals("Fields didn't match", itinerary.getImageUrl(), jsonObject.getString("image_url"));
+        JSONObject obj = itinerary.toJSONObject();
+
+        assertEquals("Fields didn't match", obj.getInt("itinerary_code"), jsonObject.getInt("itinerary_code"));
+        assertEquals("Fields didn't match", obj.getString("title"), jsonObject.getString("title"));
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("username")), new User(jsonObject.getJSONObject("username")));
+        assertEquals("Fields didn't match", obj.getString("description"), jsonObject.getString("description"));
+        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("beginning_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("beginning_date")));
+        assertEquals("Fields didn't match",  new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("ending_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("ending_date")));
+        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("end_reservations_date")) , new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("end_reservations_date")));
+        assertEquals("Fields didn't match", obj.getString("duration"), jsonObject.getString("duration"));
+        assertEquals("Fields didn't match", obj.getString("location"), jsonObject.getString("location"));
+        assertEquals("Fields didn't match", obj.getInt("minimum_participants_number"), jsonObject.getInt("minimum_participants_number"));
+        assertEquals("Fields didn't match", obj.getInt("maximum_participants_number"), jsonObject.getInt("maximum_participants_number"));
+        assertEquals("Fields didn't match", obj.getInt("repetitions_per_day"), jsonObject.getInt("repetitions_per_day"));
+        assertEquals("Fields didn't match", Float.parseFloat(obj.getString("full_price")),Float.parseFloat(jsonObject.getString("full_price")),0);
+        assertEquals("Fields didn't match", Float.parseFloat(obj.getString("reduced_price")), Float.parseFloat(jsonObject.getString("reduced_price")),0);
+        assertEquals("Fields didn't match", obj.getString("image_url"), jsonObject.getString("image_url"));
+    }
+
+    @Test
+    public void equals1() {
+        final String string = "{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"}";
+        final String string2 = "{\"itinerary_code\":6,\"username\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"title\":\"dfefef\",\"description\":\"feffef\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-21\",\"maximum_participants_number\":1,\"minimum_participants_number\":1,\"location\":\"Lizzano\",\"repetitions_per_day\":1,\"duration\":\"00:04:00\",\"image_url\":\"https:\\/\\/media.internazionale.it\\/images\\/2019\\/02\\/27\\/148022-hd.jpg\",\"full_price\":\"1.00\",\"reduced_price\":\"1.00\"}";
+
+        Itinerary i1 = new Itinerary(string);
+        Itinerary i2 = new Itinerary(string);
+        Itinerary i3 = new Itinerary(string2);
+
+        assertEquals("field wasn't retrieved properly", i1, i2);
+        assertNotEquals("field wasn't retrieved properly", i1, i3);
+        assertEquals("field wasn't retrieved properly", i1, i1);
+    }
+
+    @Test
+    public void hashCode1() {
+        final String string = "{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"}";
+
+        Itinerary i1 = new Itinerary(string);
+        Itinerary i2 = new Itinerary(string);
+
+        assertEquals("field wasn't retrieved properly", i1, i2);
+        assertEquals("field wasn't retrieved properly", i1, i1);
     }
 }
