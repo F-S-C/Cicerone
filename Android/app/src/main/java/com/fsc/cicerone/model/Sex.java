@@ -17,6 +17,7 @@
 package com.fsc.cicerone.model;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.R;
 
@@ -65,25 +66,20 @@ public enum Sex {
      * </table>
      * Every other string value will be converted to null.
      */
+    @Nullable
     public static Sex getValue(String s) {
         s = s.toLowerCase();
         Sex sex;
         switch (s) {
             case "male":
-                sex = MALE;
-                break;
-            case "female":
-                sex = FEMALE;
-                break;
-            case "other":
-                sex = OTHER;
-                break;
             case "maschio":
                 sex = MALE;
                 break;
+            case "female":
             case "femmina":
                 sex = FEMALE;
                 break;
+            case "other":
             case "altro":
                 sex = OTHER;
                 break;
