@@ -18,6 +18,7 @@ package com.fsc.cicerone.model;
 
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -35,6 +36,7 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -67,7 +69,7 @@ public class UserTest {
 
     @Test
     public void loadFromJSONObject() throws JSONException {
-        final String string = "{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}";
+        final String string = "{\"username\":\"pupazzomatto\",\"tax_code\":\"shslll00a00l028s\",\"name\":\"aaa\",\"surname\":\"ddd\",\"password\":\"$2y$10$rLCM3wzhLSIvvWNj1XUkVeB7GIMVWPA85DCzektYvYAfshUIBEx..\",\"email\":\"a.annese99@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"468649986460\",\"birth_date\":\"1986-09-27\",\"sex\":\"male\",\"document\":{\"document_number\":\"cjsndncncnsn\",\"document_type\":\"cjcjcj\",\"expiry_date\":\"2020-06-26\"},\"languages\":[{\"username\":\"pupazzomatto\",\"language_code\":\"IT\",\"language_name\":\"Italian\"}]}";
 
         final JSONObject jsonObject = new JSONObject(string);
         final User user = new User(jsonObject);
@@ -88,7 +90,18 @@ public class UserTest {
         assertEquals(TAG, user.getSex().toString(), jsonObject.getString("sex"));
         assertEquals(TAG, user.getDocument(), new Document(jsonObject.getString("document")));
 
-        //TODO: insert assert for languages' set
+        JSONArray languagesJSONArray = jsonObject.getJSONArray("languages");
+        assertEquals("Sizes not equals", user.getLanguages().size(), languagesJSONArray.length());
+        for (Language language : user.getLanguages()) {
+            JSONObject languageJSONObject = null;
+            for (int i = 0; i < languagesJSONArray.length(); i++) {
+                if (languagesJSONArray.getJSONObject(i).getString("language_code").equals(language.getCode()))
+                    languageJSONObject = languagesJSONArray.getJSONObject(i);
+            }
+            assertNotNull("Language not found", languageJSONObject);
+            assertEquals("Code is not equals", language.getCode(), languageJSONObject.getString("language_code"));
+            assertEquals("Name is not equals", language.getName(), languageJSONObject.getString("language_name"));
+        }
     }
 
     @Test
@@ -341,7 +354,7 @@ public class UserTest {
         final Date result = user.getBirthDate();
 
         //then
-        assertEquals("field wasn't retrieved properly", result,testDate);
+        assertEquals("field wasn't retrieved properly", result, testDate);
     }
 
     @Test
@@ -356,7 +369,7 @@ public class UserTest {
         //then
         final Field field = user.getClass().getDeclaredField("birthDate");
         field.setAccessible(true);
-        assertEquals("field wasn't retrieved properly", field.get(user),testDate);
+        assertEquals("field wasn't retrieved properly", field.get(user), testDate);
     }
 
     @Test
@@ -386,14 +399,14 @@ public class UserTest {
         //then
         final Field field = user.getClass().getDeclaredField("document");
         field.setAccessible(true);
-        assertEquals("field wasn't retrieved properly", field.get(user),testDocument);
+        assertEquals("field wasn't retrieved properly", field.get(user), testDocument);
     }
 
     @Test
     public void getLanguages() throws NoSuchFieldException, IllegalAccessException {
         final User user = new User();
         final Set<Language> testSet = new HashSet<>();
-        testSet.add(new Language("code","name"));
+        testSet.add(new Language("code", "name"));
         final Field field = user.getClass().getDeclaredField("languages");
         field.setAccessible(true);
         field.set(user, testSet);
@@ -410,14 +423,14 @@ public class UserTest {
         //given
         final User user = new User();
         final Set<Language> testSetLanguage = new HashSet<>(1);
-        testSetLanguage.add(new Language("test_code","test_name"));
+        testSetLanguage.add(new Language("test_code", "test_name"));
         final Field field = user.getClass().getDeclaredField("languages");
         field.setAccessible(true);
         //when
-        field.set(user,testSetLanguage);
+        field.set(user, testSetLanguage);
 
 
-        assertEquals("field wasn't retrieved properly", field.get(user),testSetLanguage);
+        assertEquals("field wasn't retrieved properly", field.get(user), testSetLanguage);
 
     }
 
@@ -426,18 +439,18 @@ public class UserTest {
         //given
         final User user = new User();
         final Set<Language> testSetLanguage = new HashSet<>(1);
-        final Language testLanguage = new Language("test_code","test_name");
+        final Language testLanguage = new Language("test_code", "test_name");
         testSetLanguage.add(testLanguage);
         final Field field = user.getClass().getDeclaredField("languages");
         field.setAccessible(true);
         //when
-        field.set(user,testSetLanguage);
+        field.set(user, testSetLanguage);
 
-        assertEquals("field wasn't retrieved properly", field.get(user),testSetLanguage);
+        assertEquals("field wasn't retrieved properly", field.get(user), testSetLanguage);
 
         user.removeLanguage(testLanguage);
         testSetLanguage.remove(testLanguage);
-        assertEquals("field wasn't retrieved properly", field.get(user),testSetLanguage);
+        assertEquals("field wasn't retrieved properly", field.get(user), testSetLanguage);
 
     }
 
@@ -445,15 +458,15 @@ public class UserTest {
     public void toJSONObject() throws JSONException, ParseException {
         JSONObject jsonObject = new JSONObject("{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc/zhzmM.zhgx9ptLNFmG0/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25/02/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}");
 
-            User user = new User(jsonObject);
+        User user = new User(jsonObject);
 
         assertEquals("Fields didn't match", user.getName(), jsonObject.getString("name"));
         assertEquals("Fields didn't match", user.getSurname(), jsonObject.getString("surname"));
-        assertEquals("Fields didn't match", user.getUsername(),jsonObject.getString("username"));
+        assertEquals("Fields didn't match", user.getUsername(), jsonObject.getString("username"));
         assertEquals("Fields didn't match", user.getPassword(), jsonObject.getString("password"));
         assertEquals("Fields didn't match", user.getEmail(), jsonObject.getString("email"));
         assertEquals("Fields didn't match", user.getUserType().toInt().intValue(), jsonObject.getInt("user_type"));
-        assertEquals("Fields didn't match", user.getCellphone() , jsonObject.getString("cellphone"));
+        assertEquals("Fields didn't match", user.getCellphone(), jsonObject.getString("cellphone"));
         assertEquals("Fields didn't match", user.getBirthDate(), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("birth_date")));
         assertEquals("Fields didn't match", user.getSex().toString(), jsonObject.getString("sex"));
         assertEquals("Fields didn't match", user.getTaxCode(), jsonObject.getString("tax_code"));
@@ -485,14 +498,14 @@ public class UserTest {
     }
 
     @Test
-    public void validateUsername()  {
+    public void validateUsername() {
         final String string = "{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc/zhzmM.zhgx9ptLNFmG0/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25/02/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}";
         final User user = new User(string);
 
 
         //then
-        assertTrue( User.validateUsername(user.getUsername()));
-        assertFalse( User.validateUsername("test?username"));
+        assertTrue(User.validateUsername(user.getUsername()));
+        assertFalse(User.validateUsername("test?username"));
 
     }
 
@@ -503,8 +516,8 @@ public class UserTest {
 
 
         //then
-        assertTrue( User.validateEmail(user.getEmail()));
-        assertFalse( User.validateEmail("test_email"));
+        assertTrue(User.validateEmail(user.getEmail()));
+        assertFalse(User.validateEmail("test_email"));
 
     }
 }

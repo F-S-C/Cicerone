@@ -29,31 +29,34 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class LanguageTest {
 
     @Test
     public void getSetFromJSONArray() throws JSONException {
-        
-        final String string ="[{\"language_code\":\"fr\",\"language_name\":\"French\"},{\"language_code\":\"de\",\"language_name\":\"German\"},{\"language_code\":\"es\",\"language_name\":\"Spanish\"},{\"language_code\":\"uk\",\"language_name\":\"English (UK)\"},{\"language_code\":\"us\",\"language_name\":\"English (US)\"},{\"language_code\":\"it\",\"language_name\":\"Italian\"}]";
+
+        final String string = "[{\"language_code\":\"fr\",\"language_name\":\"French\"},{\"language_code\":\"de\",\"language_name\":\"German\"},{\"language_code\":\"es\",\"language_name\":\"Spanish\"},{\"language_code\":\"uk\",\"language_name\":\"English (UK)\"},{\"language_code\":\"us\",\"language_name\":\"English (US)\"},{\"language_code\":\"it\",\"language_name\":\"Italian\"}]";
         JSONArray jsonArray = new JSONArray(string);
         Set<Language> languages = Language.getSetFromJSONArray(jsonArray);
 
         assertEquals("Size is different", languages.size(), jsonArray.length());
-
-        for(Language language : languages) {
+        for (Language language : languages) {
             JSONObject obj = null;
-            for(int i = 0; i < jsonArray.length(); i++){
-                if(jsonArray.getJSONObject(i).getString("language_code").equals(language.getCode()))
+            for (int i = 0; i < jsonArray.length(); i++) {
+                if (jsonArray.getJSONObject(i).getString("language_code").equals(language.getCode()))
                     obj = jsonArray.getJSONObject(i);
             }
-            assertEquals("field wasn't retrieved properly", language.toString(), Objects.requireNonNull(obj).toString());
+
+            assertNotNull("Language not found", obj);
+            assertEquals("Code is not equals", language.getCode(), obj.getString("language_code"));
+            assertEquals("Name is not equals", language.getName(), obj.getString("language_name"));
         }
     }
 
     @Test
-    public void loadFromJSONObject()  throws JSONException {
+    public void loadFromJSONObject() throws JSONException {
         final String string = "{\"language_code\":\"IT\",\"language_name\":\"Italian\"}";
 
         final JSONObject jsonObject = new JSONObject(string);
@@ -65,8 +68,8 @@ public class LanguageTest {
     }
 
     @Test
-    public void toJSONObject()  throws JSONException {
-        JSONObject jsonObject = new JSONObject( "{\"language_code\":\"IT\",\"language_name\":\"Italian\"}");
+    public void toJSONObject() throws JSONException {
+        JSONObject jsonObject = new JSONObject("{\"language_code\":\"IT\",\"language_name\":\"Italian\"}");
         Language language = new Language(jsonObject);
 
         assertEquals("Fields didn't match", language.getCode(), jsonObject.getString("language_code"));
@@ -149,8 +152,8 @@ public class LanguageTest {
         Language l1 = new Language(string);
         Language l2 = new Language(string);
 
-        assertEquals("field wasn't retrieved properly", l1.hashCode(),l2.hashCode());
-        assertEquals("field wasn't retrieved properly", l1.hashCode(),l1.hashCode());
+        assertEquals("field wasn't retrieved properly", l1.hashCode(), l2.hashCode());
+        assertEquals("field wasn't retrieved properly", l1.hashCode(), l1.hashCode());
 
     }
 }
