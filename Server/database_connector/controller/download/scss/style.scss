@@ -1,0 +1,35 @@
+@import "./bootstrap/bootstrap.scss";
+@import "./mdb/mdb.scss";
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+    position: relative;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+footer.page-footer {
+	color: $gray-600;
+	.footer-copyright {
+	color: inherit;
+	background-color: transparent;
+
+}}
+
+ol {
+	counter-reset: item;
+	padding-left: 1em;
+}
+
+li {
+	display: block;
+}
+
+li:before {
+	content: counters(item, ".") " ";
+	counter-increment: item;
+}
