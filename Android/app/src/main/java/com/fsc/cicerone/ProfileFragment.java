@@ -288,7 +288,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
         birthDate.setText(outputFormat.format(currentLoggedUser.getBirthDate()));
         documentNumber.setText(currentLoggedUser.getDocument().getNumber());
         documentType.setText(currentLoggedUser.getDocument().getType());
-        documentType.setText(outputFormat.format(currentLoggedUser.getDocument().getExpirationDate()));
+        documentExpiryDate.setText(outputFormat.format(currentLoggedUser.getDocument().getExpirationDate()));
     }
 
     @Override
