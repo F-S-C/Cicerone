@@ -48,7 +48,7 @@
             throw new IllegalStateException("Utility class");
         }
 
-        private static String DELETED_BY_CICERONE_KEY = "deleted_by_cicerone";
+        private static final String DELETED_BY_CICERONE_KEY = "deleted_by_cicerone";
 
         public static void getReservations(Activity context, Itinerary itinerary, @Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback) {
             Map<String, Object> parameters = new HashMap<>(1);

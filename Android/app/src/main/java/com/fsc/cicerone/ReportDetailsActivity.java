@@ -41,7 +41,6 @@ public class ReportDetailsActivity extends AppCompatActivity {
     private TextView reportedUser;
     private TextView bodyText;
     private Button cancButton;
-    private Report report;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +60,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
         // Get the bundle
         Bundle bundle = getIntent().getExtras();
         // Extract the data
-        report = new Report(Objects.requireNonNull(bundle).getString("report"));
+        Report report = new Report(Objects.requireNonNull(bundle).getString("report"));
 
         bindDataToView(report);
 
