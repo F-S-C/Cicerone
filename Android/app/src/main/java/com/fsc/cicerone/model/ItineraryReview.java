@@ -24,6 +24,17 @@ import org.json.JSONObject;
 public class ItineraryReview extends Review {
     private Itinerary reviewedItinerary;
 
+    /**
+     * A utility class that contains various strings to be used as keys to communicate with the
+     * remote server.
+     */
+    public static class Columns {
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
+        public static final String REVIEWED_ITINERARY_KEY = "reviewed_itinerary";
+    }
+
     public ItineraryReview(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
@@ -38,7 +49,7 @@ public class ItineraryReview extends Review {
 
         Itinerary tempReviewedUser;
         try {
-            tempReviewedUser = new Itinerary(jsonObject.getJSONObject("reviewed_itinerary"));
+            tempReviewedUser = new Itinerary(jsonObject.getJSONObject(Columns.REVIEWED_ITINERARY_KEY));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             tempReviewedUser = new Itinerary();
@@ -54,7 +65,7 @@ public class ItineraryReview extends Review {
     public JSONObject toJSONObject() {
         JSONObject object = super.toJSONObject();
         try {
-            object.put("reviewed_itinerary", reviewedItinerary.toJSONObject());
+            object.put(Columns.REVIEWED_ITINERARY_KEY, reviewedItinerary.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }

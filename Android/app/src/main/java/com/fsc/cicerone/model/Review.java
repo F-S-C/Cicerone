@@ -22,11 +22,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public abstract class Review extends BusinessEntity {
+
     private User author;
     private int feedback;
     private String description;
 
     static final String ERROR_TAG = "REVIEW_ERROR";
+
+    /**
+     * A utility class that contains various strings to be used as keys to communicate with the
+     * remote server.
+     */
+    public static class Columns{
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
+        public static final String FEEDBACK_KEY = "feedback";
+        public static final String DESCRIPTION_KEY = "description";
+    }
 
     Review() {
         // Do nothing
@@ -44,7 +57,7 @@ public abstract class Review extends BusinessEntity {
     protected void loadFromJSONObject(JSONObject jsonObject) {
         User tempAuthor;
         try {
-            tempAuthor = new User(jsonObject.getJSONObject("username"));
+            tempAuthor = new User(jsonObject.getJSONObject(User.Columns.USERNAME_KEY));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             tempAuthor = new User();
@@ -52,14 +65,14 @@ public abstract class Review extends BusinessEntity {
         author = tempAuthor;
 
         try {
-            feedback = jsonObject.getInt("feedback");
+            feedback = jsonObject.getInt(Columns.FEEDBACK_KEY);
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             feedback = 0;
         }
 
         try {
-            description = jsonObject.getString("description");
+            description = jsonObject.getString(Columns.DESCRIPTION_KEY);
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             description = "Error loading description";
@@ -92,17 +105,17 @@ public abstract class Review extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("username", author.toJSONObject());
+            jsonObject.put(User.Columns.USERNAME_KEY, author.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }
         try {
-            jsonObject.put("description", description);
+            jsonObject.put(Columns.DESCRIPTION_KEY, description);
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }
         try {
-            jsonObject.put("feedback", feedback);
+            jsonObject.put(Columns.FEEDBACK_KEY, feedback);
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }

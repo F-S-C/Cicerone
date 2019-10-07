@@ -24,6 +24,17 @@ import org.json.JSONObject;
 public class UserReview extends Review {
     private User reviewedUser;
 
+    /**
+     * A utility class that contains various strings to be used as keys to communicate with the
+     * remote server.
+     */
+    public static class Columns {
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
+        public static final String REVIEWED_USER_KEY = "reviewed_user";
+    }
+
     public UserReview(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
@@ -38,7 +49,7 @@ public class UserReview extends Review {
 
         User tempReviewedUser;
         try {
-            tempReviewedUser = new User(jsonObject.getJSONObject("reviewed_user"));
+            tempReviewedUser = new User(jsonObject.getJSONObject(Columns.REVIEWED_USER_KEY));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             tempReviewedUser = new User();
@@ -54,7 +65,7 @@ public class UserReview extends Review {
     public JSONObject toJSONObject() {
         JSONObject object = super.toJSONObject();
         try {
-            object.put("reviewed_user", reviewedUser.toJSONObject());
+            object.put(Columns.REVIEWED_USER_KEY, reviewedUser.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }

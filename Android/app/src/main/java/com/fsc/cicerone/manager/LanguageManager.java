@@ -23,6 +23,7 @@ import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Language;
+import com.fsc.cicerone.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,9 +94,9 @@ public class LanguageManager {
      */
     public void setUserLanguages(String username, List<Language> languageToSet) {
         Map<String, Object> data = new HashMap<>(languageToSet.size() + 1);
-        data.put("username", username);
+        data.put(User.Columns.USERNAME_KEY, username);
         for (int i = 0; i < languageToSet.size(); i++) {
-            data.put("language_code", languageToSet.get(i).getCode());
+            data.put(Language.Columns.LANGUAGE_CODE_KEY, languageToSet.get(i).getCode());
             Log.i("LANGUAGE", data.toString());
             new BooleanConnector.Builder(ConnectorConstants.INSERT_USER_LANGUAGE)
                     .setContext(null)

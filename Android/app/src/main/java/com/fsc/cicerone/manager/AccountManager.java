@@ -53,8 +53,6 @@ import java.util.Objects;
 public abstract class AccountManager {
 
     private static User currentLoggedUser;
-    private static final String USERNAME_KEY = "username";
-    private static final String PASSWORD_KEY = "password";
 
     private AccountManager() {
         throw new IllegalStateException("Utility class");
@@ -79,8 +77,8 @@ public abstract class AccountManager {
      */
     public static void attemptLogin(Activity context, User.Credentials credentials, @Nullable DatabaseConnector.OnStartConnectionListener onStart, @Nullable Consumer<Boolean> onEnd) {
         Map<String, Object> params = new HashMap<>(2);
-        params.put(USERNAME_KEY, credentials.getUsername());
-        params.put(PASSWORD_KEY, credentials.getPassword());
+        params.put(User.Columns.USERNAME_KEY, credentials.getUsername());
+        params.put(User.Columns.PASSWORD_KEY, credentials.getPassword());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.LOGIN_CONNECTOR)
                 .setContext(context)
                 .setOnStartConnectionListener(onStart)
@@ -147,7 +145,7 @@ public abstract class AccountManager {
      */
     public static void checkIfUsernameExists(Activity context, String user, Consumer<Boolean> result) {
         Map<String, Object> obj = new HashMap<>(1);
-        obj.put(USERNAME_KEY, user);
+        obj.put(User.Columns.USERNAME_KEY, user);
         SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> result.accept(!list.isEmpty()))
@@ -164,7 +162,7 @@ public abstract class AccountManager {
      */
     public static void checkIfEmailExists(Activity context, String email, Consumer<Boolean> result) {
         Map<String, Object> obj = new HashMap<>(1);
-        obj.put("email", email);
+        obj.put(User.Columns.EMAIL_KEY, email);
         SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> result.accept(!list.isEmpty()))
@@ -201,7 +199,7 @@ public abstract class AccountManager {
      */
     public static void insertUserDocument(Activity context, String username, Document document, Consumer<Boolean> callback) {
         Map<String, Object> doc = SendInPostConnector.paramsFromObject(document);
-        doc.put(USERNAME_KEY, username);
+        doc.put(User.Columns.USERNAME_KEY, username);
         Log.i("DOCUMENT", doc.toString());
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_DOCUMENT)
                 .setContext(context)
@@ -224,7 +222,7 @@ public abstract class AccountManager {
      */
     public static void userAvgEarnings(Activity context, String username, TextView t) {
         Map<String, Object> user = new HashMap<>(1);
-        user.put("cicerone", username);
+        user.put(UserType.CICERONE.toString(), username);
         SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {

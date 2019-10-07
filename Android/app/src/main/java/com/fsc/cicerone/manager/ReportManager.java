@@ -52,11 +52,11 @@ public abstract class ReportManager {
     public static void addNewReport(Activity context, User author, String reportedUserUsername, String object, String body, @Nullable Consumer<Boolean> callback)
     {
         Map<String, Object> param = new HashMap<>(5);
-        param.put("username", author.getUsername());
-        param.put("reported_user", reportedUserUsername);
-        param.put("report_body", body);
-        param.put("state", ReportStatus.OPEN.toInt());
-        param.put("object", object);
+        param.put(User.Columns.USERNAME_KEY, author.getUsername());
+        param.put(Report.Columns.REPORTED_USER_KEY, reportedUserUsername);
+        param.put(Report.Columns.BODY_KEY, body);
+        param.put(Report.Columns.STATE_KEY, ReportStatus.OPEN.toInt());
+        param.put(Report.Columns.OBJECT_KEY, object);
 
         new BooleanConnector.Builder(ConnectorConstants.INSERT_REPORT)
                 .setContext(context)
@@ -78,8 +78,8 @@ public abstract class ReportManager {
     public static void takeCharge(Activity context, Report report, @Nullable Consumer<Boolean> callback)
     {
         Map<String, Object> param = new HashMap<>(2);
-        param.put("report_code", report.getCode());
-        param.put("state",ReportStatus.PENDING.toInt());
+        param.put(Report.Columns.REPORT_CODE_KEY, report.getCode());
+        param.put(Report.Columns.STATE_KEY,ReportStatus.PENDING.toInt());
 
         new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(context)
@@ -102,8 +102,8 @@ public abstract class ReportManager {
     public static void  removeReport (Activity context, Report report, @Nullable Consumer<Boolean> callback)
     {
         Map<String, Object> param = new HashMap<>(2);
-        param.put("report_code", report.getCode());
-        param.put("state", ReportStatus.CANCELED.toInt());
+        param.put(Report.Columns.REPORT_CODE_KEY, report.getCode());
+        param.put(Report.Columns.STATE_KEY, ReportStatus.CANCELED.toInt());
 
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(context)
@@ -127,8 +127,8 @@ public abstract class ReportManager {
     public static void  closeReport (Activity context, Report report, @Nullable Consumer<Boolean> callback)
     {
         Map<String, Object> param = new HashMap<>(2);
-        param.put("report_code", report.getCode());
-        param.put("state", ReportStatus.CLOSED.toInt());
+        param.put(Report.Columns.REPORT_CODE_KEY, report.getCode());
+        param.put(Report.Columns.STATE_KEY, ReportStatus.CLOSED.toInt());
 
         BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(context)
@@ -149,7 +149,7 @@ public abstract class ReportManager {
      */
     public static void requestReport (Activity context, User user, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable DatabaseConnector.OnEndConnectionListener<Report> callback){
         final Map<String, Object> parameters = new HashMap<>();
-        if(user != null) parameters.put("username", user.getUsername());
+        if(user != null) parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)

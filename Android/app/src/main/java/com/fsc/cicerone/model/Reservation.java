@@ -39,15 +39,18 @@ public class Reservation extends BusinessEntity {
     private Date forwardingDate;
     private Date confirmationDate = null;
 
-    private static class Columns{
-        private static final String CLIENT_KEY = "username";
-        private static final String ITINERARY_KEY = "booked_itinerary";
-        private static final String NUMBER_OF_CHILDREN_KEY = "number_of_children";
-        private static final String NUMBER_OF_ADULTS_KEY = "number_of_adults";
-        private static final String TOTAL_KEY = "total";
-        private static final String REQUESTED_DATE_KEY = "requested_date";
-        private static final String FORWARDING_DATE_KEY = "forwarding_date";
-        private static final String CONFIRMATION_DATE_KEY = "confirm_date";
+    public static class Columns{
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
+        public static final String ITINERARY_KEY = "itinerary";
+        public static final String BOOKED_ITINERARY_KEY = "booked_itinerary";
+        public static final String NUMBER_OF_CHILDREN_KEY = "number_of_children";
+        public static final String NUMBER_OF_ADULTS_KEY = "number_of_adults";
+        public static final String TOTAL_KEY = "total";
+        public static final String REQUESTED_DATE_KEY = "requested_date";
+        public static final String FORWARDING_DATE_KEY = "forwarding_date";
+        public static final String CONFIRMATION_DATE_KEY = "confirm_date";
     }
 
     public Reservation(User client, Itinerary itinerary) {
@@ -104,8 +107,8 @@ public class Reservation extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
         try {
-            result.put(Columns.CLIENT_KEY, this.client.toJSONObject());
-            result.put(Columns.ITINERARY_KEY, this.itinerary.toJSONObject());
+            result.put(User.Columns.USERNAME_KEY, this.client.toJSONObject());
+            result.put(Columns.BOOKED_ITINERARY_KEY, this.itinerary.toJSONObject());
             result.put(Columns.NUMBER_OF_CHILDREN_KEY, this.numberOfChildren);
             result.put(Columns.NUMBER_OF_ADULTS_KEY, this.numberOfAdults);
             result.put(Columns.TOTAL_KEY, this.total);
@@ -138,7 +141,7 @@ public class Reservation extends BusinessEntity {
 
         User tempClient;
         try {
-            tempClient = new User(jsonObject.getJSONObject(Columns.CLIENT_KEY));
+            tempClient = new User(jsonObject.getJSONObject(User.Columns.USERNAME_KEY));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             tempClient = new User();
@@ -147,7 +150,7 @@ public class Reservation extends BusinessEntity {
 
         Itinerary tempItinerary;
         try {
-            tempItinerary = new Itinerary(jsonObject.getJSONObject(Columns.ITINERARY_KEY));
+            tempItinerary = new Itinerary(jsonObject.getJSONObject(Columns.BOOKED_ITINERARY_KEY));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             tempItinerary = new Itinerary();

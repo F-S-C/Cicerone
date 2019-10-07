@@ -48,14 +48,14 @@ import java.util.Objects;
 public class ItineraryParticipantsDialogFragment extends DialogFragment {
 
     private UserListAdapter adapter;
-    private RecyclerView recyclerView;
-    private Itinerary itinerary;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Context context = Objects.requireNonNull(getActivity());
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+        RecyclerView recyclerView;
+        Itinerary itinerary;
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_users_list, null);

@@ -121,7 +121,7 @@ public abstract class ItineraryManager {
      */
     public static void deleteItinerary(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> params = new HashMap<>(1);
-        params.put("itinerary_code", itinerary.getCode());
+        params.put(Itinerary.Columns.ITINERARY_CODE_KEY, itinerary.getCode());
         new BooleanConnector.Builder(ConnectorConstants.DELETE_ITINERARY)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {

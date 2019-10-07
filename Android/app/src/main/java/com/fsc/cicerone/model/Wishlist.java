@@ -28,6 +28,13 @@ public class Wishlist extends BusinessEntity {
 
     private static final String ERROR_TAG = "WISHLIST_ERROR";
 
+    public static class Columns{
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
+        public static final String ITINERARY_IN_WISHLIST_KEY = "itinerary_in_wishlist";
+    }
+
     public Wishlist(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
@@ -42,14 +49,14 @@ public class Wishlist extends BusinessEntity {
         Itinerary tempItinerary;
 
         try {
-            tempUser = new User(jsonObject.getJSONObject("username"));
+            tempUser = new User(jsonObject.getJSONObject(User.Columns.USERNAME_KEY));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             tempUser = new User();
         }
 
         try {
-            tempItinerary = new Itinerary(jsonObject.getJSONObject("itinerary_in_wishlist"));
+            tempItinerary = new Itinerary(jsonObject.getJSONObject(Columns.ITINERARY_IN_WISHLIST_KEY));
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
             tempItinerary = new Itinerary();
@@ -72,12 +79,12 @@ public class Wishlist extends BusinessEntity {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            jsonObject.put("username", user.toJSONObject());
+            jsonObject.put(User.Columns.USERNAME_KEY, user.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }
         try {
-            jsonObject.put("itinerary_in_wishlist", itinerary.toJSONObject());
+            jsonObject.put(Columns.ITINERARY_IN_WISHLIST_KEY, itinerary.toJSONObject());
         } catch (JSONException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }

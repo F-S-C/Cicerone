@@ -87,4 +87,27 @@ public enum UserType {
         }
         return toReturn;
     }
+
+    /**
+     * Get the string associated with the UserType.
+     * @return The string.
+     */
+    @Override
+    public String toString() {
+        String toReturn = "";
+        switch (this){
+            case GLOBETROTTER:
+                toReturn = "globetrotter";
+                break;
+            case CICERONE:
+                toReturn = "cicerone";
+                break;
+            case ADMIN:
+                toReturn = "admin";
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        return toReturn;
+    }
 }

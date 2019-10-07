@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.R;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.DatabaseConnector;
@@ -14,6 +15,7 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.fsc.cicerone.model.Reservation;
+import com.fsc.cicerone.model.Review;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 
@@ -36,7 +38,7 @@ public abstract class ReviewManager {
      */
     public static void getAvgItineraryFeedback(Activity context, Itinerary itinerary, @Nullable Consumer<Float> callback) {
         Map<String, Object> parameters = new HashMap<>(1);
-        parameters.put("reviewed_itinerary", itinerary.getCode());
+        parameters.put(ItineraryReview.Columns.REVIEWED_ITINERARY_KEY, itinerary.getCode());
         new SendInPostConnector.Builder<>(ConnectorConstants.ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
@@ -63,9 +65,9 @@ public abstract class ReviewManager {
      */
     public static void permissionReviewItinerary(Activity context, User user, Itinerary itinerary, @Nullable Consumer<Boolean> callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("username", user.getUsername());
-        parameters.put("booked_itinerary", itinerary.getCode());
-        parameters.put("itinerary", itinerary.getCode());
+        parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
+        parameters.put(Reservation.Columns.BOOKED_ITINERARY_KEY, itinerary.getCode());
+        parameters.put(Reservation.Columns.ITINERARY_KEY, itinerary.getCode());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)
@@ -90,8 +92,8 @@ public abstract class ReviewManager {
      */
     public static void isReviewedItinerary(Activity context, User user, Itinerary itinerary, @Nullable RunnableUsingBusinessEntity callback) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("username", user.getUsername());
-        parameters.put("booked_itinerary", itinerary.getCode());
+        parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
+        parameters.put(Reservation.Columns.BOOKED_ITINERARY_KEY, itinerary.getCode());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
@@ -167,7 +169,7 @@ public abstract class ReviewManager {
      */
     public static void getAvgUserFeedback(Activity context, User user, @Nullable Consumer<Float> callback) {
         Map<String,Object> parameter = new HashMap<>();
-        parameter.put("reviewed_user", user.getUsername());
+        parameter.put(UserReview.Columns.REVIEWED_USER_KEY, user.getUsername());
         SendInPostConnector<UserReview> connectorReview = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
@@ -194,8 +196,8 @@ public abstract class ReviewManager {
      */
     public static void permissionReviewUser(Activity context, User reviewedUser, User user, @Nullable Consumer<Boolean> callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("username", user.getUsername());
-        parameters.put("reviewed_user", reviewedUser.getUsername());
+        parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
+        parameters.put(UserReview.Columns.REVIEWED_USER_KEY, reviewedUser.getUsername());
         new BooleanConnector.Builder(ConnectorConstants.REQUEST_FOR_REVIEW)
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)
@@ -217,8 +219,8 @@ public abstract class ReviewManager {
      */
     public static void isReviewedUser(Activity context, User reviewedUser, User user, @Nullable RunnableUsingBusinessEntity callback) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("username", user.getUsername());
-        parameters.put("reviewed_user", reviewedUser.getUsername());
+        parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
+        parameters.put(UserReview.Columns.REVIEWED_USER_KEY, reviewedUser.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
@@ -294,7 +296,7 @@ public abstract class ReviewManager {
      */
     public static void requestUserReviews(Activity context, User reviewedUser, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener ,@Nullable DatabaseConnector.OnEndConnectionListener<UserReview> callback) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("reviewed_user", reviewedUser.getUsername());
+        parameters.put(UserReview.Columns.REVIEWED_USER_KEY, reviewedUser.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)
@@ -313,7 +315,7 @@ public abstract class ReviewManager {
      */
     public static void requestItineraryReviews(Activity context, Itinerary itinerary, @Nullable DatabaseConnector.OnEndConnectionListener<UserReview> callback) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("reviewed_itinerary", itinerary.getCode());
+        parameters.put(ItineraryReview.Columns.REVIEWED_ITINERARY_KEY, itinerary.getCode());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(context)
                 .setOnEndConnectionListener(callback)

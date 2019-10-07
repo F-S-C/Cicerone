@@ -30,6 +30,7 @@
     import com.fsc.cicerone.model.BusinessEntityBuilder;
     import com.fsc.cicerone.model.Itinerary;
     import com.fsc.cicerone.model.Reservation;
+    import com.fsc.cicerone.model.User;
     import com.fsc.cicerone.notifications.Config;
     import com.fsc.cicerone.notifications.NotificationUtils;
 
@@ -47,9 +48,11 @@
             throw new IllegalStateException("Utility class");
         }
 
+        private static String DELETED_BY_CICERONE_KEY = "deleted_by_cicerone";
+
         public static void getReservations(Activity context, Itinerary itinerary, @Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback) {
             Map<String, Object> parameters = new HashMap<>(1);
-            parameters.put("booked_itinerary", itinerary.getCode());
+            parameters.put(Reservation.Columns.BOOKED_ITINERARY_KEY, itinerary.getCode());
 
             new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
                     .setContext(context)
@@ -135,7 +138,7 @@
          */
         public static void refuseReservation(Reservation reservation, Activity context) {
             Map<String, Object> additionalParams = new HashMap<>(1);
-            additionalParams.put("deleted_by_cicerone", true);
+            additionalParams.put(DELETED_BY_CICERONE_KEY, true);
             deleteReservationFromServer(reservation, additionalParams, v -> {
                 if (v.getResult()) {
                     Mailer.sendReservationRefuseEmail(context, reservation, null);
@@ -160,7 +163,7 @@
          */
         private static void deleteReservationFromServer(Reservation reservation, @Nullable BooleanConnector.OnEndConnectionListener callback) {
             Map<String, Object> additionalParams = new HashMap<>(1);
-            additionalParams.put("deleted_by_cicerone", false);
+            additionalParams.put(DELETED_BY_CICERONE_KEY, false);
             deleteReservationFromServer(reservation, additionalParams, callback);
         }
 
@@ -196,8 +199,8 @@
         public static void isReserved(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
             if (AccountManager.isLogged()) {
                 Map<String, Object> params = new HashMap<>(2);
-                params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-                params.put("booked_itinerary", itinerary.getCode());
+                params.put(User.Columns.USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
+                params.put(Reservation.Columns.BOOKED_ITINERARY_KEY, itinerary.getCode());
 
                 new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
                         .setContext(context)
@@ -220,8 +223,8 @@
         public static void isConfirmed(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
             if (AccountManager.isLogged()) {
                 Map<String, Object> params = new HashMap<>(2);
-                params.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-                params.put("booked_itinerary", itinerary.getCode());
+                params.put(User.Columns.USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
+                params.put(Reservation.Columns.BOOKED_ITINERARY_KEY, itinerary.getCode());
 
                 new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION, BusinessEntityBuilder.getFactory(Reservation.class))
                         .setContext(context)

@@ -94,6 +94,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
     private Activity context;
     private static final int PERMISSION_REQUEST_CODE = 357;
+    private static final String IT_DATE_FORMAT = "dd/MM/yyyy";
     private View holderView;
 
     /**
@@ -284,7 +285,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
             ((AccountDetails) getParentFragment()).refresh();
         }
 
-        DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        DateFormat outputFormat = new SimpleDateFormat(IT_DATE_FORMAT, Locale.US);
         birthDate.setText(outputFormat.format(currentLoggedUser.getBirthDate()));
         documentNumber.setText(currentLoggedUser.getDocument().getNumber());
         documentType.setText(currentLoggedUser.getDocument().getType());
@@ -299,8 +300,8 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
     private void switchToCicerone() {
         final Map<String, Object> parameters = new HashMap<>(2);
-        parameters.put("username", AccountManager.getCurrentLoggedUser().getUsername());
-        parameters.put("user_type", UserType.CICERONE.toInt());
+        parameters.put(User.Columns.USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
+        parameters.put(User.Columns.USER_TYPE_KEY, UserType.CICERONE.toInt());
 
         new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
                 .setContext(context)
@@ -322,14 +323,12 @@ public class ProfileFragment extends Fragment implements Refreshable {
     }
 
     private void updateBirth() {
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(IT_DATE_FORMAT, Locale.US);
         birthDate.setText(sdf.format(birthCalendar.getTime()));
     }
 
     private void updateExpDate() {
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(IT_DATE_FORMAT, Locale.US);
         documentExpiryDate.setText(sdf.format(expCalendar.getTime()));
     }
 
@@ -337,12 +336,12 @@ public class ProfileFragment extends Fragment implements Refreshable {
         Map<String, Object> userData = new HashMap<>();
         Map<String, Object> documentData = new HashMap<>();
         User user = AccountManager.getCurrentLoggedUser();
-        userData.put("username", user.getUsername());
-        userData.put("password", user.getPassword());
-        userData.put("name", name.getText());
-        userData.put("surname", surname.getText());
-        userData.put("email", email.getText());
-        userData.put("cellphone", cellphone.getText());
+        userData.put(User.Columns.USERNAME_KEY, user.getUsername());
+        userData.put(User.Columns.PASSWORD_KEY, user.getPassword());
+        userData.put(User.Columns.NAME_KEY, name.getText());
+        userData.put(User.Columns.SURNAME_KEY, surname.getText());
+        userData.put(User.Columns.EMAIL_KEY, email.getText());
+        userData.put(User.Columns.CELLPHONE_KEY, cellphone.getText());
         Sex sexSelected;
         switch (sexList.getSelectedItemPosition()) {
             case 0:
@@ -355,8 +354,8 @@ public class ProfileFragment extends Fragment implements Refreshable {
                 sexSelected = Sex.OTHER;
                 break;
         }
-        userData.put("sex", sexSelected.toString());
-        userData.put("birth_date", Objects.requireNonNull(itDateToServerDate(birthDate.getText().toString())));
+        userData.put(User.Columns.SEX_KEY, sexSelected.toString());
+        userData.put(User.Columns.BIRTH_DATE_KEY, Objects.requireNonNull(itDateToServerDate(birthDate.getText().toString())));
 
         BooleanConnector updateRegisteredUser = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
                 .setContext(context)
@@ -374,10 +373,10 @@ public class ProfileFragment extends Fragment implements Refreshable {
                 .build();
         updateRegisteredUser.execute();
 
-        documentData.put("username", user.getUsername());
-        documentData.put("expiry_date", Objects.requireNonNull(itDateToServerDate(documentExpiryDate.getText().toString())));
-        documentData.put("document_type", documentType.getText());
-        documentData.put("document_number", documentNumber.getText());
+        documentData.put(User.Columns.USERNAME_KEY, user.getUsername());
+        documentData.put(Document.Columns.EXPIRY_DATE_KEY, Objects.requireNonNull(itDateToServerDate(documentExpiryDate.getText().toString())));
+        documentData.put(Document.Columns.DOCUMENT_TYPE_KEY, Objects.requireNonNull(documentType.getText()));
+        documentData.put(Document.Columns.DOCUMENT_NUMBER_KEY, Objects.requireNonNull(documentNumber.getText()));
         BooleanConnector updateDocument = new BooleanConnector.Builder(ConnectorConstants.UPDATE_DOCUMENT)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
@@ -395,7 +394,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
     private Date strToDate(String text) {
         Date date = null;
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        SimpleDateFormat format = new SimpleDateFormat(IT_DATE_FORMAT, Locale.US);
         try {
             date = format.parse(text);
         } catch (ParseException e) {
@@ -406,8 +405,8 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
     private String itDateToServerDate(String dateToConvert) {
         try {
-            DateFormat serverDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-            DateFormat itDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+            DateFormat serverDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
+            DateFormat itDate = new SimpleDateFormat(IT_DATE_FORMAT, Locale.US);
             return serverDate.format(itDate.parse(dateToConvert));
         } catch (ParseException e) {
             Log.e(ERROR_TAG, e.toString());
@@ -478,8 +477,8 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
         Uri uri = Uri.parse(ConnectorConstants.DOWNLOAD_USER_DATA)
                 .buildUpon()
-                .appendQueryParameter("username", currentLoggedUser.getUsername())
-                .appendQueryParameter("password", currentLoggedUser.getPassword())
+                .appendQueryParameter(User.Columns.USERNAME_KEY, currentLoggedUser.getUsername())
+                .appendQueryParameter(User.Columns.PASSWORD_KEY, currentLoggedUser.getPassword())
                 .build();
 
         webView.loadUrl(uri.toString());

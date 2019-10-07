@@ -34,6 +34,14 @@ public class Language extends BusinessEntity {
     private String code;
     private String name;
 
+    public static class Columns{
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
+        public static final String LANGUAGE_CODE_KEY = "language_code";
+        public static final String LANGUAGE_NAME_KEY = "language_name";
+    }
+
     /**
      * Default empty constructor.
      */
@@ -81,12 +89,12 @@ public class Language extends BusinessEntity {
     @Override
     protected void loadFromJSONObject(JSONObject language) {
         try {
-            this.code = language.getString("language_code");
+            this.code = language.getString(Columns.LANGUAGE_CODE_KEY);
         } catch (JSONException e) {
             this.code = "";
         }
         try {
-            this.name = language.getString("language_name");
+            this.name = language.getString(Columns.LANGUAGE_NAME_KEY);
         } catch (JSONException e) {
             this.name = "";
         }
@@ -96,12 +104,12 @@ public class Language extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject toReturn = new JSONObject();
         try {
-            toReturn.put("language_code", this.code);
+            toReturn.put(Columns.LANGUAGE_CODE_KEY, this.code);
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }
         try {
-            toReturn.put("language_name", this.name);
+            toReturn.put(Columns.LANGUAGE_NAME_KEY, this.name);
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }

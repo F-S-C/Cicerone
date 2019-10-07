@@ -59,6 +59,9 @@ public class User extends BusinessEntity {
      * remote server.
      */
     public static class Columns {
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
         public static final String USERNAME_KEY = "username";
         public static final String PASSWORD_KEY = "password";
         public static final String TAX_CODE_KEY = "tax_code";

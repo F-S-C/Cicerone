@@ -40,7 +40,6 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     private TextView reporterUser;
     private TextView bodyText;
     private Button takeChargeReport;
-    private Report report;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         supportActionBar.setTitle(getString(R.string.report_details_title));
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         supportActionBar.setDisplayShowHomeEnabled(true);
+        Report report;
 
         setContentView(R.layout.activity_admin_report_details);
         takeChargeReport = findViewById(R.id.take_charge_report);

@@ -35,6 +35,30 @@ public class Itinerary extends BusinessEntity {
     private String title;
     private String description;
 
+    /**
+     * A utility class that contains various strings to be used as keys to communicate with the
+     * remote server.
+     */
+    public static class Columns {
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
+        public static final String ITINERARY_CODE_KEY = "itinerary_code";
+        public static final String TITLE_KEY = "title";
+        public static final String DESCRIPTION_KEY = "description";
+        public static final String BEGINNING_DATE_KEY = "beginning_date";
+        public static final String ENDING_DATE_KEY = "ending_date";
+        public static final String END_RESERVATIONS_DATE_KEY = "end_reservations_date";
+        public static final String LOCATION_KEY = "location";
+        public static final String DURATION_KEY = "duration";
+        public static final String REPETITIONS_PER_DAY_KEY = "repetitions_per_day";
+        public static final String MINIMUM_PARTICIPANTS_KEY = "minimum_participants_number";
+        public static final String MAXIMUM_PARTICIPANTS_KEY = "maximum_participants_number";
+        public static final String FULL_PRICE_KEY = "full_price";
+        public static final String REDUCED_PRICE_KEY = "reduced_price";
+        public static final String IMG_URL_KEY = "image_url";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -120,90 +144,90 @@ public class Itinerary extends BusinessEntity {
     @Override
     protected void loadFromJSONObject(JSONObject itinerary) {
         try {
-            code = itinerary.getInt("itinerary_code");
+            code = itinerary.getInt(Columns.ITINERARY_CODE_KEY);
         } catch (JSONException e) {
             code = -1;
         }
 
         try {
-            cicerone = new User(itinerary.getJSONObject("username"));
+            cicerone = new User(itinerary.getJSONObject(User.Columns.USERNAME_KEY));
         } catch (JSONException e) {
             cicerone = null;
         }
 
         try {
-            title = itinerary.getString("title");
+            title = itinerary.getString(Columns.TITLE_KEY);
         } catch (JSONException e) {
             title = null;
         }
 
         try {
-            description = itinerary.getString("description");
+            description = itinerary.getString(Columns.DESCRIPTION_KEY);
         } catch (JSONException e) {
             description = null;
         }
 
         try {
 
-            beginningDate = in.parse((itinerary.getString("beginning_date")));
+            beginningDate = in.parse((itinerary.getString(Columns.BEGINNING_DATE_KEY)));
         } catch (JSONException | ParseException e) {
             beginningDate = null;
         }
 
         try {
-            endingDate = in.parse((itinerary.getString("ending_date")));
+            endingDate = in.parse((itinerary.getString(Columns.ENDING_DATE_KEY)));
         } catch (JSONException | ParseException e) {
             endingDate = null;
         }
 
         try {
-            reservationDate = in.parse((itinerary.getString("end_reservations_date")));
+            reservationDate = in.parse((itinerary.getString(Columns.END_RESERVATIONS_DATE_KEY)));
         } catch (JSONException | ParseException e) {
             reservationDate = null;
         }
 
         try {
-            location = itinerary.getString("location");
+            location = itinerary.getString(Columns.LOCATION_KEY);
         } catch (JSONException e) {
             location = null;
         }
 
         try {
-            duration = itinerary.getString("duration");
+            duration = itinerary.getString(Columns.DURATION_KEY);
         } catch (JSONException e) {
             duration = null;
         }
 
         try {
-            repetitions = itinerary.getInt("repetitions_per_day");
+            repetitions = itinerary.getInt(Columns.REPETITIONS_PER_DAY_KEY);
         } catch (JSONException e) {
             repetitions = 0;
         }
 
         try {
-            minParticipants = itinerary.getInt("minimum_participants_number");
+            minParticipants = itinerary.getInt(Columns.MINIMUM_PARTICIPANTS_KEY);
         } catch (JSONException e) {
             minParticipants = 0;
         }
         try {
-            maxParticipants = itinerary.getInt("maximum_participants_number");
+            maxParticipants = itinerary.getInt(Columns.MAXIMUM_PARTICIPANTS_KEY);
         } catch (JSONException e) {
             maxParticipants = 0;
         }
 
         try {
-            fullPrice = Float.parseFloat(itinerary.getString("full_price"));
+            fullPrice = Float.parseFloat(itinerary.getString(Columns.FULL_PRICE_KEY));
         } catch (JSONException e) {
             fullPrice = 0;
         }
 
         try {
-            reducedPrice = Float.parseFloat(itinerary.getString("reduced_price"));
+            reducedPrice = Float.parseFloat(itinerary.getString(Columns.REDUCED_PRICE_KEY));
         } catch (JSONException e) {
             reducedPrice = 0;
         }
         try {
-            imageUrl = itinerary.getString("image_url");
+            imageUrl = itinerary.getString(Columns.IMG_URL_KEY);
         } catch (JSONException e) {
             imageUrl = null;
         }
@@ -490,21 +514,21 @@ public class Itinerary extends BusinessEntity {
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
         try {
-            result.put("itinerary_code", this.code);
-            result.put("title", this.title);
-            result.put("username", this.cicerone.toJSONObject());
-            result.put("description", this.description);
-            result.put("beginning_date", in.format(this.beginningDate));
-            result.put("ending_date", in.format(this.endingDate));
-            result.put("end_reservations_date", in.format(this.reservationDate));
-            result.put("duration", this.duration);
-            result.put("location", this.location);
-            result.put("minimum_participants_number", String.valueOf(this.minParticipants));
-            result.put("maximum_participants_number", String.valueOf(this.maxParticipants));
-            result.put("repetitions_per_day", String.valueOf(this.repetitions));
-            result.put("full_price", this.fullPrice);
-            result.put("reduced_price", this.reducedPrice);
-            result.put("image_url", this.imageUrl);
+            result.put(Columns.ITINERARY_CODE_KEY, this.code);
+            result.put(Columns.TITLE_KEY, this.title);
+            result.put(User.Columns.USERNAME_KEY, this.cicerone.toJSONObject());
+            result.put(Columns.DESCRIPTION_KEY, this.description);
+            result.put(Columns.BEGINNING_DATE_KEY, in.format(this.beginningDate));
+            result.put(Columns.ENDING_DATE_KEY, in.format(this.endingDate));
+            result.put(Columns.END_RESERVATIONS_DATE_KEY, in.format(this.reservationDate));
+            result.put(Columns.DURATION_KEY, this.duration);
+            result.put(Columns.LOCATION_KEY, this.location);
+            result.put(Columns.MINIMUM_PARTICIPANTS_KEY, String.valueOf(this.minParticipants));
+            result.put(Columns.MAXIMUM_PARTICIPANTS_KEY, String.valueOf(this.maxParticipants));
+            result.put(Columns.REPETITIONS_PER_DAY_KEY, String.valueOf(this.repetitions));
+            result.put(Columns.FULL_PRICE_KEY, this.fullPrice);
+            result.put(Columns.REDUCED_PRICE_KEY, this.reducedPrice);
+            result.put(Columns.IMG_URL_KEY, this.imageUrl);
         } catch (JSONException e) {
             result = null;
         }
