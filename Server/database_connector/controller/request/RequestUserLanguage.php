@@ -19,6 +19,7 @@ class RequestUserLanguage extends JsonConnector
 
     /**
      * RequestUserLanguage constructor.
+     *
      * @param string|null $language The language code (ISO 639-3).
      * @param string|null $username The user's username.
      */
@@ -34,7 +35,8 @@ class RequestUserLanguage extends JsonConnector
      */
     protected function fetch_all_rows(): array
     {
-        $query = "SELECT user_language.username, user_language.language_code, language.language_name FROM user_language INNER JOIN language ON user_language.language_code = language.language_code";
+        $additional_column = isset($this->username) ? "" : "user_language.username,";
+        $query = "SELECT " . $additional_column . "user_language.language_code, language.language_name FROM user_language INNER JOIN language ON user_language.language_code = language.language_code";
 
         $conditions = array();
         $data = array();

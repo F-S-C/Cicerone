@@ -60,7 +60,6 @@ class RequestRegisteredUser extends JsonConnector
             $row["document"] = $this->get_from_connector(new RequestDocument($row["username"]))[0];
             unset($row["document"]["username"]);
             $row["languages"] = $this->get_from_connector(new RequestUserLanguage(null, $row["username"]));
-            unset($row["languages"]["username"]);
         }
         return $to_return;
     }

@@ -16,14 +16,19 @@
 
 package com.fsc.cicerone.model;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * An <i>entity</i> class that stores the data of an itinerary.
@@ -34,6 +39,20 @@ public class Itinerary extends BusinessEntity {
     private User cicerone;
     private String title;
     private String description;
+    private Date beginningDate;
+    private Date endingDate;
+    private Date reservationDate;
+    private int minParticipants;
+    private int maxParticipants;
+    private String location;
+    private int repetitions;
+    private String duration;
+    private float fullPrice;
+    private float reducedPrice;
+    private String imageUrl;
+    private Set<Language> languages;
+
+    private final SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
     /**
      * A utility class that contains various strings to be used as keys to communicate with the
@@ -43,6 +62,7 @@ public class Itinerary extends BusinessEntity {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
+
         public static final String ITINERARY_CODE_KEY = "itinerary_code";
         public static final String TITLE_KEY = "title";
         public static final String DESCRIPTION_KEY = "description";
@@ -57,6 +77,7 @@ public class Itinerary extends BusinessEntity {
         public static final String FULL_PRICE_KEY = "full_price";
         public static final String REDUCED_PRICE_KEY = "reduced_price";
         public static final String IMG_URL_KEY = "image_url";
+        public static final String LANGUAGES_KEY = "languages";
     }
 
     @Override
@@ -85,19 +106,6 @@ public class Itinerary extends BusinessEntity {
     public int hashCode() {
         return Objects.hash(code, cicerone, title, description, beginningDate, endingDate, reservationDate, minParticipants, maxParticipants, location, repetitions, duration, fullPrice, reducedPrice, imageUrl);
     }
-
-    private Date beginningDate;
-    private Date endingDate;
-    private Date reservationDate;
-    private int minParticipants;
-    private int maxParticipants;
-    private String location;
-    private int repetitions;
-    private String duration;
-    private float fullPrice;
-    private float reducedPrice;
-    private String imageUrl;
-    private final SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
     /**
      * Default empty constructor.
@@ -230,6 +238,12 @@ public class Itinerary extends BusinessEntity {
             imageUrl = itinerary.getString(Columns.IMG_URL_KEY);
         } catch (JSONException e) {
             imageUrl = null;
+        }
+
+        try {
+            languages = Language.getSetFromJSONArray(itinerary.getJSONArray(Columns.LANGUAGES_KEY));
+        } catch (JSONException e) {
+            languages = new HashSet<>();
         }
     }
 
@@ -507,6 +521,60 @@ public class Itinerary extends BusinessEntity {
     }
 
     /**
+     * Get all the itinerary's languages.
+     *
+     * @return A set containing all the user's languages.
+     */
+    public Set<Language> getLanguages() {
+        return languages;
+    }
+
+    /**
+     * Add a language to the itinerary's languages' list if it doesn't exists, otherwise do
+     * nothing.
+     *
+     * @param language The language to be added.
+     */
+    public void addLanguage(Language language) {
+        this.languages.add(language);
+    }
+
+    /**
+     * Remove a language from the itinerary's languages' list if it exists, otherwise do nothing.
+     *
+     * @param language The language to be removed.
+     */
+    public void removeLanguage(Language language) {
+        this.languages.remove(language);
+    }
+
+    /**
+     * Check if the itinerary is available in at least one of the given languages.
+     *
+     * @param languages A collection of languages to be searched.
+     * @return It returns true if the itinerary is available in at least one language in languages,
+     * it returns false otherwise.
+     */
+    public boolean isInLanguages(Collection<Language> languages) {
+        boolean toReturn = false;
+        Iterator<Language> iterator = languages.iterator();
+        while (iterator.hasNext() && !toReturn) {
+            toReturn = this.languages.contains(iterator.next());
+        }
+        return toReturn;
+    }
+
+    /**
+     * Check if the itinerary is available in the specified language.
+     *
+     * @param languages The language to be searched.
+     * @return It returns true if the itinerary is available in the given language, false otherwise.
+     */
+    public boolean isInLanguages(Language languages) {
+        return this.languages.contains(languages);
+    }
+
+    /**
      * Convert the itinerary to a JSON Object.
      *
      * @return A JSON Object containing the data that were stored in the object.
@@ -529,6 +597,7 @@ public class Itinerary extends BusinessEntity {
             result.put(Columns.FULL_PRICE_KEY, this.fullPrice);
             result.put(Columns.REDUCED_PRICE_KEY, this.reducedPrice);
             result.put(Columns.IMG_URL_KEY, this.imageUrl);
+            result.put(Columns.LANGUAGES_KEY, new JSONArray(this.languages));
         } catch (JSONException e) {
             result = null;
         }
@@ -551,10 +620,11 @@ public class Itinerary extends BusinessEntity {
         fullPrice = builder.fullPrice;
         reducedPrice = builder.reducedPrice;
         imageUrl = builder.imageUrl;
+        languages = builder.languages;
     }
 
     public static class Builder {
-        private final User cicerone; // TODO: Update class diagram
+        private final User cicerone;
         private String title;
         private String description;
         private Date beginningDate;
@@ -568,6 +638,7 @@ public class Itinerary extends BusinessEntity {
         private float fullPrice;
         private float reducedPrice;
         private String imageUrl;
+        private Set<Language> languages;
 
         public Builder(User cicerone) {
             this.cicerone = cicerone;
@@ -635,6 +706,11 @@ public class Itinerary extends BusinessEntity {
 
         public Builder imageUrl(String imageUrl) {
             this.imageUrl = imageUrl;
+            return this;
+        }
+
+        public Builder setLanguages(Set<Language> languages) {
+            this.languages = languages;
             return this;
         }
 
