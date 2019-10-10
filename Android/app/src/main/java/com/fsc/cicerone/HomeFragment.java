@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment implements Refreshable {
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        GetDataConnector<Itinerary> connector = new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
+        new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_ACTIVE_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
                 .setOnStartConnectionListener(() -> {
                     if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
@@ -98,8 +98,8 @@ public class HomeFragment extends Fragment implements Refreshable {
                         noActiveItineraries.setVisibility(View.VISIBLE);
                     }
                 })
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
 }

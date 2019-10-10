@@ -104,7 +104,7 @@ public class Mailer {
     }
 
     private static void sendEmail(Activity context, Map<String, Object> data, String url, @Nullable Consumer<Boolean> callback) {
-        BooleanConnector sendEmailConnector = new BooleanConnector.Builder(url)
+        new BooleanConnector.Builder(url)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (callback != null) callback.accept(result.getResult());
@@ -115,7 +115,7 @@ public class Mailer {
                     }
                 })
                 .setObjectToSend(data)
-                .build();
-        sendEmailConnector.execute();
+                .build()
+                .getData();
     }
 }

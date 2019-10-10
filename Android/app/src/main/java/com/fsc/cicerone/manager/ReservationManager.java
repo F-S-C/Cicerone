@@ -23,7 +23,7 @@
 
     import com.fsc.cicerone.app_connector.BooleanConnector;
     import com.fsc.cicerone.app_connector.ConnectorConstants;
-    import com.fsc.cicerone.app_connector.DatabaseConnector;
+    import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
     import com.fsc.cicerone.app_connector.SendInPostConnector;
     import com.fsc.cicerone.functional_interfaces.Consumer;
     import com.fsc.cicerone.mailer.Mailer;
@@ -50,7 +50,7 @@
 
         private static final String DELETED_BY_CICERONE_KEY = "deleted_by_cicerone";
 
-        public static void getReservations(Activity context, Itinerary itinerary, @Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback) {
+        public static void getReservations(Activity context, Itinerary itinerary, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Reservation> callback) {
             Map<String, Object> parameters = new HashMap<>(1);
             parameters.put(Reservation.Columns.BOOKED_ITINERARY_KEY, itinerary.getCode());
 
@@ -60,7 +60,7 @@
                     .setOnEndConnectionListener(callback)
                     .setObjectToSend(parameters)
                     .build()
-                    .execute();
+                    .getData();
         }
 
         /**
@@ -95,7 +95,7 @@
                     .forwardingDate(new Date())
                     .build();
 
-            BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_RESERVATION)
+            new BooleanConnector.Builder(ConnectorConstants.INSERT_RESERVATION)
                     .setContext(context)
                     .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                         if (!result.getResult())
@@ -106,8 +106,8 @@
                         }
                     })
                     .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
-                    .build();
-            connector.execute();
+                    .build()
+                    .getData();
 
             return reservation;
         }
@@ -127,7 +127,7 @@
                     })
                     .setObjectToSend(SendInPostConnector.paramsFromObject(reservation))
                     .build()
-                    .execute();
+                    .getData();
         }
 
         /**
@@ -181,12 +181,12 @@
             Map<String, Object> params = SendInPostConnector.paramsFromObject(reservation);
             if (additionalParameters != null) params.putAll(additionalParameters);
 
-            BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.DELETE_RESERVATION)
+            new BooleanConnector.Builder(ConnectorConstants.DELETE_RESERVATION)
                     .setContext(null)
                     .setOnEndConnectionListener(callback)
                     .setObjectToSend(params)
-                    .build();
-            connector.execute();
+                    .build()
+                    .getData();
         }
 
         /**
@@ -209,7 +209,7 @@
                         })
                         .setObjectToSend(params)
                         .build()
-                        .execute();
+                        .getData();
             }
         }
 
@@ -233,7 +233,7 @@
                         })
                         .setObjectToSend(params)
                         .build()
-                        .execute();
+                        .getData();
             }
         }
 
@@ -244,7 +244,7 @@
          * @param parameters The user of the investments'list.
          * @param callback   A callback to be executed after the operation is completed.
          */
-        public static void getListInvestments(Activity context, Map<String, Object> parameters, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable DatabaseConnector.OnEndConnectionListener<Reservation> callback) {
+        public static void getListInvestments(Activity context, Map<String, Object> parameters, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Reservation> callback) {
 
             new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
                     .setContext(context)
@@ -252,6 +252,6 @@
                     .setOnEndConnectionListener(callback)
                     .setObjectToSend(parameters)
                     .build()
-                    .execute();
+                    .getData();
         }
     }

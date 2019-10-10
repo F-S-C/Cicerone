@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -39,7 +39,7 @@ public abstract class WishlistManager {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void getWishlist(Activity context, @Nullable DatabaseConnector.OnStartConnectionListener onStartCallback, @Nullable DatabaseConnector.OnEndConnectionListener<Wishlist> onEndCallback) {
+    public static void getWishlist(Activity context, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartCallback, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Wishlist> onEndCallback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> parameters = new HashMap<>(1);
             parameters.put(User.Columns.USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
@@ -49,7 +49,7 @@ public abstract class WishlistManager {
                     .setOnEndConnectionListener(onEndCallback)
                     .setObjectToSend(parameters)
                     .build()
-                    .execute();
+                    .getData();
         }
     }
 
@@ -62,7 +62,7 @@ public abstract class WishlistManager {
                     .setOnEndConnectionListener(callback)
                     .setObjectToSend(parameters)
                     .build()
-                    .execute();
+                    .getData();
         }
     }
 
@@ -77,7 +77,7 @@ public abstract class WishlistManager {
                     .setOnEndConnectionListener(callback)
                     .setObjectToSend(params)
                     .build()
-                    .execute();
+                    .getData();
         }
     }
 
@@ -92,7 +92,7 @@ public abstract class WishlistManager {
                     .setOnEndConnectionListener(callback)
                     .setObjectToSend(params)
                     .build()
-                    .execute();
+                    .getData();
         }
     }
 
@@ -109,7 +109,7 @@ public abstract class WishlistManager {
                     })
                     .setObjectToSend(params)
                     .build()
-                    .execute();
+                    .getData();
         }
     }
 }

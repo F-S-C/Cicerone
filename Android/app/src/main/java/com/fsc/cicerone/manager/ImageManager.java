@@ -73,7 +73,7 @@ public class ImageManager {
                     .setObjectToSend(params)
                     .setOnEndConnectionListener(result)
                     .build()
-                    .execute();
+                    .getData();
         }
     }
 }

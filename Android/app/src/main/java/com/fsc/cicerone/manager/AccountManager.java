@@ -28,7 +28,7 @@ import androidx.annotation.Nullable;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
@@ -75,18 +75,18 @@ public abstract class AccountManager {
      * @param onEnd       A function to be executed after the login attempt. The boolean value
      *                    contains true if login was successful, false otherwise.
      */
-    public static void attemptLogin(Activity context, User.Credentials credentials, @Nullable DatabaseConnector.OnStartConnectionListener onStart, @Nullable Consumer<Boolean> onEnd) {
+    public static void attemptLogin(Activity context, User.Credentials credentials, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStart, @Nullable Consumer<Boolean> onEnd) {
         Map<String, Object> params = new HashMap<>(2);
         params.put(User.Columns.USERNAME_KEY, credentials.getUsername());
         params.put(User.Columns.PASSWORD_KEY, credentials.getPassword());
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.LOGIN_CONNECTOR)
+        new BooleanConnector.Builder(ConnectorConstants.LOGIN_CONNECTOR)
                 .setContext(context)
                 .setOnStartConnectionListener(onStart)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
                         currentLoggedUser = new User(result.getMessage());
                         currentLoggedUser.setPassword(credentials.getPassword());
-                            NotificationUtils.subscribeToTopic(context, Config.TOPIC_GLOBETROTTER(currentLoggedUser));
+                        NotificationUtils.subscribeToTopic(context, Config.TOPIC_GLOBETROTTER(currentLoggedUser));
                         if (currentLoggedUser.getUserType() == UserType.CICERONE) {
                             NotificationUtils.subscribeToTopic(context, Config.TOPIC_CICERONE(currentLoggedUser));
                         }
@@ -94,9 +94,8 @@ public abstract class AccountManager {
                     if (onEnd != null) onEnd.accept(result.getResult());
                 })
                 .setObjectToSend(params)
-                .build();
-
-        connector.execute();
+                .build()
+                .getData();
     }
 
     /**
@@ -125,7 +124,7 @@ public abstract class AccountManager {
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(currentLoggedUser.getCredentials()))
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -146,12 +145,12 @@ public abstract class AccountManager {
     public static void checkIfUsernameExists(Activity context, String user, Consumer<Boolean> result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put(User.Columns.USERNAME_KEY, user);
-        SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+        new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> result.accept(!list.isEmpty()))
                 .setObjectToSend(obj)
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
     /**
@@ -163,12 +162,12 @@ public abstract class AccountManager {
     public static void checkIfEmailExists(Activity context, String email, Consumer<Boolean> result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put(User.Columns.EMAIL_KEY, email);
-        SendInPostConnector<User> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+        new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> result.accept(!list.isEmpty()))
                 .setObjectToSend(obj)
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
     /**
@@ -179,15 +178,15 @@ public abstract class AccountManager {
      */
     public static void insertUser(Activity context, User user, Consumer<Boolean> callback) {
         Log.i("USERDATA", user.toJSONObject().toString());
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_USER)
+        new BooleanConnector.Builder(ConnectorConstants.INSERT_USER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     callback.accept(result.getResult());
                     if (!result.getResult())
                         Log.e("ERROR INSERT USER", result.getMessage());
                 })
-                .setObjectToSend(SendInPostConnector.paramsFromObject(user)).build();
-        connector.execute();
+                .setObjectToSend(SendInPostConnector.paramsFromObject(user)).build()
+                .getData();
     }
 
     /**
@@ -201,7 +200,7 @@ public abstract class AccountManager {
         Map<String, Object> doc = SendInPostConnector.paramsFromObject(document);
         doc.put(User.Columns.USERNAME_KEY, username);
         Log.i("DOCUMENT", doc.toString());
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_DOCUMENT)
+        new BooleanConnector.Builder(ConnectorConstants.INSERT_DOCUMENT)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     callback.accept(result.getResult());
@@ -209,8 +208,8 @@ public abstract class AccountManager {
                         Log.e("ERROR INSERT DOCUMENT", result.getMessage());
                 })
                 .setObjectToSend(doc)
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
     /**
@@ -223,7 +222,7 @@ public abstract class AccountManager {
     public static void userAvgEarnings(Activity context, String username, TextView t) {
         Map<String, Object> user = new HashMap<>(1);
         user.put(UserType.CICERONE.toString(), username);
-        SendInPostConnector<Reservation> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
                     int count = 0;
@@ -237,8 +236,8 @@ public abstract class AccountManager {
                     t.setText(String.format(context.getString(R.string.avg_earn), (count > 0) ? sum / count : 0));
                 })
                 .setObjectToSend(user)
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
     //TODO
@@ -251,7 +250,7 @@ public abstract class AccountManager {
      */
     public static void setUsersInSpinner(Activity context, Spinner users) {
         // TODO: Needs cleanup?
-        GetDataConnector<User> connector = new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
+        new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
                     List<String> cleanList = new ArrayList<>();
@@ -266,8 +265,8 @@ public abstract class AccountManager {
                     users.setAdapter(dataAdapter);
 
                 })
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
     /**
@@ -285,7 +284,7 @@ public abstract class AccountManager {
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(user))
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -301,6 +300,6 @@ public abstract class AccountManager {
                 .setOnStartConnectionListener(onStartConnectionListener)
                 .setOnEndConnectionListener(callback)
                 .build()
-                .execute();
+                .getData();
     }
 }

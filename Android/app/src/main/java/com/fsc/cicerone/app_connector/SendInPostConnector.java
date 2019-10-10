@@ -55,7 +55,7 @@ import javax.net.ssl.HttpsURLConnection;
  * This connector sends data using POST to a server-side script that will be used in order to
  * connect to a database.
  */
-public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConnector<T> {
+public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabaseConnector<T> {
 
     //    private JSONObject objectToSend; // The object that will be sent
     private Map<String, Object> objectToSend;
@@ -214,7 +214,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends DatabaseConne
         this.objectToSend = builder.objectToSend;
     }
 
-    public static class Builder<B extends BusinessEntity> extends DatabaseConnector.Builder<B> {
+    public static class Builder<B extends BusinessEntity> extends AsyncDatabaseConnector.Builder<B> {
         private Map<String, Object> objectToSend;
 
         public Builder(String url, BusinessEntityBuilder<B> builder) {

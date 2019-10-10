@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -102,13 +102,12 @@ public abstract class ItineraryManager {
                 .imageUrl(imageUrl)
                 .build();
 
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY)
+        new BooleanConnector.Builder(ConnectorConstants.INSERT_ITINERARY)
                 .setContext(null)
                 .setOnEndConnectionListener(callback)
                 .setObjectToSend(SendInPostConnector.paramsFromObject(itinerary))
-                .build();
-
-        connector.execute();
+                .build()
+                .getData();
         return itinerary;
     }
 
@@ -129,7 +128,7 @@ public abstract class ItineraryManager {
                 })
                 .setObjectToSend(params)
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -140,7 +139,7 @@ public abstract class ItineraryManager {
      * @param callback  A callback to be executed after the operation is completed.
      */
     public static void updateItinerary(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY)
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_ITINERARY)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (callback != null) callback.accept(result.getResult());
@@ -148,8 +147,8 @@ public abstract class ItineraryManager {
                     Log.e("message", result.getMessage());
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(itinerary))
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
 
@@ -161,14 +160,14 @@ public abstract class ItineraryManager {
      * @param onStartConnectionListener On start connection callback.
      * @param callback                  A callback to be executed after the operation is completed.
      */
-    public static void requestItinerary(Activity context, Map<String, Object> parameters, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable DatabaseConnector.OnEndConnectionListener<Itinerary> callback) {
+    public static void requestItinerary(Activity context, Map<String, Object> parameters, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Itinerary> callback) {
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY, BusinessEntityBuilder.getFactory(Itinerary.class))
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)
                 .setOnEndConnectionListener(callback)
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
     }
 
 }

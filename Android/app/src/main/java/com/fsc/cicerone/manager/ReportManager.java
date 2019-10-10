@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -65,7 +65,7 @@ public abstract class ReportManager {
                 })
                 .setObjectToSend(param)
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class ReportManager {
                 })
                 .setObjectToSend(param)
                 .build()
-                .execute();
+                .getData();
 
     }
 
@@ -105,14 +105,14 @@ public abstract class ReportManager {
         param.put(Report.Columns.REPORT_CODE_KEY, report.getCode());
         param.put(Report.Columns.STATE_KEY, ReportStatus.CANCELED.toInt());
 
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (callback != null) callback.accept(result.getResult());
                 })
                 .setObjectToSend(param)
-                .build();
-        connector.execute();
+                .build()
+                .getData();
 
 
     }
@@ -130,14 +130,14 @@ public abstract class ReportManager {
         param.put(Report.Columns.REPORT_CODE_KEY, report.getCode());
         param.put(Report.Columns.STATE_KEY, ReportStatus.CLOSED.toInt());
 
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (callback != null) callback.accept(result.getResult());
                 })
                 .setObjectToSend(param)
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class ReportManager {
      * @param onStartConnectionListener On start connection callback.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void requestReport (Activity context, User user, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable DatabaseConnector.OnEndConnectionListener<Report> callback){
+    public static void requestReport (Activity context, User user, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Report> callback){
         final Map<String, Object> parameters = new HashMap<>();
         if(user != null) parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
@@ -156,6 +156,6 @@ public abstract class ReportManager {
                 .setOnEndConnectionListener(callback)
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
     }
 }

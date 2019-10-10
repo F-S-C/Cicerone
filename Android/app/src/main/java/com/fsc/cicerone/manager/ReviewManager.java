@@ -4,10 +4,9 @@ import android.app.Activity;
 
 import androidx.annotation.Nullable;
 
-import com.fsc.cicerone.R;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.DatabaseConnector;
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.functional_interfaces.RunnableUsingBusinessEntity;
@@ -15,7 +14,6 @@ import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.fsc.cicerone.model.Reservation;
-import com.fsc.cicerone.model.Review;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserReview;
 
@@ -51,7 +49,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -63,7 +61,7 @@ public abstract class ReviewManager {
      * @param onStartConnectionListener On start connection callback.
      * @param callback                  A callback to be executed after the operation is completed.
      */
-    public static void permissionReviewItinerary(Activity context, User user, Itinerary itinerary, @Nullable Consumer<Boolean> callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
+    public static void permissionReviewItinerary(Activity context, User user, Itinerary itinerary, @Nullable Consumer<Boolean> callback, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
         parameters.put(Reservation.Columns.BOOKED_ITINERARY_KEY, itinerary.getCode());
@@ -79,7 +77,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -102,7 +100,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -121,7 +119,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(itineraryReview))
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -139,7 +137,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(itineraryReview))
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -157,7 +155,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(itineraryReview))
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -170,7 +168,7 @@ public abstract class ReviewManager {
     public static void getAvgUserFeedback(Activity context, User user, @Nullable Consumer<Float> callback) {
         Map<String,Object> parameter = new HashMap<>();
         parameter.put(UserReview.Columns.REVIEWED_USER_KEY, user.getUsername());
-        SendInPostConnector<UserReview> connectorReview = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {
                     int sum = 0;
@@ -181,8 +179,8 @@ public abstract class ReviewManager {
                         callback.accept(!list.isEmpty() ? (float) sum / list.size() : 0);
                 })
                 .setObjectToSend(parameter)
-                .build();
-        connectorReview.execute();
+                .build()
+                .getData();
     }
 
     /**
@@ -194,7 +192,7 @@ public abstract class ReviewManager {
      * @param callback                  A callback to be executed after the operation is completed.
      * @param onStartConnectionListener On start connection callback.
      */
-    public static void permissionReviewUser(Activity context, User reviewedUser, User user, @Nullable Consumer<Boolean> callback, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
+    public static void permissionReviewUser(Activity context, User reviewedUser, User user, @Nullable Consumer<Boolean> callback, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
         parameters.put(UserReview.Columns.REVIEWED_USER_KEY, reviewedUser.getUsername());
@@ -206,7 +204,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -229,7 +227,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -248,7 +246,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -266,7 +264,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -284,7 +282,7 @@ public abstract class ReviewManager {
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(userReview))
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -294,7 +292,7 @@ public abstract class ReviewManager {
      * @param reviewedUser The user reviewed.
      * @param callback     A callback to be executed after the operation is completed.
      */
-    public static void requestUserReviews(Activity context, User reviewedUser, @Nullable DatabaseConnector.OnStartConnectionListener onStartConnectionListener ,@Nullable DatabaseConnector.OnEndConnectionListener<UserReview> callback) {
+    public static void requestUserReviews(Activity context, User reviewedUser, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener , @Nullable AsyncDatabaseConnector.OnEndConnectionListener<UserReview> callback) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(UserReview.Columns.REVIEWED_USER_KEY, reviewedUser.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
@@ -303,7 +301,7 @@ public abstract class ReviewManager {
                 .setOnEndConnectionListener(callback)
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
     }
 
     /**
@@ -313,7 +311,7 @@ public abstract class ReviewManager {
      * @param itinerary The itinerary reviewed.
      * @param callback  A callback to be executed after the operation is completed.
      */
-    public static void requestItineraryReviews(Activity context, Itinerary itinerary, @Nullable DatabaseConnector.OnEndConnectionListener<UserReview> callback) {
+    public static void requestItineraryReviews(Activity context, Itinerary itinerary, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<UserReview> callback) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(ItineraryReview.Columns.REVIEWED_ITINERARY_KEY, itinerary.getCode());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
@@ -321,7 +319,7 @@ public abstract class ReviewManager {
                 .setOnEndConnectionListener(callback)
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
     }
 
 

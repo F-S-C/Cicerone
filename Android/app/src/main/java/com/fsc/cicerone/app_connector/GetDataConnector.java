@@ -34,7 +34,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Special connector to the database.
  * This connector fetches all entries available from a server-side script.
  */
-public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnector<T> {
+public class GetDataConnector<T extends BusinessEntity> extends AsyncDatabaseConnector<T> {
 
     /**
      * The function fetches the results.
@@ -68,7 +68,7 @@ public class GetDataConnector<T extends BusinessEntity> extends DatabaseConnecto
         super(builder);
     }
 
-    public static class Builder<B extends BusinessEntity> extends DatabaseConnector.Builder<B> {
+    public static class Builder<B extends BusinessEntity> extends AsyncDatabaseConnector.Builder<B> {
 
         public Builder(String url, BusinessEntityBuilder<B> builder) {
             super(url, builder);

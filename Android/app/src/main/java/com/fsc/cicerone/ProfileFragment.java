@@ -318,7 +318,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
                 })
                 .setObjectToSend(parameters)
                 .build()
-                .execute();
+                .getData();
 
     }
 
@@ -357,7 +357,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
         userData.put(User.Columns.SEX_KEY, sexSelected.toString());
         userData.put(User.Columns.BIRTH_DATE_KEY, Objects.requireNonNull(itDateToServerDate(birthDate.getText().toString())));
 
-        BooleanConnector updateRegisteredUser = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (!result.getResult())
@@ -370,14 +370,14 @@ public class ProfileFragment extends Fragment implements Refreshable {
                     user.setSex(Sex.getValue(sexList.getSelectedItem().toString().toLowerCase()));
                 })
                 .setObjectToSend(userData)
-                .build();
-        updateRegisteredUser.execute();
+                .build()
+                .getData();
 
         documentData.put(User.Columns.USERNAME_KEY, user.getUsername());
         documentData.put(Document.Columns.EXPIRY_DATE_KEY, Objects.requireNonNull(itDateToServerDate(documentExpiryDate.getText().toString())));
         documentData.put(Document.Columns.DOCUMENT_TYPE_KEY, Objects.requireNonNull(documentType.getText()));
         documentData.put(Document.Columns.DOCUMENT_NUMBER_KEY, Objects.requireNonNull(documentNumber.getText()));
-        BooleanConnector updateDocument = new BooleanConnector.Builder(ConnectorConstants.UPDATE_DOCUMENT)
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_DOCUMENT)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (!result.getResult())
@@ -387,8 +387,8 @@ public class ProfileFragment extends Fragment implements Refreshable {
                     refresh();
                 })
                 .setObjectToSend(documentData)
-                .build();
-        updateDocument.execute();
+                .build()
+                .getData();
         Toast.makeText(getActivity(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
     }
 

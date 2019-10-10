@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.adapter.ReviewAdapter;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
+import com.fsc.cicerone.app_connector.DatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -118,7 +119,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
     }
 
     private void requestDataForRecycleView(Map<String, Object> parameters, RecyclerView recyclerView) {
-        SendInPostConnector<ItineraryReview> connector = new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
                 .setContext(this)
                 .setOnEndConnectionListener(list -> {
                     if (!list.isEmpty()) {
@@ -128,8 +129,8 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
                         messageNoReview.setVisibility(View.VISIBLE);
                 })
                 .setObjectToSend(parameters)
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
     @Override

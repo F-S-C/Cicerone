@@ -44,11 +44,10 @@ public class LanguageManager {
      * on the server.
      */
     public LanguageManager() {
-        GetDataConnector<Language> request = new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_LANGUAGES, BusinessEntityBuilder.getFactory(Language.class))
+        new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_LANGUAGES, BusinessEntityBuilder.getFactory(Language.class))
                 .setOnEndConnectionListener(list -> langs = list)
-                .build();
-
-        request.execute();
+                .build()
+                .getData();
     }
 
     /**
@@ -106,7 +105,7 @@ public class LanguageManager {
                     })
                     .setObjectToSend(data)
                     .build()
-                    .execute();
+                    .getData();
         }
         languageToSet.size();
     }

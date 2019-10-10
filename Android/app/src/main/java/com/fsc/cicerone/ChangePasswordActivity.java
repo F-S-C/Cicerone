@@ -100,7 +100,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         Map<String, Object> params = new HashMap<>(2);
         params.put("username", user.getUsername());
         params.put("password", newPassword.getText().toString());
-        BooleanConnector connector = new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
+        new BooleanConnector.Builder(ConnectorConstants.UPDATE_REGISTERED_USER)
                 .setContext(this)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (result.getResult()) {
@@ -112,8 +112,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     }
                 })
                 .setObjectToSend(params)
-                .build();
-        connector.execute();
+                .build()
+                .getData();
     }
 
     private void verifyFields() {
