@@ -1,6 +1,7 @@
 var searchData=
 [
   ['databaseconnector_2ephp',['DatabaseConnector.php',['../_database_connector_8php.html',1,'']]],
+  ['databaseinterface_2ephp',['DatabaseInterface.php',['../_database_interface_8php.html',1,'']]],
   ['dbmanager_2ephp',['DBManager.php',['../_d_b_manager_8php.html',1,'']]],
   ['deleteconnector_2ephp',['DeleteConnector.php',['../_delete_connector_8php.html',1,'']]],
   ['deleteitinerary_2ephp',['DeleteItinerary.php',['../controller_2delete_2_delete_itinerary_8php.html',1,'(Global Namespace)'],['../view_2delete_2_delete_itinerary_8php.html',1,'(Global Namespace)']]],

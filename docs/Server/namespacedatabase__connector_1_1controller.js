@@ -7,5 +7,6 @@ var namespacedatabase__connector_1_1controller =
     [ "update", "namespacedatabase__connector_1_1controller_1_1update.html", "namespacedatabase__connector_1_1controller_1_1update" ],
     [ "BooleanConnector", "classdatabase__connector_1_1controller_1_1_boolean_connector.html", "classdatabase__connector_1_1controller_1_1_boolean_connector" ],
     [ "DatabaseConnector", "classdatabase__connector_1_1controller_1_1_database_connector.html", "classdatabase__connector_1_1controller_1_1_database_connector" ],
+    [ "DatabaseInterface", "interfacedatabase__connector_1_1controller_1_1_database_interface.html", "interfacedatabase__connector_1_1controller_1_1_database_interface" ],
     [ "JsonConnector", "classdatabase__connector_1_1controller_1_1_json_connector.html", "classdatabase__connector_1_1controller_1_1_json_connector" ]
 ];

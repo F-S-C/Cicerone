@@ -54,7 +54,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_boolean_connector_8php.html",
-"classemail__sender_1_1_d_b_manager.html"
+"classdatabase__connector_1_1controller_1_1update_1_1_update_user_review.html#ae5c96b134b24ec7120296945f11f251e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

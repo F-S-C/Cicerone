@@ -4,6 +4,8 @@ var searchData=
   ['database_5fconnector',['database_connector',['../namespacedatabase__connector.html',1,'']]],
   ['databaseconnector',['DatabaseConnector',['../classdatabase__connector_1_1controller_1_1_database_connector.html',1,'database_connector::controller']]],
   ['databaseconnector_2ephp',['DatabaseConnector.php',['../_database_connector_8php.html',1,'']]],
+  ['databaseinterface',['DatabaseInterface',['../interfacedatabase__connector_1_1controller_1_1_database_interface.html',1,'database_connector::controller']]],
+  ['databaseinterface_2ephp',['DatabaseInterface.php',['../_database_interface_8php.html',1,'']]],
   ['db_5fhostname',['DB_HOSTNAME',['../classemail__sender_1_1_d_b_manager.html#aacad27ff799e17f015cfa32708078786',1,'email_sender::DBManager']]],
   ['db_5fname',['DB_NAME',['../classdatabase__connector_1_1controller_1_1_database_connector.html#ab5db0d3504f917f268614c50b02c53e2',1,'database_connector\controller\DatabaseConnector\DB_NAME()'],['../classemail__sender_1_1_d_b_manager.html#ab5db0d3504f917f268614c50b02c53e2',1,'email_sender\DBManager\DB_NAME()']]],
   ['db_5fp',['DB_P',['../classdatabase__connector_1_1controller_1_1_database_connector.html#a3cd9fad4cf3e38962d4f32870d25ccec',1,'database_connector\controller\DatabaseConnector\DB_P()'],['../classemail__sender_1_1_d_b_manager.html#a3cd9fad4cf3e38962d4f32870d25ccec',1,'email_sender\DBManager\DB_P()']]],

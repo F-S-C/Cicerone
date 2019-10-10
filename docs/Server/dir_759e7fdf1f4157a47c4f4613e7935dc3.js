@@ -11,6 +11,9 @@ var dir_759e7fdf1f4157a47c4f4613e7935dc3 =
     [ "DatabaseConnector.php", "_database_connector_8php.html", [
       [ "DatabaseConnector", "classdatabase__connector_1_1controller_1_1_database_connector.html", "classdatabase__connector_1_1controller_1_1_database_connector" ]
     ] ],
+    [ "DatabaseInterface.php", "_database_interface_8php.html", [
+      [ "DatabaseInterface", "interfacedatabase__connector_1_1controller_1_1_database_interface.html", "interfacedatabase__connector_1_1controller_1_1_database_interface" ]
+    ] ],
     [ "JsonConnector.php", "_json_connector_8php.html", [
       [ "JsonConnector", "classdatabase__connector_1_1controller_1_1_json_connector.html", "classdatabase__connector_1_1controller_1_1_json_connector" ]
     ] ]
