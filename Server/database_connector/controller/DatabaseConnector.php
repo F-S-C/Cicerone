@@ -7,10 +7,12 @@ namespace database_connector\controller;
 use mysqli;
 use mysqli_sql_exception;
 
+require_once "/home/fsc/www/database_connector/controller/DatabaseInterface.php";
+
 /**
  * A generic connector to a database.
  */
-abstract class DatabaseConnector
+abstract class DatabaseConnector implements DatabaseInterface
 {
     /** @var string The database's server's IP */
     protected const DB_SERVER_NAME = "127.0.0.1";
