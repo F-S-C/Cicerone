@@ -3,7 +3,7 @@ var dir_6dc9a98429fd935ba39262f76eeefb4e =
     [ "InsertConnector.php", "_insert_connector_8php.html", [
       [ "InsertConnector", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_connector.html", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_connector" ]
     ] ],
-    [ "InsertDocument.php", "controller_2insert_2_insert_document_8php.html", [
+    [ "InsertDocument.php", "_insert_document_8php.html", [
       [ "InsertDocument", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_document.html", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_document" ]
     ] ],
     [ "InsertItinerary.php", "controller_2insert_2_insert_itinerary_8php.html", [

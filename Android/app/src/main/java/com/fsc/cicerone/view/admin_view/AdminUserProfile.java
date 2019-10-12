@@ -32,7 +32,6 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.fsc.cicerone.view.CiceroneItineraryListFragment;
 import com.fsc.cicerone.view.GlobetrotterItineraryListFragment;
-import com.fsc.cicerone.view.admin_view.AdminDetailsUserFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;

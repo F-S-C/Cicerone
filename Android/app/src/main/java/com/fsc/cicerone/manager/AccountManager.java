@@ -27,15 +27,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
@@ -46,7 +45,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A <i>control</i> class that manages the users' accounts.

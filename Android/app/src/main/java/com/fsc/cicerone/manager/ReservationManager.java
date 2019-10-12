@@ -21,9 +21,9 @@
 
     import androidx.annotation.Nullable;
 
+    import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
     import com.fsc.cicerone.app_connector.BooleanConnector;
     import com.fsc.cicerone.app_connector.ConnectorConstants;
-    import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
     import com.fsc.cicerone.app_connector.SendInPostConnector;
     import com.fsc.cicerone.functional_interfaces.Consumer;
     import com.fsc.cicerone.mailer.Mailer;

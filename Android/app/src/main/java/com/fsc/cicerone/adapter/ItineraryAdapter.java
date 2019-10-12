@@ -29,14 +29,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.view.admin_view.AdminItineraryDetails;
-import com.fsc.cicerone.view.ItineraryDetails;
-import com.fsc.cicerone.view.ItineraryManagement;
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.view.WishlistFragment;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.UserType;
+import com.fsc.cicerone.view.ItineraryDetails;
+import com.fsc.cicerone.view.ItineraryManagement;
+import com.fsc.cicerone.view.WishlistFragment;
+import com.fsc.cicerone.view.admin_view.AdminItineraryDetails;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;

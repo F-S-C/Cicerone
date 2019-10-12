@@ -6,3 +6,5 @@ com.fsc.cicerone.mailer
 com.fsc.cicerone.manager
 com.fsc.cicerone.model
 com.fsc.cicerone.notifications
+com.fsc.cicerone.view
+com.fsc.cicerone.view.admin_view

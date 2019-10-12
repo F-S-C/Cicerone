@@ -6,7 +6,7 @@ var searchData=
   ['insertconnector',['InsertConnector',['../classdatabase__connector_1_1controller_1_1insert_1_1_insert_connector.html',1,'database_connector::controller::insert']]],
   ['insertconnector_2ephp',['InsertConnector.php',['../_insert_connector_8php.html',1,'']]],
   ['insertdocument',['InsertDocument',['../classdatabase__connector_1_1controller_1_1insert_1_1_insert_document.html',1,'database_connector::controller::insert']]],
-  ['insertdocument_2ephp',['InsertDocument.php',['../controller_2insert_2_insert_document_8php.html',1,'(Global Namespace)'],['../view_2insert_2_insert_document_8php.html',1,'(Global Namespace)']]],
+  ['insertdocument_2ephp',['InsertDocument.php',['../_insert_document_8php.html',1,'']]],
   ['insertitinerary',['InsertItinerary',['../classdatabase__connector_1_1controller_1_1insert_1_1_insert_itinerary.html',1,'database_connector::controller::insert']]],
   ['insertitinerary_2ephp',['InsertItinerary.php',['../controller_2insert_2_insert_itinerary_8php.html',1,'(Global Namespace)'],['../view_2insert_2_insert_itinerary_8php.html',1,'(Global Namespace)']]],
   ['insertitinerarylanguage',['InsertItineraryLanguage',['../classdatabase__connector_1_1controller_1_1insert_1_1_insert_itinerary_language.html',1,'database_connector::controller::insert']]],
