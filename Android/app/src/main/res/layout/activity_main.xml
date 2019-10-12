@@ -21,7 +21,7 @@
     android:id="@+id/main_swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserMainActivity">
+    tools:context=".view.UserMainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
