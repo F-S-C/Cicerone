@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void skipLogin(View view) {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
         finish();
     }
 
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                 preferences.edit().putString("session", credentials.toString()).apply();
             }
 
-            Class targetActivity = (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) ? AdminMainActivity.class : MainActivity.class;
+            Class targetActivity = (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) ? AdminMainActivity.class : UserMainActivity.class;
             startActivity(new Intent(LoginActivity.this, targetActivity));
             finish();
         });

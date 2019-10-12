@@ -17,7 +17,7 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/admin_main_swipe_refresh"
+    android:id="@+id/main_swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AdminMainActivity">
@@ -59,7 +59,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation_admin"
+                android:id="@+id/main_bottom_navigation"
                 style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

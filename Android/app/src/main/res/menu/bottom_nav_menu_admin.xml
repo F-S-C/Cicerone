@@ -18,7 +18,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/navigation_itineraries_active_admin"
+        android:id="@+id/navigation_home"
         android:icon="@drawable/itinerary"
         android:title="@string/active_itineraries"
         app:showAsAction="always" />

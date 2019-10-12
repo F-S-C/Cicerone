@@ -16,42 +16,32 @@
 
 package com.fsc.cicerone;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
 
 import com.fsc.cicerone.manager.AccountManager;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Objects;
 
-public class AdminMainActivity extends AppCompatActivity {
+public class AdminMainActivity extends MainActivity {
 
-    /**
-     * The currently displayed fragment.
-     */
-    private Fragment activeFragment;
+    public AdminMainActivity() {
+        super();
+        this.layout = R.layout.activity_admin_main;
+    }
 
-    /**
-     * The bottom navigation.
-     */
-    private BottomNavigationView navView;
-
-    private FragmentPagerAdapter fragmentPagerAdapter;
-    private ViewPager viewPager;
-    private MenuItem prevMenuItem;
+    public AdminMainActivity(int contentLayoutId) {
+        super(contentLayoutId);
+        this.layout = R.layout.activity_admin_main;
+    }
 
     /**
      * Create the activity and load the layout.
@@ -63,129 +53,55 @@ public class AdminMainActivity extends AppCompatActivity {
      *                           <a href="https://developer.android.com/reference/android/app/Activity.html#onCreate(android.os.Bundle,%2520android.os.PersistableBundle)">Android
      *                           Documentation</a>).
      */
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_main);
+
         ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
         supportActionBar.setTitle(getString(R.string.active_itineraries));
 
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.admin_main_swipe_refresh);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (activeFragment instanceof Refreshable) {
-                ((Refreshable) activeFragment).refresh(swipeRefreshLayout);
-            } else {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
-        setUpViewPager();
-
-        // fix to make the ViewPager work with SwipeRefreshLayout
-        viewPager.setOnTouchListener((v, event) -> {
-            swipeRefreshLayout.setEnabled(false);
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                swipeRefreshLayout.setEnabled(true);
-            }
-            return false;
-        });
-
-        navView = findViewById(R.id.bottom_navigation_admin);
-        navView.setOnNavigationItemSelectedListener(item -> {
-            boolean toReturn = false;
-            switch (item.getItemId()) {
-                case R.id.navigation_itineraries_active_admin:
-                    viewPager.setCurrentItem(0);
-                    toReturn = true;
-                    break;
-                case R.id.navigation_reports_admin:
-                    viewPager.setCurrentItem(1);
-                    toReturn = true;
-                    break;
-                case R.id.navigation_users_admin:
-                    viewPager.setCurrentItem(2);
-                    toReturn = true;
-                    break;
-                case R.id.navigation_logout_admin:
-                    new MaterialAlertDialogBuilder(AdminMainActivity.this)
-                            .setTitle(getString(R.string.are_you_sure))
-                            .setMessage(getString(R.string.exit_confirm_answer))
-                            .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                                AccountManager.logout(AdminMainActivity.this);
-                                Intent i = new Intent(this, LoginActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(i);
-                            })
-                            .setNegativeButton(getString(R.string.no), null)
-                            .show();
-                    toReturn = true;
-                    break;
-                default:
-                    break;
-            }
-            return toReturn;
-        });
     }
 
     @Override
-    public void onBackPressed() {
-        if (activeFragment == fragmentPagerAdapter.getItem(0)) {
-            new MaterialAlertDialogBuilder(this)
-                    .setTitle(getString(R.string.are_you_sure))
-                    .setMessage(getString(R.string.sure_to_exit))
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, (arg0, arg1) -> AdminMainActivity.super.onBackPressed())
-                    .create()
-                    .show();
-        } else {
-            navView.setSelectedItemId(R.id.navigation_itineraries_active_admin);
-        }
-    }
-
-    private void setUpViewPager() {
-        viewPager = findViewById(R.id.main_container);
+    void setupFragmentManager() {
         fragmentPagerAdapter = new AdminMainActivityPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        activeFragment = fragmentPagerAdapter.getItem(0);
-        viewPager.setAdapter(fragmentPagerAdapter);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                // Do nothing
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
-                supportActionBar.setDisplayHomeAsUpEnabled(position != 0);
-                supportActionBar.setDisplayShowHomeEnabled(position != 0);
-                supportActionBar.setTitle(fragmentPagerAdapter.getPageTitle(position));
-
-                activeFragment = fragmentPagerAdapter.getItem(position);
-
-                if (prevMenuItem != null)
-                    prevMenuItem.setChecked(false);
-                else
-                    navView.getMenu().getItem(0).setChecked(false);
-
-                navView.getMenu().getItem(position).setChecked(true);
-                prevMenuItem = navView.getMenu().getItem(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                // Do nothing
-            }
-        });
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        boolean toReturn = false;
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                viewPager.setCurrentItem(0);
+                toReturn = true;
+                break;
+            case R.id.navigation_reports_admin:
+                viewPager.setCurrentItem(1);
+                toReturn = true;
+                break;
+            case R.id.navigation_users_admin:
+                viewPager.setCurrentItem(2);
+                toReturn = true;
+                break;
+            case R.id.navigation_logout_admin:
+                new MaterialAlertDialogBuilder(AdminMainActivity.this)
+                        .setTitle(getString(R.string.are_you_sure))
+                        .setMessage(getString(R.string.exit_confirm_answer))
+                        .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                            AccountManager.logout(AdminMainActivity.this);
+                            Intent i = new Intent(this, LoginActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                        })
+                        .setNegativeButton(getString(R.string.no), null)
+                        .show();
+                toReturn = true;
+                break;
+            default:
+                break;
+        }
+        return toReturn;
     }
 
     private class AdminMainActivityPagerAdapter extends FragmentPagerAdapter {

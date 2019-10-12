@@ -78,7 +78,7 @@ public class ItineraryCreation extends ItineraryModifier {
                             insStatus -> {
                                 if (insStatus.getResult()) {
                                     Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent().setClass(ItineraryCreation.this, MainActivity.class);
+                                    Intent i = new Intent().setClass(ItineraryCreation.this, UserMainActivity.class);
                                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(i);
                                 } else {

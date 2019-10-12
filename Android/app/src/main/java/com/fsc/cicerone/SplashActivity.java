@@ -36,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        final Class activityToOpenIfLogged = MainActivity.class;
+        final Class activityToOpenIfLogged = UserMainActivity.class;
         final Class activityToOpenIfNotLogged = LoginActivity.class;
         final Class activityToOpenIfLoggedAdmin = AdminMainActivity.class;
 
