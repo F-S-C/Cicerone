@@ -150,7 +150,7 @@ public abstract class ReportManager {
     public static void requestReport (Activity context, User user, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Report> callback){
         final Map<String, Object> parameters = new HashMap<>();
         if(user != null) parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
-        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_REPORT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)
                 .setOnEndConnectionListener(callback)

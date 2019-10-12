@@ -191,29 +191,6 @@ public abstract class AccountManager {
     }
 
     /**
-     * Inserts a document into the database.
-     *
-     * @param username The username of the document owner.
-     * @param document Document to insert in the database.
-     * @param callback A function to be executed after the insert attempt.
-     */
-    public static void insertUserDocument(@Nullable Activity context, @NonNull String username, @NonNull Document document, @Nullable Consumer<Boolean> callback) {
-        Map<String, Object> doc = SendInPostConnector.paramsFromObject(document);
-        doc.put(User.Columns.USERNAME_KEY, username);
-        Log.i("DOCUMENT", doc.toString());
-        new BooleanConnector.Builder(ConnectorConstants.INSERT_DOCUMENT)
-                .setContext(context)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    if (callback != null) callback.accept(result.getResult());
-                    if (!result.getResult())
-                        Log.e("ERROR INSERT DOCUMENT", result.getMessage());
-                })
-                .setObjectToSend(doc)
-                .build()
-                .getData();
-    }
-
-    /**
      * Gets the average earnings of a user.
      *
      * @param context  The application context.

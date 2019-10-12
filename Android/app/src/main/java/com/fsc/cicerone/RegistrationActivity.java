@@ -213,26 +213,17 @@ public class RegistrationActivity extends AppCompatActivity {
                 User newUser = setNewUser();
                 AccountManager.insertUser(this, newUser, result -> {
                     if (result) {
-                        AccountManager.insertUserDocument(this, username.getText().toString().trim().toLowerCase(), new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()),
-                                ins -> {
-                                    if (ins) {
-                                        ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());
-                                        languages.setUserLanguages(username.getText().toString().trim().toLowerCase(), languages.getLanguagesFromNames(lanSelected));
-                                        Intent i = new Intent(this, SplashActivity.class);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        Toast.makeText(this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
-                                        Mailer.sendRegistrationConfirmationEmail(this, newUser, res -> {
-                                            if (!res) {
-                                                Toast.makeText(this, getString(R.string.error_send_email), Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                        startActivity(i);
-                                    } else {
-                                        signup.setText(R.string.sign_up);
-                                        signup.setEnabled(true);
-                                        Toast.makeText(this, getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
-                                    }
-                                });
+                        ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());
+                        languages.setUserLanguages(username.getText().toString().trim().toLowerCase(), languages.getLanguagesFromNames(lanSelected));
+                        Intent i = new Intent(this, SplashActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Toast.makeText(this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
+                        Mailer.sendRegistrationConfirmationEmail(this, newUser, res -> {
+                            if (!res) {
+                                Toast.makeText(this, getString(R.string.error_send_email), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        startActivity(i);
                     } else {
                         signup.setText(R.string.sign_up);
                         signup.setEnabled(true);
@@ -354,6 +345,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 .setName(name.getText().toString().trim())
                 .setSurname(surname.getText().toString().trim())
                 .setTaxCode(fiscalCode.getText().toString().trim().toLowerCase())
+                .setDocument(new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()))
                 .build();
     }
 
