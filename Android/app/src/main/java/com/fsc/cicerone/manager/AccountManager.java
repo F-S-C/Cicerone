@@ -49,7 +49,7 @@ import java.util.Map;
 /**
  * A <i>control</i> class that manages the users' accounts.
  */
-public abstract class AccountManager {
+public class AccountManager {
 
     private static User currentLoggedUser;
 

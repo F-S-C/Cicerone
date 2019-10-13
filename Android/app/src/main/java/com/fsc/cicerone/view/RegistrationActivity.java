@@ -39,6 +39,7 @@ import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.LanguageManager;
 import com.fsc.cicerone.model.Document;
+import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.Sex;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
@@ -49,9 +50,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
@@ -214,8 +217,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 User newUser = setNewUser();
                 AccountManager.insertUser(this, newUser, result -> {
                     if (result) {
-                        ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());
-                        languages.setUserLanguages(username.getText().toString().trim().toLowerCase(), languages.getLanguagesFromNames(lanSelected));
                         Intent i = new Intent(this, SplashActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         Toast.makeText(this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
@@ -337,6 +338,8 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private User setNewUser() {
+        LanguageManager languages = new LanguageManager();
+        ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());
         return new User.Builder(username.getText().toString().trim().toLowerCase(), password.getText().toString())
                 .setUserType(UserType.GLOBETROTTER)
                 .setSex(Sex.getValue(sex.getSelectedItem().toString().toLowerCase()))
@@ -346,6 +349,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 .setName(name.getText().toString().trim())
                 .setSurname(surname.getText().toString().trim())
                 .setTaxCode(fiscalCode.getText().toString().trim().toLowerCase())
+                .setLanguages(new HashSet<>(languages.getLanguagesFromNames(lanSelected)))
                 .setDocument(new Document(docNumber.getText().toString().trim().toLowerCase(), docType.getText().toString().trim(), expDate.getText().toString()))
                 .build();
     }

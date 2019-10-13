@@ -33,7 +33,7 @@ import com.fsc.cicerone.model.Wishlist;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class WishlistManager {
+public class WishlistManager {
 
     private WishlistManager() {
         throw new IllegalStateException("Utility class");

@@ -39,7 +39,7 @@ import java.util.Map;
 /**
  * A <i>control</i> class that manages the itineraries.
  */
-public abstract class ItineraryManager {
+public class ItineraryManager {
 
     private ItineraryManager() {
         throw new IllegalStateException("Utility class");

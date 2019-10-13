@@ -33,7 +33,7 @@ import com.fsc.cicerone.model.User;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ReportManager {
+public class ReportManager {
     private ReportManager(){
         throw new IllegalStateException("Utility class");
     }

@@ -20,6 +20,7 @@ $connector->add_value(array($_POST['title'],
     strtolower($_POST['username']),
     $_POST['full_price'],
     $_POST['reduced_price'],
-    $_POST['image_url']
+    $_POST['image_url'],
+    "languages" => $_POST["languages"]
 ));
 print $connector->get_content();

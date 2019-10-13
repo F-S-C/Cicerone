@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ReviewManager {
+public class ReviewManager {
 
     private ReviewManager() {
         throw new IllegalStateException("Utility class");
