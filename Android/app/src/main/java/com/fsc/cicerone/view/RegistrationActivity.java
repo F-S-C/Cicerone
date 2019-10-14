@@ -39,7 +39,6 @@ import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.LanguageManager;
 import com.fsc.cicerone.model.Document;
-import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.Sex;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
@@ -54,7 +53,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 

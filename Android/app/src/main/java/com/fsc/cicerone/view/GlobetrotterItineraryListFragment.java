@@ -18,7 +18,6 @@ package com.fsc.cicerone.view;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +34,6 @@ import com.fsc.cicerone.adapter.AdminItineraryGlobetrotterAdapter;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
