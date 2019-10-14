@@ -6,6 +6,7 @@ use database_connector\controller\JsonConnector;
 
 require_once "/home/fsc/www/database_connector/controller/JsonConnector.php";
 require_once "/home/fsc/www/database_connector/controller/request/RequestRegisteredUser.php";
+require_once "/home/fsc/www/database_connector/controller/request/RequestItineraryLanguage.php";
 
 /**
  * Request all the itineraries that match a set of criteria.
@@ -25,6 +26,7 @@ class RequestActiveItinerary extends JsonConnector
 
     /**
      * RequestItinerary constructor.
+     *
      * @param string|null $owner The owner of the itinerary.
      * @param string|null $location The location of the itinerary.
      * @param string|null $beginning_date The beginning date of the itinerary.
@@ -92,6 +94,7 @@ class RequestActiveItinerary extends JsonConnector
         $to_return = $this->execute_query($query, $data, $types);
         foreach ($to_return as &$row) {
             $row["username"] = $this->get_from_connector(new RequestRegisteredUser($row["username"]))[0];
+            $row["languages"] = $this->get_from_connector(new RequestItineraryLanguage(null, $row["itinerary_code"]));
         }
 
         return $to_return;
@@ -99,6 +102,7 @@ class RequestActiveItinerary extends JsonConnector
 
     /**
      * Get the SQL condition to match the given dates.
+     *
      * @return string The SQL condition to be put in the WHERE clause.
      */
     private function get_date_condition(): string
