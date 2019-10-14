@@ -60,8 +60,8 @@ public class Wishlist extends BusinessEntity {
     public Map<String, Object> toMap() {
         Map<String, Object> jsonObject = new HashMap<>();
 
-        jsonObject.put(User.Columns.USERNAME_KEY, user.toMap());
-        jsonObject.put(Columns.ITINERARY_IN_WISHLIST_KEY, itinerary.toMap());
+        jsonObject.put(User.Columns.USERNAME_KEY, user.toString());
+        jsonObject.put(Columns.ITINERARY_IN_WISHLIST_KEY, itinerary.toString());
 
         return jsonObject;
     }

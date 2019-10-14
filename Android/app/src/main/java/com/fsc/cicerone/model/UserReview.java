@@ -55,7 +55,7 @@ public class UserReview extends Review {
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> object = super.toMap();
-        object.put(Columns.REVIEWED_USER_KEY, reviewedUser.toMap());
+        object.put(Columns.REVIEWED_USER_KEY, reviewedUser.toString());
         return object;
     }
 
