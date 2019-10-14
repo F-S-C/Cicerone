@@ -18,6 +18,7 @@ package com.fsc.cicerone.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -29,8 +30,6 @@ import com.fsc.cicerone.manager.ItineraryManager;
 
 
 public class ItineraryCreation extends ItineraryModifier {
-    ImageView selectedImage;
-    private ImageManager image;
 
     public ItineraryCreation() {
         this.layout = R.layout.activity_itinerary_creation;
@@ -44,22 +43,21 @@ public class ItineraryCreation extends ItineraryModifier {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        image = new ImageManager(this);
-        selectedImage = findViewById(R.id.itinerary_image);
-        selectedImage.setOnClickListener(v -> image.selectImage());
+        image.setOnClickListener(v -> imageManager.selectImage());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        image.manageResult(requestCode, resultCode, data, selectedImage);
+        imageManager.manageResult(requestCode, resultCode, data, image);
     }
 
     @Override
     public void sendData(View view) {
         if (allFilled()) {
-            image.upload(response -> {
+            submit.setEnabled(false);
+            submit.setText(R.string.loading);
+            imageManager.upload(response -> {
                 if (response.getResult()) {
                     String imgURL = ConnectorConstants.IMG_FOLDER.concat(response.getMessage());
                     ItineraryManager.uploadItinerary(
@@ -87,7 +85,7 @@ public class ItineraryCreation extends ItineraryModifier {
                                 }
                             });
                 } else {
-                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + response.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -117,14 +115,14 @@ public class ItineraryCreation extends ItineraryModifier {
                 fullPrice.setError(getString(R.string.empty_fullprice_error));
             if (reducedPrice.getText().toString().equals(""))
                 reducedPrice.setError(getString(R.string.empty_reduced_price_error));
-            if (selectedImage == null)
+            if (!imageManager.isSelected())
                 Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_image_error), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     boolean allFilled() {
-        return super.allFilled() && image.isSelected();
+        return super.allFilled() && imageManager.isSelected();
     }
 }
 

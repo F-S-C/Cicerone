@@ -19,4 +19,5 @@ $connector->add_value("repetitions_per_day", $_POST['repetitions_per_day'], "i")
 $connector->add_value("duration", $_POST['duration'], "s");
 $connector->add_value("full_price", $_POST['full_price'], "d");
 $connector->add_value("reduced_price", $_POST['reduced_price'], "d");
+$connector->add_value("image_url", $_POST['image_url'], "s");
 print $connector->get_content();

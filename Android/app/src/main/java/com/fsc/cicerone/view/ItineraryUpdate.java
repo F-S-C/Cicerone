@@ -21,9 +21,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.Itinerary;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -67,7 +69,9 @@ public class ItineraryUpdate extends ItineraryModifier {
         durationHours.setText(currentItinerary.getDuration().substring(0, currentItinerary.getDuration().indexOf(":")));
         durationMinutes.setText(currentItinerary.getDuration().substring(currentItinerary.getDuration().indexOf(":") + 1));
         repetitions.setText(String.valueOf(currentItinerary.getRepetitions()));
-
+        if(currentItinerary.getImageUrl() != null && !currentItinerary.getImageUrl().equals("")) {
+            Picasso.get().load(currentItinerary.getImageUrl()).into(image);
+        }
         fullPrice.setText(String.valueOf(currentItinerary.getFullPrice()));
         reducedPrice.setText(String.valueOf(currentItinerary.getReducedPrice()));
     }
@@ -77,6 +81,8 @@ public class ItineraryUpdate extends ItineraryModifier {
         DateFormat outputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
 
         if (allFilled()) {
+            submit.setEnabled(false);
+            submit.setText(R.string.loading);
             currentItinerary.setTitle(title.getText().toString());
             currentItinerary.setDescription(description.getText().toString());
             currentItinerary.setBeginningDate(outputFormat.parse(selectBeginningDate.getText().toString()));
@@ -89,10 +95,24 @@ public class ItineraryUpdate extends ItineraryModifier {
             currentItinerary.setDuration(durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
             currentItinerary.setFullPrice(Float.parseFloat(fullPrice.getText().toString()));
             currentItinerary.setReducedPrice(Float.parseFloat(reducedPrice.getText().toString()));
-            ItineraryManager.updateItinerary(this, currentItinerary, success -> {
-                if (success)
-                    Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
-            });
+            if(imageManager.isSelected()){
+                imageManager.upload(response -> {
+                    if (response.getResult()) {
+                        currentItinerary.setImageUrl(ConnectorConstants.IMG_FOLDER.concat(response.getMessage()));
+                        ItineraryManager.updateItinerary(this, currentItinerary, success -> {
+                            if (success)
+                                Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
+                        });
+                    }else{
+                        Toast.makeText(ItineraryUpdate.this, getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }else{
+                ItineraryManager.updateItinerary(this, currentItinerary, success -> {
+                    if (success)
+                        Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
+                });
+            }
             setResult(Activity.RESULT_OK);
             finish();
 
