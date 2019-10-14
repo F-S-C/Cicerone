@@ -273,4 +273,5 @@
     <string name="notification_to_globetrotter_deleted_itinerary">L\'itinerario \"%1$s\" di %2$s è stato cancellato.</string>
     <string name="notification_title_to_globetrotter_updated_itinerary">Itinerario aggiornato</string>
     <string name="notification_to_globetrotter_updated_itinerary">L\'itinerario \"%1$s\" di %2$s è stato aggiornato. Assicurati di controllare le sue nuove informazioni.</string>
+    <string name="languages">Lingue</string>
 </resources>

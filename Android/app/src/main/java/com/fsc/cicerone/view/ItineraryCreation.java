@@ -18,18 +18,28 @@ package com.fsc.cicerone.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.manager.ImageManager;
+import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ItineraryManager;
+import com.fsc.cicerone.model.Language;
+import com.fsc.cicerone.model.User;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class ItineraryCreation extends ItineraryModifier {
+
+    LinearLayout languagesLayout;
+    User currentLoggedUser;
+    List<CheckBox> checkBoxList;
+
 
     public ItineraryCreation() {
         this.layout = R.layout.activity_itinerary_creation;
@@ -44,6 +54,8 @@ public class ItineraryCreation extends ItineraryModifier {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         image.setOnClickListener(v -> imageManager.selectImage());
+         setLanguages();
+
     }
 
     @Override
@@ -55,6 +67,13 @@ public class ItineraryCreation extends ItineraryModifier {
     @Override
     public void sendData(View view) {
         if (allFilled()) {
+            if(this.layout == R.layout.activity_itinerary_creation)
+            {
+                for(CheckBox language : checkBoxList)
+                {
+                    if(language.isSelected())
+                }
+            }
             submit.setEnabled(false);
             submit.setText(R.string.loading);
             imageManager.upload(response -> {
@@ -123,6 +142,22 @@ public class ItineraryCreation extends ItineraryModifier {
     @Override
     boolean allFilled() {
         return super.allFilled() && imageManager.isSelected();
+    }
+
+    private void setLanguages()
+    {
+
+        for(Language language : currentLoggedUser.getLanguages())
+        {
+            languagesLayout = findViewById(R.id.languageLayout);
+            currentLoggedUser = AccountManager.getCurrentLoggedUser();
+            checkBoxList = new LinkedList<>();
+            CheckBox selectLanguage = new CheckBox(ItineraryCreation.this);
+            checkBoxList.add(selectLanguage);
+            languagesLayout.addView(selectLanguage);
+            selectLanguage.setText(language.getName());
+
+        }
     }
 }
 

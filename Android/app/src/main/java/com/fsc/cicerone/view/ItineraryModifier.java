@@ -32,8 +32,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fsc.cicerone.manager.ImageManager;
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.manager.ImageManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -210,6 +210,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
         });
 
         image.setOnClickListener(v -> imageManager.selectImage());
+
     }
 
     void updateBeginningDate() {
