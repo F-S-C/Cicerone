@@ -19,6 +19,7 @@ package com.fsc.cicerone.model;
 import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 public class BusinessEntityBuilder<T extends BusinessEntity> {
 
@@ -28,8 +29,8 @@ public class BusinessEntityBuilder<T extends BusinessEntity> {
         this.type = type;
     }
 
-    public T fromJSONObject(JSONObject jsonObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        return type.getConstructor(JSONObject.class).newInstance(jsonObject);
+    public T fromJSONObject(String json) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        return type.getConstructor(String.class).newInstance(json);
     }
 
     public static <T extends BusinessEntity> BusinessEntityBuilder<T> getFactory(Class<T> type){

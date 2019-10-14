@@ -16,6 +16,8 @@
 
 package com.fsc.cicerone.model;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,9 +58,10 @@ public class Report extends BusinessEntity {
 
     @Override
     protected void loadFromMap(Map<String, Object> jsonObject) {
+        System.out.println(jsonObject);
         code = (int) jsonObject.get(Columns.REPORT_CODE_KEY);
-        author = new User((String) jsonObject.get(User.Columns.USERNAME_KEY));
-        reportedUser = new User((String) jsonObject.get(Columns.REPORTED_USER_KEY));
+        author = new User(jsonObject.get(User.Columns.USERNAME_KEY).toString());
+        reportedUser = new User(jsonObject.get(Columns.REPORTED_USER_KEY).toString());
         object = (String) jsonObject.get(Columns.OBJECT_KEY);
         body = (String) jsonObject.get(Columns.BODY_KEY);
         status = ReportStatus.getValue((Integer) jsonObject.get(Columns.STATE_KEY));

@@ -34,7 +34,10 @@ import org.json.JSONException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -106,7 +109,7 @@ public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends A
             JSONArray jsonArray = new JSONArray((s.startsWith("[") ? "" : "[") + s + (s.endsWith("]") ? "" : "]"));
             ArrayList<T> array = new ArrayList<>(jsonArray.length());
             for (int i = 0; i < jsonArray.length(); i++) {
-                T object = builder.fromJSONObject(jsonArray.getJSONObject(i));
+                T object = builder.fromJSONObject(jsonArray.getJSONObject(i).toString());
                 array.add(object);
             }
 
@@ -114,6 +117,8 @@ public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends A
             if (onEndConnectionListener != null) onEndConnectionListener.onEndConnection(array);
         } catch (JSONException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             Log.e("EXCEPTION", e.toString());
+            Log.e("EXCEPTION", e.getCause().toString());
+            e.getCause().printStackTrace();
         }
     }
 

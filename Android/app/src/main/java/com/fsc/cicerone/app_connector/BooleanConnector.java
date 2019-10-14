@@ -69,8 +69,8 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         @Override
         protected void loadFromMap(Map<String, Object> jsonObject) {
             result = (boolean) jsonObject.get(RESULT_KEY);
-            if (jsonObject.containsKey(result ? MESSAGE_KEY : ERROR_KEY))
-                message = (String) jsonObject.get(result ? MESSAGE_KEY : ERROR_KEY);
+            final String key = result ? MESSAGE_KEY : ERROR_KEY;
+            if (jsonObject.containsKey(key)) message = jsonObject.get(key).toString();
         }
 
         public boolean getResult() {
