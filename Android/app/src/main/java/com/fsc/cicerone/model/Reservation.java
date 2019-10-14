@@ -20,12 +20,10 @@ import android.util.Log;
 
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -106,25 +104,21 @@ public class Reservation extends BusinessEntity {
      *
      * @return A JSON Object containing the data that were stored in the object.
      */
-    public JSONObject toJSONObject() {
-        JSONObject result = new JSONObject();
-        try {
-            result.put(User.Columns.USERNAME_KEY, this.client.toJSONObject());
-            result.put(Columns.BOOKED_ITINERARY_KEY, this.itinerary.toJSONObject());
-            result.put(Columns.NUMBER_OF_CHILDREN_KEY, this.numberOfChildren);
-            result.put(Columns.NUMBER_OF_ADULTS_KEY, this.numberOfAdults);
-            result.put(Columns.TOTAL_KEY, this.total);
-            if (this.requestedDate != null) {
-                result.put(Columns.REQUESTED_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.requestedDate));
-            }
-            if (this.forwardingDate != null) {
-                result.put(Columns.FORWARDING_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.forwardingDate));
-            }
-            if (this.confirmationDate != null) {
-                result.put(Columns.CONFIRMATION_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.confirmationDate));
-            }
-        } catch (JSONException e) {
-            result = null;
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+        result.put(User.Columns.USERNAME_KEY, this.client.toMap());
+        result.put(Columns.BOOKED_ITINERARY_KEY, this.itinerary.toMap());
+        result.put(Columns.NUMBER_OF_CHILDREN_KEY, this.numberOfChildren);
+        result.put(Columns.NUMBER_OF_ADULTS_KEY, this.numberOfAdults);
+        result.put(Columns.TOTAL_KEY, this.total);
+        if (this.requestedDate != null) {
+            result.put(Columns.REQUESTED_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.requestedDate));
+        }
+        if (this.forwardingDate != null) {
+            result.put(Columns.FORWARDING_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.forwardingDate));
+        }
+        if (this.confirmationDate != null) {
+            result.put(Columns.CONFIRMATION_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.confirmationDate));
         }
         return result;
     }

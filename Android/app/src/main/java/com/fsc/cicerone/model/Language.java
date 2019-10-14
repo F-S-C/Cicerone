@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -102,18 +103,10 @@ public class Language extends BusinessEntity {
     }
 
     @Override
-    public JSONObject toJSONObject() {
-        JSONObject toReturn = new JSONObject();
-        try {
-            toReturn.put(Columns.LANGUAGE_CODE_KEY, this.code);
-        } catch (JSONException e) {
-            Log.e("ERROR", e.getMessage());
-        }
-        try {
-            toReturn.put(Columns.LANGUAGE_NAME_KEY, this.name);
-        } catch (JSONException e) {
-            Log.e("ERROR", e.getMessage());
-        }
+    public Map<String, Object> toMap() {
+        Map<String, Object> toReturn = new HashMap<>();
+        toReturn.put(Columns.LANGUAGE_CODE_KEY, this.code);
+        toReturn.put(Columns.LANGUAGE_NAME_KEY, this.name);
         return toReturn;
     }
 

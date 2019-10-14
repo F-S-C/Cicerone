@@ -40,7 +40,7 @@ public abstract class BusinessEntity {
         this.loadFromMap(getMapFromJson(json));
     }
 
-    public abstract JSONObject toJSONObject();
+    public abstract Map<String, Object> toMap();
 
     protected static Map<String, Object> getMapFromJson(String json) {
         JSONObject jsonObject;
@@ -71,6 +71,15 @@ public abstract class BusinessEntity {
     @NonNull
     @Override
     public String toString() {
-        return toJSONObject().toString();
+        Map<String, Object> map = toMap();
+        JSONObject jsonObject = new JSONObject();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            try {
+                jsonObject.put(entry.getKey(), entry.getValue().toString());
+            } catch (JSONException e) {
+                Log.e("ERROR_CREATING_JSON", "error in inserting " + entry.getKey() + "/" + entry.getValue());
+            }
+        }
+        return jsonObject.toString();
     }
 }

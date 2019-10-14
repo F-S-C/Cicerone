@@ -16,11 +16,7 @@
 
 package com.fsc.cicerone.model;
 
-import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Review extends BusinessEntity {
@@ -86,23 +82,11 @@ public abstract class Review extends BusinessEntity {
     }
 
     @Override
-    public JSONObject toJSONObject() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(User.Columns.USERNAME_KEY, author.toJSONObject());
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-        }
-        try {
-            jsonObject.put(Columns.DESCRIPTION_KEY, description);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-        }
-        try {
-            jsonObject.put(Columns.FEEDBACK_KEY, feedback);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-        }
+    public Map<String, Object> toMap() {
+        Map<String, Object> jsonObject = new HashMap<>();
+        jsonObject.put(User.Columns.USERNAME_KEY, author.toMap());
+        jsonObject.put(Columns.DESCRIPTION_KEY, description);
+        jsonObject.put(Columns.FEEDBACK_KEY, feedback);
         return jsonObject;
     }
 

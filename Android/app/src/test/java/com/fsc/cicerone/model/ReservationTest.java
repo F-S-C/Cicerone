@@ -16,6 +16,8 @@
 
 package com.fsc.cicerone.model;
 
+import android.util.Log;
+
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 import org.json.JSONException;
@@ -28,6 +30,8 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -86,7 +90,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void getNumberOfChildren() throws NoSuchFieldException, IllegalAccessException  {
+    public void getNumberOfChildren() throws NoSuchFieldException, IllegalAccessException {
         final String stringReservation = "{\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"booked_itinerary\":{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"},\"number_of_children\":1,\"number_of_adults\":1,\"total\":\"30.00\",\"requested_date\":\"2019-09-23\",\"forwading_date\":\"2019-09-24\",\"confirm_date\":\"2019-09-30\"}";
         final Reservation reservation = new Reservation(stringReservation);
         final Field field = reservation.getClass().getDeclaredField("numberOfChildren");
@@ -101,7 +105,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void getRequestedDate() throws NoSuchFieldException, IllegalAccessException  {
+    public void getRequestedDate() throws NoSuchFieldException, IllegalAccessException {
         //given
         final Date theDate = new Date();
         final String stringReservation = "{\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"booked_itinerary\":{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"},\"number_of_children\":1,\"number_of_adults\":1,\"total\":\"30.00\",\"requested_date\":\"2019-09-23\",\"forwading_date\":\"2019-09-24\",\"confirm_date\":\"2019-09-30\"}";
@@ -118,7 +122,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void getForwardingDate() throws NoSuchFieldException, IllegalAccessException  {
+    public void getForwardingDate() throws NoSuchFieldException, IllegalAccessException {
         //given
         final Date theDate = new Date();
         final String stringReservation = "{\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"booked_itinerary\":{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"},\"number_of_children\":1,\"number_of_adults\":1,\"total\":\"30.00\",\"requested_date\":\"2019-09-23\",\"forwading_date\":\"2019-09-24\",\"confirm_date\":\"2019-09-30\"}";
@@ -152,7 +156,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void getTotal() throws NoSuchFieldException, IllegalAccessException  {
+    public void getTotal() throws NoSuchFieldException, IllegalAccessException {
         final String stringReservation = "{\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"booked_itinerary\":{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"},\"number_of_children\":1,\"number_of_adults\":1,\"total\":\"30.00\",\"requested_date\":\"2019-09-23\",\"forwading_date\":\"2019-09-24\",\"confirm_date\":\"2019-09-30\"}";
         final Reservation reservation = new Reservation(stringReservation);
         final Field field = reservation.getClass().getDeclaredField("total");
@@ -163,7 +167,7 @@ public class ReservationTest {
         final float result = reservation.getTotal();
 
         //then
-        assertEquals("field wasn't retrieved properly", result, 1.5f,0);
+        assertEquals("field wasn't retrieved properly", result, 1.5f, 0);
     }
 
     @Test
@@ -195,36 +199,39 @@ public class ReservationTest {
 
     @Test
     public void toJSONObject() throws JSONException, ParseException {
-        Map<String, Object> jsonObject = new JSONObject("{\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"booked_itinerary\":{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"},\"number_of_children\":1,\"number_of_adults\":1,\"total\":\"30.00\",\"requested_date\":\"2019-09-23\",\"forwading_date\":\"2019-09-24\",\"confirm_date\":\"2019-09-30\"}");
-        Reservation reservation = new Reservation(jsonObject);
-        JSONObject obj = reservation.toJSONObject();
+        JSONObject jsonObject = new JSONObject("{\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"booked_itinerary\":{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"},\"number_of_children\":1,\"number_of_adults\":1,\"total\":\"30.00\",\"requested_date\":\"2019-09-23\",\"forwading_date\":\"2019-09-24\",\"confirm_date\":\"2019-09-30\"}");
+        Reservation reservation = new Reservation(jsonObject.toString());
 
-        assertEquals("Fields didn't match", new User(obj.getJSONObject("username")),new User(jsonObject.getJSONObject("username")));
-        assertEquals("Fields didn't match", new Itinerary(obj.getJSONObject("booked_itinerary")), new Itinerary(jsonObject.getJSONObject("booked_itinerary")));
-        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("confirm_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("confirm_date")));
-        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("forwarding_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("forwading_date")));
-        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("requested_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("requested_date")));
-        assertEquals("Fields didn't match", obj.getInt("number_of_adults"), jsonObject.getInt("number_of_adults"));
-        assertEquals("Fields didn't match", obj.getInt("number_of_children"), jsonObject.getInt("number_of_children"));
-        assertEquals("Fields didn't match", Float.parseFloat(obj.getString("total")), Float.parseFloat(jsonObject.getString("total")),0);
+        Map<String, Object> map = new HashMap<>(jsonObject.length());
+        Iterator<String> iterator = jsonObject.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            try {
+                map.put(key, jsonObject.get(key));
+            } catch (JSONException e) {
+                Log.e("JSON_READING_EXCEPTION", "key: " + key + ", message: " + e.getMessage());
+            }
+        }
+
+        assertEquals("Fields didn't match", reservation.toMap(), map);
     }
 
     @Test
     public void loadFromJSONObject() throws JSONException {
         final String string = "{\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"booked_itinerary\":{\"itinerary_code\":5,\"username\":{\"username\":\"deleted_user\",\"tax_code\":\"\",\"name\":\"Deleted\",\"surname\":\"User\",\"password\":\"\",\"email\":\"\",\"user_type\":\"2\",\"cellphone\":\"\",\"birth_date\":\"0000-00-00\",\"sex\":\"other\",\"document\":{\"document_number\":\"dele123654\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-12-03\"},\"languages\":[]},\"title\":\"Itinerario di test\",\"description\":\"Testtest\",\"beginning_date\":\"2019-09-21\",\"ending_date\":\"2019-09-30\",\"end_reservations_date\":\"2019-09-23\",\"maximum_participants_number\":2,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"},\"number_of_children\":1,\"number_of_adults\":1,\"total\":\"30.00\",\"requested_date\":\"2019-09-23\",\"forwading_date\":\"2019-09-24\",\"confirm_date\":\"2019-09-30\"}";
-        final Map<String, Object> jsonObject = new JSONObject(string);
-        final Reservation reservation = new Reservation(jsonObject);
+        final JSONObject jsonObject = new JSONObject(string);
+        final Reservation reservation = new Reservation(jsonObject.toString());
 
         final SimpleDateFormat output = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
 
         final String TAG = "Fields not setted properly";
-        assertEquals(TAG, reservation.getClient(),new User(jsonObject.getJSONObject("username")));
-        assertEquals(TAG, reservation.getItinerary(), new Itinerary(jsonObject.getJSONObject("booked_itinerary")));
+        assertEquals(TAG, reservation.getClient(), new User(jsonObject.getString("username")));
+        assertEquals(TAG, reservation.getItinerary(), new Itinerary(jsonObject.getString("booked_itinerary")));
         assertEquals(TAG, output.format(reservation.getConfirmationDate()), jsonObject.getString("confirm_date"));
         assertEquals(TAG, output.format(reservation.getForwardingDate()), jsonObject.getString("forwading_date"));
-        assertEquals(TAG, output.format(reservation.getRequestedDate()) , jsonObject.getString("requested_date"));
+        assertEquals(TAG, output.format(reservation.getRequestedDate()), jsonObject.getString("requested_date"));
         assertEquals(TAG, reservation.getNumberOfAdults(), jsonObject.getInt("number_of_adults"));
         assertEquals(TAG, reservation.getNumberOfChildren(), jsonObject.getInt("number_of_children"));
-        assertEquals(TAG, reservation.getTotal(), Float.parseFloat(jsonObject.getString("total")),0);
+        assertEquals(TAG, reservation.getTotal(), Float.parseFloat(jsonObject.getString("total")), 0);
     }
 }

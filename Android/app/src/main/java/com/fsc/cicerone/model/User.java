@@ -16,18 +16,16 @@
 
 package com.fsc.cicerone.model;
 
-import android.util.Log;
 import android.util.Patterns;
 
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
@@ -108,14 +106,10 @@ public class User extends BusinessEntity {
         }
 
         @Override
-        public JSONObject toJSONObject() {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                if (username != null) jsonObject.put(Columns.USERNAME_KEY, username);
-                if (password != null) jsonObject.put(Columns.PASSWORD_KEY, password);
-            } catch (JSONException e) {
-                Log.e("CREDENTIALS_ERROR", e.getMessage());
-            }
+        public Map<String, Object> toMap() {
+            Map<String, Object> jsonObject = new HashMap<>();
+            if (username != null) jsonObject.put(Columns.USERNAME_KEY, username);
+            if (password != null) jsonObject.put(Columns.PASSWORD_KEY, password);
             return jsonObject;
         }
 
@@ -430,26 +424,22 @@ public class User extends BusinessEntity {
      *
      * @return A JSON Object containing the data that were stored in the object.
      */
-    public JSONObject toJSONObject() {
-        JSONObject result = new JSONObject();
-        try {
-            if (this.name != null) result.put(Columns.NAME_KEY, this.name);
-            if (this.surname != null) result.put(Columns.SURNAME_KEY, this.surname);
-            if (this.email != null) result.put(Columns.EMAIL_KEY, this.email);
-            if (this.password != null) result.put(Columns.PASSWORD_KEY, this.password);
-            if (this.sex != null) result.put(Columns.SEX_KEY, this.sex.toString());
-            if (this.taxCode != null) result.put(Columns.TAX_CODE_KEY, this.taxCode);
-            if (this.username != null) result.put(Columns.USERNAME_KEY, this.username);
-            if (this.userType != null) result.put(Columns.USER_TYPE_KEY, this.userType.toInt());
-            if (this.cellphone != null) result.put(Columns.CELLPHONE_KEY, this.cellphone);
-            if (this.birthDate != null)
-                result.put(Columns.BIRTH_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.birthDate));
-            if (document != null)
-                result.put(Columns.DOCUMENT_KEY, this.document.toJSONObject());
-            if (languages != null) result.put(Columns.LANGUAGES_KEY, new JSONArray(languages));
-        } catch (JSONException e) {
-            result = null;
-        }
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+        if (this.name != null) result.put(Columns.NAME_KEY, this.name);
+        if (this.surname != null) result.put(Columns.SURNAME_KEY, this.surname);
+        if (this.email != null) result.put(Columns.EMAIL_KEY, this.email);
+        if (this.password != null) result.put(Columns.PASSWORD_KEY, this.password);
+        if (this.sex != null) result.put(Columns.SEX_KEY, this.sex.toString());
+        if (this.taxCode != null) result.put(Columns.TAX_CODE_KEY, this.taxCode);
+        if (this.username != null) result.put(Columns.USERNAME_KEY, this.username);
+        if (this.userType != null) result.put(Columns.USER_TYPE_KEY, this.userType.toInt());
+        if (this.cellphone != null) result.put(Columns.CELLPHONE_KEY, this.cellphone);
+        if (this.birthDate != null)
+            result.put(Columns.BIRTH_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.birthDate));
+        if (document != null)
+            result.put(Columns.DOCUMENT_KEY, this.document.toMap());
+        if (languages != null) result.put(Columns.LANGUAGES_KEY, new JSONArray(languages));
         return result;
     }
 

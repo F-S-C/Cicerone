@@ -24,6 +24,7 @@ import com.fsc.cicerone.model.BusinessEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class BooleanConnector extends SendInPostConnector<BooleanConnector.BooleanResult> {
@@ -85,14 +86,10 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
 
         @Override
-        public JSONObject toJSONObject() {
-            JSONObject toReturn = new JSONObject();
-            try {
-                toReturn.put(RESULT_KEY, result);
-                toReturn.put(result ? MESSAGE_KEY : ERROR_KEY, message);
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-            }
+        public Map<String, Object> toMap() {
+            Map<String, Object> toReturn = new HashMap<>();
+            toReturn.put(RESULT_KEY, result);
+            toReturn.put(result ? MESSAGE_KEY : ERROR_KEY, message);
             return toReturn;
         }
     }

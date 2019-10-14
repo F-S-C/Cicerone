@@ -102,7 +102,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
                     i = new Intent(context, ItineraryDetails.class);
                 }
             }
-            i.putExtra("itinerary", mData.get(position).toJSONObject().toString());
+            i.putExtra("itinerary", mData.get(position).toMap().toString());
             if (fragment != null) {
                 fragment.startActivityForResult(i, WishlistFragment.REQUEST_UPDATE_WISHLIST);
             }else{

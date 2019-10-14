@@ -16,6 +16,8 @@
 
 package com.fsc.cicerone.model;
 
+import android.util.Log;
+
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 import org.json.JSONException;
@@ -25,9 +27,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -41,14 +44,14 @@ public class ItineraryTest {
     public void loadFromJSONObject() throws JSONException {
         final String string = "{\"itinerary_code\":9,\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$nXW4njlKyYR4EmQoiQg3iee5xw9RfC7VeD\\/Z5t\\/UnX0xWAasnurq.\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-02-25\"},\"languages\":[]},\"title\":\"Pausa con Pizzutillo\",\"description\":\"Facciamo una pausa\",\"beginning_date\":\"2019-10-03\",\"ending_date\":\"2019-10-31\",\"end_reservations_date\":\"2019-10-31\",\"maximum_participants_number\":15,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"}";
 
-        final Map<String, Object> jsonObject = new JSONObject(string);
-        final Itinerary itinerary = new Itinerary(jsonObject);
+        final JSONObject jsonObject = new JSONObject(string);
+        final Itinerary itinerary = new Itinerary(jsonObject.toString());
 
         final SimpleDateFormat output = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
 
         final String TAG = "Fields not setted properly";
         assertEquals(TAG, itinerary.getTitle(), jsonObject.getString("title"));
-        assertEquals(TAG, itinerary.getCicerone(), new User(jsonObject.getJSONObject("username")));
+        assertEquals(TAG, itinerary.getCicerone(), new User(jsonObject.getString("username")));
         assertEquals(TAG, itinerary.getCode(), jsonObject.getInt("itinerary_code"));
         assertEquals(TAG, itinerary.getMaxParticipants(), jsonObject.getInt("maximum_participants_number"));
         assertEquals(TAG, itinerary.getMinParticipants(), jsonObject.getInt("minimum_participants_number"));
@@ -500,29 +503,24 @@ public class ItineraryTest {
     }
 
     @Test
-    public void toJSONObject() throws JSONException, ParseException {
+    public void toJSONObject() throws JSONException {
 
-        Map<String, Object> jsonObject = new JSONObject("{\"itinerary_code\":9,\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$nXW4njlKyYR4EmQoiQg3iee5xw9RfC7VeD\\/Z5t\\/UnX0xWAasnurq.\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-02-25\"},\"languages\":[]},\"title\":\"Pausa con Pizzutillo\",\"description\":\"Facciamo una pausa\",\"beginning_date\":\"2019-10-03\",\"ending_date\":\"2019-10-31\",\"end_reservations_date\":\"2019-10-31\",\"maximum_participants_number\":15,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"}");
+        JSONObject jsonObject = new JSONObject("{\"itinerary_code\":9,\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$nXW4njlKyYR4EmQoiQg3iee5xw9RfC7VeD\\/Z5t\\/UnX0xWAasnurq.\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"Identity Card\",\"expiry_date\":\"2022-02-25\"},\"languages\":[]},\"title\":\"Pausa con Pizzutillo\",\"description\":\"Facciamo una pausa\",\"beginning_date\":\"2019-10-03\",\"ending_date\":\"2019-10-31\",\"end_reservations_date\":\"2019-10-31\",\"maximum_participants_number\":15,\"minimum_participants_number\":1,\"location\":\"Taranto\",\"repetitions_per_day\":1,\"duration\":\"12:00:00\",\"image_url\":\"https:\\/\\/fsc.altervista.org\\/images\\/1569059443-5d85f273504a7.jpg\",\"full_price\":\"20.00\",\"reduced_price\":\"10.00\"}");
 
-        Itinerary itinerary = new Itinerary(jsonObject);
+        Map<String, Object> map = new HashMap<>(jsonObject.length());
+        Iterator<String> iterator = jsonObject.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            try {
+                map.put(key, jsonObject.get(key));
+            } catch (JSONException e) {
+                Log.e("JSON_READING_EXCEPTION", "key: " + key + ", message: " + e.getMessage());
+            }
+        }
 
-        JSONObject obj = itinerary.toJSONObject();
+        Itinerary itinerary = new Itinerary(jsonObject.toString());
 
-        assertEquals("Fields didn't match", obj.getInt("itinerary_code"), jsonObject.getInt("itinerary_code"));
-        assertEquals("Fields didn't match", obj.getString("title"), jsonObject.getString("title"));
-        assertEquals("Fields didn't match", new User(obj.getJSONObject("username")), new User(jsonObject.getJSONObject("username")));
-        assertEquals("Fields didn't match", obj.getString("description"), jsonObject.getString("description"));
-        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("beginning_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("beginning_date")));
-        assertEquals("Fields didn't match",  new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("ending_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("ending_date")));
-        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("end_reservations_date")) , new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("end_reservations_date")));
-        assertEquals("Fields didn't match", obj.getString("duration"), jsonObject.getString("duration"));
-        assertEquals("Fields didn't match", obj.getString("location"), jsonObject.getString("location"));
-        assertEquals("Fields didn't match", obj.getInt("minimum_participants_number"), jsonObject.getInt("minimum_participants_number"));
-        assertEquals("Fields didn't match", obj.getInt("maximum_participants_number"), jsonObject.getInt("maximum_participants_number"));
-        assertEquals("Fields didn't match", obj.getInt("repetitions_per_day"), jsonObject.getInt("repetitions_per_day"));
-        assertEquals("Fields didn't match", Float.parseFloat(obj.getString("full_price")),Float.parseFloat(jsonObject.getString("full_price")),0);
-        assertEquals("Fields didn't match", Float.parseFloat(obj.getString("reduced_price")), Float.parseFloat(jsonObject.getString("reduced_price")),0);
-        assertEquals("Fields didn't match", obj.getString("image_url"), jsonObject.getString("image_url"));
+        assertEquals("Fields didn't match", itinerary.toMap(), map);
     }
 
     @Test

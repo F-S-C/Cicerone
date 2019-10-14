@@ -149,19 +149,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabase
     }
 
     public static Map<String, Object> paramsFromObject(final BusinessEntity entity) {
-        JSONObject jsonObject = entity.toJSONObject();
-        Map<String, Object> mapData = new HashMap<>(jsonObject.length());
-        Iterator<String> keysItr = jsonObject.keys();
-        while (keysItr.hasNext()) {
-            try {
-                String key = keysItr.next();
-                Object value = jsonObject.get(key);
-
-                mapData.put(key, value);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+        Map<String, Object> mapData = entity.toMap();
 
         final String USERNAME_KEY = "username";
         final String REPORTED_USER_KEY = "reported_user";

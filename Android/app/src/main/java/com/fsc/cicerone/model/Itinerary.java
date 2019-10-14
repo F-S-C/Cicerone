@@ -17,13 +17,12 @@
 package com.fsc.cicerone.model;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -527,28 +526,24 @@ public class Itinerary extends BusinessEntity {
      *
      * @return A JSON Object containing the data that were stored in the object.
      */
-    public JSONObject toJSONObject() {
-        JSONObject result = new JSONObject();
-        try {
-            result.put(Columns.ITINERARY_CODE_KEY, this.code);
-            result.put(Columns.TITLE_KEY, this.title);
-            result.put(User.Columns.USERNAME_KEY, this.cicerone.toJSONObject());
-            result.put(Columns.DESCRIPTION_KEY, this.description);
-            result.put(Columns.BEGINNING_DATE_KEY, in.format(this.beginningDate));
-            result.put(Columns.ENDING_DATE_KEY, in.format(this.endingDate));
-            result.put(Columns.END_RESERVATIONS_DATE_KEY, in.format(this.reservationDate));
-            result.put(Columns.DURATION_KEY, this.duration);
-            result.put(Columns.LOCATION_KEY, this.location);
-            result.put(Columns.MINIMUM_PARTICIPANTS_KEY, String.valueOf(this.minParticipants));
-            result.put(Columns.MAXIMUM_PARTICIPANTS_KEY, String.valueOf(this.maxParticipants));
-            result.put(Columns.REPETITIONS_PER_DAY_KEY, String.valueOf(this.repetitions));
-            result.put(Columns.FULL_PRICE_KEY, this.fullPrice);
-            result.put(Columns.REDUCED_PRICE_KEY, this.reducedPrice);
-            result.put(Columns.IMG_URL_KEY, this.imageUrl);
-            result.put(Columns.LANGUAGES_KEY, new JSONArray(this.languages));
-        } catch (JSONException e) {
-            result = null;
-        }
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+        result.put(Columns.ITINERARY_CODE_KEY, this.code);
+        result.put(Columns.TITLE_KEY, this.title);
+        result.put(User.Columns.USERNAME_KEY, this.cicerone.toMap());
+        result.put(Columns.DESCRIPTION_KEY, this.description);
+        result.put(Columns.BEGINNING_DATE_KEY, in.format(this.beginningDate));
+        result.put(Columns.ENDING_DATE_KEY, in.format(this.endingDate));
+        result.put(Columns.END_RESERVATIONS_DATE_KEY, in.format(this.reservationDate));
+        result.put(Columns.DURATION_KEY, this.duration);
+        result.put(Columns.LOCATION_KEY, this.location);
+        result.put(Columns.MINIMUM_PARTICIPANTS_KEY, String.valueOf(this.minParticipants));
+        result.put(Columns.MAXIMUM_PARTICIPANTS_KEY, String.valueOf(this.maxParticipants));
+        result.put(Columns.REPETITIONS_PER_DAY_KEY, String.valueOf(this.repetitions));
+        result.put(Columns.FULL_PRICE_KEY, this.fullPrice);
+        result.put(Columns.REDUCED_PRICE_KEY, this.reducedPrice);
+        result.put(Columns.IMG_URL_KEY, this.imageUrl);
+        result.put(Columns.LANGUAGES_KEY, new JSONArray(this.languages));
         return result;
     }
 

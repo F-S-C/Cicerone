@@ -176,7 +176,7 @@ public class AccountManager {
      * @param callback A function to be executed after the insert attempt.
      */
     public static void insertUser(@Nullable Activity context, @NonNull User user, @Nullable Consumer<Boolean> callback) {
-        Log.i("USERDATA", user.toJSONObject().toString());
+        Log.i("USERDATA", user.toMap().toString());
         new BooleanConnector.Builder(ConnectorConstants.INSERT_USER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {

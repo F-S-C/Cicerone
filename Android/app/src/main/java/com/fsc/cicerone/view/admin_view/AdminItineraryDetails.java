@@ -37,7 +37,7 @@ public class AdminItineraryDetails extends ItineraryActivity {
     @Override
     public void goToAuthor(View view) {
         Bundle bundle = new Bundle();
-        bundle.putString("user", itinerary.getCicerone().toJSONObject().toString());
+        bundle.putString("user", itinerary.getCicerone().toMap().toString());
         startActivityWithData(AdminUserProfile.class, bundle);
     }
 
