@@ -41,6 +41,7 @@ public class Report extends BusinessEntity {
             throw new IllegalStateException("Utility class");
         }
 
+        public static final String AUTHOR_KEY = "username";
         public static final String REPORTED_USER_KEY = "reported_user";
         public static final String REPORT_CODE_KEY = "report_code";
         public static final String OBJECT_KEY = "object";

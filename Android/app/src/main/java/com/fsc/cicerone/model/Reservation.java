@@ -43,6 +43,7 @@ public class Reservation extends BusinessEntity {
             throw new IllegalStateException("Utility class");
         }
 
+        public static final String CLIENT_KEY = "username";
         public static final String ITINERARY_KEY = "itinerary";
         public static final String BOOKED_ITINERARY_KEY = "booked_itinerary";
         public static final String NUMBER_OF_CHILDREN_KEY = "number_of_children";

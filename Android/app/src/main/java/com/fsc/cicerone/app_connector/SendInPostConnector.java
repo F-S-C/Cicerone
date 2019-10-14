@@ -51,9 +51,8 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * Generic connector to the database.
- * This connector sends data using POST to a server-side script that will be used in order to
- * connect to a database.
+ * Generic connector to the database. This connector sends data using POST to a server-side script
+ * that will be used in order to connect to a database.
  */
 public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabaseConnector<T> {
 
@@ -151,47 +150,24 @@ public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabase
     public static Map<String, Object> paramsFromObject(final BusinessEntity entity) {
         Map<String, Object> mapData = entity.toMap();
 
-        final String USERNAME_KEY = "username";
-        final String REPORTED_USER_KEY = "reported_user";
-        final String REVIEWED_USER_KEY = "reviewed_user";
-        final String REVIEWED_ITINERARY_KEY = "reviewed_itinerary";
-        final String BOOKED_ITINERARY_KEY = "booked_itinerary";
-        final String ITINERARY_IN_WISHLIST_KEY = "itinerary_in_wishlist";
-
         if (entity instanceof Itinerary) {
-            mapData.put(USERNAME_KEY, ((Itinerary) entity).getCicerone().getUsername());
+            mapData.put(Itinerary.Columns.CICERONE_KEY, ((Itinerary) entity).getCicerone().getUsername());
         } else if (entity instanceof Report) {
-            mapData.put(USERNAME_KEY, ((Report) entity).getAuthor().getUsername());
-            mapData.put(REPORTED_USER_KEY, ((Report) entity).getReportedUser().getUsername());
+            mapData.put(Report.Columns.AUTHOR_KEY, ((Report) entity).getAuthor().getUsername());
+            mapData.put(Report.Columns.REPORTED_USER_KEY, ((Report) entity).getReportedUser().getUsername());
         } else if (entity instanceof Review) {
-            mapData.put(USERNAME_KEY, ((Review) entity).getAuthor().getUsername());
+            mapData.put(Review.Columns.AUTHOR_KEY, ((Review) entity).getAuthor().getUsername());
             if (entity instanceof ItineraryReview) {
-                mapData.put(REVIEWED_ITINERARY_KEY, ((ItineraryReview) entity).getReviewedItinerary().getCode());
+                mapData.put(ItineraryReview.Columns.REVIEWED_ITINERARY_KEY, ((ItineraryReview) entity).getReviewedItinerary().getCode());
             } else if (entity instanceof UserReview) {
-                mapData.put(REVIEWED_USER_KEY, ((UserReview) entity).getReviewedUser().getUsername());
+                mapData.put(UserReview.Columns.REVIEWED_USER_KEY, ((UserReview) entity).getReviewedUser().getUsername());
             }
         } else if (entity instanceof Reservation) {
-            mapData.put(BOOKED_ITINERARY_KEY, ((Reservation) entity).getItinerary().getCode());
-            mapData.put(USERNAME_KEY, ((Reservation) entity).getClient().getUsername());
+            mapData.put(Reservation.Columns.BOOKED_ITINERARY_KEY, ((Reservation) entity).getItinerary().getCode());
+            mapData.put(Reservation.Columns.CLIENT_KEY, ((Reservation) entity).getClient().getUsername());
         } else if (entity instanceof Wishlist) {
-            mapData.put(USERNAME_KEY, ((Wishlist) entity).getUser().getUsername());
-            mapData.put(ITINERARY_IN_WISHLIST_KEY, ((Wishlist) entity).getItinerary().getCode());
-        }
-
-        return mapData;
-    }
-    public static Map<String, Object> paramsFromObject(final JSONObject jsonObject) {
-        Map<String, Object> mapData = new HashMap<>(jsonObject.length());
-        Iterator<String> keysItr = jsonObject.keys();
-        while (keysItr.hasNext()) {
-            try {
-                String key = keysItr.next();
-                Object value = jsonObject.get(key);
-
-                mapData.put(key, value);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            mapData.put(Wishlist.Columns.OWNER_KEY, ((Wishlist) entity).getUser().getUsername());
+            mapData.put(Wishlist.Columns.ITINERARY_IN_WISHLIST_KEY, ((Wishlist) entity).getItinerary().getCode());
         }
 
         return mapData;

@@ -31,6 +31,7 @@ public class Wishlist extends BusinessEntity {
             throw new IllegalStateException("Utility class");
         }
 
+        public static final String OWNER_KEY = "username";
         public static final String ITINERARY_IN_WISHLIST_KEY = "itinerary_in_wishlist";
     }
 

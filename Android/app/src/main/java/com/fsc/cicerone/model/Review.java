@@ -36,6 +36,7 @@ public abstract class Review extends BusinessEntity {
             throw new IllegalStateException("Utility class");
         }
 
+        public static final String AUTHOR_KEY = "username";
         public static final String FEEDBACK_KEY = "feedback";
         public static final String DESCRIPTION_KEY = "description";
     }

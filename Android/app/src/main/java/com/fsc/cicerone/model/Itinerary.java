@@ -63,6 +63,7 @@ public class Itinerary extends BusinessEntity {
         }
 
         public static final String ITINERARY_CODE_KEY = "itinerary_code";
+        public static final String CICERONE_KEY = "username";
         public static final String TITLE_KEY = "title";
         public static final String DESCRIPTION_KEY = "description";
         public static final String BEGINNING_DATE_KEY = "beginning_date";
@@ -152,7 +153,7 @@ public class Itinerary extends BusinessEntity {
     protected void loadFromMap(Map<String, Object> itinerary) {
         code = (int) itinerary.get(Columns.ITINERARY_CODE_KEY);
 
-        cicerone = new User(itinerary.get(User.Columns.USERNAME_KEY).toString());
+        cicerone = new User(itinerary.get(Columns.CICERONE_KEY).toString());
 
         title = (String) itinerary.get(Columns.TITLE_KEY);
 
