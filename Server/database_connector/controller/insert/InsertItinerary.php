@@ -16,18 +16,19 @@ class InsertItinerary extends InsertConnector
 
     public function get_content(): string
     {
-        if (isset($this->values_to_add["languages"])) {
-            $languages = json_decode($this->values_to_add["languages"], true);
-            unset($this->values_to_add["languages"]);
-        } else {
-            $languages = null;
+        $languages = array();
+        foreach ($this->values_to_add as &$row) {
+            if (isset($row["languages"])) {
+                array_push($languages, ...json_decode($row["languages"], true));
+                unset($row["languages"]);
+            }
         }
 
         $to_return = parent::get_content();
 
         if (json_decode($to_return, true)[self::RESULT_KEY]) {
             $id = $this->connection->insert_id;
-            if (isset($languages)) {
+            if (empty($languages)) {
                 $language_connector = new InsertItineraryLanguage();
                 foreach ($languages as $language) {
                     $language_connector->add_value(array($id, $language["language_code"]));
