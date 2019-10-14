@@ -84,7 +84,7 @@ public abstract class Review extends BusinessEntity {
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> jsonObject = new HashMap<>();
-        jsonObject.put(User.Columns.USERNAME_KEY, author.toMap());
+        jsonObject.put(User.Columns.USERNAME_KEY, author.toString());
         jsonObject.put(Columns.DESCRIPTION_KEY, description);
         jsonObject.put(Columns.FEEDBACK_KEY, feedback);
         return jsonObject;
