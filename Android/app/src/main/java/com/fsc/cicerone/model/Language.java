@@ -23,21 +23,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * A language as represented in the system Cicerone. A language is composed by a code and a name
- * and it's identified by its code.
+ * A language as represented in the system Cicerone. A language is composed by a code and a name and
+ * it's identified by its code.
  */
 public class Language extends BusinessEntity {
     private String code;
     private String name;
 
-    public static class Columns{
+    public static class Columns {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
+
         public static final String LANGUAGE_CODE_KEY = "language_code";
         public static final String LANGUAGE_NAME_KEY = "language_name";
     }
@@ -59,20 +61,27 @@ public class Language extends BusinessEntity {
         this.name = name;
     }
 
-    public Language(JSONObject jsonObject) {
-        loadFromJSONObject(jsonObject);
+    public Language(Map<String, Object> jsonObject) {
+        loadFromMap(jsonObject);
     }
 
     public Language(String json) {
-        this(getJSONObject(json));
+        this(getMapFromJson(json));
     }
 
-    public static Set<Language> getSetFromJSONArray(JSONArray jsonArray) {
+    public static Set<Language> getSetFromJSONArray(String array) {
+        JSONArray jsonArray;
+        try {
+            jsonArray = new JSONArray(array);
+        } catch (JSONException e) {
+            jsonArray = new JSONArray();
+        }
+
         Set<Language> toReturn = new HashSet<>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                toReturn.add(new Language(jsonArray.getJSONObject(i)));
+                toReturn.add(new Language(jsonArray.getString(i)));
             } catch (JSONException e) {
                 Log.e("LANGUAGE_ERROR", "Error while parsing JSON. Error: " + e.getMessage());
             }
@@ -87,17 +96,9 @@ public class Language extends BusinessEntity {
      * @param language The language's code.
      */
     @Override
-    protected void loadFromJSONObject(JSONObject language) {
-        try {
-            this.code = language.getString(Columns.LANGUAGE_CODE_KEY);
-        } catch (JSONException e) {
-            this.code = "";
-        }
-        try {
-            this.name = language.getString(Columns.LANGUAGE_NAME_KEY);
-        } catch (JSONException e) {
-            this.name = "";
-        }
+    protected void loadFromMap(Map<String, Object> language) {
+        this.code = (String) language.get(Columns.LANGUAGE_CODE_KEY);
+        this.name = (String) language.get(Columns.LANGUAGE_NAME_KEY);
     }
 
     @Override

@@ -21,6 +21,8 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class Wishlist extends BusinessEntity {
 
     private User user;
@@ -28,42 +30,26 @@ public class Wishlist extends BusinessEntity {
 
     private static final String ERROR_TAG = "WISHLIST_ERROR";
 
-    public static class Columns{
+    public static class Columns {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
+
         public static final String ITINERARY_IN_WISHLIST_KEY = "itinerary_in_wishlist";
     }
 
-    public Wishlist(JSONObject jsonObject) {
-        loadFromJSONObject(jsonObject);
+    public Wishlist(Map<String, Object> jsonObject) {
+        loadFromMap(jsonObject);
     }
 
     public Wishlist(String json) {
-        this(getJSONObject(json));
+        this(getMapFromJson(json));
     }
 
     @Override
-    protected void loadFromJSONObject(JSONObject jsonObject) {
-        User tempUser;
-        Itinerary tempItinerary;
-
-        try {
-            tempUser = new User(jsonObject.getJSONObject(User.Columns.USERNAME_KEY));
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-            tempUser = new User();
-        }
-
-        try {
-            tempItinerary = new Itinerary(jsonObject.getJSONObject(Columns.ITINERARY_IN_WISHLIST_KEY));
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-            tempItinerary = new Itinerary();
-        }
-
-        user = tempUser;
-        itinerary = tempItinerary;
+    protected void loadFromMap(Map<String, Object> jsonObject) {
+        user = new User((String) jsonObject.get(User.Columns.USERNAME_KEY));
+        itinerary = new Itinerary((String) jsonObject.get(Columns.ITINERARY_IN_WISHLIST_KEY));
     }
 
     public User getUser() {

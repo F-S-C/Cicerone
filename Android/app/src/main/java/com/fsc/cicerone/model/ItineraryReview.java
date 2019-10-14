@@ -21,6 +21,8 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class ItineraryReview extends Review {
     private Itinerary reviewedItinerary;
 
@@ -32,29 +34,23 @@ public class ItineraryReview extends Review {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
+
         public static final String REVIEWED_ITINERARY_KEY = "reviewed_itinerary";
     }
 
-    public ItineraryReview(JSONObject jsonObject) {
-        loadFromJSONObject(jsonObject);
+    public ItineraryReview(Map<String, Object> jsonObject) {
+        loadFromMap(jsonObject);
     }
 
     public ItineraryReview(String json) {
-        this(getJSONObject(json));
+        this(getMapFromJson(json));
     }
 
     @Override
-    protected void loadFromJSONObject(JSONObject jsonObject) {
-        super.loadFromJSONObject(jsonObject);
+    protected void loadFromMap(Map<String, Object> jsonObject) {
+        super.loadFromMap(jsonObject);
 
-        Itinerary tempReviewedUser;
-        try {
-            tempReviewedUser = new Itinerary(jsonObject.getJSONObject(Columns.REVIEWED_ITINERARY_KEY));
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-            tempReviewedUser = new Itinerary();
-        }
-        reviewedItinerary = tempReviewedUser;
+        reviewedItinerary = new Itinerary((String) jsonObject.get(Columns.REVIEWED_ITINERARY_KEY));
     }
 
     public Itinerary getReviewedItinerary() {

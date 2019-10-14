@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -59,7 +60,7 @@ public class LanguageTest {
     public void loadFromJSONObject() throws JSONException {
         final String string = "{\"language_code\":\"IT\",\"language_name\":\"Italian\"}";
 
-        final JSONObject jsonObject = new JSONObject(string);
+        final Map<String, Object> jsonObject = new JSONObject(string);
         final Language language = new Language(jsonObject);
 
         final String TAG = "Fields not setted properly";
@@ -69,7 +70,7 @@ public class LanguageTest {
 
     @Test
     public void toJSONObject() throws JSONException {
-        JSONObject jsonObject = new JSONObject("{\"language_code\":\"IT\",\"language_name\":\"Italian\"}");
+        Map<String, Object> jsonObject = new JSONObject("{\"language_code\":\"IT\",\"language_name\":\"Italian\"}");
         Language language = new Language(jsonObject);
         JSONObject obj = language.toJSONObject();
 

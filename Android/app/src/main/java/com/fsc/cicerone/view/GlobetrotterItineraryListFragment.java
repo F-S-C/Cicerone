@@ -47,8 +47,7 @@ import java.util.Objects;
 
 
 /**
- * Class that contains the elements of the TAB Itinerary on the account details
- * page.
+ * Class that contains the elements of the TAB Itinerary on the account details page.
  */
 public class GlobetrotterItineraryListFragment extends Fragment {
 
@@ -69,20 +68,15 @@ public class GlobetrotterItineraryListFragment extends Fragment {
         context = Objects.requireNonNull(getActivity());
         Bundle bundle = getArguments();
 
-        try {
-            Map<String, Object> parameters = new HashMap<>(1);
-            User user = new User(
-                    new JSONObject((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user"))));
-            parameters.put("username", user.getUsername());
+        Map<String, Object> parameters = new HashMap<>(1);
+        User user = new User((String) Objects.requireNonNull(Objects.requireNonNull(bundle).get("user")));
+        parameters.put("username", user.getUsername());
 
-            RecyclerView recyclerView = view.findViewById(R.id.globetrotter_itinerary_recycler);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.addItemDecoration(
-                    new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-            requireData(view, parameters, recyclerView);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.toString());
-        }
+        RecyclerView recyclerView = view.findViewById(R.id.globetrotter_itinerary_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        requireData(view, parameters, recyclerView);
         return view;
     }
 

@@ -21,6 +21,8 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public abstract class Review extends BusinessEntity {
 
     private User author;
@@ -33,10 +35,11 @@ public abstract class Review extends BusinessEntity {
      * A utility class that contains various strings to be used as keys to communicate with the
      * remote server.
      */
-    public static class Columns{
+    public static class Columns {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
+
         public static final String FEEDBACK_KEY = "feedback";
         public static final String DESCRIPTION_KEY = "description";
     }
@@ -45,38 +48,19 @@ public abstract class Review extends BusinessEntity {
         // Do nothing
     }
 
-    Review(JSONObject jsonObject) {
-        loadFromJSONObject(jsonObject);
+    Review(Map<String, Object> jsonObject) {
+        loadFromMap(jsonObject);
     }
 
     Review(String json) {
-        this(getJSONObject(json));
+        this(getMapFromJson(json));
     }
 
     @Override
-    protected void loadFromJSONObject(JSONObject jsonObject) {
-        User tempAuthor;
-        try {
-            tempAuthor = new User(jsonObject.getJSONObject(User.Columns.USERNAME_KEY));
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-            tempAuthor = new User();
-        }
-        author = tempAuthor;
-
-        try {
-            feedback = jsonObject.getInt(Columns.FEEDBACK_KEY);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-            feedback = 0;
-        }
-
-        try {
-            description = jsonObject.getString(Columns.DESCRIPTION_KEY);
-        } catch (JSONException e) {
-            Log.e(ERROR_TAG, e.getMessage());
-            description = "Error loading description";
-        }
+    protected void loadFromMap(Map<String, Object> jsonObject) {
+        author = new User((String) jsonObject.get(User.Columns.USERNAME_KEY));
+        feedback = (int) jsonObject.get(Columns.FEEDBACK_KEY);
+        description = (String) jsonObject.get(Columns.DESCRIPTION_KEY);
     }
 
     public User getAuthor() {

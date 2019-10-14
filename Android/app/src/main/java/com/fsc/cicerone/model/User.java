@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -62,6 +63,7 @@ public class User extends BusinessEntity {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
+
         public static final String USERNAME_KEY = "username";
         public static final String PASSWORD_KEY = "password";
         public static final String TAX_CODE_KEY = "tax_code";
@@ -85,12 +87,12 @@ public class User extends BusinessEntity {
             this.password = password;
         }
 
-        public Credentials(JSONObject jsonObject) {
-            loadFromJSONObject(jsonObject);
+        public Credentials(Map<String, Object> jsonObject) {
+            loadFromMap(jsonObject);
         }
 
         public Credentials(String json) {
-            this(getJSONObject(json));
+            this(getMapFromJson(json));
         }
 
         public String getUsername() {
@@ -118,17 +120,9 @@ public class User extends BusinessEntity {
         }
 
         @Override
-        protected void loadFromJSONObject(JSONObject jsonObject) {
-            try {
-                username = jsonObject.getString(Columns.USERNAME_KEY);
-            } catch (JSONException e) {
-                username = null;
-            }
-            try {
-                password = jsonObject.getString(Columns.PASSWORD_KEY);
-            } catch (JSONException e) {
-                password = null;
-            }
+        protected void loadFromMap(Map<String, Object> jsonObject) {
+            username = (String) jsonObject.get(Columns.USERNAME_KEY);
+            password = (String) jsonObject.get(Columns.PASSWORD_KEY);
         }
     }
 
@@ -175,88 +169,44 @@ public class User extends BusinessEntity {
      *
      * @param jsonObject The JSON object from which data will be fetched.
      */
-    public User(JSONObject jsonObject) {
-        loadFromJSONObject(jsonObject);
+    public User(Map<String, Object> jsonObject) {
+        loadFromMap(jsonObject);
     }
 
     public User(String json) {
-        this(getJSONObject(json));
+        this(getMapFromJson(json));
     }
 
 
     @Override
-    protected void loadFromJSONObject(JSONObject user) {
-        try {
-            name = user.getString(Columns.NAME_KEY);
-        } catch (JSONException e) {
-            name = null;
-        }
+    protected void loadFromMap(Map<String, Object> user) {
+        name = (String) user.get(Columns.NAME_KEY);
+
+        surname = (String) user.get(Columns.SURNAME_KEY);
+
+        email = (String) user.get(Columns.EMAIL_KEY);
+
+        password = (String) user.get(Columns.PASSWORD_KEY);
+
+        sex = Sex.getValue((String) user.get(Columns.SEX_KEY));
+
+        taxCode = (String) user.get(Columns.TAX_CODE_KEY);
+
+        username = (String) user.get(Columns.USERNAME_KEY);
+
+        userType = UserType.getValue((Integer) user.get(Columns.USER_TYPE_KEY));
+
+        cellphone = (String) user.get(Columns.CELLPHONE_KEY);
 
         try {
-            surname = user.getString(Columns.SURNAME_KEY);
-        } catch (JSONException e) {
-            surname = null;
-        }
-
-        try {
-            email = user.getString(Columns.EMAIL_KEY);
-        } catch (JSONException e) {
-            email = null;
-        }
-
-        try {
-            password = user.getString(Columns.PASSWORD_KEY);
-        } catch (JSONException e) {
-            password = null;
-        }
-
-        try {
-            sex = Sex.getValue(user.getString(Columns.SEX_KEY));
-        } catch (JSONException e) {
-            sex = null;
-        }
-
-        try {
-            taxCode = user.getString(Columns.TAX_CODE_KEY);
-        } catch (JSONException e) {
-            taxCode = null;
-        }
-
-        try {
-            username = user.getString(Columns.USERNAME_KEY);
-        } catch (JSONException e) {
-            username = null;
-        }
-
-        try {
-            userType = UserType.getValue(user.getInt(Columns.USER_TYPE_KEY));
-        } catch (JSONException e) {
-            userType = null;
-        }
-
-        try {
-            cellphone = user.getString(Columns.CELLPHONE_KEY);
-        } catch (JSONException e) {
-            cellphone = null;
-        }
-
-        try {
-            birthDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(user.getString(Columns.BIRTH_DATE_KEY));
-        } catch (JSONException | ParseException e) {
+            birthDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse((String) user.get(Columns.BIRTH_DATE_KEY));
+        } catch (ParseException e) {
             birthDate = null;
         }
 
-        try {
-            document = new Document(user.getJSONObject(Columns.DOCUMENT_KEY));
-        } catch (JSONException e) {
-            document = null;
-        }
+        document = new Document((String) user.get(Columns.DOCUMENT_KEY));
 
-        try {
-            languages = Language.getSetFromJSONArray(user.getJSONArray(Columns.LANGUAGES_KEY));
-        } catch (JSONException e) {
-            languages = new HashSet<>();
-        }
+        languages = Language.getSetFromJSONArray((String) user.get(Columns.LANGUAGES_KEY));
     }
 
     /**

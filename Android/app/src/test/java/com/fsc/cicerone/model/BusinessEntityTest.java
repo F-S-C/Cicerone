@@ -35,7 +35,7 @@ public class BusinessEntityTest {
             e.printStackTrace();
         }
 
-        assertEquals("Field wasn't retrieved properly", jsonObject.toString() , BusinessEntity.getJSONObject(string).toString());
+        assertEquals("Field wasn't retrieved properly", jsonObject.toString() , BusinessEntity.getMapFromJson(string).toString());
     }
 
 }
