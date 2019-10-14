@@ -17,6 +17,7 @@
 package com.fsc.cicerone;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,11 +25,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.fsc.cicerone.manager.ImageManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +55,9 @@ public abstract class ItineraryModifier extends AppCompatActivity {
     EditText location;
     EditText fullPrice;
     EditText reducedPrice;
+    ImageView image;
     Button submit;
+    ImageManager imageManager;
 
     int layout;
 
@@ -86,6 +92,8 @@ public abstract class ItineraryModifier extends AppCompatActivity {
         reducedPrice = findViewById(R.id.inputReducedPrice);
         fullPrice = findViewById(R.id.inputFullPrice);
         submit = findViewById(R.id.submit);
+        image = findViewById(R.id.itinerary_image2);
+        imageManager = new ImageManager(this);
 
         final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
         supportActionBar.setDisplayHomeAsUpEnabled(true);
@@ -199,6 +207,8 @@ public abstract class ItineraryModifier extends AppCompatActivity {
                 }
             }
         });
+
+        image.setOnClickListener(v -> imageManager.selectImage());
     }
 
     void updateBeginningDate() {
@@ -319,6 +329,12 @@ public abstract class ItineraryModifier extends AppCompatActivity {
                 && !location.getText().toString().equals("")
                 && !fullPrice.getText().toString().equals("")
                 && !reducedPrice.getText().toString().equals("");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imageManager.manageResult(requestCode, resultCode, data, image);
     }
 
     @Override

@@ -60,12 +60,13 @@ public class ImageManager {
 
     private String imgToString(Bitmap image) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        image.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
         byte[] imgByteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(imgByteArray, Base64.DEFAULT);
     }
 
     public void upload(@Nullable BooleanConnector.OnEndConnectionListener result) {
+        Log.d(ImageManager.class.getName(), "Uploading image...");
         if (bitmapImage != null) {
             Map<String, Object> params = new HashMap<>();
             params.put("image", imgToString(bitmapImage));
