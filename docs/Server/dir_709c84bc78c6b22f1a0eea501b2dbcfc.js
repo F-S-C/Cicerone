@@ -1,7 +1,6 @@
 var dir_709c84bc78c6b22f1a0eea501b2dbcfc =
 [
-    [ "InsertDocument.php", "view_2insert_2_insert_document_8php.html", "view_2insert_2_insert_document_8php" ],
-    [ "InsertItinerary.php", "view_2insert_2_insert_itinerary_8php.html", null ],
+    [ "InsertItinerary.php", "view_2insert_2_insert_itinerary_8php.html", "view_2insert_2_insert_itinerary_8php" ],
     [ "InsertItineraryLanguage.php", "view_2insert_2_insert_itinerary_language_8php.html", null ],
     [ "InsertItineraryReview.php", "view_2insert_2_insert_itinerary_review_8php.html", null ],
     [ "InsertLanguage.php", "view_2insert_2_insert_language_8php.html", null ],

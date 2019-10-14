@@ -24,7 +24,7 @@
     android:layout_height="wrap_content"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context="com.fsc.cicerone.AccountDetails"
+    tools:context="com.fsc.cicerone.view.AccountDetails"
     android:padding="@dimen/default_margin">
 
     <RelativeLayout

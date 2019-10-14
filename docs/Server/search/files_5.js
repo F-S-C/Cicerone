@@ -1,7 +1,7 @@
 var searchData=
 [
   ['insertconnector_2ephp',['InsertConnector.php',['../_insert_connector_8php.html',1,'']]],
-  ['insertdocument_2ephp',['InsertDocument.php',['../controller_2insert_2_insert_document_8php.html',1,'(Global Namespace)'],['../view_2insert_2_insert_document_8php.html',1,'(Global Namespace)']]],
+  ['insertdocument_2ephp',['InsertDocument.php',['../_insert_document_8php.html',1,'']]],
   ['insertitinerary_2ephp',['InsertItinerary.php',['../controller_2insert_2_insert_itinerary_8php.html',1,'(Global Namespace)'],['../view_2insert_2_insert_itinerary_8php.html',1,'(Global Namespace)']]],
   ['insertitinerarylanguage_2ephp',['InsertItineraryLanguage.php',['../controller_2insert_2_insert_itinerary_language_8php.html',1,'(Global Namespace)'],['../view_2insert_2_insert_itinerary_language_8php.html',1,'(Global Namespace)']]],
   ['insertitineraryreview_2ephp',['InsertItineraryReview.php',['../controller_2insert_2_insert_itinerary_review_8php.html',1,'(Global Namespace)'],['../view_2insert_2_insert_itinerary_review_8php.html',1,'(Global Namespace)']]],

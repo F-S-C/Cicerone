@@ -23,7 +23,7 @@
     android:layout_height="wrap_content"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context="com.fsc.cicerone.AdminUserProfile">
+    tools:context="com.fsc.cicerone.view.admin_view.AdminUserProfile">
 
     <RelativeLayout
         android:id="@+id/progressContainerAdmin"

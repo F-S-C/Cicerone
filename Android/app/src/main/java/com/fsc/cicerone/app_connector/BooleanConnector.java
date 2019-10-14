@@ -17,13 +17,10 @@
 package com.fsc.cicerone.app_connector;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
 import java.util.Map;
 
 public class BooleanConnector extends SendInPostConnector<BooleanConnector.BooleanResult> {
@@ -65,19 +62,15 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
             super(json);
         }
 
-        BooleanResult(JSONObject jsonObject) {
+        BooleanResult(Map<String, Object> jsonObject) {
             super(jsonObject);
         }
 
         @Override
-        protected void loadFromJSONObject(JSONObject jsonObject) {
-            try {
-                result = jsonObject.getBoolean(RESULT_KEY);
-                if (jsonObject.has(result ? MESSAGE_KEY : ERROR_KEY))
-                    message = jsonObject.getString(result ? MESSAGE_KEY : ERROR_KEY);
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage() + " (trying to parse " + jsonObject.toString() + ")");
-            }
+        protected void loadFromMap(Map<String, Object> jsonObject) {
+            result = (boolean) jsonObject.get(RESULT_KEY);
+            if (jsonObject.containsKey(result ? MESSAGE_KEY : ERROR_KEY))
+                message = (String) jsonObject.get(result ? MESSAGE_KEY : ERROR_KEY);
         }
 
         public boolean getResult() {
@@ -89,14 +82,10 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
 
         @Override
-        public JSONObject toJSONObject() {
-            JSONObject toReturn = new JSONObject();
-            try {
-                toReturn.put(RESULT_KEY, result);
-                toReturn.put(result ? MESSAGE_KEY : ERROR_KEY, message);
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-            }
+        public Map<String, Object> toMap() {
+            Map<String, Object> toReturn = new HashMap<>();
+            toReturn.put(RESULT_KEY, result);
+            toReturn.put(result ? MESSAGE_KEY : ERROR_KEY, message);
             return toReturn;
         }
     }

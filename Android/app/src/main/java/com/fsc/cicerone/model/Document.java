@@ -18,13 +18,12 @@ package com.fsc.cicerone.model;
 
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -41,7 +40,10 @@ public class Document extends BusinessEntity {
      * remote server.
      */
     public static class Columns {
-        private Columns() { throw new IllegalStateException("Utility class"); }
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
+
         public static final String DOCUMENT_NUMBER_KEY = "document_number";
         public static final String DOCUMENT_TYPE_KEY = "document_type";
         public static final String EXPIRY_DATE_KEY = "expiry_date";
@@ -53,19 +55,19 @@ public class Document extends BusinessEntity {
     public Document() {
     }
 
-    public Document(JSONObject jsonObject) {
-        loadFromJSONObject(jsonObject);
+    public Document(Map<String, Object> jsonObject) {
+        loadFromMap(jsonObject);
     }
 
     public Document(String json) {
-        this(getJSONObject(json));
+        this(getMapFromJson(json));
     }
 
     /**
      * Create a new document by specifying its values.
      *
-     * @param number     The document's number.
-     * @param type       The document's type.
+     * @param number         The document's number.
+     * @param type           The document's type.
      * @param expirationDate The document's expiration date.
      */
     public Document(String number, String type, Date expirationDate) {
@@ -77,8 +79,8 @@ public class Document extends BusinessEntity {
     /**
      * Create a new document by specifying its values.
      *
-     * @param number     The document's number.
-     * @param type       The document's type.
+     * @param number         The document's number.
+     * @param type           The document's type.
      * @param expirationDate The document's expiration date.
      */
     public Document(String number, String type, String expirationDate) {
@@ -92,20 +94,12 @@ public class Document extends BusinessEntity {
     }
 
     @Override
-    protected void loadFromJSONObject(JSONObject jsonObject) {
+    protected void loadFromMap(Map<String, Object> jsonObject) {
+        number = (String) jsonObject.get(Columns.DOCUMENT_NUMBER_KEY);
+        type = (String) jsonObject.get(Columns.DOCUMENT_TYPE_KEY);
         try {
-            number = jsonObject.getString(Columns.DOCUMENT_NUMBER_KEY);
-        } catch (JSONException e) {
-            number = "";
-        }
-        try {
-            type = jsonObject.getString(Columns.DOCUMENT_TYPE_KEY);
-        } catch (JSONException e) {
-            type = "";
-        }
-        try {
-            expirationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString(Columns.EXPIRY_DATE_KEY));
-        } catch (ParseException | JSONException e) {
+            expirationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse((String) jsonObject.get(Columns.EXPIRY_DATE_KEY));
+        } catch (ParseException e) {
             expirationDate = new Date();
         }
     }
@@ -195,15 +189,11 @@ public class Document extends BusinessEntity {
      *
      * @return A JSON Object containing the data that were stored in the object.
      */
-    public JSONObject toJSONObject() {
-        JSONObject doc = new JSONObject();
-        try {
-            doc.put(Columns.DOCUMENT_NUMBER_KEY, this.number);
-            doc.put(Columns.DOCUMENT_TYPE_KEY, this.type);
-            doc.put(Columns.EXPIRY_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.expirationDate));
-        } catch (JSONException e) {
-            doc = null;
-        }
+    public Map<String, Object> toMap() {
+        Map<String, Object> doc = new HashMap<>();
+        doc.put(Columns.DOCUMENT_NUMBER_KEY, this.number);
+        doc.put(Columns.DOCUMENT_TYPE_KEY, this.type);
+        doc.put(Columns.EXPIRY_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.expirationDate));
         return doc;
     }
 }

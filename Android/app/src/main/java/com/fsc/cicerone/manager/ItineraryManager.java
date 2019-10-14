@@ -21,9 +21,9 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -39,7 +39,7 @@ import java.util.Map;
 /**
  * A <i>control</i> class that manages the itineraries.
  */
-public abstract class ItineraryManager {
+public class ItineraryManager {
 
     private ItineraryManager() {
         throw new IllegalStateException("Utility class");

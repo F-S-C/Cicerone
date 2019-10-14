@@ -29,14 +29,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fsc.cicerone.AdminItineraryDetails;
-import com.fsc.cicerone.ItineraryDetails;
-import com.fsc.cicerone.ItineraryManagement;
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.WishlistFragment;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.UserType;
+import com.fsc.cicerone.view.ItineraryDetails;
+import com.fsc.cicerone.view.ItineraryManagement;
+import com.fsc.cicerone.view.WishlistFragment;
+import com.fsc.cicerone.view.admin_view.AdminItineraryDetails;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -102,7 +102,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
                     i = new Intent(context, ItineraryDetails.class);
                 }
             }
-            i.putExtra("itinerary", mData.get(position).toJSONObject().toString());
+            i.putExtra("itinerary", mData.get(position).toMap().toString());
             if (fragment != null) {
                 fragment.startActivityForResult(i, WishlistFragment.REQUEST_UPDATE_WISHLIST);
             }else{

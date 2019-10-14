@@ -16,36 +16,30 @@
 
 package com.fsc.cicerone.manager;
 
-import android.util.Log;
-
-import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Language;
-import com.fsc.cicerone.model.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
- * LanguageManager is used to manage multiple instances of the Language class and to interact
- * with the server.
+ * LanguageManager is used to manage multiple instances of the Language class and to interact with
+ * the server.
  */
 public class LanguageManager {
 
-    private static List<Language> langs;
+    private List<Language> languages;
 
     /**
-     * LanguageManager class constructor. Create an array with the list of languages stored
-     * on the server.
+     * LanguageManager class constructor. Create an array with the list of languages stored on the
+     * server.
      */
     public LanguageManager() {
         new GetDataConnector.Builder<>(ConnectorConstants.REQUEST_LANGUAGES, BusinessEntityBuilder.getFactory(Language.class))
-                .setOnEndConnectionListener(list -> langs = list)
+                .setOnEndConnectionListener(list -> languages = list)
                 .build()
                 .getData();
     }
@@ -56,14 +50,10 @@ public class LanguageManager {
      * @return The list of language names.
      */
     public List<String> getLanguagesNames() {
-        List<String> languageList = new ArrayList<>();
-        for (int i = 0; i < langs.size(); i++) {
-            languageList.add(langs.get(i).getName());
-        }
-        HashSet<String> hashSet = new HashSet<>(languageList);
-        languageList.clear();
-        languageList.addAll(hashSet);
-        return languageList;
+        HashSet<String> hashSet = new HashSet<>(languages.size());
+        for (Language language : languages)
+            hashSet.add(language.getName());
+        return new ArrayList<>(hashSet);
     }
 
     /**
@@ -73,41 +63,14 @@ public class LanguageManager {
      * @return List of languages.
      */
     public List<Language> getLanguagesFromNames(List<String> names) {
-        List<Language> returnLangs = new ArrayList<>();
-        HashSet<String> hashSet = new HashSet<>(names);
-        names.clear();
-        names.addAll(hashSet);
-        for (int i = 0; i < langs.size(); i++) {
-            if (names.contains(langs.get(i).getName())) {
-                returnLangs.add(langs.get(i));
+        List<Language> toReturn = new ArrayList<>(names.size());
+        HashSet<String> hashSet = new HashSet<>(names); // Remove duplicates
+        for (Language language : languages) {
+            if (hashSet.contains(language.getName())) {
+                toReturn.add(language);
             }
         }
-        return returnLangs;
-    }
-
-    /**
-     * Set the languages known by the user in the database.
-     *
-     * @param username      Username.
-     * @param languageToSet List of languages.
-     */
-    public void setUserLanguages(String username, List<Language> languageToSet) {
-        Map<String, Object> data = new HashMap<>(languageToSet.size() + 1);
-        data.put(User.Columns.USERNAME_KEY, username);
-        for (int i = 0; i < languageToSet.size(); i++) {
-            data.put(Language.Columns.LANGUAGE_CODE_KEY, languageToSet.get(i).getCode());
-            Log.i("LANGUAGE", data.toString());
-            new BooleanConnector.Builder(ConnectorConstants.INSERT_USER_LANGUAGE)
-                    .setContext(null)
-                    .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                        if (!result.getResult())
-                            Log.e("ERROR INSERT LANGUAGE", result.getMessage());
-                    })
-                    .setObjectToSend(data)
-                    .build()
-                    .getData();
-        }
-        languageToSet.size();
+        return toReturn;
     }
 
 }

@@ -54,12 +54,7 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the report JOIN report_details query.
      */
-    public static final String REPORT_FRAGMENT = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestReportJoinReportDetails.php";
-
-    /**
-     * URL of the server-side connector for the report JOIN report_details query.
-     */
-    public static final String REQUEST_REPORT = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestReport.php";
+    public static final String REQUEST_REPORT = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestReportJoinReportDetails.php";
 
     /**
      * URL of the server-side connector for the itinerary table.
@@ -169,11 +164,6 @@ public final class ConnectorConstants {
     /**
      * URL of the server-side connector for the document table.
      */
-    public static final String REQUEST_DOCUMENT = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestDocument.php";
-
-    /**
-     * URL of the server-side connector for the document table.
-     */
     public static final String UPDATE_DOCUMENT = SERVER_URL + DB_CONNECTOR_FOLDER + UPDATE_SUBFOLDER + "/UpdateDocument.php";
 
     /**
@@ -192,19 +182,9 @@ public final class ConnectorConstants {
     public static final String REQUEST_LANGUAGES = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestLanguage.php";
 
     /**
-     * URL of the server-side connector for the user_language table.
-     */
-    public static final String INSERT_USER_LANGUAGE = SERVER_URL + DB_CONNECTOR_FOLDER + INSERT_SUBFOLDER + "/InsertUserLanguage.php";
-
-    /**
      * URL of the server-side connector for the user table.
      */
     public static final String INSERT_USER = SERVER_URL + DB_CONNECTOR_FOLDER + INSERT_SUBFOLDER + "/InsertRegisteredUser.php";
-
-    /**
-     * URL of the server-side connector for the document table.
-     */
-    public static final String INSERT_DOCUMENT = SERVER_URL + DB_CONNECTOR_FOLDER + INSERT_SUBFOLDER + "/InsertDocument.php";
 
     /**
      * URL of the server-side connector to insert a new reservation.

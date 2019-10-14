@@ -20,9 +20,9 @@ import android.app.Activity;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -33,7 +33,7 @@ import com.fsc.cicerone.model.Wishlist;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class WishlistManager {
+public class WishlistManager {
 
     private WishlistManager() {
         throw new IllegalStateException("Utility class");

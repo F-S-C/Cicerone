@@ -29,9 +29,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.Refreshable;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.Reservation;
+import com.fsc.cicerone.view.Refreshable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.DateFormat;

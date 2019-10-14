@@ -23,18 +23,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.GetDataConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
-import com.fsc.cicerone.model.Document;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
@@ -45,12 +45,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A <i>control</i> class that manages the users' accounts.
  */
-public abstract class AccountManager {
+public class AccountManager {
 
     private static User currentLoggedUser;
 
@@ -75,7 +74,7 @@ public abstract class AccountManager {
      * @param onEnd       A function to be executed after the login attempt. The boolean value
      *                    contains true if login was successful, false otherwise.
      */
-    public static void attemptLogin(Activity context, User.Credentials credentials, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStart, @Nullable Consumer<Boolean> onEnd) {
+    public static void attemptLogin(@NonNull Activity context, @NonNull User.Credentials credentials, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStart, @Nullable Consumer<Boolean> onEnd) {
         Map<String, Object> params = new HashMap<>(2);
         params.put(User.Columns.USERNAME_KEY, credentials.getUsername());
         params.put(User.Columns.PASSWORD_KEY, credentials.getPassword());
@@ -101,7 +100,7 @@ public abstract class AccountManager {
     /**
      * Logout the current user.
      */
-    public static void logout(Context context) {
+    public static void logout(@NonNull Context context) {
         currentLoggedUser = null;
         NotificationUtils.unsubscribeFromAllTopics(context);
     }
@@ -109,7 +108,7 @@ public abstract class AccountManager {
     /**
      * Delete the current logged account from the system.
      */
-    public static void deleteCurrentAccount(Activity context) {
+    public static void deleteCurrentAccount(@NonNull Activity context) {
         if (!isLogged())
             return;
 
@@ -118,7 +117,7 @@ public abstract class AccountManager {
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
                     if (!result.getResult()) {
                         Log.e("DELETE_USER_ERROR", result.getMessage());
-                    }else{
+                    } else {
                         Mailer.sendAccountDeleteConfirmationEmail(v -> logout(context));
                     }
                 })
@@ -142,7 +141,7 @@ public abstract class AccountManager {
      * @param user   The username to verify.
      * @param result A function to be executed after the check.
      */
-    public static void checkIfUsernameExists(Activity context, String user, Consumer<Boolean> result) {
+    public static void checkIfUsernameExists(@Nullable Activity context, @NonNull String user, @NonNull Consumer<Boolean> result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put(User.Columns.USERNAME_KEY, user);
         new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
@@ -159,7 +158,7 @@ public abstract class AccountManager {
      * @param email  The email to verify.
      * @param result A function to be executed after the check.
      */
-    public static void checkIfEmailExists(Activity context, String email, Consumer<Boolean> result) {
+    public static void checkIfEmailExists(@Nullable Activity context, @NonNull String email, @NonNull Consumer<Boolean> result) {
         Map<String, Object> obj = new HashMap<>(1);
         obj.put(User.Columns.EMAIL_KEY, email);
         new SendInPostConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
@@ -176,39 +175,16 @@ public abstract class AccountManager {
      * @param user     User to insert in the database.
      * @param callback A function to be executed after the insert attempt.
      */
-    public static void insertUser(Activity context, User user, Consumer<Boolean> callback) {
-        Log.i("USERDATA", user.toJSONObject().toString());
+    public static void insertUser(@Nullable Activity context, @NonNull User user, @Nullable Consumer<Boolean> callback) {
+        Log.i("USERDATA", user.toMap().toString());
         new BooleanConnector.Builder(ConnectorConstants.INSERT_USER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    callback.accept(result.getResult());
+                    if (callback != null) callback.accept(result.getResult());
                     if (!result.getResult())
                         Log.e("ERROR INSERT USER", result.getMessage());
                 })
                 .setObjectToSend(SendInPostConnector.paramsFromObject(user)).build()
-                .getData();
-    }
-
-    /**
-     * Inserts a document into the database.
-     *
-     * @param username The username of the document owner.
-     * @param document Document to insert in the database.
-     * @param callback A function to be executed after the insert attempt.
-     */
-    public static void insertUserDocument(Activity context, String username, Document document, Consumer<Boolean> callback) {
-        Map<String, Object> doc = SendInPostConnector.paramsFromObject(document);
-        doc.put(User.Columns.USERNAME_KEY, username);
-        Log.i("DOCUMENT", doc.toString());
-        new BooleanConnector.Builder(ConnectorConstants.INSERT_DOCUMENT)
-                .setContext(context)
-                .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
-                    callback.accept(result.getResult());
-                    if (!result.getResult())
-                        Log.e("ERROR INSERT DOCUMENT", result.getMessage());
-                })
-                .setObjectToSend(doc)
-                .build()
                 .getData();
     }
 
@@ -219,7 +195,7 @@ public abstract class AccountManager {
      * @param username The username.
      * @param t        The TextView to be set with the earnings.
      */
-    public static void userAvgEarnings(Activity context, String username, TextView t) {
+    public static void userAvgEarnings(@NonNull Activity context, @NonNull String username, @NonNull TextView t) {
         Map<String, Object> user = new HashMap<>(1);
         user.put(UserType.CICERONE.toString(), username);
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_RESERVATION_JOIN_ITINERARY, BusinessEntityBuilder.getFactory(Reservation.class))
@@ -240,15 +216,13 @@ public abstract class AccountManager {
                 .getData();
     }
 
-    //TODO
-
     /**
      * Get list of the user that a user can review.
      *
      * @param context The application context.
      * @param users   The user to be reported.
      */
-    public static void setUsersInSpinner(Activity context, Spinner users) {
+    public static void setUsersInSpinner(@NonNull Activity context, @NonNull Spinner users) {
         // TODO: Needs cleanup?
         new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
@@ -259,7 +233,7 @@ public abstract class AccountManager {
                         if (!user.getUsername().equals(AccountManager.getCurrentLoggedUser().getUsername()))
                             cleanList.add(user.getUsername());
                     }
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(context),
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context,
                             android.R.layout.simple_spinner_item, cleanList);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     users.setAdapter(dataAdapter);
@@ -276,7 +250,7 @@ public abstract class AccountManager {
      * @param user     The user to be deleted.
      * @param callback A function to be executed after the insert attempt.
      */
-    public static void deleteAccount(Activity context, User user, @Nullable Consumer<Boolean> callback) {
+    public static void deleteAccount(@Nullable Activity context, User user, @Nullable Consumer<Boolean> callback) {
         new BooleanConnector.Builder(ConnectorConstants.DELETE_REGISTERED_USER)
                 .setContext(context)
                 .setOnEndConnectionListener((BooleanConnector.OnEndConnectionListener) result -> {
@@ -294,7 +268,7 @@ public abstract class AccountManager {
      * @param onStartConnectionListener On start connection callback.
      * @param callback                  A function to be executed after the insert attempt.
      */
-    public static void getListUsers(Activity context, @Nullable GetDataConnector.OnStartConnectionListener onStartConnectionListener, @Nullable GetDataConnector.OnEndConnectionListener<User> callback) {
+    public static void getListUsers(@Nullable Activity context, @Nullable GetDataConnector.OnStartConnectionListener onStartConnectionListener, @Nullable GetDataConnector.OnEndConnectionListener<User> callback) {
         new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)

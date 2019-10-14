@@ -16,6 +16,8 @@ $connector->add_value(array(strtolower($_POST['username']),
     $_POST['user_type'],
     $_POST['cellphone'],
     $_POST['birth_date'],
-    $_POST['sex']
+    $_POST['sex'],
+    "document" => $_POST['document'],
+    "languages" => $_POST['languages']
 ));
 print $connector->get_content();

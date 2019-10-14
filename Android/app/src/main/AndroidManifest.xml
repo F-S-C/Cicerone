@@ -10,56 +10,56 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ForgotPassword"
+            android:name=".view.ForgotPassword"
             android:label="@string/reset_password"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".GlobetrotterItineraryListFragment"
+            android:name=".view.GlobetrotterItineraryListFragment"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".CiceroneItineraryListFragment"
+            android:name=".view.CiceroneItineraryListFragment"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".AdminDetailsUserFragment"
+            android:name=".view.admin_view.AdminDetailsUserFragment"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ReservationFragment"
+            android:name=".view.ReservationFragment"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".AdminUserProfile"
+            android:name=".view.admin_view.AdminUserProfile"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".UsersListFragment"
+            android:name=".view.UsersListFragment"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".view.RegistrationActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".AdminItineraryDetails"
+            android:name=".view.admin_view.AdminItineraryDetails"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AdminReportDetailsActivity"
+            android:name=".view.admin_view.AdminReportDetailsActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".AdminMainActivity"
+            android:name=".view.admin_view.AdminMainActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ChangePasswordActivity"
+            android:name=".view.ChangePasswordActivity"
             android:label="@string/change_password"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".WishlistFragment"
+            android:name=".view.WishlistFragment"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ItineraryUpdate"
+            android:name=".view.ItineraryUpdate"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.UserMainActivity"
             android:label="@string/app_name"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ReportDetailsActivity"
+            android:name=".view.ReportDetailsActivity"
             android:label="@string/report_details_title"
             android:screenOrientation="nosensor">
             <intent-filter>
@@ -67,25 +67,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ItineraryManagement"
+            android:name=".view.ItineraryManagement"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ItineraryDetails"
+            android:name=".view.ItineraryDetails"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ItineraryCreation"
+            android:name=".view.ItineraryCreation"
             android:label="@string/create_itinerary"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".view.ProfileActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.LoginActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".view.SplashActivity"
             android:screenOrientation="nosensor"
             android:theme="@style/SplashTheme">
             <intent-filter>

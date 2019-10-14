@@ -20,9 +20,9 @@ import android.app.Activity;
 
 import androidx.annotation.Nullable;
 
+import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.BooleanConnector;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
-import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
 import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
@@ -33,7 +33,7 @@ import com.fsc.cicerone.model.User;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ReportManager {
+public class ReportManager {
     private ReportManager(){
         throw new IllegalStateException("Utility class");
     }
@@ -150,7 +150,7 @@ public abstract class ReportManager {
     public static void requestReport (Activity context, User user, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Report> callback){
         final Map<String, Object> parameters = new HashMap<>();
         if(user != null) parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
-        new SendInPostConnector.Builder<>(ConnectorConstants.REPORT_FRAGMENT, BusinessEntityBuilder.getFactory(Report.class))
+        new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_REPORT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)
                 .setOnEndConnectionListener(callback)
