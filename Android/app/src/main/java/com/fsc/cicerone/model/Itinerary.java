@@ -191,7 +191,9 @@ public class Itinerary extends BusinessEntity {
         reducedPrice = Float.parseFloat((String) itinerary.get(Columns.REDUCED_PRICE_KEY));
         imageUrl = (String) itinerary.get(Columns.IMG_URL_KEY);
 
-        languages = Language.getSetFromJSONArray((String) itinerary.get(Columns.LANGUAGES_KEY));
+        System.out.println(itinerary.toString());
+
+        languages = Language.getSetFromJSONArray(itinerary.get(Columns.LANGUAGES_KEY).toString());
     }
 
     /**

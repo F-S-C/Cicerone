@@ -118,7 +118,7 @@ public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends A
         } catch (JSONException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             Log.e("EXCEPTION", e.toString());
             Log.e("EXCEPTION", e.getCause().toString());
-            e.getCause().printStackTrace();
+            e.printStackTrace();
         }
     }
 
