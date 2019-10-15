@@ -239,6 +239,9 @@ public abstract class ItineraryModifier extends AppCompatActivity {
             if (min > max) {
                 currentEditText.setError(getString(R.string.wrong_number));
             }
+            else
+                currentEditText.setError(null);
+
         }
     }
 
