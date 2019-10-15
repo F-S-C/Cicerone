@@ -298,4 +298,5 @@
     <string name="notification_to_globetrotter_updated_itinerary">The itinerary \"%1$s\" by  %2$s has been updated. Be sure to check out its new information.</string>
     <string name="notification_title_to_globetrotter_updated_itinerary">Itinerary updated</string>
     <string name="languages">Lingue</string>
+    <string name="empty_language">Please select at least one language</string>
 </resources>
