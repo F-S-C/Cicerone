@@ -17,10 +17,11 @@ class InsertRegisteredUser extends InsertConnector
 
     public function get_content(): string
     {
-        $doc = json_decode($this->values_to_add["document"], true);
-        unset($this->values_to_add["document"]);
+        $doc = array();
         $languages = array();
         foreach ($this->values_to_add as &$row) {
+            $doc = json_decode($row["document"], true);
+            unset($row["document"]);
             if (isset($row["languages"])) {
                 array_push($languages, ...json_decode($row["languages"], true));
                 unset($row["languages"]);
@@ -32,7 +33,7 @@ class InsertRegisteredUser extends InsertConnector
             // Insert Document
             $document_connector = new InsertDocument();
             $document_connector->add_value(array(
-                $this->values_to_add[0],
+                $this->values_to_add[0][0],
                 $doc["document_number"],
                 $doc["document_type"],
                 $doc["expiry_date"]
@@ -41,7 +42,6 @@ class InsertRegisteredUser extends InsertConnector
 
             // Insert Languages
             if (json_decode($to_return, true)[self::RESULT_KEY]) {
-                $id = $this->connection->insert_id;
                 if (!empty($languages)) {
                     $language_connector = new InsertItineraryLanguage();
                     foreach ($languages as $language) {
