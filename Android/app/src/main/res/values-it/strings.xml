@@ -277,4 +277,7 @@
     <string name="empty_language">Seleziona almeno una lingua</string>
     <string name="accept_privacy_policy">"Ho letto e accetto la "</string>
     <string name="privacy_policy_required">E\' necessario accettare la Privacy Policy.</string>
+    <string name="empty_reported_user">Enter your reported user</string>
+    <string name="error_reported_user">Puoi segnalare sono un utente</string>
+    <string name="not_available_in_your_languages">Non disponibiile in una lingua che conosci!</string>
 </resources>

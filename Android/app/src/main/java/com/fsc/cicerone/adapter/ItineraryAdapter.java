@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,17 +33,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.UserType;
 import com.fsc.cicerone.view.ItineraryDetails;
 import com.fsc.cicerone.view.ItineraryManagement;
 import com.fsc.cicerone.view.WishlistFragment;
 import com.fsc.cicerone.view.admin_view.AdminItineraryDetails;
+import com.google.android.material.chip.Chip;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * The ReviewAdapter of the Recycler View for the styles present in the app.
@@ -91,6 +96,9 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         holder.priceTagTextView.setText(String.format(context.getString(R.string.price_value), mData.get(position).getFullPrice()));
         Picasso.get().load(mData.get(position).getImageUrl()).into(holder.imageView);
 
+        holder.setLanguages(mData.get(position).getLanguages());
+        holder.showError(AccountManager.isLogged() && !mData.get(position).isInLanguages(AccountManager.getCurrentLoggedUser().getLanguages()));
+
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             if (mData.get(position).getCicerone().equals(AccountManager.getCurrentLoggedUser())) {
@@ -105,7 +113,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
             i.putExtra("itinerary", mData.get(position).toJSONObject().toString());
             if (fragment != null) {
                 fragment.startActivityForResult(i, WishlistFragment.REQUEST_UPDATE_WISHLIST);
-            }else{
+            } else {
                 context.startActivityForResult(i, ItineraryManagement.RESULT_ITINERARY_DELETED);
             }
         });
@@ -133,7 +141,8 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         TextView ending;
         ImageView imageView;
         TextView priceTagTextView;
-
+        LinearLayout languageContainerLayout;
+        TextView languageErrorTextView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -143,6 +152,24 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
             ending = itemView.findViewById(R.id.ending);
             imageView = itemView.findViewById(R.id.media_image);
             priceTagTextView = itemView.findViewById(R.id.itinerary_price_badge);
+            languageContainerLayout = itemView.findViewById(R.id.language_container);
+            languageErrorTextView = itemView.findViewById(R.id.language_error);
+        }
+
+        void setLanguages(Set<Language> languages) {
+            languageContainerLayout.removeAllViews();
+            for (Language language : languages) {
+                Chip languageChip = new Chip(context);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(4, 4, 4, 4);
+                languageChip.setLayoutParams(layoutParams);
+                languageChip.setText(language.getCode());
+                languageContainerLayout.addView(languageChip);
+            }
+        }
+
+        void showError(boolean show) {
+            languageErrorTextView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 }

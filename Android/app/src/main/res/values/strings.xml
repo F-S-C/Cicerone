@@ -302,4 +302,7 @@
     <string name="accept_privacy_policy">I have read and accept the</string>
     <string name="privacy_policy" translatable="false"><u>Privacy Policy</u>.</string>
     <string name="privacy_policy_required">It is required to accept the Privacy Policy.</string>
+    <string name="empty_reported_user">Enter your reported user</string>
+    <string name="error_reported_user">You can report only one user</string>
+    <string name="not_available_in_your_languages">Not available in your languages!</string>
 </resources>

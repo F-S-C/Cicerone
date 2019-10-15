@@ -28,6 +28,7 @@ import com.fsc.cicerone.R;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ItineraryManager;
+import com.fsc.cicerone.manager.LanguageManager;
 import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.User;
 
@@ -35,13 +36,36 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 
 public class ItineraryCreation extends ItineraryModifier {
 
+    private class LanguageCheckBox {
+        private CheckBox checkBox;
+        private Language language;
+
+        public CheckBox getCheckBox() {
+            return checkBox;
+        }
+
+        public Language getLanguage() {
+            return language;
+        }
+
+        public LanguageCheckBox(CheckBox checkBox, Language language) {
+            this.checkBox = checkBox;
+            this.language = language;
+        }
+
+        public boolean isChecked() {
+            return checkBox.isChecked();
+        }
+    }
+
     LinearLayout languagesLayout;
     User currentLoggedUser;
-    List<CheckBox> checkBoxList;
+    List<LanguageCheckBox> checkBoxList;
 
 
     public ItineraryCreation() {
@@ -68,7 +92,7 @@ public class ItineraryCreation extends ItineraryModifier {
     }
 
     public boolean checkIfLanguagesAreSet() {
-        for (CheckBox language : checkBoxList) {
+        for (LanguageCheckBox language : checkBoxList) {
             if (language.isChecked()) return true;
         }
         return false;
@@ -77,12 +101,9 @@ public class ItineraryCreation extends ItineraryModifier {
     @Override
     public void sendData(View view) {
         if (allFilled() & checkIfLanguagesAreSet()) {
-            Set<Language> languageSet = new HashSet<>();
-            /*for(CheckBox language : checkBoxList)
-            {
-                if language.isChecked()
-                    languageSet.add()
-            }*/
+            Set<Language> languages = new HashSet<>();
+            for (LanguageCheckBox checkBox : checkBoxList)
+                if (checkBox.isChecked()) languages.add(checkBox.getLanguage());
             submit.setEnabled(false);
             submit.setText(R.string.loading);
             imageManager.upload(response -> {
@@ -101,6 +122,7 @@ public class ItineraryCreation extends ItineraryModifier {
                             Integer.parseInt(maxParticipants.getText().toString()),
                             Float.parseFloat(fullPrice.getText().toString()),
                             Float.parseFloat(reducedPrice.getText().toString()),
+                            languages,
                             imgURL,
                             insStatus -> {
                                 if (insStatus.getResult()) {
@@ -148,7 +170,7 @@ public class ItineraryCreation extends ItineraryModifier {
                 reducedPrice.setError(getString(R.string.empty_reduced_price_error));
             if (!imageManager.isSelected())
                 Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_image_error), Toast.LENGTH_SHORT).show();
-            if(!checkIfLanguagesAreSet())
+            if (!checkIfLanguagesAreSet())
                 Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_language), Toast.LENGTH_SHORT).show();
 
         }
@@ -160,17 +182,15 @@ public class ItineraryCreation extends ItineraryModifier {
     }
 
     private void setLanguages() {
-
         languagesLayout = findViewById(R.id.languageLayout);
         currentLoggedUser = AccountManager.getCurrentLoggedUser();
         checkBoxList = new LinkedList<>();
 
         for (Language language : currentLoggedUser.getLanguages()) {
             CheckBox selectLanguage = new CheckBox(ItineraryCreation.this);
-            checkBoxList.add(selectLanguage);
-            languagesLayout.addView(selectLanguage);
             selectLanguage.setText(language.getName());
-
+            checkBoxList.add(new LanguageCheckBox(selectLanguage, language));
+            languagesLayout.addView(selectLanguage);
         }
     }
 }
