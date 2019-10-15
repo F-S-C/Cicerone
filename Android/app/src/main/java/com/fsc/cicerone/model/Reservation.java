@@ -136,9 +136,9 @@ public class Reservation extends BusinessEntity {
     protected void loadFromMap(Map<String, Object> jsonObject) {
         final String ERROR_TAG = "ERR_CREATE_RESERVATION";
 
-        this.client = new User(jsonObject.get(User.Columns.USERNAME_KEY).toString());
+        this.client = new User((String) jsonObject.get(User.Columns.USERNAME_KEY));
 
-        this.itinerary = new Itinerary(jsonObject.get(Columns.BOOKED_ITINERARY_KEY).toString());
+        this.itinerary = new Itinerary((String) jsonObject.get(Columns.BOOKED_ITINERARY_KEY));
 
         this.numberOfChildren = (int) jsonObject.get(Columns.NUMBER_OF_CHILDREN_KEY);
 
@@ -160,7 +160,7 @@ public class Reservation extends BusinessEntity {
 
         try {
             if (jsonObject.containsKey(Columns.CONFIRMATION_DATE_KEY) && jsonObject.get(Columns.CONFIRMATION_DATE_KEY) != null && !jsonObject.get(Columns.CONFIRMATION_DATE_KEY).equals("0000-00-00"))
-                this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.get(Columns.CONFIRMATION_DATE_KEY).toString());
+                this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse((String) jsonObject.get(Columns.CONFIRMATION_DATE_KEY));
             else
                 this.confirmationDate = null;
         } catch (ParseException e) {

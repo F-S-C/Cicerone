@@ -45,7 +45,7 @@ public class UserReview extends Review {
     protected void loadFromMap(Map<String, Object> jsonObject) {
         super.loadFromMap(jsonObject);
 
-        reviewedUser = new User(jsonObject.get(Columns.REVIEWED_USER_KEY).toString());
+        reviewedUser = new User((String) jsonObject.get(Columns.REVIEWED_USER_KEY));
     }
 
     public User getReviewedUser() {

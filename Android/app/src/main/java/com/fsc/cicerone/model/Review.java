@@ -55,9 +55,9 @@ public abstract class Review extends BusinessEntity {
 
     @Override
     protected void loadFromMap(Map<String, Object> jsonObject) {
-        author = new User(jsonObject.get(User.Columns.USERNAME_KEY).toString());
+        author = new User((String) jsonObject.get(User.Columns.USERNAME_KEY));
         feedback = (int) jsonObject.get(Columns.FEEDBACK_KEY);
-        description = jsonObject.get(Columns.DESCRIPTION_KEY).toString();
+        description = (String) jsonObject.get(Columns.DESCRIPTION_KEY);
     }
 
     public User getAuthor() {
