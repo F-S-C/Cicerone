@@ -28,6 +28,7 @@ import com.fsc.cicerone.R;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ItineraryManager;
+import com.fsc.cicerone.manager.LanguageManager;
 import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.User;
 
@@ -35,6 +36,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 
 public class ItineraryCreation extends ItineraryModifier {
@@ -77,12 +79,9 @@ public class ItineraryCreation extends ItineraryModifier {
     @Override
     public void sendData(View view) {
         if (allFilled() & checkIfLanguagesAreSet()) {
-            Set<Language> languageSet = new HashSet<>();
-            /*for(CheckBox language : checkBoxList)
-            {
-                if language.isChecked()
-                    languageSet.add()
-            }*/
+            List<String> languagesNames = new LinkedList<>();
+            for (CheckBox checkBox : checkBoxList)
+                if (checkBox.isSelected()) languagesNames.add(checkBox.getText().toString());
             submit.setEnabled(false);
             submit.setText(R.string.loading);
             imageManager.upload(response -> {
@@ -101,6 +100,7 @@ public class ItineraryCreation extends ItineraryModifier {
                             Integer.parseInt(maxParticipants.getText().toString()),
                             Float.parseFloat(fullPrice.getText().toString()),
                             Float.parseFloat(reducedPrice.getText().toString()),
+                            new HashSet<>(new LanguageManager().getLanguagesFromNames(languagesNames)),
                             imgURL,
                             insStatus -> {
                                 if (insStatus.getResult()) {
@@ -148,7 +148,7 @@ public class ItineraryCreation extends ItineraryModifier {
                 reducedPrice.setError(getString(R.string.empty_reduced_price_error));
             if (!imageManager.isSelected())
                 Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_image_error), Toast.LENGTH_SHORT).show();
-            if(!checkIfLanguagesAreSet())
+            if (!checkIfLanguagesAreSet())
                 Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_language), Toast.LENGTH_SHORT).show();
 
         }

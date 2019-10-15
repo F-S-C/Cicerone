@@ -19,6 +19,7 @@ package com.fsc.cicerone.manager;
 import android.app.Activity;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.fsc.cicerone.app_connector.AsyncDatabaseConnector;
@@ -28,6 +29,7 @@ import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.functional_interfaces.Consumer;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.Language;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A <i>control</i> class that manages the itineraries.
@@ -65,7 +68,7 @@ public class ItineraryManager {
      * @return The new itinerary.
      */
 
-    public static Itinerary uploadItinerary(String title, String description, String beginDate, String endDate, String endReservationDate, String location, String duration, int repetitions, int minParticipants, int maxParticipants, float fullPrice, float reducedPrice, String imageUrl, @Nullable BooleanConnector.OnEndConnectionListener callback) {
+    public static Itinerary uploadItinerary(String title, String description, String beginDate, String endDate, String endReservationDate, String location, String duration, int repetitions, int minParticipants, int maxParticipants, float fullPrice, float reducedPrice, @NonNull Set<Language> languages, String imageUrl, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         SimpleDateFormat in = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date beginningDate;
         Date endingDate;
@@ -99,6 +102,7 @@ public class ItineraryManager {
                 .duration(duration)
                 .fullPrice(fullPrice)
                 .reducedPrice(reducedPrice)
+                .setLanguages(languages)
                 .imageUrl(imageUrl)
                 .build();
 
