@@ -28,7 +28,7 @@ class InsertItinerary extends InsertConnector
 
         if (json_decode($to_return, true)[self::RESULT_KEY]) {
             $id = $this->connection->insert_id;
-            if (empty($languages)) {
+            if (!empty($languages)) {
                 $language_connector = new InsertItineraryLanguage();
                 foreach ($languages as $language) {
                     $language_connector->add_value(array($id, $language["language_code"]));

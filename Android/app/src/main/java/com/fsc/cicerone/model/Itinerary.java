@@ -598,7 +598,9 @@ public class Itinerary extends BusinessEntity {
             result.put(Columns.FULL_PRICE_KEY, this.fullPrice);
             result.put(Columns.REDUCED_PRICE_KEY, this.reducedPrice);
             result.put(Columns.IMG_URL_KEY, this.imageUrl);
-            result.put(Columns.LANGUAGES_KEY, new JSONArray(this.languages));
+            JSONArray jsonArray = new JSONArray();
+            for (Language language : this.languages) jsonArray.put(language.toJSONObject());
+            result.put(Columns.LANGUAGES_KEY, jsonArray);
         } catch (JSONException e) {
             result = null;
         }
