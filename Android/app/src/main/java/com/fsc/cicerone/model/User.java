@@ -182,13 +182,13 @@ public class User extends BusinessEntity {
 
         password = (String) user.get(Columns.PASSWORD_KEY);
 
-        sex = Sex.getValue(user.get(Columns.SEX_KEY).toString());
+        sex = Sex.getValue((String) user.get(Columns.SEX_KEY));
 
         taxCode = (String) user.get(Columns.TAX_CODE_KEY);
 
         username = (String) user.get(Columns.USERNAME_KEY);
 
-        userType = UserType.getValue(Integer.valueOf((String) user.get(Columns.USER_TYPE_KEY)));
+        userType = UserType.getValue((Integer) user.get(Columns.USER_TYPE_KEY));
 
         cellphone = (String) user.get(Columns.CELLPHONE_KEY);
 
@@ -198,9 +198,9 @@ public class User extends BusinessEntity {
             birthDate = null;
         }
 
-        document = new Document(user.get(Columns.DOCUMENT_KEY).toString());
+        document = new Document((String) user.get(Columns.DOCUMENT_KEY));
 
-        languages = Language.getSetFromJSONArray(user.get(Columns.LANGUAGES_KEY).toString());
+        languages = Language.getSetFromJSONArray((String) user.get(Columns.LANGUAGES_KEY));
     }
 
     /**

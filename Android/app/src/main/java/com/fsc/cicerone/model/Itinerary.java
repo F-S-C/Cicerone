@@ -153,7 +153,7 @@ public class Itinerary extends BusinessEntity {
     protected void loadFromMap(Map<String, Object> itinerary) {
         code = (int) itinerary.get(Columns.ITINERARY_CODE_KEY);
 
-        cicerone = new User(itinerary.get(Columns.CICERONE_KEY).toString());
+        cicerone = new User((String) itinerary.get(User.Columns.USERNAME_KEY));
 
         title = (String) itinerary.get(Columns.TITLE_KEY);
 
