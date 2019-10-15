@@ -2,9 +2,12 @@
 
 namespace database_connector\controller\insert;
 
+use database_connector\controller\delete\DeleteRegisteredUser;
+
 require_once "/home/fsc/www/database_connector/controller/insert/InsertConnector.php";
 require_once "/home/fsc/www/database_connector/controller/insert/InsertDocument.php";
 require_once "/home/fsc/www/database_connector/controller/insert/InsertUserLanguage.php";
+require_once "/home/fsc/www/database_connector/controller/delete/DeleteRegisteredUser.php";
 
 /**
  * Insert a new user.
@@ -38,17 +41,20 @@ class InsertRegisteredUser extends InsertConnector
                 $doc["document_type"],
                 $doc["expiry_date"]
             ));
-            $document_connector->get_content();
+            $to_return = $document_connector->get_content();
 
             // Insert Languages
             if (json_decode($to_return, true)[self::RESULT_KEY]) {
                 if (!empty($languages)) {
-                    $language_connector = new InsertItineraryLanguage();
+                    $language_connector = new InsertUserLanguage();
                     foreach ($languages as $language) {
                         $language_connector->add_value(array($this->values_to_add[0][0], $language["language_code"]));
                     }
-                    $language_connector->get_content();
+                    $to_return = $language_connector->get_content();
                 }
+            }
+            if (!json_decode($to_return, true)[self::RESULT_KEY]) {
+                $this->get_from_connector(new DeleteRegisteredUser($this->values_to_add[0][0]));
             }
         }
 
