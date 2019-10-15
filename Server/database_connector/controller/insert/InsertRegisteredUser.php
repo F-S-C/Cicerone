@@ -19,8 +19,13 @@ class InsertRegisteredUser extends InsertConnector
     {
         $doc = json_decode($this->values_to_add["document"], true);
         unset($this->values_to_add["document"]);
-        $languages = json_decode($this->values_to_add["languages"], true);
-        unset($this->values_to_add["languages"]);
+        $languages = array();
+        foreach ($this->values_to_add as &$row) {
+            if (isset($row["languages"])) {
+                array_push($languages, ...json_decode($row["languages"], true));
+                unset($row["languages"]);
+            }
+        }
         $to_return = parent::get_content();
 
         if (json_decode($to_return, true)[self::RESULT_KEY]) {
@@ -35,11 +40,16 @@ class InsertRegisteredUser extends InsertConnector
             $document_connector->get_content();
 
             // Insert Languages
-            $language_connector = new InsertUserLanguage();
-            foreach ($languages as $language) {
-                $language_connector->add_value(array($this->values_to_add[0], $language["language_code"]));
+            if (json_decode($to_return, true)[self::RESULT_KEY]) {
+                $id = $this->connection->insert_id;
+                if (!empty($languages)) {
+                    $language_connector = new InsertItineraryLanguage();
+                    foreach ($languages as $language) {
+                        $language_connector->add_value(array($this->values_to_add[0][0], $language["language_code"]));
+                    }
+                    $language_connector->get_content();
+                }
             }
-            $language_connector->get_content();
         }
 
         return $to_return;
