@@ -20,18 +20,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.Language;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.squareup.picasso.Picasso;
 
@@ -61,7 +62,6 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         Bundle bundle = getIntent().getExtras();
         String s = Objects.requireNonNull(bundle).getString("itinerary");
         itinerary = new Itinerary(s);
-
 
         collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitle(itinerary.getTitle());
@@ -113,6 +113,18 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         eDate.setText(out.format(itinerary.getEndingDate()));
         rDate.setText(out.format(itinerary.getReservationDate()));
         imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
+
+        TextView languagesTextView = new TextView(this);
+        LinearLayout languageLayout = findViewById(R.id.languageL);
+        languageLayout.addView(languagesTextView);
+
+        StringBuilder sb = new StringBuilder();
+        String delimiter = "";
+        for(Language language : itinerary.getLanguages()){
+            sb.append(delimiter).append(language.getName());
+            delimiter = ", ";
+        }
+        languagesTextView.setText(sb.toString());
 
 
         ReviewManager.getAvgItineraryFeedback(ItineraryActivity.this, itinerary, review::setRating);

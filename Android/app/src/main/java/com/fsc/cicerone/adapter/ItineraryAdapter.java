@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.UserType;
 import com.fsc.cicerone.view.ItineraryDetails;
 import com.fsc.cicerone.view.ItineraryManagement;
@@ -91,6 +93,17 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         holder.priceTagTextView.setText(String.format(context.getString(R.string.price_value), mData.get(position).getFullPrice()));
         Picasso.get().load(mData.get(position).getImageUrl()).into(holder.imageView);
 
+        TextView languagesTextView = new TextView(context);
+        holder.languageContainer.addView(languagesTextView);
+
+        StringBuilder sb = new StringBuilder();
+        String delimiter = "";
+        for(Language language : mData.get(position).getLanguages()){
+            sb.append(delimiter).append(language.getCode());
+            delimiter = ", ";
+        }
+        languagesTextView.setText(sb.toString());
+
         holder.itemView.setOnClickListener(v -> {
             Intent i;
             if (mData.get(position).getCicerone().equals(AccountManager.getCurrentLoggedUser())) {
@@ -133,6 +146,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         TextView ending;
         ImageView imageView;
         TextView priceTagTextView;
+        LinearLayout languageContainer;
 
 
         ViewHolder(View itemView) {
@@ -143,6 +157,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
             ending = itemView.findViewById(R.id.ending);
             imageView = itemView.findViewById(R.id.media_image);
             priceTagTextView = itemView.findViewById(R.id.itinerary_price_badge);
+            languageContainer = itemView.findViewById(R.id.language_container);
         }
     }
 }
