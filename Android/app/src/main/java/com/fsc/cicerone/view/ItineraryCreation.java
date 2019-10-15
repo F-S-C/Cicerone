@@ -41,9 +41,31 @@ import java.util.function.Consumer;
 
 public class ItineraryCreation extends ItineraryModifier {
 
+    private class LanguageCheckBox {
+        private CheckBox checkBox;
+        private Language language;
+
+        public CheckBox getCheckBox() {
+            return checkBox;
+        }
+
+        public Language getLanguage() {
+            return language;
+        }
+
+        public LanguageCheckBox(CheckBox checkBox, Language language) {
+            this.checkBox = checkBox;
+            this.language = language;
+        }
+
+        public boolean isChecked() {
+            return checkBox.isChecked();
+        }
+    }
+
     LinearLayout languagesLayout;
     User currentLoggedUser;
-    List<CheckBox> checkBoxList;
+    List<LanguageCheckBox> checkBoxList;
 
 
     public ItineraryCreation() {
@@ -70,7 +92,7 @@ public class ItineraryCreation extends ItineraryModifier {
     }
 
     public boolean checkIfLanguagesAreSet() {
-        for (CheckBox language : checkBoxList) {
+        for (LanguageCheckBox language : checkBoxList) {
             if (language.isChecked()) return true;
         }
         return false;
@@ -79,9 +101,9 @@ public class ItineraryCreation extends ItineraryModifier {
     @Override
     public void sendData(View view) {
         if (allFilled() & checkIfLanguagesAreSet()) {
-            List<String> languagesNames = new LinkedList<>();
-            for (CheckBox checkBox : checkBoxList)
-                if (checkBox.isSelected()) languagesNames.add(checkBox.getText().toString());
+            Set<Language> languages = new HashSet<>();
+            for (LanguageCheckBox checkBox : checkBoxList)
+                if (checkBox.isChecked()) languages.add(checkBox.getLanguage());
             submit.setEnabled(false);
             submit.setText(R.string.loading);
             imageManager.upload(response -> {
@@ -100,7 +122,7 @@ public class ItineraryCreation extends ItineraryModifier {
                             Integer.parseInt(maxParticipants.getText().toString()),
                             Float.parseFloat(fullPrice.getText().toString()),
                             Float.parseFloat(reducedPrice.getText().toString()),
-                            new HashSet<>(new LanguageManager().getLanguagesFromNames(languagesNames)),
+                            languages,
                             imgURL,
                             insStatus -> {
                                 if (insStatus.getResult()) {
@@ -160,17 +182,15 @@ public class ItineraryCreation extends ItineraryModifier {
     }
 
     private void setLanguages() {
-
         languagesLayout = findViewById(R.id.languageLayout);
         currentLoggedUser = AccountManager.getCurrentLoggedUser();
         checkBoxList = new LinkedList<>();
 
         for (Language language : currentLoggedUser.getLanguages()) {
             CheckBox selectLanguage = new CheckBox(ItineraryCreation.this);
-            checkBoxList.add(selectLanguage);
-            languagesLayout.addView(selectLanguage);
             selectLanguage.setText(language.getName());
-
+            checkBoxList.add(new LanguageCheckBox(selectLanguage, language));
+            languagesLayout.addView(selectLanguage);
         }
     }
 }
