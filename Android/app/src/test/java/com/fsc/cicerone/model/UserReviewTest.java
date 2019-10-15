@@ -16,8 +16,6 @@
 
 package com.fsc.cicerone.model;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -26,9 +24,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Objects;
 
 import static junit.framework.TestCase.assertEquals;
@@ -45,7 +40,7 @@ public class UserReviewTest {
         final int feedback = jsonObject.getInt("feedback");
         final String description = jsonObject.getString("description");
 
-        UserReview userReview = new UserReview(jsonObject.toString());
+        UserReview userReview = new UserReview(jsonObject);
 
         assertEquals("field wasn't retrieved properly", user, userReview.getAuthor().getUsername());
         assertEquals("field wasn't retrieved properly", reviewed_user, userReview.getReviewedUser().getUsername());
@@ -68,30 +63,23 @@ public class UserReviewTest {
     }
 
     @Test
-    public void toJSONObject() throws JSONException {
+    public void toJSONObject() throws JSONException{
         JSONObject jsonObject = new JSONObject("{\"username\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"reviewed_user\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"feedback\":2,\"description\":\"ciao\"}");
 
-        UserReview userReview = new UserReview(jsonObject.toString());
+        UserReview userReview = new UserReview(jsonObject);
+        JSONObject obj = userReview.toJSONObject();
 
-        Map<String, Object> map = new HashMap<>(jsonObject.length());
-        Iterator<String> iterator = jsonObject.keys();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            try {
-                map.put(key, jsonObject.get(key));
-            } catch (JSONException e) {
-                Log.e("JSON_READING_EXCEPTION", "key: " + key + ", message: " + e.getMessage());
-            }
-        }
-
-        assertEquals("Fields didn't match", userReview.toMap(), map);
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("reviewed_user")), new User(jsonObject.getJSONObject("reviewed_user")));
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("username")), new User(jsonObject.getJSONObject("username")));
+        assertEquals("Fields didn't match", obj.getInt("feedback"), jsonObject.getInt("feedback"));
+        assertEquals("Fields didn't match", obj.getString("description"), jsonObject.getString("description"));
     }
 
     @Test
     public void setFeedback() throws JSONException, NoSuchFieldException, IllegalAccessException {
         JSONObject jsonObject = new JSONObject("{\"username\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"reviewed_user\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"feedback\":2,\"description\":\"ciao\"}");
         //given
-        final UserReview userReview = new UserReview(jsonObject.toString());
+        final UserReview userReview = new UserReview(jsonObject);
 
         //when
         userReview.setFeedback(4);
@@ -106,7 +94,7 @@ public class UserReviewTest {
     public void setDescription() throws JSONException, NoSuchFieldException, IllegalAccessException {
         JSONObject jsonObject = new JSONObject("{\"username\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"reviewed_user\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"feedback\":2,\"description\":\"ciao\"}");
         //given
-        final UserReview userReview = new UserReview(jsonObject.toString());
+        final UserReview userReview = new UserReview(jsonObject);
 
         //when
         userReview.setDescription("test_description");

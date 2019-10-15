@@ -17,10 +17,13 @@
 package com.fsc.cicerone.app_connector;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
 
-import java.util.HashMap;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public class BooleanConnector extends SendInPostConnector<BooleanConnector.BooleanResult> {
@@ -59,18 +62,22 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
 
         BooleanResult(String json) {
-            this(getMapFromJson(json));
+            super(json);
         }
 
-        BooleanResult(Map<String, Object> jsonObject) {
+        BooleanResult(JSONObject jsonObject) {
             super(jsonObject);
         }
 
         @Override
-        protected void loadFromMap(Map<String, Object> jsonObject) {
-            result = (boolean) jsonObject.get(RESULT_KEY);
-            final String key = result ? MESSAGE_KEY : ERROR_KEY;
-            if (jsonObject.containsKey(key)) message = jsonObject.get(key).toString();
+        protected void loadFromJSONObject(JSONObject jsonObject) {
+            try {
+                result = jsonObject.getBoolean(RESULT_KEY);
+                if (jsonObject.has(result ? MESSAGE_KEY : ERROR_KEY))
+                    message = jsonObject.getString(result ? MESSAGE_KEY : ERROR_KEY);
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage() + " (trying to parse " + jsonObject.toString() + ")");
+            }
         }
 
         public boolean getResult() {
@@ -82,10 +89,14 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
 
         @Override
-        public Map<String, Object> toMap() {
-            Map<String, Object> toReturn = new HashMap<>();
-            toReturn.put(RESULT_KEY, result);
-            toReturn.put(result ? MESSAGE_KEY : ERROR_KEY, message);
+        public JSONObject toJSONObject() {
+            JSONObject toReturn = new JSONObject();
+            try {
+                toReturn.put(RESULT_KEY, result);
+                toReturn.put(result ? MESSAGE_KEY : ERROR_KEY, message);
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage());
+            }
             return toReturn;
         }
     }

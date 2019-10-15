@@ -17,15 +17,16 @@
 package com.fsc.cicerone.model;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -115,7 +116,7 @@ public class Itinerary extends BusinessEntity {
     }
 
     public Itinerary(String json) {
-        this(getMapFromJson(json));
+        this(getJSONObject(json));
     }
 
 
@@ -145,56 +146,106 @@ public class Itinerary extends BusinessEntity {
      *
      * @param jsonObject The JSON object from which data will be fetched.
      */
-    public Itinerary(Map<String, Object> jsonObject) {
-        loadFromMap(jsonObject);
+    public Itinerary(JSONObject jsonObject) {
+        loadFromJSONObject(jsonObject);
     }
 
     @Override
-    protected void loadFromMap(Map<String, Object> itinerary) {
-        code = (int) itinerary.get(Columns.ITINERARY_CODE_KEY);
+    protected void loadFromJSONObject(JSONObject itinerary) {
+        try {
+            code = itinerary.getInt(Columns.ITINERARY_CODE_KEY);
+        } catch (JSONException e) {
+            code = -1;
+        }
 
-        cicerone = new User(itinerary.get(Columns.CICERONE_KEY).toString());
+        try {
+            cicerone = new User(itinerary.getJSONObject(User.Columns.USERNAME_KEY));
+        } catch (JSONException e) {
+            cicerone = null;
+        }
 
-        title = (String) itinerary.get(Columns.TITLE_KEY);
+        try {
+            title = itinerary.getString(Columns.TITLE_KEY);
+        } catch (JSONException e) {
+            title = null;
+        }
 
-        description = (String) itinerary.get(Columns.DESCRIPTION_KEY);
+        try {
+            description = itinerary.getString(Columns.DESCRIPTION_KEY);
+        } catch (JSONException e) {
+            description = null;
+        }
 
         try {
 
-            beginningDate = in.parse((String) itinerary.get(Columns.BEGINNING_DATE_KEY));
-        } catch (ParseException e) {
+            beginningDate = in.parse((itinerary.getString(Columns.BEGINNING_DATE_KEY)));
+        } catch (JSONException | ParseException e) {
             beginningDate = null;
         }
 
         try {
-            endingDate = in.parse((String) itinerary.get(Columns.ENDING_DATE_KEY));
-        } catch (ParseException e) {
+            endingDate = in.parse((itinerary.getString(Columns.ENDING_DATE_KEY)));
+        } catch (JSONException | ParseException e) {
             endingDate = null;
         }
 
         try {
-            reservationDate = in.parse((String) itinerary.get(Columns.END_RESERVATIONS_DATE_KEY));
-        } catch (ParseException e) {
+            reservationDate = in.parse((itinerary.getString(Columns.END_RESERVATIONS_DATE_KEY)));
+        } catch (JSONException | ParseException e) {
             reservationDate = null;
         }
 
-        location = (String) itinerary.get(Columns.LOCATION_KEY);
+        try {
+            location = itinerary.getString(Columns.LOCATION_KEY);
+        } catch (JSONException e) {
+            location = null;
+        }
 
-        duration = (String) itinerary.get(Columns.DURATION_KEY);
+        try {
+            duration = itinerary.getString(Columns.DURATION_KEY);
+        } catch (JSONException e) {
+            duration = null;
+        }
 
-        repetitions = (int) itinerary.get(Columns.REPETITIONS_PER_DAY_KEY);
+        try {
+            repetitions = itinerary.getInt(Columns.REPETITIONS_PER_DAY_KEY);
+        } catch (JSONException e) {
+            repetitions = 0;
+        }
 
-        minParticipants = (int) itinerary.get(Columns.MINIMUM_PARTICIPANTS_KEY);
-        maxParticipants = (int) itinerary.get(Columns.MAXIMUM_PARTICIPANTS_KEY);
+        try {
+            minParticipants = itinerary.getInt(Columns.MINIMUM_PARTICIPANTS_KEY);
+        } catch (JSONException e) {
+            minParticipants = 0;
+        }
+        try {
+            maxParticipants = itinerary.getInt(Columns.MAXIMUM_PARTICIPANTS_KEY);
+        } catch (JSONException e) {
+            maxParticipants = 0;
+        }
 
-        fullPrice = Float.parseFloat((String) itinerary.get(Columns.FULL_PRICE_KEY));
+        try {
+            fullPrice = Float.parseFloat(itinerary.getString(Columns.FULL_PRICE_KEY));
+        } catch (JSONException e) {
+            fullPrice = 0;
+        }
 
-        reducedPrice = Float.parseFloat((String) itinerary.get(Columns.REDUCED_PRICE_KEY));
-        imageUrl = (String) itinerary.get(Columns.IMG_URL_KEY);
+        try {
+            reducedPrice = Float.parseFloat(itinerary.getString(Columns.REDUCED_PRICE_KEY));
+        } catch (JSONException e) {
+            reducedPrice = 0;
+        }
+        try {
+            imageUrl = itinerary.getString(Columns.IMG_URL_KEY);
+        } catch (JSONException e) {
+            imageUrl = null;
+        }
 
-        System.out.println(itinerary.toString());
-
-        languages = Language.getSetFromJSONArray(itinerary.get(Columns.LANGUAGES_KEY).toString());
+        try {
+            languages = Language.getSetFromJSONArray(itinerary.getJSONArray(Columns.LANGUAGES_KEY));
+        } catch (JSONException e) {
+            languages = new HashSet<>();
+        }
     }
 
     /**
@@ -529,24 +580,28 @@ public class Itinerary extends BusinessEntity {
      *
      * @return A JSON Object containing the data that were stored in the object.
      */
-    public Map<String, Object> toMap() {
-        Map<String, Object> result = new HashMap<>();
-        result.put(Columns.ITINERARY_CODE_KEY, this.code);
-        result.put(Columns.TITLE_KEY, this.title);
-        result.put(User.Columns.USERNAME_KEY, this.cicerone.toString());
-        result.put(Columns.DESCRIPTION_KEY, this.description);
-        result.put(Columns.BEGINNING_DATE_KEY, in.format(this.beginningDate));
-        result.put(Columns.ENDING_DATE_KEY, in.format(this.endingDate));
-        result.put(Columns.END_RESERVATIONS_DATE_KEY, in.format(this.reservationDate));
-        result.put(Columns.DURATION_KEY, this.duration);
-        result.put(Columns.LOCATION_KEY, this.location);
-        result.put(Columns.MINIMUM_PARTICIPANTS_KEY, String.valueOf(this.minParticipants));
-        result.put(Columns.MAXIMUM_PARTICIPANTS_KEY, String.valueOf(this.maxParticipants));
-        result.put(Columns.REPETITIONS_PER_DAY_KEY, String.valueOf(this.repetitions));
-        result.put(Columns.FULL_PRICE_KEY, this.fullPrice);
-        result.put(Columns.REDUCED_PRICE_KEY, this.reducedPrice);
-        result.put(Columns.IMG_URL_KEY, this.imageUrl);
-        result.put(Columns.LANGUAGES_KEY, new JSONArray(this.languages));
+    public JSONObject toJSONObject() {
+        JSONObject result = new JSONObject();
+        try {
+            result.put(Columns.ITINERARY_CODE_KEY, this.code);
+            result.put(Columns.TITLE_KEY, this.title);
+            result.put(User.Columns.USERNAME_KEY, this.cicerone.toJSONObject());
+            result.put(Columns.DESCRIPTION_KEY, this.description);
+            result.put(Columns.BEGINNING_DATE_KEY, in.format(this.beginningDate));
+            result.put(Columns.ENDING_DATE_KEY, in.format(this.endingDate));
+            result.put(Columns.END_RESERVATIONS_DATE_KEY, in.format(this.reservationDate));
+            result.put(Columns.DURATION_KEY, this.duration);
+            result.put(Columns.LOCATION_KEY, this.location);
+            result.put(Columns.MINIMUM_PARTICIPANTS_KEY, String.valueOf(this.minParticipants));
+            result.put(Columns.MAXIMUM_PARTICIPANTS_KEY, String.valueOf(this.maxParticipants));
+            result.put(Columns.REPETITIONS_PER_DAY_KEY, String.valueOf(this.repetitions));
+            result.put(Columns.FULL_PRICE_KEY, this.fullPrice);
+            result.put(Columns.REDUCED_PRICE_KEY, this.reducedPrice);
+            result.put(Columns.IMG_URL_KEY, this.imageUrl);
+            result.put(Columns.LANGUAGES_KEY, new JSONArray(this.languages));
+        } catch (JSONException e) {
+            result = null;
+        }
         return result;
     }
 

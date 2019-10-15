@@ -16,10 +16,10 @@
 
 package com.fsc.cicerone.model;
 
-import org.json.JSONObject;
+import android.util.Log;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Report extends BusinessEntity {
 
@@ -50,22 +50,67 @@ public class Report extends BusinessEntity {
     }
 
     public Report(String json) {
-        this(getMapFromJson(json));
+        this(getJSONObject(json));
     }
 
-    public Report(Map<String, Object> jsonObject) {
-        loadFromMap(jsonObject);
+    public Report(JSONObject jsonObject) {
+        loadFromJSONObject(jsonObject);
     }
 
     @Override
-    protected void loadFromMap(Map<String, Object> jsonObject) {
-        System.out.println(jsonObject);
-        code = (int) jsonObject.get(Columns.REPORT_CODE_KEY);
-        author = new User(jsonObject.get(User.Columns.USERNAME_KEY).toString());
-        reportedUser = new User(jsonObject.get(Columns.REPORTED_USER_KEY).toString());
-        object = (String) jsonObject.get(Columns.OBJECT_KEY);
-        body = (String) jsonObject.get(Columns.BODY_KEY);
-        status = ReportStatus.getValue((Integer) jsonObject.get(Columns.STATE_KEY));
+    protected void loadFromJSONObject(JSONObject jsonObject) {
+        int tempCode;
+        User tempAuthor;
+        User tempReportedUser;
+        String tempObject;
+        String tempBody;
+
+        try {
+            tempCode = jsonObject.getInt(Columns.REPORT_CODE_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempCode = 0;
+        }
+        code = tempCode;
+
+        try {
+            tempAuthor = new User(jsonObject.getJSONObject(User.Columns.USERNAME_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempAuthor = new User();
+        }
+        author = tempAuthor;
+
+        try {
+            tempReportedUser = new User(jsonObject.getJSONObject(Columns.REPORTED_USER_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempReportedUser = new User();
+        }
+        reportedUser = tempReportedUser;
+
+        try {
+            tempObject = jsonObject.getString(Columns.OBJECT_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempObject = "Error";
+        }
+        object = tempObject;
+
+        try {
+            tempBody = jsonObject.getString(Columns.BODY_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempBody = "There was an error.";
+        }
+        body = tempBody;
+
+        try {
+            status = ReportStatus.getValue(jsonObject.getInt(Columns.STATE_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            status = ReportStatus.OPEN;
+        }
     }
 
     public int getCode() {
@@ -97,15 +142,39 @@ public class Report extends BusinessEntity {
     }
 
     @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> jsonObject = new HashMap<>();
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put(User.Columns.USERNAME_KEY, author.toString());
-        jsonObject.put(Columns.REPORTED_USER_KEY, reportedUser.toString());
-        jsonObject.put(Columns.REPORT_CODE_KEY, code);
-        jsonObject.put(Columns.OBJECT_KEY, object);
-        jsonObject.put(Columns.BODY_KEY, body);
-        jsonObject.put(Columns.STATE_KEY, status.toInt());
+        try {
+            jsonObject.put(User.Columns.USERNAME_KEY, author.toJSONObject());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.REPORTED_USER_KEY, reportedUser.toJSONObject());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.REPORT_CODE_KEY, code);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.OBJECT_KEY, object);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.BODY_KEY, body);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.STATE_KEY, status.toInt());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
 
         return jsonObject;
     }

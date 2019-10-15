@@ -24,7 +24,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fsc.cicerone.R;
@@ -63,6 +65,12 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
 
         collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitle(itinerary.getTitle());
+
+        setSupportActionBar(findViewById(R.id.toolbar));
+
+        final ActionBar supportActionBar = Objects.requireNonNull(getSupportActionBar());
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
 
 
         swipeRefreshLayout = findViewById(R.id.itinerary_activity_swipe_refresh);

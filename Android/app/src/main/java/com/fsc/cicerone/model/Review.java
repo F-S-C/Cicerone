@@ -16,8 +16,10 @@
 
 package com.fsc.cicerone.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public abstract class Review extends BusinessEntity {
 
@@ -31,7 +33,7 @@ public abstract class Review extends BusinessEntity {
      * A utility class that contains various strings to be used as keys to communicate with the
      * remote server.
      */
-    public static class Columns {
+    public static class Columns{
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
@@ -45,19 +47,38 @@ public abstract class Review extends BusinessEntity {
         // Do nothing
     }
 
-    Review(Map<String, Object> jsonObject) {
-        loadFromMap(jsonObject);
+    Review(JSONObject jsonObject) {
+        loadFromJSONObject(jsonObject);
     }
 
     Review(String json) {
-        this(getMapFromJson(json));
+        this(getJSONObject(json));
     }
 
     @Override
-    protected void loadFromMap(Map<String, Object> jsonObject) {
-        author = new User(jsonObject.get(User.Columns.USERNAME_KEY).toString());
-        feedback = (int) jsonObject.get(Columns.FEEDBACK_KEY);
-        description = jsonObject.get(Columns.DESCRIPTION_KEY).toString();
+    protected void loadFromJSONObject(JSONObject jsonObject) {
+        User tempAuthor;
+        try {
+            tempAuthor = new User(jsonObject.getJSONObject(User.Columns.USERNAME_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempAuthor = new User();
+        }
+        author = tempAuthor;
+
+        try {
+            feedback = jsonObject.getInt(Columns.FEEDBACK_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            feedback = 0;
+        }
+
+        try {
+            description = jsonObject.getString(Columns.DESCRIPTION_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            description = "Error loading description";
+        }
     }
 
     public User getAuthor() {
@@ -83,11 +104,23 @@ public abstract class Review extends BusinessEntity {
     }
 
     @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> jsonObject = new HashMap<>();
-        jsonObject.put(User.Columns.USERNAME_KEY, author.toString());
-        jsonObject.put(Columns.DESCRIPTION_KEY, description);
-        jsonObject.put(Columns.FEEDBACK_KEY, feedback);
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(User.Columns.USERNAME_KEY, author.toJSONObject());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.DESCRIPTION_KEY, description);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.FEEDBACK_KEY, feedback);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
         return jsonObject;
     }
 

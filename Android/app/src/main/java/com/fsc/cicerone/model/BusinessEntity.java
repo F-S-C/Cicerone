@@ -23,26 +23,22 @@ import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 public abstract class BusinessEntity {
 
     protected BusinessEntity() {
     }
 
-    public BusinessEntity(Map<String, Object> jsonObject) {
-        loadFromMap(jsonObject);
+    public BusinessEntity(JSONObject jsonObject) {
+        loadFromJSONObject(jsonObject);
     }
 
     public BusinessEntity(String json) {
-        this.loadFromMap(getMapFromJson(json));
+        this.loadFromJSONObject(getJSONObject(json));
     }
 
-    public abstract Map<String, Object> toMap();
+    public abstract JSONObject toJSONObject();
 
-    protected static Map<String, Object> getMapFromJson(String json) {
+    protected static JSONObject getJSONObject(String json) {
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(json);
@@ -51,35 +47,14 @@ public abstract class BusinessEntity {
             Log.e("JSON_PARSING_EXCEPTION", errorMessage);
             jsonObject = new JSONObject();
         }
-
-        Map<String, Object> map = new HashMap<>(jsonObject.length());
-        Iterator<String> iterator = jsonObject.keys();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            try {
-                map.put(key, jsonObject.get(key));
-            } catch (JSONException e) {
-                Log.e("JSON_READING_EXCEPTION", "key: " + key + ", message: " + e.getMessage());
-            }
-        }
-
-        return map;
+        return jsonObject;
     }
 
-    protected abstract void loadFromMap(Map<String, Object> jsonObject);
+    protected abstract void loadFromJSONObject(JSONObject jsonObject);
 
     @NonNull
     @Override
     public String toString() {
-        Map<String, Object> map = toMap();
-        JSONObject jsonObject = new JSONObject();
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            try {
-                jsonObject.put(entry.getKey(), entry.getValue().toString());
-            } catch (JSONException e) {
-                Log.e("ERROR_CREATING_JSON", "error in inserting " + entry.getKey() + "/" + entry.getValue());
-            }
-        }
-        return jsonObject.toString();
+        return toJSONObject().toString();
     }
 }

@@ -16,8 +16,6 @@
 
 package com.fsc.cicerone.model;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -25,9 +23,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -39,15 +34,15 @@ public class ReportTest {
         final String string = "{\"report_code\":93,\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"reported_user\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"report_body\":\"Funghi?\",\"state\":3,\"object\":\"ciao\"}";
 
         final JSONObject jsonObject = new JSONObject(string);
-        final Report report = new Report(jsonObject.toString());
+        final Report report = new Report(jsonObject);
 
         final String TAG = "Fields not setted properly";
         assertEquals(TAG, report.getCode(), jsonObject.getInt("report_code"));
         assertEquals(TAG, report.getBody(), jsonObject.getString("report_body"));
         assertEquals(TAG, report.getObject(), jsonObject.getString("object"));
         assertEquals(TAG, report.getStatus().toInt().intValue(), jsonObject.getInt("state"));
-        assertEquals(TAG, report.getAuthor(), new User(jsonObject.getString("username")));
-        assertEquals(TAG, report.getReportedUser(), new User(jsonObject.getString("reported_user")));
+        assertEquals(TAG, report.getAuthor(),  new User(jsonObject.getJSONObject("username")));
+        assertEquals(TAG, report.getReportedUser(),  new User(jsonObject.getJSONObject("reported_user")));
     }
 
     @Test
@@ -141,7 +136,7 @@ public class ReportTest {
         final ReportStatus result = report.getStatus();
 
         //then
-        assertEquals("field wasn't retrieved properly", result, ReportStatus.CANCELED);
+        assertEquals("field wasn't retrieved properly", result,  ReportStatus.CANCELED);
     }
 
     @Test
@@ -160,21 +155,16 @@ public class ReportTest {
     }
 
     @Test
-    public void toJSONObject() throws JSONException {
+    public void toJSONObject()  throws JSONException {
         JSONObject jsonObject = new JSONObject("{\"report_code\":93,\"username\":{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc\\/zhzmM.zhgx9ptLNFmG0\\/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25\\/02\\/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]},\"reported_user\":{\"username\":\"utente2\",\"tax_code\":\"ut200000\",\"name\":\"Utente2\",\"surname\":\"Utente2\",\"password\":\"$2y$10$BZvdUkj41uVSK6chVnkh\\/uHoIOMNxpVigdC6mlnVoSb\\/0IgclUh0a\",\"email\":\"a.esposito39@studenti.uniba.it\",\"user_type\":\"1\",\"cellphone\":\"1245637897\",\"birth_date\":\"1998-02-06\",\"sex\":\"female\",\"document\":{\"document_number\":\"ut0009\",\"document_type\":\"identity card\",\"expiry_date\":\"2019-09-27\"},\"languages\":[]},\"report_body\":\"Funghi?\",\"state\":3,\"object\":\"ciao\"}");
-        Report report = new Report(jsonObject.toString());
+        Report report = new Report(jsonObject);
+        JSONObject obj = report.toJSONObject();
 
-        Map<String, Object> map = new HashMap<>(jsonObject.length());
-        Iterator<String> iterator = jsonObject.keys();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            try {
-                map.put(key, jsonObject.get(key));
-            } catch (JSONException e) {
-                Log.e("JSON_READING_EXCEPTION", "key: " + key + ", message: " + e.getMessage());
-            }
-        }
-
-        assertEquals("Fields didn't match", report.toMap(), map);
+        assertEquals("Fields didn't match", obj.getInt("report_code"), jsonObject.getInt("report_code"));
+        assertEquals("Fields didn't match", obj.getString("object"), jsonObject.getString("object"));
+        assertEquals("Fields didn't match", obj.getString("report_body"), jsonObject.getString("report_body"));
+        assertEquals("Fields didn't match", obj.getString("state"), jsonObject.getString("state"));
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("username")),new User(jsonObject.getJSONObject("username")));
+        assertEquals("Fields didn't match", new User(obj.getJSONObject("reported_user")), new User(jsonObject.getJSONObject("reported_user")));
     }
 }

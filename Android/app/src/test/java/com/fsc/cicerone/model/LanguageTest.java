@@ -16,8 +16,6 @@
 
 package com.fsc.cicerone.model;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,9 +24,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -43,7 +39,7 @@ public class LanguageTest {
 
         final String string = "[{\"language_code\":\"fr\",\"language_name\":\"French\"},{\"language_code\":\"de\",\"language_name\":\"German\"},{\"language_code\":\"es\",\"language_name\":\"Spanish\"},{\"language_code\":\"uk\",\"language_name\":\"English (UK)\"},{\"language_code\":\"us\",\"language_name\":\"English (US)\"},{\"language_code\":\"it\",\"language_name\":\"Italian\"}]";
         JSONArray jsonArray = new JSONArray(string);
-        Set<Language> languages = Language.getSetFromJSONArray(jsonArray.toString());
+        Set<Language> languages = Language.getSetFromJSONArray(jsonArray);
 
         assertEquals("Size is different", languages.size(), jsonArray.length());
         for (Language language : languages) {
@@ -64,7 +60,7 @@ public class LanguageTest {
         final String string = "{\"language_code\":\"IT\",\"language_name\":\"Italian\"}";
 
         final JSONObject jsonObject = new JSONObject(string);
-        final Language language = new Language(jsonObject.toString());
+        final Language language = new Language(jsonObject);
 
         final String TAG = "Fields not setted properly";
         assertEquals(TAG, language.getCode(), jsonObject.getString("language_code"));
@@ -74,21 +70,11 @@ public class LanguageTest {
     @Test
     public void toJSONObject() throws JSONException {
         JSONObject jsonObject = new JSONObject("{\"language_code\":\"IT\",\"language_name\":\"Italian\"}");
+        Language language = new Language(jsonObject);
+        JSONObject obj = language.toJSONObject();
 
-        Map<String, Object> map = new HashMap<>(jsonObject.length());
-        Iterator<String> iterator = jsonObject.keys();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            try {
-                map.put(key, jsonObject.get(key));
-            } catch (JSONException e) {
-                Log.e("JSON_READING_EXCEPTION", "key: " + key + ", message: " + e.getMessage());
-            }
-        }
-
-        Language language = new Language(jsonObject.toString());
-
-        assertEquals("Fields didn't match", language.toMap(), map);
+        assertEquals("Fields didn't match", obj.getString("language_code"), jsonObject.getString("language_code"));
+        assertEquals("Fields didn't match", obj.getString("language_name"), jsonObject.getString("language_name"));
     }
 
     @Test
