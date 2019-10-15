@@ -301,4 +301,5 @@
     <string name="empty_language">Please select at least one language</string>
     <string name="empty_reported_user">Enter your reported user</string>
     <string name="error_reported_user">You can report only one user</string>
+    <string name="not_available_in_your_languages">Not available in your languages!</string>
 </resources>
