@@ -299,4 +299,7 @@
     <string name="notification_title_to_globetrotter_updated_itinerary">Itinerary updated</string>
     <string name="languages">Lingue</string>
     <string name="empty_language">Please select at least one language</string>
+    <string name="accept_privacy_policy">I have read and accept the</string>
+    <string name="privacy_policy" translatable="false"><u>Privacy Policy</u>.</string>
+    <string name="privacy_policy_required">It is required to accept the Privacy Policy.</string>
 </resources>

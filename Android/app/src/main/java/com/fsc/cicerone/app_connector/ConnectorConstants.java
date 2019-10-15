@@ -235,6 +235,11 @@ public final class ConnectorConstants {
      * URL of the images folder on the server.
      */
     public static final String IMG_FOLDER = SERVER_URL + "/images/";
+
+    /**
+     * URL of the privacy policy page on the server.
+     */
+    public static final String PRIVACY_POLICY = SERVER_URL + "/privacy_policy.html";
 }
 
 

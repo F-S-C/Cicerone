@@ -275,4 +275,6 @@
     <string name="notification_to_globetrotter_updated_itinerary">L\'itinerario \"%1$s\" di %2$s è stato aggiornato. Assicurati di controllare le sue nuove informazioni.</string>
     <string name="languages">Lingue</string>
     <string name="empty_language">Seleziona almeno una lingua</string>
+    <string name="accept_privacy_policy">"Ho letto e accetto la "</string>
+    <string name="privacy_policy_required">E\' necessario accettare la Privacy Policy.</string>
 </resources>

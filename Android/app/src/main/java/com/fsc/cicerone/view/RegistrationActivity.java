@@ -19,22 +19,29 @@ package com.fsc.cicerone.view;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.LanguageManager;
@@ -72,6 +79,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText docNumber;
     private EditText docType;
     private EditText expDate;
+    private CheckBox checkPrivacyPolicy;
     private Spinner sex;
     private NachoTextView nachoTextView;
     private static final Pattern LETTERS_NUMBERS = Pattern.compile("[a-zA-Z0-9]+");
@@ -79,6 +87,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private static final Pattern CONTROL_PHONE_NUMBER = Pattern.compile("[+]?[0-9]+");
     private Calendar birthCalendar = Calendar.getInstance(TimeZone.getDefault());
     private Calendar expCalendar = Calendar.getInstance(TimeZone.getDefault());
+    private LanguageManager languages = new LanguageManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +115,13 @@ public class RegistrationActivity extends AppCompatActivity {
         viewFlipper.setInAnimation(this, R.anim.in_from_right);
         viewFlipper.setOutAnimation(this, R.anim.out_to_left);
         nachoTextView = findViewById(R.id.selectLanguage);
+        checkPrivacyPolicy = findViewById(R.id.privacyCheckBox);
+        TextView privacyPolicyText = findViewById(R.id.privacypolicy);
+
+        privacyPolicyText.setOnClickListener( v -> {
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(ConnectorConstants.PRIVACY_POLICY));
+        startActivity(launchBrowser);
+        });
 
         DatePickerDialog.OnDateSetListener birthDateSelect = (view, year, monthOfYear, dayOfMonth) -> {
             birthCalendar.set(Calendar.YEAR, year);
@@ -301,6 +317,7 @@ public class RegistrationActivity extends AppCompatActivity {
         docType.setError(null);
         expDate.setError(null);
         nachoTextView.setError(null);
+        checkPrivacyPolicy.setError(null);
 
         if (docNumber.getText().toString().trim().isEmpty() || specialCharactersNoSpace(docNumber.getText().toString().trim())) {
             docNumber.setError(getString(R.string.document_not_valid));
@@ -319,10 +336,15 @@ public class RegistrationActivity extends AppCompatActivity {
         } else if (nachoTextView.getChipValues().size() < 1) {
             nachoTextView.setError(getString(R.string.error_fields_empty));
             return false;
-        } else {
+        } else if(!checkPrivacyPolicy.isChecked()) {
+            checkPrivacyPolicy.setError(getString(R.string.privacy_policy_required));
+            return false;
+        }else{
             docNumber.setError(null);
             docType.setError(null);
+            expDate.setError(null);
             nachoTextView.setError(null);
+            checkPrivacyPolicy.setError(null);
             return true;
         }
     }
@@ -338,7 +360,6 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private User setNewUser() {
-        LanguageManager languages = new LanguageManager();
         ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());
         return new User.Builder(username.getText().toString().trim().toLowerCase(), password.getText().toString())
                 .setUserType(UserType.GLOBETROTTER)
