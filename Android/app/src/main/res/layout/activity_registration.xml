@@ -290,8 +290,9 @@
 
             </LinearLayout>
         </ScrollView>
+
     </RelativeLayout>
-    <!--- SECOND PAGE -->
+
     <RelativeLayout
         android:id="@+id/registrationPage2"
         android:layout_width="match_parent"
@@ -301,20 +302,22 @@
         android:orientation="vertical"
         android:padding="25dp"
         tools:context=".view.RegistrationActivity">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <LinearLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
-            <TextView
+                <TextView
                     android:id="@+id/greatText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -324,14 +327,14 @@
                     android:textSize="46sp"
                     android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/lastStep"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/last_step_text"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/lastStep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/last_step_text"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -396,45 +399,74 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_style"
                     android:ems="10"
+                    android:focusableInTouchMode="false"
                     android:inputType="date"
                     android:singleLine="true"
-                    android:focusableInTouchMode="false"
                     android:textColor="@color/colorWhite" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
-            <TextView
-                android:id="@+id/languageText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/known_languages"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/languageText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/known_languages"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp" />
 
-            <com.hootsuite.nachos.NachoTextView
-                android:id="@+id/selectLanguage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:padding="10dp"
-                app:chipHeight="30dp"
-                app:chipTextColor="@color/colorWhite"
-                app:chipTextSize="16dp"
-                app:chipVerticalSpacing="3dp" />
+                <com.hootsuite.nachos.NachoTextView
+                    android:id="@+id/selectLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background"
+                    android:padding="10dp"
+                    app:chipHeight="30dp"
+                    app:chipTextColor="@color/colorWhite"
+                    app:chipTextSize="16dp"
+                    app:chipVerticalSpacing="3dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
-            <Button
-                android:id="@+id/signUpButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_up" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/privacyCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorWhite"
+                        android:colorControlActivated="@color/colorPrimaryDark"
+                        android:colorControlHighlight="@color/colorPrimary"
+                        android:colorControlNormal="@color/colorWhite"
+                        android:text="@string/accept_privacy_policy"
+                        android:textColor="@color/colorWhite" />
+
+                    <TextView
+                        android:id="@+id/privacypolicy"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginRight="3sp"
+                        android:layout_weight="1"
+                        android:text="@string/privacy_policy"
+                        android:textColor="@color/colorWhite" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/signUpButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_up" />
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
+
+    <!--- SECOND PAGE -->
     <!-- THIRD PAGE -->
 </ViewFlipper>
