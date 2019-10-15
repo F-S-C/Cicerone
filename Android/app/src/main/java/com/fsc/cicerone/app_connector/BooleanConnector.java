@@ -17,8 +17,12 @@
 package com.fsc.cicerone.app_connector;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.fsc.cicerone.model.BusinessEntity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
