@@ -115,7 +115,6 @@ public class ItineraryUpdate extends ItineraryModifier {
             }
             setResult(Activity.RESULT_OK);
             finish();
-
         } else {
             if (title.getText().toString().equals(""))
                 title.setError(getString(R.string.empty_title_error));

@@ -16,6 +16,7 @@
 
 package com.fsc.cicerone.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -116,6 +117,8 @@ public class ItineraryCreation extends ItineraryModifier {
                     Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + response.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+            setResult(Activity.RESULT_OK);
+            finish();
         } else {
             if (title.getText().toString().equals(""))
                 title.setError(getString(R.string.empty_title_error));
