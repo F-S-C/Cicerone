@@ -21,8 +21,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Map;
-
 public class UserReview extends Review {
     private User reviewedUser;
 
@@ -34,23 +32,29 @@ public class UserReview extends Review {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
-
         public static final String REVIEWED_USER_KEY = "reviewed_user";
     }
 
-    public UserReview(Map<String, Object> jsonObject) {
-        loadFromMap(jsonObject);
+    public UserReview(JSONObject jsonObject) {
+        loadFromJSONObject(jsonObject);
     }
 
     public UserReview(String json) {
-        this(getMapFromJson(json));
+        this(getJSONObject(json));
     }
 
     @Override
-    protected void loadFromMap(Map<String, Object> jsonObject) {
-        super.loadFromMap(jsonObject);
+    protected void loadFromJSONObject(JSONObject jsonObject) {
+        super.loadFromJSONObject(jsonObject);
 
-        reviewedUser = new User((String) jsonObject.get(Columns.REVIEWED_USER_KEY));
+        User tempReviewedUser;
+        try {
+            tempReviewedUser = new User(jsonObject.getJSONObject(Columns.REVIEWED_USER_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempReviewedUser = new User();
+        }
+        reviewedUser = tempReviewedUser;
     }
 
     public User getReviewedUser() {

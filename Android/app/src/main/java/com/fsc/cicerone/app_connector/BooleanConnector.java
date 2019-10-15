@@ -65,15 +65,19 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
             super(json);
         }
 
-        BooleanResult(Map<String, Object> jsonObject) {
+        BooleanResult(JSONObject jsonObject) {
             super(jsonObject);
         }
 
         @Override
-        protected void loadFromMap(Map<String, Object> jsonObject) {
-            result = (boolean) jsonObject.get(RESULT_KEY);
-            if (jsonObject.containsKey(result ? MESSAGE_KEY : ERROR_KEY))
-                message = (String) jsonObject.get(result ? MESSAGE_KEY : ERROR_KEY);
+        protected void loadFromJSONObject(JSONObject jsonObject) {
+            try {
+                result = jsonObject.getBoolean(RESULT_KEY);
+                if (jsonObject.has(result ? MESSAGE_KEY : ERROR_KEY))
+                    message = jsonObject.getString(result ? MESSAGE_KEY : ERROR_KEY);
+            } catch (JSONException e) {
+                Log.e(ERROR_TAG, e.getMessage() + " (trying to parse " + jsonObject.toString() + ")");
+            }
         }
 
         public boolean getResult() {

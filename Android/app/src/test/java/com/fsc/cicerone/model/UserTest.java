@@ -31,7 +31,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -72,7 +71,7 @@ public class UserTest {
     public void loadFromJSONObject() throws JSONException {
         final String string = "{\"username\":\"pupazzomatto\",\"tax_code\":\"shslll00a00l028s\",\"name\":\"aaa\",\"surname\":\"ddd\",\"password\":\"$2y$10$rLCM3wzhLSIvvWNj1XUkVeB7GIMVWPA85DCzektYvYAfshUIBEx..\",\"email\":\"a.annese99@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"468649986460\",\"birth_date\":\"1986-09-27\",\"sex\":\"male\",\"document\":{\"document_number\":\"cjsndncncnsn\",\"document_type\":\"cjcjcj\",\"expiry_date\":\"2020-06-26\"},\"languages\":[{\"username\":\"pupazzomatto\",\"language_code\":\"IT\",\"language_name\":\"Italian\"}]}";
 
-        final Map<String, Object> jsonObject = new JSONObject(string);
+        final JSONObject jsonObject = new JSONObject(string);
         final User user = new User(jsonObject);
 
         final SimpleDateFormat output = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
@@ -457,7 +456,7 @@ public class UserTest {
 
     @Test
     public void toJSONObject() throws JSONException, ParseException {
-        Map<String, Object> jsonObject = new JSONObject("{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc/zhzmM.zhgx9ptLNFmG0/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25/02/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}");
+        JSONObject jsonObject = new JSONObject("{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc/zhzmM.zhgx9ptLNFmG0/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25/02/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}");
 
         User user = new User(jsonObject);
         JSONObject obj = user.toJSONObject();

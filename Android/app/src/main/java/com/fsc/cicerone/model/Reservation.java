@@ -27,7 +27,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
 public class Reservation extends BusinessEntity {
 
@@ -40,7 +39,7 @@ public class Reservation extends BusinessEntity {
     private Date forwardingDate;
     private Date confirmationDate = null;
 
-    public static class Columns {
+    public static class Columns{
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
@@ -130,46 +129,70 @@ public class Reservation extends BusinessEntity {
         return result;
     }
 
-    public Reservation(Map<String, Object> jsonObject) {
-        loadFromMap(jsonObject);
+    public Reservation(JSONObject jsonObject) {
+        loadFromJSONObject(jsonObject);
     }
 
     public Reservation(String json) {
-        this(getMapFromJson(json));
+        this(getJSONObject(json));
     }
 
     @Override
-    protected void loadFromMap(Map<String, Object> jsonObject) {
+    protected void loadFromJSONObject(JSONObject jsonObject) {
         final String ERROR_TAG = "ERR_CREATE_RESERVATION";
 
-        this.client = new User((String) jsonObject.get(User.Columns.USERNAME_KEY));
+        User tempClient;
+        try {
+            tempClient = new User(jsonObject.getJSONObject(User.Columns.USERNAME_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempClient = new User();
+        }
+        this.client = tempClient;
 
-        this.itinerary = new Itinerary((String) jsonObject.get(Columns.BOOKED_ITINERARY_KEY));
-
-        this.numberOfChildren = (int) jsonObject.get(Columns.NUMBER_OF_CHILDREN_KEY);
-
-        this.numberOfAdults = (int) jsonObject.get(Columns.NUMBER_OF_ADULTS_KEY);
+        Itinerary tempItinerary;
+        try {
+            tempItinerary = new Itinerary(jsonObject.getJSONObject(Columns.BOOKED_ITINERARY_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempItinerary = new Itinerary();
+        }
+        this.itinerary = tempItinerary;
 
         try {
-            this.requestedDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse((String) jsonObject.get(Columns.REQUESTED_DATE_KEY));
-        } catch (ParseException e) {
+            this.numberOfChildren = jsonObject.getInt(Columns.NUMBER_OF_CHILDREN_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            this.numberOfChildren = 0;
+        }
+
+        try {
+            this.numberOfAdults = jsonObject.getInt(Columns.NUMBER_OF_ADULTS_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            this.numberOfAdults = 0;
+        }
+
+        try {
+            this.requestedDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString(Columns.REQUESTED_DATE_KEY));
+        } catch (JSONException | ParseException e) {
             Log.e(ERROR_TAG, e.getMessage());
             this.requestedDate = null;
         }
 
         try {
-            this.forwardingDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse((String) jsonObject.get("forwading_date"));
-        } catch (ParseException e) {
+            this.forwardingDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("forwading_date"));
+        } catch (JSONException | ParseException e) {
             Log.e(ERROR_TAG, e.getMessage());
             this.forwardingDate = null;
         }
 
         try {
-            if (jsonObject.containsKey(Columns.CONFIRMATION_DATE_KEY) && jsonObject.get(Columns.CONFIRMATION_DATE_KEY) != null && !jsonObject.get(Columns.CONFIRMATION_DATE_KEY).equals("0000-00-00"))
-                this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse((String) jsonObject.get(Columns.CONFIRMATION_DATE_KEY));
+            if (jsonObject.has(Columns.CONFIRMATION_DATE_KEY) && jsonObject.get(Columns.CONFIRMATION_DATE_KEY) != null && !jsonObject.getString(Columns.CONFIRMATION_DATE_KEY).equals("0000-00-00"))
+                this.confirmationDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString(Columns.CONFIRMATION_DATE_KEY));
             else
                 this.confirmationDate = null;
-        } catch (ParseException e) {
+        } catch (JSONException | ParseException e) {
             Log.d(ERROR_TAG, e.getMessage());
             this.confirmationDate = null;
         }

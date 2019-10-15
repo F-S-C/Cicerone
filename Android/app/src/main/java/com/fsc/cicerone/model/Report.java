@@ -21,8 +21,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Map;
-
 public class Report extends BusinessEntity {
 
     private int code;
@@ -52,21 +50,67 @@ public class Report extends BusinessEntity {
     }
 
     public Report(String json) {
-        this(getMapFromJson(json));
+        this(getJSONObject(json));
     }
 
-    public Report(Map<String, Object> jsonObject) {
-        loadFromMap(jsonObject);
+    public Report(JSONObject jsonObject) {
+        loadFromJSONObject(jsonObject);
     }
 
     @Override
-    protected void loadFromMap(Map<String, Object> jsonObject) {
-        code = (int) jsonObject.get(Columns.REPORT_CODE_KEY);
-        author = new User((String) jsonObject.get(User.Columns.USERNAME_KEY));
-        reportedUser = new User((String) jsonObject.get(Columns.REPORTED_USER_KEY));
-        object = (String) jsonObject.get(Columns.OBJECT_KEY);
-        body = (String) jsonObject.get(Columns.BODY_KEY);
-        status = ReportStatus.getValue((Integer) jsonObject.get(Columns.STATE_KEY));
+    protected void loadFromJSONObject(JSONObject jsonObject) {
+        int tempCode;
+        User tempAuthor;
+        User tempReportedUser;
+        String tempObject;
+        String tempBody;
+
+        try {
+            tempCode = jsonObject.getInt(Columns.REPORT_CODE_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempCode = 0;
+        }
+        code = tempCode;
+
+        try {
+            tempAuthor = new User(jsonObject.getJSONObject(User.Columns.USERNAME_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempAuthor = new User();
+        }
+        author = tempAuthor;
+
+        try {
+            tempReportedUser = new User(jsonObject.getJSONObject(Columns.REPORTED_USER_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempReportedUser = new User();
+        }
+        reportedUser = tempReportedUser;
+
+        try {
+            tempObject = jsonObject.getString(Columns.OBJECT_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempObject = "Error";
+        }
+        object = tempObject;
+
+        try {
+            tempBody = jsonObject.getString(Columns.BODY_KEY);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            tempBody = "There was an error.";
+        }
+        body = tempBody;
+
+        try {
+            status = ReportStatus.getValue(jsonObject.getInt(Columns.STATE_KEY));
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+            status = ReportStatus.OPEN;
+        }
     }
 
     public int getCode() {
