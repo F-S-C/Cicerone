@@ -55,7 +55,7 @@ public class ItineraryReview extends Review {
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> object = super.toMap();
-        object.put(Columns.REVIEWED_ITINERARY_KEY, reviewedItinerary.toString());
+        object.put(Columns.REVIEWED_ITINERARY_KEY, reviewedItinerary.toMap());
         return object;
     }
 

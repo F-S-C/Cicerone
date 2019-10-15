@@ -107,8 +107,8 @@ public class Reservation extends BusinessEntity {
      */
     public Map<String, Object> toMap() {
         Map<String, Object> result = new HashMap<>();
-        result.put(User.Columns.USERNAME_KEY, this.client.toString());
-        result.put(Columns.BOOKED_ITINERARY_KEY, this.itinerary.toString());
+        result.put(User.Columns.USERNAME_KEY, this.client.toMap());
+        result.put(Columns.BOOKED_ITINERARY_KEY, this.itinerary.toMap());
         result.put(Columns.NUMBER_OF_CHILDREN_KEY, this.numberOfChildren);
         result.put(Columns.NUMBER_OF_ADULTS_KEY, this.numberOfAdults);
         result.put(Columns.TOTAL_KEY, this.total);

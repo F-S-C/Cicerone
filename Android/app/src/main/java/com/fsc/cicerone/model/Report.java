@@ -97,8 +97,8 @@ public class Report extends BusinessEntity {
     public Map<String, Object> toMap() {
         Map<String, Object> jsonObject = new HashMap<>();
 
-        jsonObject.put(User.Columns.USERNAME_KEY, author.toString());
-        jsonObject.put(Columns.REPORTED_USER_KEY, reportedUser.toString());
+        jsonObject.put(User.Columns.USERNAME_KEY, author.toMap());
+        jsonObject.put(Columns.REPORTED_USER_KEY, reportedUser.toMap());
         jsonObject.put(Columns.REPORT_CODE_KEY, code);
         jsonObject.put(Columns.OBJECT_KEY, object);
         jsonObject.put(Columns.BODY_KEY, body);

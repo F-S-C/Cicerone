@@ -531,7 +531,7 @@ public class Itinerary extends BusinessEntity {
         Map<String, Object> result = new HashMap<>();
         result.put(Columns.ITINERARY_CODE_KEY, this.code);
         result.put(Columns.TITLE_KEY, this.title);
-        result.put(User.Columns.USERNAME_KEY, this.cicerone.toString());
+        result.put(User.Columns.USERNAME_KEY, this.cicerone.toMap());
         result.put(Columns.DESCRIPTION_KEY, this.description);
         result.put(Columns.BEGINNING_DATE_KEY, in.format(this.beginningDate));
         result.put(Columns.ENDING_DATE_KEY, in.format(this.endingDate));
