@@ -88,6 +88,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Calendar birthCalendar = Calendar.getInstance(TimeZone.getDefault());
     private Calendar expCalendar = Calendar.getInstance(TimeZone.getDefault());
     private LanguageManager languages = new LanguageManager();
+    private TextView privacyPolicyText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class RegistrationActivity extends AppCompatActivity {
         viewFlipper.setOutAnimation(this, R.anim.out_to_left);
         nachoTextView = findViewById(R.id.selectLanguage);
         checkPrivacyPolicy = findViewById(R.id.privacyCheckBox);
-        TextView privacyPolicyText = findViewById(R.id.privacypolicy);
+        privacyPolicyText = findViewById(R.id.privacypolicy);
 
         privacyPolicyText.setOnClickListener( v -> {
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(ConnectorConstants.PRIVACY_POLICY));
@@ -317,7 +318,7 @@ public class RegistrationActivity extends AppCompatActivity {
         docType.setError(null);
         expDate.setError(null);
         nachoTextView.setError(null);
-        checkPrivacyPolicy.setError(null);
+        privacyPolicyText.setError(null);
 
         if (docNumber.getText().toString().trim().isEmpty() || specialCharactersNoSpace(docNumber.getText().toString().trim())) {
             docNumber.setError(getString(R.string.document_not_valid));
@@ -337,14 +338,14 @@ public class RegistrationActivity extends AppCompatActivity {
             nachoTextView.setError(getString(R.string.error_fields_empty));
             return false;
         } else if(!checkPrivacyPolicy.isChecked()) {
-            checkPrivacyPolicy.setError(getString(R.string.privacy_policy_required));
+            privacyPolicyText.setError(getString(R.string.privacy_policy_required));
             return false;
         }else{
             docNumber.setError(null);
             docType.setError(null);
             expDate.setError(null);
             nachoTextView.setError(null);
-            checkPrivacyPolicy.setError(null);
+            privacyPolicyText.setError(null);
             return true;
         }
     }
