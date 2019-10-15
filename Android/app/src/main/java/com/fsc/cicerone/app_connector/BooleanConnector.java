@@ -59,7 +59,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
 
         BooleanResult(String json) {
-            this(getMapFromJson(json));
+            super(json);
         }
 
         BooleanResult(Map<String, Object> jsonObject) {
