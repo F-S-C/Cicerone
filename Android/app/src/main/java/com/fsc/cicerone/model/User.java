@@ -62,6 +62,7 @@ public class User extends BusinessEntity {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
+
         public static final String USERNAME_KEY = "username";
         public static final String PASSWORD_KEY = "password";
         public static final String TAX_CODE_KEY = "tax_code";
@@ -496,7 +497,11 @@ public class User extends BusinessEntity {
                 result.put(Columns.BIRTH_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.birthDate));
             if (document != null)
                 result.put(Columns.DOCUMENT_KEY, this.document.toJSONObject());
-            if (languages != null) result.put(Columns.LANGUAGES_KEY, new JSONArray(languages));
+            if (languages != null) {
+                JSONArray jsonArray = new JSONArray();
+                for (Language language : languages) jsonArray.put(language.toJSONObject());
+                result.put(Columns.LANGUAGES_KEY, jsonArray);
+            }
         } catch (JSONException e) {
             result = null;
         }

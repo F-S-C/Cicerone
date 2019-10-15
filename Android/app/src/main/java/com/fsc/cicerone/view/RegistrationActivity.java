@@ -361,7 +361,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private User setNewUser() {
-        ArrayList<String> lanSelected = new ArrayList<>(nachoTextView.getChipValues());
+        List<String> lanSelected = nachoTextView.getChipValues();
         return new User.Builder(username.getText().toString().trim().toLowerCase(), password.getText().toString())
                 .setUserType(UserType.GLOBETROTTER)
                 .setSex(Sex.getValue(sex.getSelectedItem().toString().toLowerCase()))
