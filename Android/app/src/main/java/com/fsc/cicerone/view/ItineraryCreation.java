@@ -30,8 +30,10 @@ import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.User;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 
 public class ItineraryCreation extends ItineraryModifier {
@@ -54,7 +56,7 @@ public class ItineraryCreation extends ItineraryModifier {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         image.setOnClickListener(v -> imageManager.selectImage());
-         setLanguages();
+        setLanguages();
 
     }
 
@@ -64,56 +66,56 @@ public class ItineraryCreation extends ItineraryModifier {
         imageManager.manageResult(requestCode, resultCode, data, image);
     }
 
+    public boolean checkIfLanguagesAreSet() {
+        for (CheckBox language : checkBoxList) {
+            if (language.isChecked()) return true;
+        }
+        return false;
+    }
+
     @Override
     public void sendData(View view) {
-        if (allFilled()) {
-            if(this.layout == R.layout.activity_itinerary_creation)
+        if (allFilled() & checkIfLanguagesAreSet()) {
+            Set<Language> languageSet = new HashSet<>();
+            /*for(CheckBox language : checkBoxList)
             {
-                for(CheckBox language : checkBoxList)
-                {
-                    if(language.isSelected())
-                    {
-                        submit.setEnabled(false);
-                        submit.setText(R.string.loading);
-                        imageManager.upload(response -> {
-                            if (response.getResult()) {
-                                String imgURL = ConnectorConstants.IMG_FOLDER.concat(response.getMessage());
-                                ItineraryManager.uploadItinerary(
-                                        title.getText().toString(),
-                                        description.getText().toString(),
-                                        selectBeginningDate.getText().toString(),
-                                        selectEndingDate.getText().toString(),
-                                        selectReservationDate.getText().toString(),
-                                        location.getText().toString(),
-                                        durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
-                                        Integer.parseInt(repetitions.getText().toString()),
-                                        Integer.parseInt(minParticipants.getText().toString()),
-                                        Integer.parseInt(maxParticipants.getText().toString()),
-                                        Float.parseFloat(fullPrice.getText().toString()),
-                                        Float.parseFloat(reducedPrice.getText().toString()),
-                                        imgURL,
-                                        insStatus -> {
-                                            if (insStatus.getResult()) {
-                                                Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
-                                                Intent i = new Intent().setClass(ItineraryCreation.this, UserMainActivity.class);
-                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                startActivity(i);
-                                            } else {
-                                                Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            } else {
-                                Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + response.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                    else
-                    {
-                        Toast.makeText(ItineraryCreation.this, getString(R.string.empty_language), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
+                if language.isChecked()
+                    languageSet.add()
+            }*/
+            submit.setEnabled(false);
+            submit.setText(R.string.loading);
+            imageManager.upload(response -> {
+                if (response.getResult()) {
+                    String imgURL = ConnectorConstants.IMG_FOLDER.concat(response.getMessage());
+                    ItineraryManager.uploadItinerary(
+                            title.getText().toString(),
+                            description.getText().toString(),
+                            selectBeginningDate.getText().toString(),
+                            selectEndingDate.getText().toString(),
+                            selectReservationDate.getText().toString(),
+                            location.getText().toString(),
+                            durationHours.getText().toString() + ":" + durationMinutes.getText().toString(),
+                            Integer.parseInt(repetitions.getText().toString()),
+                            Integer.parseInt(minParticipants.getText().toString()),
+                            Integer.parseInt(maxParticipants.getText().toString()),
+                            Float.parseFloat(fullPrice.getText().toString()),
+                            Float.parseFloat(reducedPrice.getText().toString()),
+                            imgURL,
+                            insStatus -> {
+                                if (insStatus.getResult()) {
+                                    Toast.makeText(ItineraryCreation.this, getString(R.string.itinerary_added), Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent().setClass(ItineraryCreation.this, UserMainActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(i);
+                                } else {
+                                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + insStatus.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
+                } else {
+                    Toast.makeText(ItineraryCreation.this, getString(R.string.error_during_operation) + ":" + response.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             if (title.getText().toString().equals(""))
                 title.setError(getString(R.string.empty_title_error));
@@ -143,6 +145,9 @@ public class ItineraryCreation extends ItineraryModifier {
                 reducedPrice.setError(getString(R.string.empty_reduced_price_error));
             if (!imageManager.isSelected())
                 Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_image_error), Toast.LENGTH_SHORT).show();
+            if(!checkIfLanguagesAreSet())
+                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_language), Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -151,14 +156,13 @@ public class ItineraryCreation extends ItineraryModifier {
         return super.allFilled() && imageManager.isSelected();
     }
 
-    private void setLanguages()
-    {
+    private void setLanguages() {
 
-        for(Language language : currentLoggedUser.getLanguages())
-        {
-            languagesLayout = findViewById(R.id.languageLayout);
-            currentLoggedUser = AccountManager.getCurrentLoggedUser();
-            checkBoxList = new LinkedList<>();
+        languagesLayout = findViewById(R.id.languageLayout);
+        currentLoggedUser = AccountManager.getCurrentLoggedUser();
+        checkBoxList = new LinkedList<>();
+
+        for (Language language : currentLoggedUser.getLanguages()) {
             CheckBox selectLanguage = new CheckBox(ItineraryCreation.this);
             checkBoxList.add(selectLanguage);
             languagesLayout.addView(selectLanguage);
