@@ -24,7 +24,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -192,11 +191,15 @@ public class Document extends BusinessEntity {
      *
      * @return A JSON Object containing the data that were stored in the object.
      */
-    public Map<String, Object> toMap() {
-        Map<String, Object> doc = new HashMap<>();
-        doc.put(Columns.DOCUMENT_NUMBER_KEY, this.number);
-        doc.put(Columns.DOCUMENT_TYPE_KEY, this.type);
-        doc.put(Columns.EXPIRY_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.expirationDate));
+    public JSONObject toJSONObject() {
+        JSONObject doc = new JSONObject();
+        try {
+            doc.put(Columns.DOCUMENT_NUMBER_KEY, this.number);
+            doc.put(Columns.DOCUMENT_TYPE_KEY, this.type);
+            doc.put(Columns.EXPIRY_DATE_KEY, new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).format(this.expirationDate));
+        } catch (JSONException e) {
+            doc = null;
+        }
         return doc;
     }
 }

@@ -16,8 +16,6 @@
 
 package com.fsc.cicerone.model;
 
-import android.util.Log;
-
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 import org.json.JSONArray;
@@ -31,9 +29,7 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -76,8 +72,8 @@ public class UserTest {
     public void loadFromJSONObject() throws JSONException {
         final String string = "{\"username\":\"pupazzomatto\",\"tax_code\":\"shslll00a00l028s\",\"name\":\"aaa\",\"surname\":\"ddd\",\"password\":\"$2y$10$rLCM3wzhLSIvvWNj1XUkVeB7GIMVWPA85DCzektYvYAfshUIBEx..\",\"email\":\"a.annese99@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"468649986460\",\"birth_date\":\"1986-09-27\",\"sex\":\"male\",\"document\":{\"document_number\":\"cjsndncncnsn\",\"document_type\":\"cjcjcj\",\"expiry_date\":\"2020-06-26\"},\"languages\":[{\"username\":\"pupazzomatto\",\"language_code\":\"IT\",\"language_name\":\"Italian\"}]}";
 
-        final JSONObject jsonObject = new JSONObject(string);
-        final User user = new User(jsonObject.toString());
+        final Map<String, Object> jsonObject = new JSONObject(string);
+        final User user = new User(jsonObject);
 
         final SimpleDateFormat output = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
         final String TAG = "Fields not setted properly";
@@ -461,21 +457,24 @@ public class UserTest {
 
     @Test
     public void toJSONObject() throws JSONException, ParseException {
-        JSONObject jsonObject = new JSONObject("{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc/zhzmM.zhgx9ptLNFmG0/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25/02/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}");
+        Map<String, Object> jsonObject = new JSONObject("{\"username\":\"test\",\"tax_code\":\"IT0000000\",\"name\":\"test\",\"surname\":\"testsurname\",\"password\":\"$2y$10$KIkp6WTmsHLhiHc/zhzmM.zhgx9ptLNFmG0/48CHjtKSARv9nNKiS\",\"email\":\"graziano.montanaro98@gmail.com\",\"user_type\":\"1\",\"cellphone\":\"0999561111\",\"birth_date\":\"1998-09-28\",\"sex\":\"male\",\"document\":{\"document_number\":\"test0000\",\"document_type\":\"25/02/2022\",\"expiry_date\":\"2019-10-20\"},\"languages\":[]}");
 
-        Map<String, Object> map = new HashMap<>(jsonObject.length());
-        Iterator<String> iterator = jsonObject.keys();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            try {
-                map.put(key, jsonObject.get(key));
-            } catch (JSONException e) {
-                Log.e("JSON_READING_EXCEPTION", "key: " + key + ", message: " + e.getMessage());
-            }
-        }
+        User user = new User(jsonObject);
+        JSONObject obj = user.toJSONObject();
 
-        User user = new User(jsonObject.toString());
-        assertEquals("Fields didn't match", user.toMap(), map);
+        assertEquals("Fields didn't match", obj.getString("name"), jsonObject.getString("name"));
+        assertEquals("Fields didn't match", obj.getString("surname"), jsonObject.getString("surname"));
+        assertEquals("Fields didn't match", obj.getString("username"), jsonObject.getString("username"));
+        assertEquals("Fields didn't match", obj.getString("password"), jsonObject.getString("password"));
+        assertEquals("Fields didn't match", obj.getString("email"), jsonObject.getString("email"));
+        assertEquals("Fields didn't match", obj.getInt("user_type"), jsonObject.getInt("user_type"));
+        assertEquals("Fields didn't match", obj.getString("cellphone"), jsonObject.getString("cellphone"));
+        assertEquals("Fields didn't match", new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("birth_date")), new SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("birth_date")));
+        assertEquals("Fields didn't match", obj.getString("sex"), jsonObject.getString("sex"));
+        assertEquals("Fields didn't match", obj.getString("tax_code"), jsonObject.getString("tax_code"));
+        assertEquals("Fields didn't match", obj.getString("document"), jsonObject.getString("document"));
+        assertEquals("Fields didn't match", obj.getString("languages"), jsonObject.getString("languages"));
+
     }
 
     @Test

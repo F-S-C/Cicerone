@@ -123,7 +123,7 @@ public class DocumentTest {
         document.setExpirationDate(new SimpleDateFormat("yyyy-MM-dd").parse(date));
         document.setNumber(number);
 
-        assertEquals("Fields didn't match", document.toMap().toString(), jsonObject.toString());
+        assertEquals("Fields didn't match", document.toJSONObject().toString(), jsonObject.toString());
     }
 
     @Test

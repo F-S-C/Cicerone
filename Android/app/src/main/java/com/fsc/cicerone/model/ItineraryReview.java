@@ -16,6 +16,11 @@
 
 package com.fsc.cicerone.model;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public class ItineraryReview extends Review {
@@ -53,9 +58,13 @@ public class ItineraryReview extends Review {
     }
 
     @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> object = super.toMap();
-        object.put(Columns.REVIEWED_ITINERARY_KEY, reviewedItinerary.toMap());
+    public JSONObject toJSONObject() {
+        JSONObject object = super.toJSONObject();
+        try {
+            object.put(Columns.REVIEWED_ITINERARY_KEY, reviewedItinerary.toJSONObject());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
         return object;
     }
 

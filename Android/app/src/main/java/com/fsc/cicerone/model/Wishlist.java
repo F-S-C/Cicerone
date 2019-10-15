@@ -16,7 +16,11 @@
 
 package com.fsc.cicerone.model;
 
-import java.util.HashMap;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public class Wishlist extends BusinessEntity {
@@ -58,11 +62,19 @@ public class Wishlist extends BusinessEntity {
     }
 
     @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> jsonObject = new HashMap<>();
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put(User.Columns.USERNAME_KEY, user.toMap());
-        jsonObject.put(Columns.ITINERARY_IN_WISHLIST_KEY, itinerary.toMap());
+        try {
+            jsonObject.put(User.Columns.USERNAME_KEY, user.toJSONObject());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.ITINERARY_IN_WISHLIST_KEY, itinerary.toJSONObject());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
 
         return jsonObject;
     }

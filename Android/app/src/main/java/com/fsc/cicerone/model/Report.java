@@ -16,7 +16,11 @@
 
 package com.fsc.cicerone.model;
 
-import java.util.HashMap;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public class Report extends BusinessEntity {
@@ -94,15 +98,39 @@ public class Report extends BusinessEntity {
     }
 
     @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> jsonObject = new HashMap<>();
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put(User.Columns.USERNAME_KEY, author.toMap());
-        jsonObject.put(Columns.REPORTED_USER_KEY, reportedUser.toMap());
-        jsonObject.put(Columns.REPORT_CODE_KEY, code);
-        jsonObject.put(Columns.OBJECT_KEY, object);
-        jsonObject.put(Columns.BODY_KEY, body);
-        jsonObject.put(Columns.STATE_KEY, status.toInt());
+        try {
+            jsonObject.put(User.Columns.USERNAME_KEY, author.toJSONObject());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.REPORTED_USER_KEY, reportedUser.toJSONObject());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.REPORT_CODE_KEY, code);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.OBJECT_KEY, object);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.BODY_KEY, body);
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
+        try {
+            jsonObject.put(Columns.STATE_KEY, status.toInt());
+        } catch (JSONException e) {
+            Log.e(ERROR_TAG, e.getMessage());
+        }
 
         return jsonObject;
     }

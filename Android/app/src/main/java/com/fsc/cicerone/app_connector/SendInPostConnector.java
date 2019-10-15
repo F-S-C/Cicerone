@@ -148,7 +148,19 @@ public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabase
     }
 
     public static Map<String, Object> paramsFromObject(final BusinessEntity entity) {
-        Map<String, Object> mapData = entity.toMap();
+        JSONObject jsonObject = entity.toJSONObject();
+        Map<String, Object> mapData = new HashMap<>(jsonObject.length());
+        Iterator<String> keysItr = jsonObject.keys();
+        while (keysItr.hasNext()) {
+            try {
+                String key = keysItr.next();
+                Object value = jsonObject.get(key);
+
+                mapData.put(key, value);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         if (entity instanceof Itinerary) {
             mapData.put(Itinerary.Columns.CICERONE_KEY, ((Itinerary) entity).getCicerone().getUsername());
