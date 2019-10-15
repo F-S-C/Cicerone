@@ -71,7 +71,7 @@ public class ItineraryCreation extends ItineraryModifier {
             {
                 for(CheckBox language : checkBoxList)
                 {
-                    if(language.isSelected())
+//                    if(language.isSelected())
                 }
             }
             submit.setEnabled(false);
