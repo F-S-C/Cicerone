@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +39,7 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.fsc.cicerone.notifications.Config;
 import com.fsc.cicerone.notifications.NotificationUtils;
+import com.hootsuite.nachos.NachoTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -222,7 +222,7 @@ public class AccountManager {
      * @param context The application context.
      * @param users   The user to be reported.
      */
-    public static void setUsersInSpinner(@NonNull Activity context, @NonNull Spinner users) {
+    public static void setUsersInTextView(@NonNull Activity context, @NonNull NachoTextView users) {
         // TODO: Needs cleanup?
         new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
@@ -234,9 +234,10 @@ public class AccountManager {
                             cleanList.add(user.getUsername());
                     }
                     ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context,
-                            android.R.layout.simple_spinner_item, cleanList);
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            android.R.layout.simple_dropdown_item_1line, cleanList);
                     users.setAdapter(dataAdapter);
+                    users.disableEditChipOnTouch();
+
 
                 })
                 .build()

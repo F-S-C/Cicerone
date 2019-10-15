@@ -299,4 +299,6 @@
     <string name="notification_title_to_globetrotter_updated_itinerary">Itinerary updated</string>
     <string name="languages">Lingue</string>
     <string name="empty_language">Please select at least one language</string>
+    <string name="empty_reported_user">Enter your reported user</string>
+    <string name="error_reported_user">You can report only one user</string>
 </resources>

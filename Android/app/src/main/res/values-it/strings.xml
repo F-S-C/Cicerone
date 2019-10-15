@@ -275,4 +275,6 @@
     <string name="notification_to_globetrotter_updated_itinerary">L\'itinerario \"%1$s\" di %2$s è stato aggiornato. Assicurati di controllare le sue nuove informazioni.</string>
     <string name="languages">Lingue</string>
     <string name="empty_language">Seleziona almeno una lingua</string>
+    <string name="empty_reported_user">Enter your reported user</string>
+    <string name="error_reported_user">Puoi segnalare sono un utente</string>
 </resources>

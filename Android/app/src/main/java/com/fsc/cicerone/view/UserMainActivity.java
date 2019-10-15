@@ -18,13 +18,14 @@ package com.fsc.cicerone.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.hootsuite.nachos.NachoTextView;
 
 public class UserMainActivity extends MainActivity {
 
@@ -142,11 +144,32 @@ public class UserMainActivity extends MainActivity {
 
         EditText object = reportView.findViewById(R.id.object);
         EditText body = reportView.findViewById(R.id.body);
-        Spinner users = reportView.findViewById(R.id.users);
+        NachoTextView users = reportView.findViewById(R.id.selectUser);
 
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
 
-        AccountManager.setUsersInSpinner(this, users);
+        AccountManager.setUsersInTextView(this, users);
+        users.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(users.getChipValues().size() > 1)
+                    users.setError(getString(R.string.error_reported_user));
+                else
+                    users.setError(null);
+
+
+            }
+        });
 
         AlertDialog dialogSubmit = new MaterialAlertDialogBuilder(this)
                 .setView(reportView)
@@ -160,12 +183,12 @@ public class UserMainActivity extends MainActivity {
 
             Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(view -> {
-                if (!object.getText().toString().equals("") && !body.getText().toString().equals("") && !users.getSelectedItem().equals("")) {
+                if (!object.getText().toString().equals("") && !body.getText().toString().equals("") && users.getChipValues().size() == 1) {
                     new MaterialAlertDialogBuilder(UserMainActivity.this)
                             .setTitle(R.string.insert_report)
                             .setMessage(R.string.sure_to_insert_report)
                             .setPositiveButton(R.string.yes, (dialog, witch) -> {
-                                ReportManager.addNewReport(UserMainActivity.this, currentLoggedUser, users.getSelectedItem().toString(), object.getText().toString(), body.getText().toString(), success ->
+                                ReportManager.addNewReport(UserMainActivity.this, currentLoggedUser, users.getChipValues().get(0), object.getText().toString(), body.getText().toString(), success ->
                                         Toast.makeText(UserMainActivity.this, UserMainActivity.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show());
 //                                refresh();
                                 dialogSubmit.dismiss();
@@ -177,6 +200,8 @@ public class UserMainActivity extends MainActivity {
                         object.setError(getString(R.string.empty_object_error));
                     if (body.getText().toString().equals(""))
                         body.setError(getString(R.string.empty_body_error));
+                    if (users.getChipValues().size() < 1)
+                        users.setError(getString(R.string.empty_reported_user));
                 }
             });
 
@@ -184,6 +209,7 @@ public class UserMainActivity extends MainActivity {
 
         dialogSubmit.show();
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
