@@ -22,10 +22,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -46,7 +43,6 @@ import com.fsc.cicerone.mailer.Mailer;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.LanguageManager;
 import com.fsc.cicerone.model.Document;
-import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.Sex;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
@@ -61,7 +57,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
@@ -118,6 +113,8 @@ public class RegistrationActivity extends AppCompatActivity {
         nachoTextView = findViewById(R.id.selectLanguage);
         checkPrivacyPolicy = findViewById(R.id.privacyCheckBox);
         privacyPolicyText = findViewById(R.id.privacypolicy);
+        birthCalendar.add(Calendar.YEAR, -18);
+        expCalendar.add(Calendar.DAY_OF_MONTH, 1);
 
         privacyPolicyText.setOnClickListener( v -> {
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(ConnectorConstants.PRIVACY_POLICY));
@@ -140,17 +137,22 @@ public class RegistrationActivity extends AppCompatActivity {
 
         birthDate.setOnClickListener(view -> {
             hideKeyboard(this);
-            new DatePickerDialog(this, birthDateSelect, birthCalendar
+             DatePickerDialog datePickerDialog = new DatePickerDialog(this, birthDateSelect, birthCalendar
                     .get(Calendar.YEAR), birthCalendar.get(Calendar.MONTH),
-                    birthCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    birthCalendar.get(Calendar.DAY_OF_MONTH));
+             datePickerDialog.getDatePicker().setMaxDate(birthCalendar.getTimeInMillis());
+             datePickerDialog.show();
         });
 
         expDate.setOnClickListener(view -> {
             hideKeyboard(this);
-            new DatePickerDialog(this, expDateSelect, expCalendar
+            DatePickerDialog datePickerDialog =  new DatePickerDialog(this, expDateSelect, expCalendar
                     .get(Calendar.YEAR), expCalendar.get(Calendar.MONTH),
-                    expCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    expCalendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMinDate(expCalendar.getTimeInMillis());
+            datePickerDialog.show();
         });
+
 
         next.setOnClickListener(view -> {
             if (validateFirstPageData()) {
