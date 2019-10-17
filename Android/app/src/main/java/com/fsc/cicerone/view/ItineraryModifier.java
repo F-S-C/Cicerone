@@ -336,6 +336,14 @@ public abstract class ItineraryModifier extends AppCompatActivity {
                 && !reducedPrice.getText().toString().equals("");
     }
 
+    boolean noFieldWithError() {
+        return minParticipants.getError() == null
+                && maxParticipants.getError() == null
+                && durationMinutes.getError() == null
+                && fullPrice.getError() == null
+                && reducedPrice.getError() == null;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

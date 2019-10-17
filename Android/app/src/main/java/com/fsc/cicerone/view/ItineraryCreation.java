@@ -28,7 +28,6 @@ import com.fsc.cicerone.R;
 import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ItineraryManager;
-import com.fsc.cicerone.manager.LanguageManager;
 import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.User;
 
@@ -36,7 +35,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 
 
 public class ItineraryCreation extends ItineraryModifier {
@@ -100,7 +98,7 @@ public class ItineraryCreation extends ItineraryModifier {
 
     @Override
     public void sendData(View view) {
-        if (allFilled() & checkIfLanguagesAreSet()) {
+        if (allFilled() && checkIfLanguagesAreSet() && noFieldWithError()) {
             Set<Language> languages = new HashSet<>();
             for (LanguageCheckBox checkBox : checkBoxList)
                 if (checkBox.isChecked()) languages.add(checkBox.getLanguage());
@@ -172,6 +170,9 @@ public class ItineraryCreation extends ItineraryModifier {
                 Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_image_error), Toast.LENGTH_SHORT).show();
             if (!checkIfLanguagesAreSet())
                 Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.empty_language), Toast.LENGTH_SHORT).show();
+            if (!noFieldWithError())
+                Toast.makeText(ItineraryCreation.this, ItineraryCreation.this.getString(R.string.error_wrong_fields), Toast.LENGTH_SHORT).show();
+
 
         }
     }

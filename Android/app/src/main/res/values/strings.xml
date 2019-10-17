@@ -305,4 +305,5 @@
     <string name="empty_reported_user">Enter your reported user</string>
     <string name="error_reported_user">You can report only one user</string>
     <string name="not_available_in_your_languages">Not available in your languages!</string>
+    <string name="error_wrong_fields">Some fields are not correct</string>
 </resources>
