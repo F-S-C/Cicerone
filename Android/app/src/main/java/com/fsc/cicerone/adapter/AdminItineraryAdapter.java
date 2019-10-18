@@ -56,7 +56,9 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
         this.context = context;
     }
 
-
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,7 +67,10 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
         return new ViewHolder(itineraryView);
     }
 
-
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder,
+     * int)
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
@@ -105,7 +110,12 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
         TextView ending;
         TextView avgItineraryPrice;
 
-
+        /**
+         * ViewHolder constructor.
+         *
+         * @param itemView ViewHolder view.
+         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
+         */
         ViewHolder(View itemView) {
             super(itemView);
             itineraryTitle = itemView.findViewById(R.id.itinerary_title);

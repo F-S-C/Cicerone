@@ -55,8 +55,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     /**
      * Constructor.
      *
-     * @param context The parent Context.
-     * @param list    The array of JSON Objects got from server.
+     * @param context  The parent Context.
+     * @param list     The array of JSON Objects got from server.
+     * @param fragment A Fragment.
      */
     public ReservationAdapter(Context context, List<Reservation> list, @Nullable Fragment fragment) {
         this.context = context;
@@ -65,7 +66,14 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         this.fragment = fragment;
     }
 
-
+    /**
+     * Constructor.
+     *
+     * @param context  The parent Context.
+     * @param list     The array of JSON Objects got from server.
+     * @param fragment A Fragment.
+     * @param layout   The layout for the item.
+     */
     public ReservationAdapter(Context context, List<Reservation> list, @Nullable Fragment fragment, int layout) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
@@ -74,7 +82,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         this.fragment = fragment;
     }
 
-    // inflates the row layout from xml when needed
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -83,7 +93,10 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         return new ViewHolder(reservationView);
     }
 
-    // binds the data to the TextView in each row
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder,
+     * int)
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
@@ -194,7 +207,12 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         Button declineReservation;
         Button removeParticipation;
 
-
+        /**
+         * ViewHolder constructor.
+         *
+         * @param itemView ViewHolder view.
+         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
+         */
         ViewHolder(View itemView) {
             super(itemView);
             if (layout == R.layout.reservation_list) {
@@ -215,6 +233,11 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     }
 
+    /**
+     * Remove an item.
+     *
+     * @param position The position of the item to be removed.
+     */
     private void removeAt(int position) {
         mData.remove(position);
         notifyItemRemoved(position);

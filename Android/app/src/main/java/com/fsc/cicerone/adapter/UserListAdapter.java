@@ -60,6 +60,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         this.context = context;
     }
 
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -68,7 +71,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         return new ViewHolder(itineraryView);
     }
 
-    // binds the data to the TextView in each row
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder,
+     * int)
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String usernameStr = mData.get(position).getUsername();
@@ -110,7 +116,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
         });
 
-    }//END onBindViewHolder
+    }
 
     /**
      * Return the length of the JSON array passed into the ReviewAdapter.
@@ -132,6 +138,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         RatingBar avgRating;
         ImageView imageView;
 
+        /**
+         * ViewHolder constructor.
+         *
+         * @param itemView ViewHolder view.
+         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
+         */
         ViewHolder(View itemView) {
             super(itemView);
             usr = itemView.findViewById(R.id.username);

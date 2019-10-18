@@ -52,7 +52,9 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
         this.mData = list;
     }
 
-
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -60,7 +62,10 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
         return new ViewHolder(itineraryView);
     }
 
-
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder,
+     * int)
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
@@ -91,6 +96,12 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
         TextView location;
         TextView requestedDate;
 
+        /**
+         * ViewHolder constructor.
+         *
+         * @param itemView ViewHolder view.
+         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
+         */
         ViewHolder(View itemView) {
             super(itemView);
             itineraryTitle = itemView.findViewById(R.id.itinerary_title);

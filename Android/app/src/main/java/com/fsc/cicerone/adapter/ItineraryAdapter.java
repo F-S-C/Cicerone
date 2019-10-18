@@ -73,7 +73,9 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         this.fragment = fragment;
     }
 
-    // inflates the row layout from xml when needed
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -82,7 +84,10 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         return new ViewHolder(itineraryView);
     }
 
-    // binds the data to the TextView in each row
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder,
+     * int)
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String title = mData.get(position).getTitle();
@@ -144,6 +149,12 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         LinearLayout languageContainerLayout;
         TextView languageErrorTextView;
 
+        /**
+         * ViewHolder constructor.
+         *
+         * @param itemView ViewHolder view.
+         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
+         */
         ViewHolder(View itemView) {
             super(itemView);
             itineraryTitle = itemView.findViewById(R.id.itinerary_title);
@@ -156,6 +167,11 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
             languageErrorTextView = itemView.findViewById(R.id.language_error);
         }
 
+        /**
+         * Shows the itinerary languages.
+         *
+         * @param languages The languages.
+         */
         void setLanguages(Set<Language> languages) {
             languageContainerLayout.removeAllViews();
             for (Language language : languages) {
@@ -168,6 +184,11 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
             }
         }
 
+        /**
+         * Show a "Not available in your languages" error into the itinerary if show is true.
+         *
+         * @param show If true it shows the error.
+         */
         void showError(boolean show) {
             languageErrorTextView.setVisibility(show ? View.VISIBLE : View.GONE);
         }

@@ -78,7 +78,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             if (!mData.get(position).getAuthor().getUsername().equals("deleted_user")) {
-                if(!mData.get(position).getAuthor().getUsername().equals(AccountManager.getCurrentLoggedUser().getUsername()) ){
+                if (!mData.get(position).getAuthor().getUsername().equals(AccountManager.getCurrentLoggedUser().getUsername())) {
                     Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("reviewed_user", mData.get(position).getAuthor().toString());

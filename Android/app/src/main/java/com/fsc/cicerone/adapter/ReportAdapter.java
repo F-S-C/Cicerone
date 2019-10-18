@@ -59,8 +59,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     /**
      * Constructor.
      *
-     * @param context    The parent Context.
-     * @param list       The list of reports to be shown.
+     * @param context The parent Context.
+     * @param list    The list of reports to be shown.
      */
     public ReportAdapter(Activity context, List<Report> list, Fragment fragment) {
         this.mInflater = LayoutInflater.from(context);
@@ -69,7 +69,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         this.fragment = fragment;
     }
 
-    // inflates the row layout from xml when needed
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -81,7 +83,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         return new ViewHolder(reportView);
     }
 
-    // binds the data to the TextView in each row
+    /**
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder,
+     * int)
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         switch (mData.get(position).getStatus()) {
@@ -135,6 +140,12 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         TextView reportCode;
         ImageView status;
 
+        /**
+         * ViewHolder constructor.
+         *
+         * @param itemView ViewHolder view.
+         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
+         */
         ViewHolder(View itemView) {
             super(itemView);
 
