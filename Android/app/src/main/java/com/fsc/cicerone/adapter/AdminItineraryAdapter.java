@@ -20,26 +20,22 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.adapter.view_holder.AdminItineraryViewHolder;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.Reservation;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * The adapter useful to show data in the admin part of the application.
  */
-public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAdapter.ViewHolder> {
-
+public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryViewHolder> {
     private final Activity context;
     private List<Itinerary> mData;
     private LayoutInflater mInflater;
@@ -48,7 +44,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
      * Constructor.
      *
      * @param context The parent Context.
-     * @param list    The array of JSON Objects got from server.
+     * @param list    The array of itineraries got from server.
      */
     public AdminItineraryAdapter(Activity context, List<Itinerary> list) {
         this.mInflater = LayoutInflater.from(context);
@@ -61,10 +57,9 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
      */
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    public AdminItineraryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itineraryView = mInflater.inflate(R.layout.itinerary_admin_list, parent, false);
-        return new ViewHolder(itineraryView);
+        return new AdminItineraryViewHolder(itineraryView, context);
     }
 
     /**
@@ -72,25 +67,19 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
      * int)
      */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        String title = mData.get(position).getTitle();
-        Integer itineraryNumber = mData.get(position).getCode();
-        String location = mData.get(position).getLocation();
-
-        DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        holder.beginning.setText(outputFormat.format(mData.get(position).getBeginningDate()));
-        holder.ending.setText(outputFormat.format(mData.get(position).getEndingDate()));
-        holder.itineraryTitle.setText(title);
-        holder.itineraryNumber.setText(String.format(context.getString(R.string.print_integer_number), itineraryNumber));
-        holder.location.setText(location);
-        setItineraryAvgPrice(mData.get(position), holder.avgItineraryPrice);
+    public void onBindViewHolder(@NonNull AdminItineraryViewHolder holder, int position) {
+        holder.setBeginningDate(mData.get(position).getBeginningDate());
+        holder.setEndingDate(mData.get(position).getEndingDate());
+        holder.setItineraryTitle(mData.get(position).getTitle());
+        holder.setItineraryCode(mData.get(position).getCode());
+        holder.setLocation(mData.get(position).getLocation());
+        setItineraryAvgPrice(mData.get(position), holder);
     }
 
     /**
-     * Return the length of the JSON array passed into the ReviewAdapter.
+     * Return the length of the array shown by the Adapter.
      *
-     * @return Length of JSON array.
+     * @return Length of the array.
      */
     @Override
     public int getItemCount() {
@@ -98,42 +87,12 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
     }
 
     /**
-     * ViewHolder stores and recycles reports as they are scrolled off screen.
-     */
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        //Defining variables of ITINERARY_LIST view
-        TextView itineraryTitle;
-        TextView itineraryNumber;
-        TextView location;
-        TextView beginning;
-        TextView ending;
-        TextView avgItineraryPrice;
-
-        /**
-         * ViewHolder constructor.
-         *
-         * @param itemView ViewHolder view.
-         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
-         */
-        ViewHolder(View itemView) {
-            super(itemView);
-            itineraryTitle = itemView.findViewById(R.id.itinerary_title);
-            itineraryNumber = itemView.findViewById(R.id.itinerary_cicerone);
-            location = itemView.findViewById(R.id.location);
-            beginning = itemView.findViewById(R.id.beginning);
-            ending = itemView.findViewById(R.id.ending);
-            avgItineraryPrice = itemView.findViewById(R.id.avg_itinerary_price);
-        }
-    }
-
-    /**
      * Set the average earnings of an itinerary.
      *
-     * @param itinerary The itinerary .
-     * @param t         The TextView which shows the average earnings.
+     * @param itinerary The itinerary.
+     * @param holder    The view holder which shows the average earnings.
      */
-    private void setItineraryAvgPrice(Itinerary itinerary, TextView t) {
+    private void setItineraryAvgPrice(Itinerary itinerary, AdminItineraryViewHolder holder) {
         ReservationManager.getReservations(context, itinerary, list -> {
             int count = 0;
             float price = 0;
@@ -143,7 +102,7 @@ public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryAd
                     count++;
                 }
             }
-            t.setText(context.getString(R.string.itinerary_earn, (count > 0) ? price / count : 0));
+            holder.setAverageItineraryPrice((count > 0) ? price / count : 0);
         });
     }
 }

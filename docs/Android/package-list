@@ -1,5 +1,6 @@
 com.fsc.cicerone
 com.fsc.cicerone.adapter
+com.fsc.cicerone.adapter.view_holder
 com.fsc.cicerone.app_connector
 com.fsc.cicerone.functional_interfaces
 com.fsc.cicerone.mailer

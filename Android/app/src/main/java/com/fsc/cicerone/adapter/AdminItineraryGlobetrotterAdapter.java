@@ -20,24 +20,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.adapter.view_holder.AdminItineraryGlobetrotterViewHolder;
 import com.fsc.cicerone.model.Reservation;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * The adapter useful to show data in the admin part of the application.
  */
-public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<AdminItineraryGlobetrotterAdapter.ViewHolder> {
-
+public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<AdminItineraryGlobetrotterViewHolder> {
+    private Context context;
     private List<Reservation> mData;
     private LayoutInflater mInflater;
 
@@ -48,6 +45,7 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
      * @param list    The array of JSON Objects got from server.
      */
     public AdminItineraryGlobetrotterAdapter(Context context, List<Reservation> list) {
+        this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mData = list;
     }
@@ -57,9 +55,9 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
      */
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdminItineraryGlobetrotterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itineraryView = mInflater.inflate(R.layout.globetrotter_itinerary_admin_list, parent, false);
-        return new ViewHolder(itineraryView);
+        return new AdminItineraryGlobetrotterViewHolder(itineraryView, context);
     }
 
     /**
@@ -67,12 +65,11 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
      * int)
      */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        holder.requestedDate.setText(outputFormat.format(mData.get(position).getRequestedDate()));
-        holder.itineraryTitle.setText(mData.get(position).getItinerary().getTitle());
-        holder.location.setText(mData.get(position).getItinerary().getLocation());
-        holder.itineraryCicerone.setText(mData.get(position).getItinerary().getCicerone().getUsername());
+    public void onBindViewHolder(@NonNull AdminItineraryGlobetrotterViewHolder holder, int position) {
+        holder.setRequestedDate(mData.get(position).getRequestedDate());
+        holder.setItineraryTitle(mData.get(position).getItinerary().getTitle());
+        holder.setLocation(mData.get(position).getItinerary().getLocation());
+        holder.setCicerone(mData.get(position).getItinerary().getCicerone().getUsername());
     }
 
     /**
@@ -85,30 +82,5 @@ public class AdminItineraryGlobetrotterAdapter extends RecyclerView.Adapter<Admi
         return mData.size();
     }
 
-    /**
-     * ViewHolder stores and recycles reports as they are scrolled off screen.
-     */
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        //Defining variables of ITINERARY_LIST view
-        TextView itineraryTitle;
-        TextView itineraryCicerone;
-        TextView location;
-        TextView requestedDate;
-
-        /**
-         * ViewHolder constructor.
-         *
-         * @param itemView ViewHolder view.
-         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
-         */
-        ViewHolder(View itemView) {
-            super(itemView);
-            itineraryTitle = itemView.findViewById(R.id.itinerary_title);
-            itineraryCicerone = itemView.findViewById(R.id.itinerary_cicerone);
-            location = itemView.findViewById(R.id.location);
-            requestedDate = itemView.findViewById(R.id.requested);
-        }
-    }
 }
 

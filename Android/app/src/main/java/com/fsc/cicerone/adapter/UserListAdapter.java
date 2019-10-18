@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.adapter.view_holder.UserViewHolder;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.model.User;
@@ -42,7 +43,7 @@ import java.util.List;
 /**
  * The ReviewAdapter of the Recycler View for the styles present in the app.
  */
-public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
+public class UserListAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
     private final Activity context;
     private List<User> mData;
@@ -65,10 +66,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
      */
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itineraryView = mInflater.inflate(R.layout.user_list, parent, false);
-        return new ViewHolder(itineraryView);
+        return new UserViewHolder(itineraryView, context);
     }
 
     /**
@@ -76,28 +76,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
      * int)
      */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String usernameStr = mData.get(position).getUsername();
-        UserType type = mData.get(position).getUserType();
-        String typeName;
-        holder.usr.setText(usernameStr);
-        switch (type) {
-            case GLOBETROTTER:
-                typeName = context.getString(R.string.user_type_globetrotter);
-                break;
-            case CICERONE:
-                typeName = context.getString(R.string.user_type_cicerone);
-                break;
-            case ADMIN:
-                typeName = context.getString(R.string.user_type_admin);
-                break;
-            default:
-                typeName = "";
-                break;
-        }
-        holder.usrType.setText(typeName);
-        holder.imageView.setImageResource(mData.get(position).getSex().getAvatarResource());
-        ReviewManager.getAvgUserFeedback(context, mData.get(position), holder.avgRating::setRating);
+    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+        holder.setUsername(mData.get(position).getUsername());
+        holder.setUserType(mData.get(position).getUserType());
+        holder.setImageResource(mData.get(position).getSex().getAvatarResource());
+        ReviewManager.getAvgUserFeedback(context, mData.get(position), holder::setRating);
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
@@ -112,8 +95,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 i.putExtras(bundle);
                 context.startActivity(i);
             }
-
-
         });
 
     }
@@ -126,31 +107,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     @Override
     public int getItemCount() {
         return mData.size();
-    }
-
-    /**
-     * ViewHolder stores and recycles reports as they are scrolled off screen.
-     */
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView usr;
-        TextView usrType;
-        RatingBar avgRating;
-        ImageView imageView;
-
-        /**
-         * ViewHolder constructor.
-         *
-         * @param itemView ViewHolder view.
-         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
-         */
-        ViewHolder(View itemView) {
-            super(itemView);
-            usr = itemView.findViewById(R.id.username);
-            usrType = itemView.findViewById(R.id.usrType);
-            avgRating = itemView.findViewById(R.id.ratingBar2);
-            imageView = itemView.findViewById(R.id.imageView2);
-        }
     }
 }
 

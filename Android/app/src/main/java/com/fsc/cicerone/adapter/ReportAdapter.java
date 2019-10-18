@@ -18,20 +18,17 @@ package com.fsc.cicerone.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.adapter.view_holder.ReportViewHolder;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.UserType;
@@ -44,17 +41,11 @@ import java.util.List;
 /**
  * The ReviewAdapter of the Recycler View for the styles present in the app.
  */
-public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder> {
-
+public class ReportAdapter extends RecyclerView.Adapter<ReportViewHolder> {
     private final Activity context;
     private List<Report> mData;
     private LayoutInflater mInflater;
-    private Drawable reportCanceledImage;
-    private Drawable reportClosedImage;
-    private Drawable reportInProgressImage;
-    private Drawable reportOpenImage;
     private Fragment fragment;
-
 
     /**
      * Constructor.
@@ -74,13 +65,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
      */
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View reportView = mInflater.inflate(R.layout.report_list, parent, false);
-        reportCanceledImage = ResourcesCompat.getDrawable(reportView.getResources(), R.drawable.report_canceled, null);
-        reportClosedImage = ResourcesCompat.getDrawable(reportView.getResources(), R.drawable.report_closed, null);
-        reportInProgressImage = ResourcesCompat.getDrawable(reportView.getResources(), R.drawable.report_in_progress, null);
-        reportOpenImage = ResourcesCompat.getDrawable(reportView.getResources(), R.drawable.report_open, null);
-        return new ViewHolder(reportView);
+        return new ReportViewHolder(reportView, context);
     }
 
     /**
@@ -88,25 +75,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
      * int)
      */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        switch (mData.get(position).getStatus()) {
-            case OPEN:
-                holder.status.setImageDrawable(reportOpenImage);
-                break;
-            case CLOSED:
-                holder.status.setImageDrawable(reportClosedImage);
-                break;
-            case PENDING:
-                holder.status.setImageDrawable(reportInProgressImage);
-                break;
-            case CANCELED:
-                holder.status.setImageDrawable(reportCanceledImage);
-                break;
-            default:
-                break;
-        }
-        holder.object.setText(mData.get(position).getObject());
-        holder.reportCode.setText(String.format(context.getString(R.string.print_integer_number), mData.get(position).getCode()));
+    public void onBindViewHolder(@NonNull ReportViewHolder holder, int position) {
+        holder.setStatus(mData.get(position).getStatus());
+        holder.setSubject(mData.get(position).getObject());
+        holder.setReportCode(mData.get(position).getCode());
 
         holder.itemView.setOnClickListener(v -> {
             Intent i;
@@ -130,28 +102,5 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return mData.size();
-    }
-
-    /**
-     * ViewHolder stores and recycles reports as they are scrolled off screen.
-     */
-    class ViewHolder extends RecyclerView.ViewHolder {
-        TextView object;
-        TextView reportCode;
-        ImageView status;
-
-        /**
-         * ViewHolder constructor.
-         *
-         * @param itemView ViewHolder view.
-         * @see androidx.recyclerview.widget.RecyclerView.ViewHolder#ViewHolder(View)
-         */
-        ViewHolder(View itemView) {
-            super(itemView);
-
-            object = itemView.findViewById(R.id.object);
-            reportCode = itemView.findViewById(R.id.report_code);
-            status = itemView.findViewById(R.id.report_status);
-        }
     }
 }

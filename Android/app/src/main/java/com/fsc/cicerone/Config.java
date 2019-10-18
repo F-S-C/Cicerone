@@ -16,7 +16,7 @@
 
 package com.fsc.cicerone;
 
-public abstract class Config {
+public final class Config {
     private Config() {
         throw new IllegalStateException("Utility class");
     }

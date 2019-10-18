@@ -92,9 +92,10 @@ public enum UserType {
      * Get the string associated with the UserType.
      * @return The string.
      */
+    @NonNull
     @Override
     public String toString() {
-        String toReturn = "";
+        String toReturn;
         switch (this){
             case GLOBETROTTER:
                 toReturn = "globetrotter";

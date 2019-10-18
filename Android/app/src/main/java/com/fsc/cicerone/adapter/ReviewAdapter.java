@@ -31,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
+import com.fsc.cicerone.adapter.view_holder.ReviewViewHolder;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Review;
 import com.fsc.cicerone.view.ProfileActivity;
@@ -40,7 +41,7 @@ import java.util.List;
 /**
  * The ReviewAdapter of the Recycler View for the styles present in the app.
  */
-public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewViewHolder> {
 
     private List<? extends Review> mData;
     private Context context;
@@ -61,20 +62,18 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     // inflates the row layout from xml when needed
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View reviewsView = mInflater.inflate(R.layout.review_list, parent, false);
-        return new ViewHolder(reviewsView);
-
+        return new ReviewViewHolder(reviewsView, context);
     }
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.ratingBar.setRating(mData.get(position).getFeedback());
-        holder.reviewerUsername.setText(mData.get(position).getAuthor().getUsername());
-        holder.reviewDescription.setText(mData.get(position).getDescription());
-        holder.imageView.setImageResource(mData.get(position).getAuthor().getSex().getAvatarResource());
+    public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
+        holder.setRating(mData.get(position).getFeedback());
+        holder.setReviewerUsername(mData.get(position).getAuthor().getUsername());
+        holder.setReviewDescription(mData.get(position).getDescription());
+        holder.setImageResource(mData.get(position).getAuthor().getSex().getAvatarResource());
 
         holder.itemView.setOnClickListener(v -> {
             if (!mData.get(position).getAuthor().getUsername().equals("deleted_user")) {
@@ -97,27 +96,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
      * @return Length of JSON array.
      */
     @Override
-    public int
-    getItemCount() {
+    public int getItemCount() {
         return mData.size();
-    }
-
-    /**
-     * ViewHolder stores and recycles reports as they are scrolled off screen.
-     */
-    class ViewHolder extends RecyclerView.ViewHolder {
-        TextView reviewerUsername;
-        TextView reviewDescription;
-        RatingBar ratingBar;
-        ImageView imageView;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-
-            reviewerUsername = itemView.findViewById(R.id.reviewer_username);
-            ratingBar = itemView.findViewById(R.id.ratingBar);
-            reviewDescription = itemView.findViewById(R.id.review_description);
-            imageView = itemView.findViewById(R.id.imageView2);
-        }
     }
 }
