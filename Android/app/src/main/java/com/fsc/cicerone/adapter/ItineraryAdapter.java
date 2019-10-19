@@ -32,8 +32,8 @@ import com.fsc.cicerone.adapter.view_holder.ItineraryViewHolder;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.UserType;
-import com.fsc.cicerone.view.itinerary.ItineraryDetails;
-import com.fsc.cicerone.view.itinerary.ItineraryManagement;
+import com.fsc.cicerone.view.user.ItineraryDetails;
+import com.fsc.cicerone.view.user.registered_user.cicerone.ItineraryManagement;
 import com.fsc.cicerone.view.user.registered_user.WishlistFragment;
 import com.fsc.cicerone.view.admin.AdminItineraryDetails;
 

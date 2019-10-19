@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fsc.cicerone.view.user.registered_user.cicerone;
+package com.fsc.cicerone.view.admin;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -45,7 +45,6 @@ import java.util.Objects;
  */
 public class CiceroneItineraryListFragment extends Fragment {
 
-    AdminItineraryAdapter adapter;
     /**
      * Empty constructor
      */
@@ -74,7 +73,7 @@ public class CiceroneItineraryListFragment extends Fragment {
         TextView message = view.findViewById(R.id.no_created_itinerary);
         ItineraryManager.requestItinerary(getActivity(), parameters, () -> message.setVisibility(View.GONE), list -> {
             if (!list.isEmpty()) {
-                adapter = new AdminItineraryAdapter(getActivity(), list);
+                AdminItineraryAdapter adapter = new AdminItineraryAdapter(getActivity(), list);
                 recyclerView.setAdapter(adapter);
             } else {
                 message.setVisibility(View.VISIBLE);

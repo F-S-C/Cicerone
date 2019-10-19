@@ -60,10 +60,10 @@ public abstract class ItineraryModifier extends AppCompatActivity {
     protected Button submit;
     protected ImageManager imageManager;
 
-    int layout;
+    protected int layout;
 
-    static final String DATE_FORMAT = "yyyy-MM-dd";
-    final Calendar myCalendar = Calendar.getInstance();
+    protected static final String DATE_FORMAT = "yyyy-MM-dd";
+    protected final Calendar myCalendar = Calendar.getInstance();
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryModifier.class.getSimpleName();
 

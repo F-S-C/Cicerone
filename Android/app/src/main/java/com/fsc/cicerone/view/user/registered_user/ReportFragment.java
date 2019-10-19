@@ -49,7 +49,6 @@ import java.util.List;
  */
 public class ReportFragment extends Fragment implements Refreshable {
 
-    private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
     public static final int RESULT_SHOULD_REPORT_BE_RELOADED = 1030;
     private SwipeRefreshLayout swipeRefreshLayout = null;
@@ -97,6 +96,7 @@ public class ReportFragment extends Fragment implements Refreshable {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         }, list -> {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+            RecyclerView.Adapter adapter;
             if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
                 List<Report> filtered = new ArrayList<>(list.size());
                 for (Report report : list) {

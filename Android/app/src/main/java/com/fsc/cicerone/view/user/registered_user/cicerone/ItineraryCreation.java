@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fsc.cicerone.view.itinerary;
+package com.fsc.cicerone.view.user.registered_user.cicerone;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,6 +30,7 @@ import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.Language;
 import com.fsc.cicerone.model.User;
+import com.fsc.cicerone.view.itinerary.ItineraryModifier;
 import com.fsc.cicerone.view.user.UserMainActivity;
 
 import java.util.HashSet;

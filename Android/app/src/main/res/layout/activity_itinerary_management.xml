@@ -22,7 +22,7 @@
         android:id="@+id/it_management_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.itinerary.ItineraryManagement">
+        tools:context=".view.user.registered_user.cicerone.ItineraryManagement">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/itinerary_activity_swipe_refresh"

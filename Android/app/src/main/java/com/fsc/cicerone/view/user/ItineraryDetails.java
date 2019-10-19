@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fsc.cicerone.view.itinerary;
+package com.fsc.cicerone.view.user;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -41,7 +41,7 @@ import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.manager.WishlistManager;
 import com.fsc.cicerone.model.ItineraryReview;
 import com.fsc.cicerone.model.UserType;
-import com.fsc.cicerone.view.user.ProfileActivity;
+import com.fsc.cicerone.view.itinerary.ItineraryActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

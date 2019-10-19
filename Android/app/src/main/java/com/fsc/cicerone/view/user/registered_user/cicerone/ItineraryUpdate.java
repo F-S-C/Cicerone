@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fsc.cicerone.view.itinerary;
+package com.fsc.cicerone.view.user.registered_user.cicerone;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,6 +25,7 @@ import com.fsc.cicerone.app_connector.ConnectorConstants;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.Itinerary;
+import com.fsc.cicerone.view.itinerary.ItineraryModifier;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;

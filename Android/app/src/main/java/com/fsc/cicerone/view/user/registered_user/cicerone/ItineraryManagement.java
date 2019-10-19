@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fsc.cicerone.view.itinerary;
+package com.fsc.cicerone.view.user.registered_user.cicerone;
 
 
 import android.app.Activity;
@@ -38,7 +38,7 @@ import com.fsc.cicerone.app_connector.SendInPostConnector;
 import com.fsc.cicerone.manager.ItineraryManager;
 import com.fsc.cicerone.model.BusinessEntityBuilder;
 import com.fsc.cicerone.model.ItineraryReview;
-import com.fsc.cicerone.view.user.registered_user.cicerone.ItineraryParticipantsDialogFragment;
+import com.fsc.cicerone.view.itinerary.ItineraryActivity;
 import com.fsc.cicerone.view.user.UsersListFragment;
 import com.fsc.cicerone.view.system.Refreshable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

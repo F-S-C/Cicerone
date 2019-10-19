@@ -45,7 +45,7 @@ import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.Reservation;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
-import com.fsc.cicerone.view.itinerary.ItineraryManagement;
+import com.fsc.cicerone.view.user.registered_user.cicerone.ItineraryManagement;
 import com.fsc.cicerone.view.system.Refreshable;
 
 import java.util.ArrayList;

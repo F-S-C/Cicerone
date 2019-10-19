@@ -17,7 +17,7 @@
             android:name=".view.user.registered_user.globetrotter.GlobetrotterItineraryListFragment"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".view.user.registered_user.cicerone.CiceroneItineraryListFragment"
+            android:name=".view.admin.CiceroneItineraryListFragment"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".view.admin.AdminDetailsUserFragment"
@@ -52,7 +52,7 @@
             android:name=".view.user.registered_user.WishlistFragment"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".view.itinerary.ItineraryUpdate"
+            android:name=".view.user.registered_user.cicerone.ItineraryUpdate"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".view.user.UserMainActivity"
@@ -67,15 +67,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.itinerary.ItineraryManagement"
+            android:name=".view.user.registered_user.cicerone.ItineraryManagement"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.itinerary.ItineraryDetails"
+            android:name=".view.user.ItineraryDetails"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.itinerary.ItineraryCreation"
+            android:name=".view.user.registered_user.cicerone.ItineraryCreation"
             android:label="@string/create_itinerary"
             android:screenOrientation="nosensor" />
         <activity

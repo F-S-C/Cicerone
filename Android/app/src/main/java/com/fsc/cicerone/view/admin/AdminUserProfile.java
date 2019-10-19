@@ -30,7 +30,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
-import com.fsc.cicerone.view.user.registered_user.cicerone.CiceroneItineraryListFragment;
 import com.fsc.cicerone.view.user.registered_user.globetrotter.GlobetrotterItineraryListFragment;
 import com.google.android.material.tabs.TabLayout;
 

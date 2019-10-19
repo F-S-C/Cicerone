@@ -41,7 +41,7 @@ import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.fsc.cicerone.view.system.MainActivity;
-import com.fsc.cicerone.view.itinerary.ItineraryCreation;
+import com.fsc.cicerone.view.user.registered_user.cicerone.ItineraryCreation;
 import com.fsc.cicerone.view.user.registered_user.AccountDetailsFragment;
 import com.fsc.cicerone.view.user.registered_user.LoginActivity;
 import com.fsc.cicerone.view.user.registered_user.WishlistFragment;
