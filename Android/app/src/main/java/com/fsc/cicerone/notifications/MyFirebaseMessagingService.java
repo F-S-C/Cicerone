@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.fsc.cicerone.R;
-import com.fsc.cicerone.view.UserMainActivity;
+import com.fsc.cicerone.view.user.UserMainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

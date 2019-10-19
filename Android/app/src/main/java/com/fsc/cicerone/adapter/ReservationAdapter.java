@@ -30,7 +30,7 @@ import com.fsc.cicerone.R;
 import com.fsc.cicerone.adapter.view_holder.ReservationViewHolder;
 import com.fsc.cicerone.manager.ReservationManager;
 import com.fsc.cicerone.model.Reservation;
-import com.fsc.cicerone.view.Refreshable;
+import com.fsc.cicerone.view.system.Refreshable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Date;
@@ -145,7 +145,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationViewHold
         }
 
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.setOnClickListener(v -> {
             if (layout == R.layout.reservation_list) {
                 if (previouslyClickedHolder != null) {
                     previouslyClickedHolder.getConfirmReservationButton().setVisibility(View.GONE);

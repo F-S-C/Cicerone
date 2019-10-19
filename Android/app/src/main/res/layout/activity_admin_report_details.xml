@@ -20,7 +20,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:contentDescription="@string/image_url"
-    tools:context=".view.admin_view.AdminReportDetailsActivity">
+    tools:context=".view.admin.AdminReportDetailsActivity">
 
     <ScrollView
         android:layout_width="match_parent"

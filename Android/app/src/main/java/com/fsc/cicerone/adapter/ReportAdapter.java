@@ -32,9 +32,9 @@ import com.fsc.cicerone.adapter.view_holder.ReportViewHolder;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Report;
 import com.fsc.cicerone.model.UserType;
-import com.fsc.cicerone.view.ReportDetailsActivity;
-import com.fsc.cicerone.view.ReportFragment;
-import com.fsc.cicerone.view.admin_view.AdminReportDetailsActivity;
+import com.fsc.cicerone.view.report.ReportDetailsActivity;
+import com.fsc.cicerone.view.user.registered_user.ReportFragment;
+import com.fsc.cicerone.view.admin.AdminReportDetailsActivity;
 
 import java.util.List;
 
@@ -80,7 +80,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportViewHolder> {
         holder.setSubject(mData.get(position).getObject());
         holder.setReportCode(mData.get(position).getCode());
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.setOnClickListener(v -> {
             Intent i;
             if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
                 i = new Intent(context, AdminReportDetailsActivity.class);

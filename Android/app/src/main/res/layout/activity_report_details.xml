@@ -20,7 +20,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:contentDescription="@string/image_url"
-    tools:context=".view.ReportDetailsActivity">
+    tools:context=".view.report.ReportDetailsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

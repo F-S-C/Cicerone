@@ -22,9 +22,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,8 +32,8 @@ import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.manager.ReviewManager;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
-import com.fsc.cicerone.view.ProfileActivity;
-import com.fsc.cicerone.view.admin_view.AdminUserProfile;
+import com.fsc.cicerone.view.user.ProfileActivity;
+import com.fsc.cicerone.view.admin.AdminUserProfile;
 
 import java.util.List;
 
@@ -82,7 +79,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserViewHolder> {
         holder.setImageResource(mData.get(position).getSex().getAvatarResource());
         ReviewManager.getAvgUserFeedback(context, mData.get(position), holder::setRating);
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.setOnClickListener(v -> {
             Intent i;
             if (AccountManager.getCurrentLoggedUser().getUserType() == UserType.ADMIN) {
                 i = new Intent(context, AdminUserProfile.class);

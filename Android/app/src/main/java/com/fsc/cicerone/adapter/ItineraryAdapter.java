@@ -32,10 +32,10 @@ import com.fsc.cicerone.adapter.view_holder.ItineraryViewHolder;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.UserType;
-import com.fsc.cicerone.view.ItineraryDetails;
-import com.fsc.cicerone.view.ItineraryManagement;
-import com.fsc.cicerone.view.WishlistFragment;
-import com.fsc.cicerone.view.admin_view.AdminItineraryDetails;
+import com.fsc.cicerone.view.itinerary.ItineraryDetails;
+import com.fsc.cicerone.view.itinerary.ItineraryManagement;
+import com.fsc.cicerone.view.user.registered_user.WishlistFragment;
+import com.fsc.cicerone.view.admin.AdminItineraryDetails;
 
 import java.util.List;
 
@@ -87,7 +87,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryViewHolder> 
         holder.setLanguages(mData.get(position).getLanguages());
         holder.showError(AccountManager.isLogged() && !mData.get(position).isInLanguages(AccountManager.getCurrentLoggedUser().getLanguages()));
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.setOnClickListener(v -> {
             Intent i;
             if (mData.get(position).getCicerone().equals(AccountManager.getCurrentLoggedUser())) {
                 i = new Intent().setClass(context, ItineraryManagement.class);

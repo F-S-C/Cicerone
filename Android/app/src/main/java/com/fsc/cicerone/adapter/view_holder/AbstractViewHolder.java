@@ -20,6 +20,7 @@ import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -61,5 +62,16 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
     protected String formatDate(Date date) {
         DateFormat outputFormat = android.text.format.DateFormat.getDateFormat(context);
         return outputFormat.format(date);
+    }
+
+
+
+    /**
+     * Set the action to be performed on the item click.
+     * @param onClickListener The action.
+     * @see View#setOnClickListener(View.OnClickListener)
+     */
+    public void setOnClickListener(@Nullable View.OnClickListener onClickListener){
+        itemView.setOnClickListener(onClickListener);
     }
 }

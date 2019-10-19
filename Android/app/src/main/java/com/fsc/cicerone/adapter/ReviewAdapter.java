@@ -22,9 +22,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,7 +31,7 @@ import com.fsc.cicerone.R;
 import com.fsc.cicerone.adapter.view_holder.ReviewViewHolder;
 import com.fsc.cicerone.manager.AccountManager;
 import com.fsc.cicerone.model.Review;
-import com.fsc.cicerone.view.ProfileActivity;
+import com.fsc.cicerone.view.user.ProfileActivity;
 
 import java.util.List;
 
@@ -75,7 +72,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewViewHolder> {
         holder.setReviewDescription(mData.get(position).getDescription());
         holder.setImageResource(mData.get(position).getAuthor().getSex().getAvatarResource());
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.setOnClickListener(v -> {
             if (!mData.get(position).getAuthor().getUsername().equals("deleted_user")) {
                 if (!mData.get(position).getAuthor().getUsername().equals(AccountManager.getCurrentLoggedUser().getUsername())) {
                     Intent i = new Intent().setClass(v.getContext(), ProfileActivity.class);
