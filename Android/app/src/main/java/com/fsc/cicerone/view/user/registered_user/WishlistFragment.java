@@ -49,7 +49,6 @@ import java.util.Objects;
 
 public class WishlistFragment extends Fragment implements Refreshable {
 
-    private ItineraryAdapter adapter;
     private TextView noItinerariesTextView;
     private RecyclerView recyclerView;
 
@@ -114,7 +113,7 @@ public class WishlistFragment extends Fragment implements Refreshable {
             for (Wishlist item : list) {
                 itineraryList.add(item.getItinerary());
             }
-            adapter = new ItineraryAdapter(getActivity(), itineraryList, this);
+            ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), itineraryList, this);
 
             if (list.isEmpty()) {
                 noItinerariesTextView.setVisibility(View.VISIBLE);

@@ -60,8 +60,6 @@ import java.util.Objects;
 public class ItineraryFragment extends Fragment implements Refreshable {
 
     private Activity context;
-    RecyclerView.Adapter adapter;
-    private RecyclerView.Adapter adapter2;
     private TextView message;
     private RecyclerView itineraryList;
     private boolean lastClicked = false;  // If it's false, then Participation is loaded, if it's true, MyItineraries is loaded instead.
@@ -163,7 +161,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
                     while (itineraryList.getItemDecorationCount() > 0) {
                         itineraryList.removeItemDecorationAt(0);
                     }
-                    adapter = new ItineraryAdapter(getActivity(), list, this);
+                    RecyclerView.Adapter adapter = new ItineraryAdapter(getActivity(), list, this);
                     itineraryList.setAdapter(adapter);
                 }
             });
@@ -192,7 +190,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
                 itineraryList.setLayoutManager(new LinearLayoutManager(getActivity()));
                 itineraryList.addItemDecoration(new DividerItemDecoration(itineraryList.getContext(),
                         DividerItemDecoration.VERTICAL));
-                adapter2 = new ReservationAdapter(getActivity(), filtered, ItineraryFragment.this, R.layout.participation_list);
+                RecyclerView.Adapter adapter2 = new ReservationAdapter(getActivity(), filtered, ItineraryFragment.this, R.layout.participation_list);
                 itineraryList.setAdapter(adapter2);
             });
         }

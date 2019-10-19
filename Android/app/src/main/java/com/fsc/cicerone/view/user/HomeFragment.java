@@ -49,7 +49,6 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment implements Refreshable {
-    private ItineraryAdapter adapter;
     private Activity context;
     private TextView noActiveItineraries;
     private RecyclerView recyclerView;
@@ -92,7 +91,7 @@ public class HomeFragment extends Fragment implements Refreshable {
                         if (!itinerary.getCicerone().equals(AccountManager.getCurrentLoggedUser()))
                             filteredList.add(itinerary);
                     }
-                    adapter = new ItineraryAdapter(getActivity(), filteredList, this);
+                    ItineraryAdapter adapter = new ItineraryAdapter(getActivity(), filteredList, this);
                     recyclerView.setAdapter(adapter);
                     if (!filteredList.isEmpty()) {
                         noActiveItineraries.setVisibility(View.GONE);

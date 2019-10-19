@@ -48,8 +48,6 @@ import java.util.Objects;
 
 public class ItineraryParticipantsDialogFragment extends DialogFragment {
 
-    private UserListAdapter adapter;
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -85,7 +83,7 @@ public class ItineraryParticipantsDialogFragment extends DialogFragment {
                     LinearLayout linearLayout = view.findViewById(R.id.user_list_container);
                     linearLayout.addView(message);
                 }
-                adapter = new UserListAdapter(getActivity(), participants);
+                UserListAdapter adapter = new UserListAdapter(getActivity(), participants);
                 recyclerView.setAdapter(adapter);
             });
         }

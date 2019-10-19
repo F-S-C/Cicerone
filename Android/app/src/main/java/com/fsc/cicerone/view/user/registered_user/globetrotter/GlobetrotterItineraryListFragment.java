@@ -52,7 +52,6 @@ import java.util.Objects;
  */
 public class GlobetrotterItineraryListFragment extends Fragment {
 
-    AdminItineraryGlobetrotterAdapter adapter;
     private Activity context;
     private static final String ERROR_TAG = "ERROR IN " + GlobetrotterItineraryListFragment.class.getName();
 
@@ -96,7 +95,7 @@ public class GlobetrotterItineraryListFragment extends Fragment {
                     filteredList.add(reservation);
             }
             if (!filteredList.isEmpty()) {
-                adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), filteredList);
+                AdminItineraryGlobetrotterAdapter adapter = new AdminItineraryGlobetrotterAdapter(getActivity(), filteredList);
                 recyclerView.setAdapter(adapter);
             } else {
                 message.setVisibility(View.VISIBLE);

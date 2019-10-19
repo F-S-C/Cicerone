@@ -46,7 +46,6 @@ import java.util.Objects;
 
 public class UsersListFragment extends Fragment implements Refreshable {
 
-    private UserListAdapter adapter;
     private RecyclerView recyclerView;
     private Itinerary itinerary;
 
@@ -90,7 +89,7 @@ public class UsersListFragment extends Fragment implements Refreshable {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         }, list -> {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-            adapter = new UserListAdapter(getActivity(), list);
+            UserListAdapter adapter = new UserListAdapter(getActivity(), list);
             recyclerView.setAdapter(adapter);
         });
     }
@@ -102,7 +101,7 @@ public class UsersListFragment extends Fragment implements Refreshable {
             for (Reservation reservation : list) {
                 participators.add(reservation.getClient());
             }
-            adapter = new UserListAdapter(getActivity(), participators);
+            UserListAdapter adapter = new UserListAdapter(getActivity(), participators);
             recyclerView.setAdapter(adapter);
         });
     }

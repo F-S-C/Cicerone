@@ -50,7 +50,6 @@ import java.util.Objects;
  */
 public class ReservationFragment extends Fragment implements Refreshable {
 
-    private ReservationAdapter adapter;
     private Activity context;
     private RecyclerView recyclerView;
     private TextView message;
@@ -107,7 +106,7 @@ public class ReservationFragment extends Fragment implements Refreshable {
                 }
             }
             if (!filtered.isEmpty()) {
-                adapter = new ReservationAdapter(getActivity(), filtered, ReservationFragment.this);
+                ReservationAdapter adapter = new ReservationAdapter(getActivity(), filtered, ReservationFragment.this);
                 recyclerView.setAdapter(adapter);
             } else {
                 message.setVisibility(View.VISIBLE);

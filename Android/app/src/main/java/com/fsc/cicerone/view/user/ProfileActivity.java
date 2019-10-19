@@ -46,8 +46,6 @@ import java.util.Objects;
  */
 public class ProfileActivity extends AppCompatActivity {
 
-    private RecyclerView.Adapter adapter;
-
     private TextView username;
     private TextView name;
     private TextView surname;
@@ -256,7 +254,7 @@ public class ProfileActivity extends AppCompatActivity {
         ReviewManager.requestUserReviews(this, reviewedUser, null, list -> {
             if(!list.isEmpty()) {
                 messageNoReview.setVisibility(View.GONE);
-                adapter = new ReviewAdapter(ProfileActivity.this, list);
+                RecyclerView.Adapter adapter = new ReviewAdapter(ProfileActivity.this, list);
                 recyclerView.setAdapter(adapter);
             }else {
                 messageNoReview.setVisibility(View.VISIBLE);

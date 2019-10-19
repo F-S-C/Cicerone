@@ -42,7 +42,6 @@ import com.fsc.cicerone.view.system.Refreshable;
  */
 public class ReviewFragment extends Fragment implements Refreshable {
 
-    private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
     private TextView message;
 
@@ -87,7 +86,7 @@ public class ReviewFragment extends Fragment implements Refreshable {
         }, list -> {
             if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
             if (!list.isEmpty()) {
-                adapter = new ReviewAdapter(getActivity(), list);
+                RecyclerView.Adapter adapter = new ReviewAdapter(getActivity(), list);
                 recyclerView.setAdapter(adapter);
             } else {
                 message.setVisibility(View.VISIBLE);

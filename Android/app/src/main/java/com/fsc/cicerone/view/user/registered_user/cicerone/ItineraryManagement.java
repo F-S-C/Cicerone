@@ -50,7 +50,6 @@ import java.util.Map;
 public class ItineraryManagement extends ItineraryActivity implements Refreshable {
     public static final int RESULT_ITINERARY_DELETED = 1020;
     private Fragment fragment = new UsersListFragment();
-    private RecyclerView.Adapter adapter;
     private Map<String, Object> code;
     private TextView messageNoReview;
 
@@ -126,7 +125,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
                 .setContext(this)
                 .setOnEndConnectionListener(list -> {
                     if (!list.isEmpty()) {
-                        adapter = new ReviewAdapter(this, list);
+                        RecyclerView.Adapter adapter = new ReviewAdapter(this, list);
                         recyclerView.setAdapter(adapter);
                     }else
                         messageNoReview.setVisibility(View.VISIBLE);
