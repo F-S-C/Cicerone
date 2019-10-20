@@ -180,7 +180,7 @@ public class ItineraryCreation extends ItineraryModifier {
     }
 
     @Override
-    boolean allFilled() {
+    protected boolean allFilled() {
         return super.allFilled() && imageManager.isSelected();
     }
 
