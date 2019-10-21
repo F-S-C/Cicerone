@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A <i>control</i> class that manages the images.
+ */
 public class ImageManager {
 
     public static final int IMG_REQUEST = 1;
@@ -27,16 +30,34 @@ public class ImageManager {
     private static final String ERROR_TAG = "ERROR IN " + ImageManager.class.getName();
     private Activity activity;
 
+    /**
+     * ImageManager's constructor.
+     *
+     * @param activity The activity.
+     */
     public ImageManager(Activity activity) {
         this.imgSelected = false;
         this.bitmapImage = null;
         this.activity = activity;
     }
 
+    /**
+     * Return a boolean that informs if the image has been selected or not.
+     *
+     * @return Boolean value true if selected, false otherwise.
+     */
     public boolean isSelected() {
         return this.imgSelected;
     }
 
+    /**
+     * Manage the subsequent activity returns.
+     *
+     * @param requestCode   The activity request code.
+     * @param resultCode    The result code specified by the second activity.
+     * @param data          An Intent that carries the result data.
+     * @param selectedImage The ImageView where the selected image will set.
+     */
     public void manageResult(int requestCode, int resultCode, Intent data, ImageView selectedImage) {
         if (requestCode == IMG_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             Uri imgPath = data.getData();
@@ -50,6 +71,9 @@ public class ImageManager {
         }
     }
 
+    /**
+     * Start a second activity to allow the user to select an image.
+     */
     public void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -58,6 +82,12 @@ public class ImageManager {
         imgSelected = true;
     }
 
+    /**
+     * Convert an image to a string hash.
+     *
+     * @param image The image to be converted.
+     * @return The image string hash.
+     */
     private String imgToString(Bitmap image) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
@@ -65,6 +95,12 @@ public class ImageManager {
         return Base64.encodeToString(imgByteArray, Base64.DEFAULT);
     }
 
+    /**
+     * Send a request to the remote connector with the image to upload to the server.
+     *
+     * @param result A listener that contains the result of the operation at the end of the
+     *               request.
+     */
     public void upload(@Nullable BooleanConnector.OnEndConnectionListener result) {
         Log.d(ImageManager.class.getName(), "Uploading image...");
         if (bitmapImage != null) {

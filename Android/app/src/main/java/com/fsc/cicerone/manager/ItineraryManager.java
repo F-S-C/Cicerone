@@ -55,7 +55,8 @@ public class ItineraryManager {
      * @param description        The description of the itinerary.
      * @param beginDate          The beginning date of the itinerary (format "yyyy-MM-dd").
      * @param endDate            The ending date of the itinerary (format "yyyy-MM-dd").
-     * @param endReservationDate The reservation's ending date of the itinerary (format "yyyy-MM-dd").
+     * @param endReservationDate The reservation's ending date of the itinerary (format
+     *                           "yyyy-MM-dd").
      * @param location           The location of the itinerary.
      * @param duration           The duration of the itinerary.
      * @param repetitions        The number of repetitions per day if the itinerary.

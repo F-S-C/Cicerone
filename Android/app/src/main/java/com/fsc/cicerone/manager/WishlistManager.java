@@ -33,12 +33,22 @@ import com.fsc.cicerone.model.Wishlist;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A <i>control</i> class that manages the wishlists.
+ */
 public class WishlistManager {
 
     private WishlistManager() {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Get a user's wishlist from the server.
+     *
+     * @param context         The activity context.
+     * @param onStartCallback A function to be executed before the request.
+     * @param onEndCallback   A function to be executed after the request.
+     */
     public static void getWishlist(Activity context, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartCallback, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Wishlist> onEndCallback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> parameters = new HashMap<>(1);
@@ -53,6 +63,12 @@ public class WishlistManager {
         }
     }
 
+    /**
+     * Clear a user's wishlist on the server.
+     *
+     * @param context  The activity context.
+     * @param callback A function to be executed after the clear attempt.
+     */
     public static void clearWishlist(Activity context, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> parameters = new HashMap<>(1);
@@ -66,6 +82,13 @@ public class WishlistManager {
         }
     }
 
+    /**
+     * Remove an itinerary from a user's wishlist on the server.
+     *
+     * @param context   The activity context.
+     * @param itinerary The itinerary.
+     * @param callback  A function to be executed after the remove attempt.
+     */
     public static void removeFromWishlist(Activity context, Itinerary itinerary, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);
@@ -81,6 +104,13 @@ public class WishlistManager {
         }
     }
 
+    /**
+     * Add an itinerary to a user's wishlist on the server.
+     *
+     * @param context   The activity context.
+     * @param itinerary The itinerary.
+     * @param callback  A function to be executed after the insert attempt.
+     */
     public static void addToWishlist(Activity context, Itinerary itinerary, @Nullable BooleanConnector.OnEndConnectionListener callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);
@@ -96,6 +126,13 @@ public class WishlistManager {
         }
     }
 
+    /**
+     * Check if an itinerary is present in a user's wishlist on the server.
+     *
+     * @param context   The activity context.
+     * @param itinerary The itinerary.
+     * @param callback  A function to be executed after the request attempt.
+     */
     public static void isInWishlist(Activity context, Itinerary itinerary, @Nullable Consumer<Boolean> callback) {
         if (AccountManager.isLogged()) {
             Map<String, Object> params = new HashMap<>(2);

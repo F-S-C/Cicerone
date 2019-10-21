@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReportManager {
-    private ReportManager(){
+    private ReportManager() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -42,15 +42,14 @@ public class ReportManager {
     /**
      * Insert a Report made by a User to another.
      *
-     * @param context               The context of the activity.
-     * @param author                The author of the report.
-     * @param reportedUserUsername  The username of the reported user.
-     * @param object                The object of the report
-     * @param body                  The body of the report.
-     * @param callback A callback to be executed after the operation is completed.
+     * @param context              The context of the activity.
+     * @param author               The author of the report.
+     * @param reportedUserUsername The username of the reported user.
+     * @param object               The object of the report
+     * @param body                 The body of the report.
+     * @param callback             A callback to be executed after the operation is completed.
      */
-    public static void addNewReport(Activity context, User author, String reportedUserUsername, String object, String body, @Nullable Consumer<Boolean> callback)
-    {
+    public static void addNewReport(Activity context, User author, String reportedUserUsername, String object, String body, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> param = new HashMap<>(5);
         param.put(User.Columns.USERNAME_KEY, author.getUsername());
         param.put(Report.Columns.REPORTED_USER_KEY, reportedUserUsername);
@@ -71,15 +70,14 @@ public class ReportManager {
     /**
      * Change the status of the report to "Pending".
      *
-     * @param context The context of the activity.
-     * @param report  The report to close.
+     * @param context  The context of the activity.
+     * @param report   The report to close.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void takeCharge(Activity context, Report report, @Nullable Consumer<Boolean> callback)
-    {
+    public static void takeCharge(Activity context, Report report, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> param = new HashMap<>(2);
         param.put(Report.Columns.REPORT_CODE_KEY, report.getCode());
-        param.put(Report.Columns.STATE_KEY,ReportStatus.PENDING.toInt());
+        param.put(Report.Columns.STATE_KEY, ReportStatus.PENDING.toInt());
 
         new BooleanConnector.Builder(ConnectorConstants.UPDATE_REPORT_DETAILS)
                 .setContext(context)
@@ -99,8 +97,7 @@ public class ReportManager {
      * @param report   The report to close.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void  removeReport (Activity context, Report report, @Nullable Consumer<Boolean> callback)
-    {
+    public static void removeReport(Activity context, Report report, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> param = new HashMap<>(2);
         param.put(Report.Columns.REPORT_CODE_KEY, report.getCode());
         param.put(Report.Columns.STATE_KEY, ReportStatus.CANCELED.toInt());
@@ -120,12 +117,11 @@ public class ReportManager {
     /**
      * Change the status of the report to "Closed".
      *
-     * @param context The context of the activity.
-     * @param report  The report to close.
+     * @param context  The context of the activity.
+     * @param report   The report to close.
      * @param callback A callback to be executed after the operation is completed.
      */
-    public static void  closeReport (Activity context, Report report, @Nullable Consumer<Boolean> callback)
-    {
+    public static void closeReport(Activity context, Report report, @Nullable Consumer<Boolean> callback) {
         Map<String, Object> param = new HashMap<>(2);
         param.put(Report.Columns.REPORT_CODE_KEY, report.getCode());
         param.put(Report.Columns.STATE_KEY, ReportStatus.CLOSED.toInt());
@@ -142,14 +138,15 @@ public class ReportManager {
 
     /**
      * Get list of the report.
-     * @param context The context of the activity.
-     * @param user The user of request view reports' list.
+     *
+     * @param context                   The context of the activity.
+     * @param user                      The user of request view reports' list.
      * @param onStartConnectionListener On start connection callback.
-     * @param callback A callback to be executed after the operation is completed.
+     * @param callback                  A callback to be executed after the operation is completed.
      */
-    public static void requestReport (Activity context, User user, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Report> callback){
+    public static void requestReport(Activity context, User user, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<Report> callback) {
         final Map<String, Object> parameters = new HashMap<>();
-        if(user != null) parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
+        if (user != null) parameters.put(User.Columns.USERNAME_KEY, user.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_REPORT, BusinessEntityBuilder.getFactory(Report.class))
                 .setContext(context)
                 .setOnStartConnectionListener(onStartConnectionListener)

@@ -166,7 +166,7 @@ public class ReviewManager {
      * @param callback A callback to be executed after the operation is completed.
      */
     public static void getAvgUserFeedback(Activity context, User user, @Nullable Consumer<Float> callback) {
-        Map<String,Object> parameter = new HashMap<>();
+        Map<String, Object> parameter = new HashMap<>();
         parameter.put(UserReview.Columns.REVIEWED_USER_KEY, user.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
                 .setContext(context)
@@ -188,7 +188,7 @@ public class ReviewManager {
      *
      * @param context                   The context of the caller.
      * @param user                      The user reviewer.
-     * @param reviewedUser             The user reviewed.
+     * @param reviewedUser              The user reviewed.
      * @param callback                  A callback to be executed after the operation is completed.
      * @param onStartConnectionListener On start connection callback.
      */
@@ -210,10 +210,10 @@ public class ReviewManager {
     /**
      * Check if user is reviewed by user.
      *
-     * @param context       The context of the caller.
-     * @param user          Reviewer of the itinerary.
+     * @param context      The context of the caller.
+     * @param user         Reviewer of the itinerary.
      * @param reviewedUser The user reviewed.
-     * @param callback      A callback to be executed after the operation is completed.
+     * @param callback     A callback to be executed after the operation is completed.
      */
     public static void isReviewedUser(Activity context, User reviewedUser, User user, @Nullable RunnableUsingBusinessEntity callback) {
         Map<String, Object> parameters = new HashMap<>();
@@ -292,7 +292,7 @@ public class ReviewManager {
      * @param reviewedUser The user reviewed.
      * @param callback     A callback to be executed after the operation is completed.
      */
-    public static void requestUserReviews(Activity context, User reviewedUser, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener , @Nullable AsyncDatabaseConnector.OnEndConnectionListener<UserReview> callback) {
+    public static void requestUserReviews(Activity context, User reviewedUser, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStartConnectionListener, @Nullable AsyncDatabaseConnector.OnEndConnectionListener<UserReview> callback) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(UserReview.Columns.REVIEWED_USER_KEY, reviewedUser.getUsername());
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_USER_REVIEW, BusinessEntityBuilder.getFactory(UserReview.class))
