@@ -70,7 +70,7 @@ public class ItineraryManager {
      */
 
     public static Itinerary uploadItinerary(String title, String description, String beginDate, String endDate, String endReservationDate, String location, String duration, int repetitions, int minParticipants, int maxParticipants, float fullPrice, float reducedPrice, @NonNull Set<Language> languages, String imageUrl, @Nullable BooleanConnector.OnEndConnectionListener callback) {
-        SimpleDateFormat in = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        SimpleDateFormat in = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
         Date beginningDate;
         Date endingDate;
         Date reservationDate;
