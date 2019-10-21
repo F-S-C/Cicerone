@@ -132,6 +132,11 @@ public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends A
         return "";
     }
 
+    /**
+     * Se the AsyncDatabaseConnector's error.
+     *
+     * @param error The error.
+     */
     protected void setError(Exception error) {
         this.error = error;
     }
@@ -154,6 +159,9 @@ public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends A
                 .show();
     }
 
+    /**
+     * @see DatabaseConnector#getData()
+     */
     @Override
     public void getData() {
         execute();
@@ -167,6 +175,12 @@ public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends A
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
     }
 
+    /**
+     * AsyncDatabaseConnector's constructor. It creates an object from a builder.
+     *
+     * @param builder The Builder.
+     * @see Builder
+     */
     protected AsyncDatabaseConnector(Builder<T> builder) {
         this.context = builder.context;
         this.onStartConnectionListener = builder.onStartConnectionListener;
@@ -175,6 +189,11 @@ public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends A
         this.builder = builder.businessEntityBuilder;
     }
 
+    /**
+     * A utility class useful to create an AsyncDatabaseConnector.
+     *
+     * @param <B> The object type returned by the remote connector.
+     */
     public abstract static class Builder<B extends BusinessEntity> {
         private final String url; // The URL of the server-side script
 
@@ -184,26 +203,55 @@ public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends A
         private final BusinessEntityBuilder<B> businessEntityBuilder;
         private WeakReference<Activity> context = null;
 
+        /**
+         * Builder's constructor.
+         *
+         * @param url                   The url of the remote connector on the server.
+         * @param businessEntityBuilder A factory for a BusinessEntity's object.
+         */
         Builder(String url, BusinessEntityBuilder<B> businessEntityBuilder) {
             this.url = url;
             this.businessEntityBuilder = businessEntityBuilder;
         }
 
+        /**
+         * Set the on start connection's listener.
+         *
+         * @param onStartConnectionListener The listener.
+         * @return The Builder itself.
+         */
         public Builder<B> setOnStartConnectionListener(OnStartConnectionListener onStartConnectionListener) {
             this.onStartConnectionListener = onStartConnectionListener;
             return this;
         }
 
+        /**
+         * Set the on end connection's listener.
+         *
+         * @param onEndConnectionListener The listener.
+         * @return The Builder itself.
+         */
         public Builder<B> setOnEndConnectionListener(OnEndConnectionListener<B> onEndConnectionListener) {
             this.onEndConnectionListener = onEndConnectionListener;
             return this;
         }
 
+        /**
+         * Set the activity context.
+         *
+         * @param context The context.
+         * @return The Builder itself.
+         */
         public Builder<B> setContext(Activity context) {
             this.context = context != null ? new WeakReference<>(context) : null;
             return this;
         }
 
+        /**
+         * Create the AsyncDatabaseConnector's object.
+         *
+         * @return The AsyncDatabaseConnector.
+         */
         public abstract AsyncDatabaseConnector<B> build();
 
     }

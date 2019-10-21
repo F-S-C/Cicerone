@@ -147,6 +147,12 @@ public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabase
         return stringBuilder.toString();
     }
 
+    /**
+     * Return a Map from the result returned by the remote connector.
+     *
+     * @param entity The BusinessEntity object to be converted.
+     * @return The Map.
+     */
     public static Map<String, Object> paramsFromObject(final BusinessEntity entity) {
         JSONObject jsonObject = entity.toJSONObject();
         Map<String, Object> mapData = new HashMap<>(jsonObject.length());
@@ -185,38 +191,73 @@ public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabase
         return mapData;
     }
 
+    /**
+     * SendInPostConnector's constructor. Uses the AsyncDatabaseConnector's constructor.
+     *
+     * @param builder The Builder.
+     */
     protected SendInPostConnector(Builder<T> builder) {
         super(builder);
         this.objectToSend = builder.objectToSend;
     }
 
+    /**
+     * A utility class useful to create a SendInPostConnector.
+     *
+     * @param <B> The object to be sent to the remote connector.
+     */
     public static class Builder<B extends BusinessEntity> extends AsyncDatabaseConnector.Builder<B> {
         private Map<String, Object> objectToSend;
 
+        /**
+         * Builder's constructor.
+         *
+         * @param url     The url of the remote connector on the server.
+         * @param builder A factory for a BusinessEntity's object.
+         */
         public Builder(String url, BusinessEntityBuilder<B> builder) {
             super(url, builder);
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#setOnStartConnectionListener(OnStartConnectionListener)
+         */
         @Override
         public Builder<B> setOnStartConnectionListener(OnStartConnectionListener listener) {
             return (Builder<B>) super.setOnStartConnectionListener(listener);
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#setOnEndConnectionListener(OnEndConnectionListener)
+         */
         @Override
         public Builder<B> setOnEndConnectionListener(OnEndConnectionListener<B> listener) {
             return (Builder<B>) super.setOnEndConnectionListener(listener);
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#setContext(Activity)
+         */
         @Override
         public Builder<B> setContext(Activity context) {
             return (Builder<B>) super.setContext(context);
         }
 
+        /**
+         * Set the object to be sent to the remote connector.
+         *
+         * @param objectToSend Set the object to be sent to the remote connector. The map's entries
+         *                     will be used in the form key = value.
+         * @return The Builder itself.
+         */
         public Builder<B> setObjectToSend(Map<String, Object> objectToSend) {
             this.objectToSend = objectToSend;
             return this;
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#build()
+         */
         @Override
         public SendInPostConnector<B> build() {
             return new SendInPostConnector<>(this);

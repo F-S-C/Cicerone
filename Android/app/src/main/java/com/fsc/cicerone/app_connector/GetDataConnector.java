@@ -31,8 +31,8 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * Special connector to the database.
- * This connector fetches all entries available from a server-side script.
+ * Special connector to the database. This connector fetches all entries available from a
+ * server-side script.
  */
 public class GetDataConnector<T extends BusinessEntity> extends AsyncDatabaseConnector<T> {
 
@@ -68,27 +68,48 @@ public class GetDataConnector<T extends BusinessEntity> extends AsyncDatabaseCon
         super(builder);
     }
 
+    /**
+     * Builder class for BusinessEntity.
+     */
     public static class Builder<B extends BusinessEntity> extends AsyncDatabaseConnector.Builder<B> {
 
+        /**
+         * Constructor. Uses the AsyncDatabaseConnector's Builder constructor.
+         *
+         * @param url     The url of the server-side connector.
+         * @param builder The BusinessEntity's Builder.
+         */
         public Builder(String url, BusinessEntityBuilder<B> builder) {
             super(url, builder);
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#setOnStartConnectionListener(OnStartConnectionListener)
+         */
         @Override
         public Builder<B> setOnStartConnectionListener(OnStartConnectionListener listener) {
             return (Builder<B>) super.setOnStartConnectionListener(listener);
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#setOnEndConnectionListener(OnEndConnectionListener)
+         */
         @Override
         public Builder<B> setOnEndConnectionListener(OnEndConnectionListener<B> onEndConnectionListener) {
             return (Builder<B>) super.setOnEndConnectionListener(onEndConnectionListener);
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#setContext(Activity)
+         */
         @Override
         public Builder<B> setContext(Activity context) {
             return (Builder<B>) super.setContext(context);
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#build()
+         */
         @Override
         public GetDataConnector<B> build() {
             return new GetDataConnector<>(this);

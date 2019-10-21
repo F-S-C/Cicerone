@@ -41,12 +41,18 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
 
     private OnEndConnectionListener onEndConnectionListener;
 
+    /**
+     * @see AsyncDatabaseConnector#executeAfterConnection(String)
+     */
     @Override
     protected void executeAfterConnection(String s) {
         if (onEndConnectionListener != null)
             onEndConnectionListener.onEndConnection(new BooleanResult(s));
     }
 
+    /**
+     * The boolean result. It contains the result (boolean) and the message (String).
+     */
     public static class BooleanResult extends BusinessEntity {
         private boolean result;
         private String message;
@@ -55,20 +61,35 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         private static final String ERROR_KEY = "error";
         private static final String MESSAGE_KEY = "message";
 
+        /**
+         * Constructor.
+         *
+         * @param result  The result (boolean).
+         * @param message The message (String).
+         */
         public BooleanResult(boolean result, String message) {
             super();
             this.result = result;
             this.message = message;
         }
 
+        /**
+         * Constructor. Uses the BusinessEntity constructor.
+         */
         BooleanResult(String json) {
             super(json);
         }
 
+        /**
+         * Constructor. Uses the BusinessEntity constructor.
+         */
         BooleanResult(JSONObject jsonObject) {
             super(jsonObject);
         }
 
+        /**
+         * @see com.fsc.cicerone.model.BusinessEntity#loadFromJSONObject(JSONObject)
+         */
         @Override
         protected void loadFromJSONObject(JSONObject jsonObject) {
             try {
@@ -80,14 +101,27 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
             }
         }
 
+        /**
+         * Return the value of result.
+         *
+         * @return The boolean value of result.
+         */
         public boolean getResult() {
             return result;
         }
 
+        /**
+         * Return the message.
+         *
+         * @return The message. If null, returns an empty string.
+         */
         public String getMessage() {
             return message != null ? message : "";
         }
 
+        /**
+         * @see com.fsc.cicerone.model.BusinessEntity#toJSONObject()
+         */
         @Override
         public JSONObject toJSONObject() {
             JSONObject toReturn = new JSONObject();
@@ -101,39 +135,71 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
     }
 
+    /**
+     * BooleanConnector constructor. Uses a builder to create a SendInPostConnector.
+     *
+     * @param builder The SendInPostConnector.Builder object.
+     */
     private BooleanConnector(Builder builder) {
         super(builder);
         onEndConnectionListener = builder.onEndConnectionListener;
     }
 
+    /**
+     * Builder class for BooleanConnector.
+     */
     public static class Builder extends SendInPostConnector.Builder<BooleanResult> {
 
         private OnEndConnectionListener onEndConnectionListener;
 
+        /**
+         * Constructor. Uses the SendInPostConnector's Builder constructor.
+         *
+         * @param url The url of the server-side connector.
+         */
         public Builder(String url) {
             super(url, null);
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#setOnStartConnectionListener(OnStartConnectionListener)
+         */
         @Override
         public Builder setOnStartConnectionListener(OnStartConnectionListener listener) {
             return (Builder) super.setOnStartConnectionListener(listener);
         }
 
+        /**
+         * Set the listener at the end of the connection. Specify what to do at the end of the
+         * connection.
+         *
+         * @param listener The listener.
+         * @return The Builder itself.
+         */
         public Builder setOnEndConnectionListener(OnEndConnectionListener listener) {
             onEndConnectionListener = listener;
             return this;
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#setContext(Activity)
+         */
         @Override
         public Builder setContext(Activity context) {
             return (Builder) super.setContext(context);
         }
 
+        /**
+         * @see SendInPostConnector.Builder#setObjectToSend(Map)
+         */
         @Override
         public Builder setObjectToSend(Map<String, Object> objectToSend) {
             return (Builder) super.setObjectToSend(objectToSend);
         }
 
+        /**
+         * @see AsyncDatabaseConnector.Builder#build()
+         */
         @Override
         public BooleanConnector build() {
             return new BooleanConnector(this);

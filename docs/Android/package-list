@@ -7,5 +7,11 @@ com.fsc.cicerone.mailer
 com.fsc.cicerone.manager
 com.fsc.cicerone.model
 com.fsc.cicerone.notifications
-com.fsc.cicerone.view
-com.fsc.cicerone.view.admin_view
+com.fsc.cicerone.view.admin
+com.fsc.cicerone.view.itinerary
+com.fsc.cicerone.view.report
+com.fsc.cicerone.view.system
+com.fsc.cicerone.view.user
+com.fsc.cicerone.view.user.registered_user
+com.fsc.cicerone.view.user.registered_user.cicerone
+com.fsc.cicerone.view.user.registered_user.globetrotter
