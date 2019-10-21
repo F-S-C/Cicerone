@@ -100,7 +100,7 @@ public class AccountManager {
     /**
      * Logout the current user.
      */
-    public static void logout(@NonNull Context context) {
+    public static void logout(@NonNull Activity context) {
         currentLoggedUser = null;
         NotificationUtils.unsubscribeFromAllTopics(context);
     }
