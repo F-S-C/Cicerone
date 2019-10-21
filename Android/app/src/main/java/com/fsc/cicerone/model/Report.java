@@ -21,6 +21,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * A report has represented in Cicerone. Each report is identified by a number.
+ */
 public class Report extends BusinessEntity {
 
     private int code;
@@ -49,14 +52,27 @@ public class Report extends BusinessEntity {
         public static final String STATE_KEY = "state";
     }
 
+    /**
+     * Report's constructor. Convert a json string to Report.
+     *
+     * @param json The json string.
+     */
     public Report(String json) {
         this(getJSONObject(json));
     }
 
+    /**
+     * Report's constructor. Convert a JSONObject to Report.
+     *
+     * @param jsonObject The JSONObject.
+     */
     public Report(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
 
+    /**
+     * @see BusinessEntity#loadFromJSONObject(JSONObject)
+     */
     @Override
     protected void loadFromJSONObject(JSONObject jsonObject) {
         int tempCode;
@@ -113,34 +129,72 @@ public class Report extends BusinessEntity {
         }
     }
 
+    /**
+     * Get the Report's code.
+     *
+     * @return The code.
+     */
     public int getCode() {
         return code;
     }
 
+    /**
+     * Get the Report's author.
+     *
+     * @return The author.
+     */
     public User getAuthor() {
         return author;
     }
 
+    /**
+     * Get the reported user.
+     *
+     * @return The reported user.
+     */
     public User getReportedUser() {
         return reportedUser;
     }
 
+    /**
+     * Get the Report's object.
+     *
+     * @return The object.
+     */
     public String getObject() {
         return object;
     }
 
+    /**
+     * Get the Report's body.
+     *
+     * @return The body.
+     */
     public String getBody() {
         return body;
     }
 
+    /**
+     * Get the Report's status.
+     *
+     * @return The status.
+     */
     public ReportStatus getStatus() {
         return status;
     }
 
+    /**
+     * Set the Report's status.
+     *
+     * @param status The status.
+     */
     public void setStatus(ReportStatus status) {
         this.status = status;
     }
 
+    /**
+     * @see BusinessEntity#toJSONObject()
+     */
     @Override
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();

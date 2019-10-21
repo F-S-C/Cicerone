@@ -67,7 +67,9 @@ public enum ReportStatus {
         }
     }
 
-
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString() {
         switch (this) {

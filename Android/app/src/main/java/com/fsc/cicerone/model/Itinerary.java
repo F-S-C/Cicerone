@@ -81,6 +81,9 @@ public class Itinerary extends BusinessEntity {
         public static final String LANGUAGES_KEY = "languages";
     }
 
+    /**
+     * @see java.lang.Object#equals(Object)
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -103,6 +106,9 @@ public class Itinerary extends BusinessEntity {
                 Objects.equals(imageUrl, itinerary.imageUrl);
     }
 
+    /**
+     * @see Object#hashCode()
+     */
     @Override
     public int hashCode() {
         return Objects.hash(code, cicerone, title, description, beginningDate, endingDate, reservationDate, minParticipants, maxParticipants, location, repetitions, duration, fullPrice, reducedPrice, imageUrl);
@@ -115,6 +121,11 @@ public class Itinerary extends BusinessEntity {
         // Automatically set everything to a default value
     }
 
+    /**
+     * Itinerary's constructor. Convert a json string to Itinerary.
+     *
+     * @param json
+     */
     public Itinerary(String json) {
         this(getJSONObject(json));
     }
@@ -150,6 +161,9 @@ public class Itinerary extends BusinessEntity {
         loadFromJSONObject(jsonObject);
     }
 
+    /**
+     * @see BusinessEntity#loadFromJSONObject(JSONObject)
+     */
     @Override
     protected void loadFromJSONObject(JSONObject itinerary) {
         try {
@@ -626,6 +640,9 @@ public class Itinerary extends BusinessEntity {
         languages = builder.languages;
     }
 
+    /**
+     * A factory for a Itinerary's object.
+     */
     public static class Builder {
         private final User cicerone;
         private String title;
@@ -643,80 +660,174 @@ public class Itinerary extends BusinessEntity {
         private String imageUrl;
         private Set<Language> languages;
 
+        /**
+         * Builder's constructor.
+         *
+         * @param cicerone The cicerone.
+         */
         public Builder(User cicerone) {
             this.cicerone = cicerone;
         }
 
+        /**
+         * Set the itinerary's title.
+         *
+         * @param title The itinerary's title.
+         * @return The Builder itself.
+         */
         public Builder title(String title) {
             this.title = title;
             return this;
         }
 
+        /**
+         * Set the itinerary's description.
+         *
+         * @param description The itinerary's description.
+         * @return The Builder itself.
+         */
         public Builder description(String description) {
             this.description = description;
             return this;
         }
 
+        /**
+         * Set the itinerary's beginning date.
+         *
+         * @param beginningDate The itinerary's beginning date.
+         * @return The Builder itself.
+         */
         public Builder beginningDate(Date beginningDate) {
             this.beginningDate = beginningDate;
             return this;
         }
 
+        /**
+         * Set the itinerary's ending date.
+         *
+         * @param endingDate The itinerary's ending date.
+         * @return The Builder itself.
+         */
         public Builder endingDate(Date endingDate) {
             this.endingDate = endingDate;
             return this;
         }
 
+        /**
+         * Set the itinerary's reservation date.
+         *
+         * @param reservationDate The itinerary's reservation date.
+         * @return The Builder itself.
+         */
         public Builder reservationDate(Date reservationDate) {
             this.reservationDate = reservationDate;
             return this;
         }
 
+        /**
+         * Set the itinerary's minimum participants.
+         *
+         * @param minParticipants The itinerary's minimum participants.
+         * @return The Builder itself.
+         */
         public Builder minParticipants(int minParticipants) {
             this.minParticipants = minParticipants;
             return this;
         }
 
+        /**
+         * Set the itinerary's maximum participants.
+         *
+         * @param maxParticipants The itinerary's maximum participants.
+         * @return The Builder itself.
+         */
         public Builder maxParticipants(int maxParticipants) {
             this.maxParticipants = maxParticipants;
             return this;
         }
 
+        /**
+         * Set the itinerary's location.
+         *
+         * @param location The itinerary's location.
+         * @return The Builder itself.
+         */
         public Builder location(String location) {
             this.location = location;
             return this;
         }
 
+        /**
+         * Set the itinerary's repetitions per day.
+         *
+         * @param repetitions The itinerary's repetitions per day.
+         * @return The Builder itself.
+         */
         public Builder repetitions(int repetitions) {
             this.repetitions = repetitions;
             return this;
         }
 
+        /**
+         * Set the itinerary's duration.
+         *
+         * @param duration The itinerary's duration.
+         * @return The Builder itself.
+         */
         public Builder duration(String duration) {
             this.duration = duration;
             return this;
         }
 
+        /**
+         * Set the itinerary's full price.
+         *
+         * @param fullPrice The itinerary's full price.
+         * @return The Builder itself.
+         */
         public Builder fullPrice(float fullPrice) {
             this.fullPrice = fullPrice;
             return this;
         }
 
+        /**
+         * Set the itinerary's reduced price.
+         *
+         * @param reducedPrice The itinerary's reduced price.
+         * @return The Builder itself.
+         */
         public Builder reducedPrice(float reducedPrice) {
             this.reducedPrice = reducedPrice;
             return this;
         }
 
+        /**
+         * Set the itinerary's image url.
+         *
+         * @param imageUrl The itinerary's image url.
+         * @return The Builder itself.
+         */
         public Builder imageUrl(String imageUrl) {
             this.imageUrl = imageUrl;
             return this;
         }
 
+        /**
+         * Set the languages' list.
+         *
+         * @param languages The itinerary's languages' list.
+         * @return The Builder itself.
+         */
         public Builder setLanguages(Set<Language> languages) {
             this.languages = languages;
             return this;
         }
 
+        /**
+         * Build the itinerary.
+         *
+         * @return The itinerary.
+         */
         public Itinerary build() {
             return new Itinerary(this);
         }

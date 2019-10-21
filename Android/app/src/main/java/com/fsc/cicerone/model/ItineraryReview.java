@@ -21,6 +21,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * A itinerary review represented in the system Cicerone.
+ */
 public class ItineraryReview extends Review {
     private Itinerary reviewedItinerary;
 
@@ -32,17 +35,31 @@ public class ItineraryReview extends Review {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
+
         public static final String REVIEWED_ITINERARY_KEY = "reviewed_itinerary";
     }
 
+    /**
+     * ItineraryReview's constructor. Convert a JSONObject to ItineraryReview.
+     *
+     * @param jsonObject The JSONObject.
+     */
     public ItineraryReview(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
 
+    /**
+     * ItineraryReview's constructor. Convert a json string to Itinerary.
+     *
+     * @param json The json string.
+     */
     public ItineraryReview(String json) {
         this(getJSONObject(json));
     }
 
+    /**
+     * @see BusinessEntity#loadFromJSONObject(JSONObject)
+     */
     @Override
     protected void loadFromJSONObject(JSONObject jsonObject) {
         super.loadFromJSONObject(jsonObject);
@@ -61,6 +78,9 @@ public class ItineraryReview extends Review {
         return reviewedItinerary;
     }
 
+    /**
+     * @see BusinessEntity#toJSONObject()
+     */
     @Override
     public JSONObject toJSONObject() {
         JSONObject object = super.toJSONObject();
@@ -77,24 +97,42 @@ public class ItineraryReview extends Review {
         reviewedItinerary = builder.reviewedItinerary;
     }
 
+    /**
+     * A factory for a ItineraryReview's object.
+     */
     public static class Builder extends Review.Builder {
         private final Itinerary reviewedItinerary;
 
+        /**
+         * Builder's constructor.
+         *
+         * @param author            The review author.
+         * @param reviewedItinerary The reviewed itinerary.
+         */
         public Builder(User author, Itinerary reviewedItinerary) {
             super(author);
             this.reviewedItinerary = reviewedItinerary;
         }
 
+        /**
+         * @see Review.Builder#setFeedback(int)
+         */
         @Override
         public Builder setFeedback(int feedback) {
             return (Builder) super.setFeedback(feedback);
         }
 
+        /**
+         * @see Review.Builder#setDescription(String)
+         */
         @Override
         public Builder setDescription(String description) {
             return (Builder) super.setDescription(description);
         }
 
+        /**
+         * @see Review.Builder#build()
+         */
         @Override
         public ItineraryReview build() {
             return new ItineraryReview(this);

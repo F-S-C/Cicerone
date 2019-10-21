@@ -6,6 +6,9 @@ import com.fsc.cicerone.model.Itinerary;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 
+/**
+ * Class containing notifications configurations.
+ */
 public abstract class Config {
     private Config() {
         throw new IllegalStateException("Utility class");

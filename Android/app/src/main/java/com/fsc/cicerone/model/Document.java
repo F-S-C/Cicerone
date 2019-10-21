@@ -41,7 +41,10 @@ public class Document extends BusinessEntity {
      * remote server.
      */
     public static class Columns {
-        private Columns() { throw new IllegalStateException("Utility class"); }
+        private Columns() {
+            throw new IllegalStateException("Utility class");
+        }
+
         public static final String DOCUMENT_NUMBER_KEY = "document_number";
         public static final String DOCUMENT_TYPE_KEY = "document_type";
         public static final String EXPIRY_DATE_KEY = "expiry_date";
@@ -53,10 +56,20 @@ public class Document extends BusinessEntity {
     public Document() {
     }
 
+    /**
+     * Document's constructor. Convert a JSONObject to Document.
+     *
+     * @param jsonObject The JSONObject.
+     */
     public Document(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
 
+    /**
+     * Document's constructor. Convert a json string to Document.
+     *
+     * @param json The json string.
+     */
     public Document(String json) {
         this(getJSONObject(json));
     }
@@ -64,8 +77,8 @@ public class Document extends BusinessEntity {
     /**
      * Create a new document by specifying its values.
      *
-     * @param number     The document's number.
-     * @param type       The document's type.
+     * @param number         The document's number.
+     * @param type           The document's type.
      * @param expirationDate The document's expiration date.
      */
     public Document(String number, String type, Date expirationDate) {
@@ -77,8 +90,8 @@ public class Document extends BusinessEntity {
     /**
      * Create a new document by specifying its values.
      *
-     * @param number     The document's number.
-     * @param type       The document's type.
+     * @param number         The document's number.
+     * @param type           The document's type.
      * @param expirationDate The document's expiration date.
      */
     public Document(String number, String type, String expirationDate) {
@@ -91,6 +104,9 @@ public class Document extends BusinessEntity {
         }
     }
 
+    /**
+     * @see BusinessEntity#loadFromJSONObject(JSONObject)
+     */
     @Override
     protected void loadFromJSONObject(JSONObject jsonObject) {
         try {

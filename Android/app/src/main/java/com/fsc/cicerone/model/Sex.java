@@ -116,6 +116,11 @@ public enum Sex {
         return toReturn;
     }
 
+    /**
+     * Get the image resource associated with the sex.
+     *
+     * @return An integer representing the resource.
+     */
     public int getAvatarResource() {
         int resource;
         switch (this) {

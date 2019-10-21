@@ -21,6 +21,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * A wish list has represented in Cicerone.
+ */
 public class Wishlist extends BusinessEntity {
 
     private User user;
@@ -28,7 +31,11 @@ public class Wishlist extends BusinessEntity {
 
     private static final String ERROR_TAG = "WISHLIST_ERROR";
 
-    public static class Columns{
+    /**
+     * A utility class that contains various strings to be used as keys to communicate with the
+     * remote server.
+     */
+    public static class Columns {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
@@ -37,14 +44,27 @@ public class Wishlist extends BusinessEntity {
         public static final String ITINERARY_IN_WISHLIST_KEY = "itinerary_in_wishlist";
     }
 
+    /**
+     * Wishlist's constructor. Convert a JSONObject to Wishlist.
+     *
+     * @param jsonObject The JSONObject.
+     */
     public Wishlist(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
 
+    /**
+     * Wishlist's constructor. Convert a json string to Wishlist.
+     *
+     * @param json The json string.
+     */
     public Wishlist(String json) {
         this(getJSONObject(json));
     }
 
+    /**
+     * @see BusinessEntity#loadFromJSONObject(JSONObject)
+     */
     @Override
     protected void loadFromJSONObject(JSONObject jsonObject) {
         User tempUser;
@@ -68,14 +88,27 @@ public class Wishlist extends BusinessEntity {
         itinerary = tempItinerary;
     }
 
+    /**
+     * Get the wishlist's user.
+     *
+     * @return The user.
+     */
     public User getUser() {
         return user;
     }
 
+    /**
+     * Get the wishlist's itinerary.
+     *
+     * @return The itinerary.
+     */
     public Itinerary getItinerary() {
         return itinerary;
     }
 
+    /**
+     * @see BusinessEntity#toJSONObject()
+     */
     @Override
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();

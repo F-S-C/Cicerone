@@ -34,8 +34,8 @@ public enum UserType {
     ADMIN,
 
     /**
-     * Cicerone: a "special" user that can create itineraries.
-     * A "Cicerone" is also a "Globetrotter".
+     * Cicerone: a "special" user that can create itineraries. A "Cicerone" is also a
+     * "Globetrotter".
      */
     CICERONE;
 
@@ -43,9 +43,9 @@ public enum UserType {
      * Get the User Type associated with an integer.
      *
      * @param u The integer.
-     * @return The User Type associated with the integer u.
-     * If the value of the integer is 0 then the function will return GLOBETROTTER.
-     * Otherwise, if the value of the integer is 1 then the function will return CICERONE.
+     * @return The User Type associated with the integer u. If the value of the integer is 0 then
+     * the function will return GLOBETROTTER. Otherwise, if the value of the integer is 1 then the
+     * function will return CICERONE.
      */
     @NonNull
     public static UserType getValue(Integer u) {
@@ -65,9 +65,9 @@ public enum UserType {
     /**
      * Convert the User Type to an integer.
      *
-     * @return The integer associated with the user type.
-     * If the value of the User Type is GLOBETROTTER the function will return 0.
-     * Otherwise, if the value of the User Type is CICERONE, the function will return 1.
+     * @return The integer associated with the user type. If the value of the User Type is
+     * GLOBETROTTER the function will return 0. Otherwise, if the value of the User Type is
+     * CICERONE, the function will return 1.
      */
     @NonNull
     public Integer toInt() {
@@ -90,13 +90,14 @@ public enum UserType {
 
     /**
      * Get the string associated with the UserType.
+     *
      * @return The string.
      */
     @NonNull
     @Override
     public String toString() {
         String toReturn;
-        switch (this){
+        switch (this) {
             case GLOBETROTTER:
                 toReturn = "globetrotter";
                 break;

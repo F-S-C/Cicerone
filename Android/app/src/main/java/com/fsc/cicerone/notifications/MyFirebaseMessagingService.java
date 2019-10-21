@@ -17,6 +17,11 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * FirebaseMessagingService override class.
+ *
+ * @see com.google.firebase.messaging.FirebaseMessagingService
+ */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
@@ -37,6 +42,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
+    /**
+     * @see com.google.firebase.messaging.FirebaseMessagingService#onMessageReceived(RemoteMessage)
+     */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // Check if message contains a notification payload.

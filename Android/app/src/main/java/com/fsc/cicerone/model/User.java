@@ -77,35 +77,72 @@ public class User extends BusinessEntity {
         public static final String LANGUAGES_KEY = "languages";
     }
 
+    /**
+     * Class that handles user credentials.
+     */
     public static class Credentials extends BusinessEntity {
         private String username;
         private String password;
 
+        /**
+         * Credential's constructor.
+         *
+         * @param username The user's username.
+         * @param password The user's password.
+         */
         public Credentials(String username, String password) {
             this.username = username;
             this.password = password;
         }
 
+        /**
+         * Credential's constructor. Convert a JSONObject to Credentials.
+         *
+         * @param jsonObject The JSONObject.
+         */
         public Credentials(JSONObject jsonObject) {
             loadFromJSONObject(jsonObject);
         }
 
+        /**
+         * Credential's constructor. Convert a json string to Credentials.
+         *
+         * @param json The json string.
+         */
         public Credentials(String json) {
             this(getJSONObject(json));
         }
 
+        /**
+         * Get the user's username.
+         *
+         * @return The username.
+         */
         public String getUsername() {
             return username;
         }
 
+        /**
+         * Get the user's password.
+         *
+         * @return The user's password.
+         */
         public String getPassword() {
             return password;
         }
 
+        /**
+         * Check that the username and password are not both empty.
+         *
+         * @return True if valid, false otherwise.
+         */
         public boolean isValid() {
             return username != null && password != null && !username.isEmpty() && !password.isEmpty();
         }
 
+        /**
+         * @see BusinessEntity#toJSONObject()
+         */
         @Override
         public JSONObject toJSONObject() {
             JSONObject jsonObject = new JSONObject();
@@ -118,6 +155,9 @@ public class User extends BusinessEntity {
             return jsonObject;
         }
 
+        /**
+         * @see BusinessEntity#loadFromJSONObject(JSONObject)
+         */
         @Override
         protected void loadFromJSONObject(JSONObject jsonObject) {
             try {
@@ -133,6 +173,9 @@ public class User extends BusinessEntity {
         }
     }
 
+    /**
+     * @see Object#equals(Object)
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -141,6 +184,9 @@ public class User extends BusinessEntity {
         return username.equals(user.username);
     }
 
+    /**
+     * @see Object#hashCode()
+     */
     @Override
     public int hashCode() {
         return Objects.hash(username);
@@ -180,11 +226,18 @@ public class User extends BusinessEntity {
         loadFromJSONObject(jsonObject);
     }
 
+    /**
+     * User's constructor. Convert a json string to User.
+     *
+     * @param json The json string.
+     */
     public User(String json) {
         this(getJSONObject(json));
     }
 
-
+    /**
+     * @see BusinessEntity#loadFromJSONObject(JSONObject)
+     */
     @Override
     protected void loadFromJSONObject(JSONObject user) {
         try {
@@ -537,6 +590,11 @@ public class User extends BusinessEntity {
         return (Patterns.EMAIL_ADDRESS.matcher(emailInput).matches());
     }
 
+    /**
+     * User's constructor. Create a User from a Builder.
+     *
+     * @param builder The Builder.
+     */
     public User(Builder builder) {
         this.name = builder.name;
         this.surname = builder.surname;
@@ -552,6 +610,9 @@ public class User extends BusinessEntity {
         this.languages = builder.languages;
     }
 
+    /**
+     * A factory for a user's object.
+     */
     public static class Builder {
         private String name;
         private String surname;
@@ -567,71 +628,154 @@ public class User extends BusinessEntity {
         private Document document;
         private Set<Language> languages;
 
+        /**
+         * Builder's constructor.
+         *
+         * @param username The username.
+         * @param password The password.
+         */
         public Builder(String username, String password) {
             this.password = password;
             this.username = username;
         }
 
+        /**
+         * Set the user's name.
+         *
+         * @param name The name.
+         * @return The Builder itself.
+         */
         public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
+        /**
+         * Set the user's surname.
+         *
+         * @param surname The surname.
+         * @return The Builder itself.
+         */
         public Builder setSurname(String surname) {
             this.surname = surname;
             return this;
         }
 
+        /**
+         * Set the user's e-mail.
+         *
+         * @param email The e-mail.
+         * @return The Builder itself.
+         */
         public Builder setEmail(String email) {
             this.email = email;
             return this;
         }
 
+        /**
+         * Set the user's password.
+         *
+         * @param password The password.
+         * @return The Builder itself.
+         */
         public Builder setPassword(String password) {
             this.password = password;
             return this;
         }
 
+        /**
+         * Set the user's sex.
+         *
+         * @param sex The sex.
+         * @return The Builder itself.
+         */
         public Builder setSex(Sex sex) {
             this.sex = sex;
             return this;
         }
 
+        /**
+         * Set the user's tax code.
+         *
+         * @param taxCode The tax code.
+         * @return The Builder itself.
+         */
         public Builder setTaxCode(String taxCode) {
             this.taxCode = taxCode;
             return this;
         }
 
+        /**
+         * Set the user's username.
+         *
+         * @param username The username.
+         * @return The Builder itself.
+         */
         public Builder setUsername(String username) {
             this.username = username;
             return this;
         }
 
+        /**
+         * Set the user's type.
+         *
+         * @param userType The user type.
+         * @return The Builder itself.
+         */
         public Builder setUserType(UserType userType) {
             this.userType = userType;
             return this;
         }
 
+        /**
+         * Set the user's cellphone.
+         *
+         * @param cellphone The cellphone.
+         * @return The Builder itself.
+         */
         public Builder setCellphone(String cellphone) {
             this.cellphone = cellphone;
             return this;
         }
 
+        /**
+         * Set the user's birth date.
+         *
+         * @param birthDate The birth date.
+         * @return The Builder itself.
+         */
         public Builder setBirthDate(Date birthDate) {
             this.birthDate = birthDate;
             return this;
         }
 
+        /**
+         * Set the user's document.
+         *
+         * @param document The document.
+         * @return The Builder itself.
+         */
         public Builder setDocument(Document document) {
             this.document = document;
             return this;
         }
 
+        /**
+         * Set the user languages.
+         *
+         * @param languages The Set of languages.
+         * @return The Builder itself.
+         */
         public Builder setLanguages(Set<Language> languages) {
             this.languages = languages;
             return this;
         }
 
+        /**
+         * Build the user.
+         *
+         * @return The user.
+         */
         public User build() {
             return new User(this);
         }

@@ -20,19 +20,40 @@ import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * A factory for a BusinessEntity's object.
+ */
 public class BusinessEntityBuilder<T extends BusinessEntity> {
 
     private Class<T> type;
 
-    private BusinessEntityBuilder(Class<T> type){
+    private BusinessEntityBuilder(Class<T> type) {
         this.type = type;
     }
 
+    /**
+     * Instantiate a BusinessEntity (T) using a JSONObject.
+     *
+     * @param jsonObject The JSONObject.
+     * @return The BusinessEntity's object with the data from the JSONObject.
+     * @throws NoSuchMethodException     If the constructor from JSONObject isn't found.
+     * @throws IllegalAccessException    If the constructor from JSONObject can't be accessed.
+     * @throws InvocationTargetException If the constructor form JSONObject throws an exception.
+     * @throws InstantiationException    If the object can't be instantiated.
+     * @see BusinessEntity#BusinessEntity(JSONObject)
+     */
     public T fromJSONObject(JSONObject jsonObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         return type.getConstructor(JSONObject.class).newInstance(jsonObject);
     }
 
-    public static <T extends BusinessEntity> BusinessEntityBuilder<T> getFactory(Class<T> type){
+    /**
+     * Create a new BusinessEntityBuilder.
+     *
+     * @param type The type of BusinessEntity.
+     * @param <T>  The type of BusinessEntity.
+     * @return The factory.
+     */
+    public static <T extends BusinessEntity> BusinessEntityBuilder<T> getFactory(Class<T> type) {
         return new BusinessEntityBuilder<>(type);
     }
 }

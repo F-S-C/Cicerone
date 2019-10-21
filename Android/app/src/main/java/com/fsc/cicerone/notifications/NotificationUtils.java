@@ -42,13 +42,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-
+/**
+ * Class that handles notifications.
+ */
 public class NotificationUtils {
 
     private static final String SUBSCRIBED_TOPIC_LIST_KEY = "subscribed-topics";
 
     private Context mContext;
 
+    /**
+     * Subscribe the device to a topic.
+     *
+     * @param context The context.
+     * @param topic   The topic.
+     */
     public static void subscribeToTopic(@NonNull Context context, @NonNull String topic) {
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
 
@@ -61,6 +69,12 @@ public class NotificationUtils {
         sharedPreferences.edit().putString(SUBSCRIBED_TOPIC_LIST_KEY, new JSONArray(topics).toString()).apply();
     }
 
+    /**
+     * Get the subscribed topics.
+     *
+     * @param context The context.
+     * @return A Set of topics.
+     */
     @Nullable
     private static Set<String> getSubscribedTopics(@NonNull Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(com.fsc.cicerone.Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
@@ -78,6 +92,11 @@ public class NotificationUtils {
         return topics;
     }
 
+    /**
+     * Unsubscribe the device from all topics.
+     *
+     * @param context The context.
+     */
     public static void unsubscribeFromAllTopics(@NonNull Context context) {
         Set<String> topics = getSubscribedTopics(context);
         if (topics == null)
@@ -91,6 +110,12 @@ public class NotificationUtils {
         sharedPreferences.edit().putString(SUBSCRIBED_TOPIC_LIST_KEY, new JSONArray().toString()).apply();
     }
 
+    /**
+     * Unsubscribe the device from a topic.
+     *
+     * @param context The context.
+     * @param topic   The topic.
+     */
     public static void unsubscribeFromTopic(@NonNull Context context, @NonNull String topic) {
         Set<String> topics = getSubscribedTopics(context);
         if (topics == null)
@@ -103,14 +128,36 @@ public class NotificationUtils {
         sharedPreferences.edit().putString(SUBSCRIBED_TOPIC_LIST_KEY, new JSONArray(topics).toString()).apply();
     }
 
+    /**
+     * NotificationUtils's constructor.
+     *
+     * @param mContext The activity context.
+     */
     NotificationUtils(Context mContext) {
         this.mContext = mContext;
     }
 
+    /**
+     * Show the notification message.
+     *
+     * @param title     The notification title.
+     * @param message   The notification message.
+     * @param timeStamp The notification timestamp.
+     * @param intent    The intent.
+     */
     void showNotificationMessage(String title, String message, String timeStamp, Intent intent) {
         showNotificationMessage(title, message, timeStamp, intent, null);
     }
 
+    /**
+     * Show the notification message with an image.
+     *
+     * @param title     The notification title.
+     * @param message   The notification message.
+     * @param timeStamp The notification timestamp.
+     * @param intent    The application intent.
+     * @param imageUrl  The notification image url.
+     */
     void showNotificationMessage(final String title, final String message, final String timeStamp, Intent intent, @Nullable String imageUrl) {
         // Check for empty push message
         if (TextUtils.isEmpty(message))
@@ -199,8 +246,7 @@ public class NotificationUtils {
     }
 
     /**
-     * Downloading push notification image before displaying it in
-     * the notification tray.
+     * Downloading push notification image before displaying it in the notification tray.
      *
      * @param strURL The URL of the image.
      * @return A Bitmap containing the downloaded image.
@@ -220,7 +266,9 @@ public class NotificationUtils {
         }
     }
 
-    // Playing notification sound
+    /**
+     * Playing notification sound.
+     */
     void playNotificationSound() {
         try {
             Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -232,7 +280,9 @@ public class NotificationUtils {
     }
 
     /**
-     * Method checks if the app is in background or not
+     * Method checks if the app is in background or not.
+     *
+     * @param context The context.
      */
     static boolean isAppInBackground(Context context) {
         boolean isInBackground = true;
@@ -255,7 +305,11 @@ public class NotificationUtils {
         return isInBackground;
     }
 
-    // Clears notification tray messages
+    /**
+     * Clears notification tray messages.
+     *
+     * @param context The context.
+     */
     public static void clearNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();

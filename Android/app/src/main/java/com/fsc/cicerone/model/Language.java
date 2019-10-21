@@ -27,17 +27,22 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A language as represented in the system Cicerone. A language is composed by a code and a name
- * and it's identified by its code.
+ * A language as represented in the system Cicerone. A language is composed by a code and a name and
+ * it's identified by its code.
  */
 public class Language extends BusinessEntity {
     private String code;
     private String name;
 
-    public static class Columns{
+    /**
+     * A utility class that contains various strings to be used as keys to communicate with the
+     * remote server.
+     */
+    public static class Columns {
         private Columns() {
             throw new IllegalStateException("Utility class");
         }
+
         public static final String LANGUAGE_CODE_KEY = "language_code";
         public static final String LANGUAGE_NAME_KEY = "language_name";
     }
@@ -59,14 +64,30 @@ public class Language extends BusinessEntity {
         this.name = name;
     }
 
+    /**
+     * Language's constructor. Convert a JSONObject to Language.
+     *
+     * @param jsonObject The JSONObject.
+     */
     public Language(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
 
+    /**
+     * Language's constructor. Convert a json string to Language.
+     *
+     * @param json The json string.
+     */
     public Language(String json) {
         this(getJSONObject(json));
     }
 
+    /**
+     * Convert a JSONArray to a Set.
+     *
+     * @param jsonArray The JSONArray.
+     * @return The Set.
+     */
     public static Set<Language> getSetFromJSONArray(JSONArray jsonArray) {
         Set<Language> toReturn = new HashSet<>();
 
@@ -100,6 +121,9 @@ public class Language extends BusinessEntity {
         }
     }
 
+    /**
+     * @see BusinessEntity#toJSONObject()
+     */
     @Override
     public JSONObject toJSONObject() {
         JSONObject toReturn = new JSONObject();

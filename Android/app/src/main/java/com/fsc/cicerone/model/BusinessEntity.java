@@ -23,21 +23,48 @@ import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * The base class of all Cicerone's business entities.
+ */
 public abstract class BusinessEntity {
 
+    /**
+     * Default empty constructor.
+     */
     protected BusinessEntity() {
     }
 
+    /**
+     * BusinessEntity constructor's. Convert a JSONObject to BusinessEntity.
+     *
+     * @param jsonObject The JSONObject.
+     */
     public BusinessEntity(JSONObject jsonObject) {
         loadFromJSONObject(jsonObject);
     }
 
+    /**
+     * BusinessEntity constructor's. Convert a json string to BusinessEntity.
+     *
+     * @param json The json string.
+     */
     public BusinessEntity(String json) {
         this.loadFromJSONObject(getJSONObject(json));
     }
 
+    /**
+     * Convert a BusinessEntity to JSONObject.
+     *
+     * @return The JSONObject.
+     */
     public abstract JSONObject toJSONObject();
 
+    /**
+     * Convert a json string to JSONObject.
+     *
+     * @param json The json string.
+     * @return The JSONObject.
+     */
     protected static JSONObject getJSONObject(String json) {
         JSONObject jsonObject;
         try {
@@ -50,8 +77,16 @@ public abstract class BusinessEntity {
         return jsonObject;
     }
 
+    /**
+     * Set the BusinessEntity's properties loading them from a JSONObject.
+     *
+     * @param jsonObject The JSONObject.
+     */
     protected abstract void loadFromJSONObject(JSONObject jsonObject);
 
+    /**
+     * @see Object#toString()
+     */
     @NonNull
     @Override
     public String toString() {
