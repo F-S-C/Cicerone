@@ -334,19 +334,22 @@ public class ItineraryDetails extends ItineraryActivity {
             Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(view1 -> {
                 if (allFilledReservation()) {
-                    try {
-                        ReservationManager.addReservation(this,
-                                itinerary,
-                                Integer.parseInt(numberOfAdultsInput.getText().toString()),
-                                Integer.parseInt(numberOfChildrenInput.getText().toString()),
-                                new SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                                        .parse(requestedDateInput.getText().toString()));
-                    } catch (ParseException e) {
-                        Log.e(ERROR_TAG, e.getMessage());
-                    }
-                    isReserved();
-                    Toast.makeText(ItineraryDetails.this, R.string.reservation_added, Toast.LENGTH_SHORT).show();
-                    dialogSubmit.dismiss();
+                    if(checkParticipantsLimit()) {
+                        try {
+                            ReservationManager.addReservation(this,
+                                    itinerary,
+                                    Integer.parseInt(numberOfAdultsInput.getText().toString()),
+                                    Integer.parseInt(numberOfChildrenInput.getText().toString()),
+                                    new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                                            .parse(requestedDateInput.getText().toString()));
+                        } catch (ParseException e) {
+                            Log.e(ERROR_TAG, e.getMessage());
+                        }
+                        isReserved();
+                        Toast.makeText(ItineraryDetails.this, R.string.reservation_added, Toast.LENGTH_SHORT).show();
+                        dialogSubmit.dismiss();
+                    }else
+                        Toast.makeText(this, getString(R.string.participants_limit_reached), Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),
                             Toast.LENGTH_SHORT).show();
@@ -406,6 +409,12 @@ public class ItineraryDetails extends ItineraryActivity {
         return !requestedDateInput.getText().toString().equals("")
                 && !numberOfAdultsInput.getText().toString().equals("")
                 && !numberOfChildrenInput.getText().toString().equals("");
+    }
+
+    private boolean checkParticipantsLimit() {
+        int sum = Integer.parseInt(numberOfAdultsInput.getText().toString())
+                + Integer.parseInt(numberOfChildrenInput.getText().toString());
+        return sum >= itinerary.getMinParticipants() && sum <= itinerary.getMaxParticipants();
     }
 
 }

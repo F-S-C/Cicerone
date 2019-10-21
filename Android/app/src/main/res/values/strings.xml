@@ -306,4 +306,5 @@
     <string name="error_reported_user">You can report only one user</string>
     <string name="not_available_in_your_languages">Not available in your languages!</string>
     <string name="error_wrong_fields">Some fields are not correct</string>
+    <string name="participants_limit_reached">The number of participants is not included in the limits set by the itinerary.</string>
 </resources>
