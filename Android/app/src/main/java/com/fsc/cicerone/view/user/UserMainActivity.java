@@ -34,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.AccountManager;
@@ -41,14 +42,17 @@ import com.fsc.cicerone.manager.ReportManager;
 import com.fsc.cicerone.model.User;
 import com.fsc.cicerone.model.UserType;
 import com.fsc.cicerone.view.system.MainActivity;
-import com.fsc.cicerone.view.user.registered_user.cicerone.ItineraryCreation;
 import com.fsc.cicerone.view.user.registered_user.AccountDetailsFragment;
 import com.fsc.cicerone.view.user.registered_user.LoginActivity;
 import com.fsc.cicerone.view.user.registered_user.WishlistFragment;
+import com.fsc.cicerone.view.user.registered_user.cicerone.ItineraryCreation;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hootsuite.nachos.NachoTextView;
 
+/**
+ * The main activity shown to an user.
+ */
 public class UserMainActivity extends MainActivity {
 
     private boolean isFabMenuExtended = false;
@@ -120,6 +124,9 @@ public class UserMainActivity extends MainActivity {
         closeSubMenusFab();
     }
 
+    /**
+     * Set the fragmentPagerAdapter based on if the user is logged in or not.
+     */
     @Override
     protected void setupFragmentAdapter() {
         fragmentPagerAdapter = AccountManager.isLogged() ?
@@ -127,6 +134,9 @@ public class UserMainActivity extends MainActivity {
                 new UserMainActivity.MainActivityPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
+    /**
+     * A function closes the subMenu, setting it's parameters so it's not shown.
+     */
     private void closeSubMenusFab() {
         subFabContainer.setVisibility(View.GONE);
         layoutFabReport.setVisibility(View.GONE);
@@ -135,6 +145,9 @@ public class UserMainActivity extends MainActivity {
         isFabMenuExtended = false;
     }
 
+    /**
+     * A function that sets the parameters of the subMenu making it visible.
+     */
     private void openSubMenusFab() {
         subFabContainer.setVisibility(View.VISIBLE);
         layoutFabReport.setVisibility(View.VISIBLE);
@@ -144,6 +157,9 @@ public class UserMainActivity extends MainActivity {
         isFabMenuExtended = true;
     }
 
+    /**
+     * A function that allows the user to insert a new report.
+     */
     private void insertReport() {
         View reportView = getLayoutInflater().inflate(R.layout.dialog_new_report, null);
 
@@ -155,19 +171,29 @@ public class UserMainActivity extends MainActivity {
 
         AccountManager.setUsersInTextView(this, users);
         users.addTextChangedListener(new TextWatcher() {
+
+            /**
+             * @see android.text.TextWatcher#beforeTextChanged(CharSequence, int, int, int)
+             */
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
+            /**
+             * @see android.text.TextWatcher#onTextChanged(CharSequence, int, int, int)
+             */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
+            /**
+             * @see android.text.TextWatcher#afterTextChanged(Editable)
+             */
             @Override
             public void afterTextChanged(Editable s) {
-                if(users.getChipValues().size() > 1)
+                if (users.getChipValues().size() > 1)
                     users.setError(getString(R.string.error_reported_user));
                 else
                     users.setError(null);
@@ -216,6 +242,14 @@ public class UserMainActivity extends MainActivity {
     }
 
 
+    /**
+     * Called when an item in the bottom navigation menu is selected.
+     *
+     * @param item The selected item
+     * @return true to display the item as the selected item and false if the item should not be
+     * selected. Consider setting non-selectable items as disabled preemptively to make them appear
+     * non-interactive.
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         closeSubMenusFab();
@@ -251,14 +285,24 @@ public class UserMainActivity extends MainActivity {
         return toReturn;
     }
 
+    /**
+     *
+     */
     private class MainActivityPagerAdapter extends FragmentPagerAdapter {
         private final HomeFragment homeFragment = new HomeFragment();
         private final DiscoverFragment discoverFragment = new DiscoverFragment();
 
+        /**
+         * @param fm
+         * @param behavior
+         */
         MainActivityPagerAdapter(@NonNull FragmentManager fm, int behavior) {
             super(fm, behavior);
         }
 
+        /**
+         * @see androidx.fragment.app.FragmentPagerAdapter#getItem(int)
+         */
         @NonNull
         @Override
         public Fragment getItem(int position) {
@@ -269,6 +313,9 @@ public class UserMainActivity extends MainActivity {
             return fragment;
         }
 
+        /**
+         * @see androidx.viewpager.widget.PagerAdapter#getPageTitle(int)
+         */
         @Override
         public CharSequence getPageTitle(int position) {
             CharSequence title = getString(R.string.app_name);
@@ -278,21 +325,38 @@ public class UserMainActivity extends MainActivity {
             return title;
         }
 
+        /**
+         * @see PagerAdapter#getCount()
+         */
         @Override
         public int getCount() {
             return 2;
         }
     }
 
+    /**
+     *
+     */
     private class MainActivityAfterLoginPagerAdapter extends MainActivityPagerAdapter {
         private final WishlistFragment wishlistFragment = new WishlistFragment();
         private final AccountDetailsFragment profileFragment;
 
+        /**
+         * The Constructor of the class.
+         *
+         * @param fm
+         * @param behavior
+         * @param swipeRefreshLayout
+         */
         MainActivityAfterLoginPagerAdapter(@NonNull FragmentManager fm, int behavior, SwipeRefreshLayout swipeRefreshLayout) {
             super(fm, behavior);
             profileFragment = new AccountDetailsFragment(swipeRefreshLayout);
         }
 
+        /**
+         * @param position
+         * @return
+         */
         @NonNull
         @Override
         public Fragment getItem(int position) {
@@ -305,6 +369,9 @@ public class UserMainActivity extends MainActivity {
             return fragment;
         }
 
+        /**
+         * @see androidx.viewpager.widget.PagerAdapter#getPageTitle(int)
+         */
         @Override
         public CharSequence getPageTitle(int position) {
             CharSequence title = super.getPageTitle(position);
@@ -316,6 +383,9 @@ public class UserMainActivity extends MainActivity {
             return title;
         }
 
+        /**
+         * @see PagerAdapter#getCount()
+         */
         @Override
         public int getCount() {
             return 4;

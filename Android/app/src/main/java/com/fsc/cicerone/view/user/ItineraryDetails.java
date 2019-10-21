@@ -50,6 +50,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * A class used to show all the information about an Itinerary.
+ */
 public class ItineraryDetails extends ItineraryActivity {
 
     RecyclerView.Adapter adapter;
@@ -71,16 +74,27 @@ public class ItineraryDetails extends ItineraryActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryDetails.class.getName();
 
+    /**
+     * Constructor for the class.
+     */
     public ItineraryDetails() {
         super();
         this.layout = R.layout.activity_itinerary_details;
     }
 
+    /**
+     * A second Constructor for the class that takes a LayoutId as a parameter.
+     *
+     * @param contentLayoutId the Layout to set.
+     */
     public ItineraryDetails(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_itinerary_details;
     }
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +140,9 @@ public class ItineraryDetails extends ItineraryActivity {
 
     }
 
+    /**
+     * A function that add to the logged User wishlist the current Itinerary.
+     */
     public void addToWishlist() {
         WishlistManager.addToWishlist(this, itinerary, result -> {
             if (result.getResult()) {
@@ -136,6 +153,9 @@ public class ItineraryDetails extends ItineraryActivity {
         });
     }
 
+    /**
+     * A function that deletes the current Itinerary from the logged User wishlist.
+     */
     public void deleteFromWishlist() {
         WishlistManager.removeFromWishlist(this, itinerary, result -> {
             if (result.getResult()) {
@@ -146,6 +166,9 @@ public class ItineraryDetails extends ItineraryActivity {
         });
     }
 
+    /**
+     * A function that checks if the current Itinerary is already in the logged User wishlist.
+     */
     public void checkWishlist() {
         WishlistManager.isInWishlist(this, itinerary, success -> {
             isInWishlist = success;
@@ -155,6 +178,10 @@ public class ItineraryDetails extends ItineraryActivity {
 
     }
 
+    /**
+     * A function that checks if the logged User has already asked for a reservation for the current
+     * Itinerary.
+     */
     public void isReserved() {
         ReservationManager.isReserved(this, itinerary, success -> {
             if (success) {
@@ -172,6 +199,10 @@ public class ItineraryDetails extends ItineraryActivity {
         });
     }
 
+    /**
+     * A function that checks if the logged User has the permission to review the current
+     * Itinerary.
+     */
     public void permissionReview() {
         ReviewManager.permissionReviewItinerary(this, AccountManager.getCurrentLoggedUser(), itinerary, success -> {
             if (success)
@@ -180,6 +211,10 @@ public class ItineraryDetails extends ItineraryActivity {
 
     }
 
+    /**
+     * A function that checks if the current Itinerary has been already reviewed by the logged
+     * User.
+     */
     public void isReviewed() {
         ReviewManager.isReviewedItinerary(this, AccountManager.getCurrentLoggedUser(), itinerary, (result, found) -> {
             if (found) {
@@ -198,6 +233,11 @@ public class ItineraryDetails extends ItineraryActivity {
         });
     }
 
+    /**
+     * A function that allows the logged User to update his Review for the current Itinerary.
+     *
+     * @param itineraryReview The Review to update.
+     */
     private void updateReview(ItineraryReview itineraryReview) {
         View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
 
@@ -255,6 +295,11 @@ public class ItineraryDetails extends ItineraryActivity {
         dialogUpdate.show();
     }
 
+    /**
+     * A function that allows the logged User to insert a Review for the current Itinerary.
+     *
+     * @param itineraryReview The Review to insert.
+     */
     private void addReview(ItineraryReview itineraryReview) {
         View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
@@ -297,6 +342,11 @@ public class ItineraryDetails extends ItineraryActivity {
 
     }
 
+    /**
+     * A function that allows the logged User to make a reservation for the current Itinerary.
+     *
+     * @param view The current View.
+     */
     public void askForReservation(View view) {
         View v = getLayoutInflater().inflate(R.layout.dialog_new_reservation, null);
         final Calendar myCalendar = Calendar.getInstance();
@@ -356,6 +406,11 @@ public class ItineraryDetails extends ItineraryActivity {
 
     }
 
+    /**
+     * A function that allows the logged User to remove his Reservation for the current Itinerary.
+     *
+     * @param v The current View.
+     */
     public void removeReservation(View v) {
         new MaterialAlertDialogBuilder(this).setTitle(getString(R.string.are_you_sure))
                 .setMessage(getString(R.string.sure_to_remove_reservation))
@@ -367,6 +422,12 @@ public class ItineraryDetails extends ItineraryActivity {
                 }).setNegativeButton(getString(R.string.no), null).show();
     }
 
+    /**
+     * A function that allows the logged User to visit the profile of the author of the current
+     * Itinerary.
+     *
+     * @param view The current View
+     */
     @Override
     public void goToAuthor(View view) {
         if (itinerary.getCicerone().getUserType() == UserType.ADMIN) {
@@ -379,29 +440,45 @@ public class ItineraryDetails extends ItineraryActivity {
         startActivityWithData(ProfileActivity.class, bundle);
     }
 
+    /**
+     * @see ItineraryActivity#bindDataToView()
+     */
     @Override
     public void bindDataToView() {
         requestDataForRecycleView();
         super.bindDataToView();
     }
 
+    /**
+     * A function that takes the reviews of the current Itinerary and set them into a RecyclerView.
+     */
     private void requestDataForRecycleView() {
         ReviewManager.requestItineraryReviews(this, itinerary, list -> {
             if (!list.isEmpty()) {
                 messageNoReview.setVisibility(View.GONE);
                 adapter = new ReviewAdapter(this, list);
                 recyclerView.setAdapter(adapter);
-            }else {
+            } else {
                 messageNoReview.setVisibility(View.VISIBLE);
                 recyclerView.setAdapter(null);
             }
         });
     }
 
+    /**
+     * A function that checks if every field of the Review is filled.
+     *
+     * @return True if every field is filled, False otherwise.
+     */
     private boolean allFilledReview() {
         return !descriptionReview.getText().toString().equals("") && feedbackReview.getRating() > 0;
     }
 
+    /**
+     * A function that checks if every field of the Reservation is filled.
+     *
+     * @return True if every field is filled, False otherwise.
+     */
     private boolean allFilledReservation() {
         return !requestedDateInput.getText().toString().equals("")
                 && !numberOfAdultsInput.getText().toString().equals("")

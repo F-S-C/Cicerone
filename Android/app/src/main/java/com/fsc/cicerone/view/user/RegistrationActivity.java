@@ -61,6 +61,9 @@ import java.util.Objects;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
+/**
+ * The class responsible for the registration of an user.
+ */
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + RegistrationActivity.class.getName();
@@ -86,6 +89,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private LanguageManager languages = new LanguageManager();
     private TextView privacyPolicyText;
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,9 +123,9 @@ public class RegistrationActivity extends AppCompatActivity {
         birthCalendar.add(Calendar.YEAR, -18);
         expCalendar.add(Calendar.DAY_OF_MONTH, 1);
 
-        privacyPolicyText.setOnClickListener( v -> {
-        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(ConnectorConstants.PRIVACY_POLICY));
-        startActivity(launchBrowser);
+        privacyPolicyText.setOnClickListener(v -> {
+            Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(ConnectorConstants.PRIVACY_POLICY));
+            startActivity(launchBrowser);
         });
 
         DatePickerDialog.OnDateSetListener birthDateSelect = (view, year, monthOfYear, dayOfMonth) -> {
@@ -138,16 +144,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
         birthDate.setOnClickListener(view -> {
             hideKeyboard(this);
-             DatePickerDialog datePickerDialog = new DatePickerDialog(this, birthDateSelect, birthCalendar
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, birthDateSelect, birthCalendar
                     .get(Calendar.YEAR), birthCalendar.get(Calendar.MONTH),
                     birthCalendar.get(Calendar.DAY_OF_MONTH));
-             datePickerDialog.getDatePicker().setMaxDate(birthCalendar.getTimeInMillis());
-             datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMaxDate(birthCalendar.getTimeInMillis());
+            datePickerDialog.show();
         });
 
         expDate.setOnClickListener(view -> {
             hideKeyboard(this);
-            DatePickerDialog datePickerDialog =  new DatePickerDialog(this, expDateSelect, expCalendar
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, expDateSelect, expCalendar
                     .get(Calendar.YEAR), expCalendar.get(Calendar.MONTH),
                     expCalendar.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.getDatePicker().setMinDate(expCalendar.getTimeInMillis());
@@ -184,17 +190,26 @@ public class RegistrationActivity extends AppCompatActivity {
 
         username.addTextChangedListener(new TextWatcher() {
 
+            /**
+             * @see android.text.TextWatcher#beforeTextChanged(CharSequence, int, int, int)
+             */
             @Override
             public void afterTextChanged(Editable s) {
                 // Do nothing
             }
 
+            /**
+             * @see android.text.TextWatcher#onTextChanged(CharSequence, int, int, int)
+             */
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
                 // Do nothing
             }
 
+            /**
+             * @see android.text.TextWatcher#afterTextChanged(Editable)
+             */
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
@@ -208,10 +223,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
         email.addTextChangedListener(new TextWatcher() {
 
+            /**
+             * @see android.text.TextWatcher#beforeTextChanged(CharSequence, int, int, int)
+             */
             @Override
             public void afterTextChanged(Editable s) {
                 // Do nothing
-            }
+                /**
+                 * @see android.text.TextWatcher#onTextChanged(CharSequence, int, int, int)
+                 */}
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start,
@@ -219,6 +240,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 // Do nothing
             }
 
+            /**
+             * @see android.text.TextWatcher#afterTextChanged(Editable)
+             */
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
@@ -257,18 +281,41 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * A function that check if a given text contains letters and numbers without space.
+     *
+     * @param text The given text to control.
+     * @return True if it doesn't match, False if it does.
+     */
     private boolean specialCharactersNoSpace(String text) {
         return !LETTERS_NUMBERS.matcher(text).matches();
     }
 
+    /**
+     * A function that check if a given text contains letter and spaces.
+     *
+     * @param text The given text to control.
+     * @return True if it doesn't match, False if it does.
+     */
     private boolean specialCharactersSpace(String text) {
         return !LETTERS_AND_SPACES.matcher(text).matches();
     }
 
+    /**
+     * A function that check if a given text contains only numbers with no space in between.
+     *
+     * @param text The given text to control.
+     * @return True if the text matches the criteria, false if it doesn't.
+     */
     private boolean onlyNumbersNoSpace(String text) {
         return CONTROL_PHONE_NUMBER.matcher(text).matches();
     }
 
+    /**
+     * A function that check if all the values inserted in the first page are correct.
+     *
+     * @return True if every field is correct, False otherwise.
+     */
     private boolean validateFirstPageData() {
         name.setError(null);
         surname.setError(null);
@@ -316,6 +363,11 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * A function that checks if all the values inserted in the second page are correct.
+     *
+     * @return True if every field is correct, False otherwise.
+     */
     private boolean validateSecondPageData() {
         docNumber.setError(null);
         docType.setError(null);
@@ -340,10 +392,10 @@ public class RegistrationActivity extends AppCompatActivity {
         } else if (nachoTextView.getChipValues().size() < 1) {
             nachoTextView.setError(getString(R.string.error_fields_empty));
             return false;
-        } else if(!checkPrivacyPolicy.isChecked()) {
+        } else if (!checkPrivacyPolicy.isChecked()) {
             privacyPolicyText.setError(getString(R.string.privacy_policy_required));
             return false;
-        }else{
+        } else {
             docNumber.setError(null);
             docType.setError(null);
             expDate.setError(null);
@@ -353,6 +405,11 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * A function that set the possible values for the field Sex in a given Spinner.
+     *
+     * @param spinner The spinner to set.
+     */
     private void createCustomSexSpinner(Spinner spinner) {
         List<String> list = new ArrayList<>();
         list.add(getResources().getString(R.string.male));
@@ -363,6 +420,11 @@ public class RegistrationActivity extends AppCompatActivity {
         spinner.setAdapter(dataAdapter);
     }
 
+    /**
+     * A function that creates a variable User using the values inserted in the fields by the user.
+     *
+     * @return The User that has been built.
+     */
     private User setNewUser() {
         List<String> lanSelected = nachoTextView.getChipValues();
         return new User.Builder(username.getText().toString().trim().toLowerCase(), password.getText().toString())
@@ -379,6 +441,12 @@ public class RegistrationActivity extends AppCompatActivity {
                 .build();
     }
 
+    /**
+     * A function that converts a given String to a Date,  in the format 'dd/MM/yyyy'
+     *
+     * @param text The given text to convert.
+     * @return The result of the conversion
+     */
     private Date strToDate(String text) {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
@@ -390,12 +458,24 @@ public class RegistrationActivity extends AppCompatActivity {
         return date;
     }
 
+    /**
+     * A function that updates the values of an EditText, by converting a Date to a String and
+     * setting it in the EditText.
+     *
+     * @param update The EditTet to update.
+     * @param date   The Date to set in the EditText.
+     */
     private void updateWithCalendarValue(EditText update, Date date) {
         String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         update.setText(sdf.format(date));
     }
 
+    /**
+     * A function that hide the input keyboard in the given activity.
+     *
+     * @param activity The given activity
+     */
     private static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
