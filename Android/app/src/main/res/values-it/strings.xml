@@ -281,4 +281,5 @@
     <string name="error_reported_user">Puoi segnalare sono un utente</string>
     <string name="not_available_in_your_languages">Non disponibiile in una lingua che conosci!</string>
     <string name="error_wrong_fields">Alcuni campi non sono corretti</string>
+    <string name="participants_limit_reached">Il numero dei partecipanti non è compreso nei limiti imposti dall\'itinerario.</string>
 </resources>
