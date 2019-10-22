@@ -34,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.manager.ImageManager;
+import com.fsc.cicerone.app_connector.ConnectorConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,7 +63,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     protected int layout;
 
-    protected static final String DATE_FORMAT = "yyyy-MM-dd";
+    protected static final String DATE_FORMAT = ConnectorConstants.DATE_FORMAT;
     protected final Calendar myCalendar = Calendar.getInstance();
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryModifier.class.getSimpleName();

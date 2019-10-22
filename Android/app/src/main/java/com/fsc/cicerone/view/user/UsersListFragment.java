@@ -44,16 +44,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A class used to see wich users has participated to an itinerary.
+ */
 public class UsersListFragment extends Fragment implements Refreshable {
 
     private RecyclerView recyclerView;
     private Itinerary itinerary;
 
 
+    /**
+     * A required Constructor for the class.
+     */
     public UsersListFragment() {
         // Required empty constructor
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,11 +87,18 @@ public class UsersListFragment extends Fragment implements Refreshable {
         return view;
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
     @Override
     public void refresh() {
         refresh(null);
     }
 
+
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         AccountManager.getListUsers(getActivity(), () -> {
@@ -95,6 +111,10 @@ public class UsersListFragment extends Fragment implements Refreshable {
     }
 
 
+    /**
+     * A function that gets the users who are participating to a specified itinerary. The users are
+     * set in a RecyclerView by a UserListAdapter.
+     */
     public void getParticipators() {
         ReservationManager.getReservations(getActivity(), itinerary, list -> {
             List<User> participators = new LinkedList<>();

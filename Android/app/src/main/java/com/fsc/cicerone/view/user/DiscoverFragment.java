@@ -57,7 +57,6 @@ import java.util.Map;
 import java.util.Objects;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -80,16 +79,25 @@ public class DiscoverFragment extends Fragment implements Refreshable {
     private String location = null;
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
+    /**
+     * An empty constructor the class.
+     */
     public DiscoverFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreate(Bundle)
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -135,6 +143,9 @@ public class DiscoverFragment extends Fragment implements Refreshable {
         refresh();
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateOptionsMenu(Menu, MenuInflater)
+     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.discover_menu, menu);
@@ -156,12 +167,34 @@ public class DiscoverFragment extends Fragment implements Refreshable {
             searchEditText.setHint(getString(R.string.search_location));
 
             queryTextListener = new SearchView.OnQueryTextListener() {
+
+                /**
+                 * Called when the query text is changed by the user.
+                 *
+                 * @param newText the new content of the query text field.
+                 *
+                 * @return false if the SearchView should perform the default action of showing any
+                 * suggestions if available, true if the action was handled by the listener.
+                 */
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     // Do nothing
                     return true;
                 }
 
+
+                /**
+                 * Called when the user submits the query. This could be due to a key press on the
+                 * keyboard or due to pressing a submit button.
+                 * The listener can override the standard behavior by returning true
+                 * to indicate that it has handled the submit request. Otherwise return false to
+                 * let the SearchView handle the submission by launching any associated intent.
+                 *
+                 * @param query the query text that is to be submitted
+                 *
+                 * @return true if the query has been handled by the listener, false to let the
+                 * SearchView perform the default action.
+                 */
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     location = !query.isEmpty() ? query : null;
@@ -182,6 +215,9 @@ public class DiscoverFragment extends Fragment implements Refreshable {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onOptionsItemSelected(MenuItem)
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_search) {
@@ -213,6 +249,15 @@ public class DiscoverFragment extends Fragment implements Refreshable {
         showDatePicker(setEndingDateBtn, context.getString(R.string.ending_date), true);
     }
 
+    /**
+     * A function that displays a DatePicker and sets the BeginningDate of the EndingDate based on
+     * wich is clicked.
+     *
+     * @param button       The button that has been clicked
+     * @param defaultLabel The default label
+     * @param isEnding     a Boolean that says if the selected button is BeginningDate or
+     *                     EndingDate
+     */
     private void showDatePicker(Button button, String defaultLabel, boolean isEnding) {
         final Calendar myCalendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener onDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
@@ -261,6 +306,12 @@ public class DiscoverFragment extends Fragment implements Refreshable {
         picker.show();
     }
 
+    /**
+     * A function that sets the Enabled/Disabled style for a given Button.
+     *
+     * @param button The button to set.
+     * @param style  The current style of the button.
+     */
     private void setButtonStyle(Button button, int style) {
         if (style == R.style.Widget_MaterialComponents_Button) {
             button.setBackgroundColor(ContextCompat.getColor(context, button.isEnabled() ? R.color.colorPrimary : android.R.color.darker_gray));
@@ -271,6 +322,9 @@ public class DiscoverFragment extends Fragment implements Refreshable {
         }
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);

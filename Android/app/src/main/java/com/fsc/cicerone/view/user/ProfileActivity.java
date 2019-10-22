@@ -62,6 +62,10 @@ public class ProfileActivity extends AppCompatActivity {
     private User reviewedUser;
     private UserReview userReview;
 
+
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +110,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * A function that set different TextView based on a given User.
+     *
+     * @param reviewedUser the User from whom the values will be get.
+     */
     private void getData(User reviewedUser) {
         final String LABEL_AND_CONTENT = "%s%s %s";
         username.setText(String.format(getString(R.string.username_display), reviewedUser.getUsername()));
@@ -121,18 +130,30 @@ public class ProfileActivity extends AppCompatActivity {
         imageView.setImageResource(reviewedUser.getSex().getAvatarResource());
     }
 
+    /**
+     * @see AppCompatActivity#onSupportNavigateUp()
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
+    /**
+     * A function that checks if the current logged user has the permission to review the user of
+     * the ProfileActivity.
+     */
     public void permissionReview() {
         ReviewManager.permissionReviewUser(this, reviewedUser, AccountManager.getCurrentLoggedUser(), success -> {
             if (success) isReviewed();
         }, () -> buttReview.setEnabled(false));
     }
 
+    /**
+     * A function that check is the User of the ProfileActivity has been already reviewed by the
+     * logged one. If that's true, the function allows the user to update or delete his review.
+     * Otherwise it allows to insert a new one.
+     */
     public void isReviewed() {
 
         ReviewManager.isReviewedUser(this, reviewedUser, AccountManager.getCurrentLoggedUser(), (result, found) -> {
@@ -152,6 +173,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * A function that allows the logged User to update his review of the User of the
+     * ProfileActivity.
+     *
+     * @param userReview The review to update.
+     */
     private void updateReview(UserReview userReview) {
         View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
@@ -165,7 +192,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .setView(viewReview)
                 .setPositiveButton(R.string.update_review, null)
                 .setNegativeButton(R.string.delete_review, null)
-                .setNeutralButton(R.string.cancel,null)
+                .setNeutralButton(R.string.cancel, null)
                 .create();
 
         dialogUpdate.setOnShowListener(dialogInterface -> {
@@ -182,10 +209,12 @@ public class ProfileActivity extends AppCompatActivity {
                     isReviewed();
                     dialogUpdate.dismiss();
                     requestDataForRecycleView(recyclerView);
-                } else{
-                    if(feedbackReview.getRating() ==0) Toast.makeText(this, ProfileActivity.this.getString(R.string.empty_feedback_error),
-                            Toast.LENGTH_SHORT).show();
-                    if(descriptionReview.getText().toString().equals("")) descriptionReview.setError(getString(R.string.empty_description_error));
+                } else {
+                    if (feedbackReview.getRating() == 0)
+                        Toast.makeText(this, ProfileActivity.this.getString(R.string.empty_feedback_error),
+                                Toast.LENGTH_SHORT).show();
+                    if (descriptionReview.getText().toString().equals(""))
+                        descriptionReview.setError(getString(R.string.empty_description_error));
 
                 }
 
@@ -206,6 +235,11 @@ public class ProfileActivity extends AppCompatActivity {
         dialogUpdate.show();
     }
 
+    /**
+     * A function that allows the logged User to insert a new review.
+     *
+     * @param userReview The review to add.
+     */
     private void addReview(UserReview userReview) {
         View viewReview = getLayoutInflater().inflate(R.layout.dialog_new_review, null);
         // Get a reference to all the fields in the dialog
@@ -234,10 +268,12 @@ public class ProfileActivity extends AppCompatActivity {
                     isReviewed();
                     requestDataForRecycleView(recyclerView);
                     dialogSubmit.dismiss();
-                } else{
-                    if(feedbackReview.getRating() ==0) Toast.makeText(this, ProfileActivity.this.getString(R.string.empty_feedback_error),
-                            Toast.LENGTH_SHORT).show();
-                    if(descriptionReview.getText().toString().equals("")) descriptionReview.setError(getString(R.string.empty_description_error));
+                } else {
+                    if (feedbackReview.getRating() == 0)
+                        Toast.makeText(this, ProfileActivity.this.getString(R.string.empty_feedback_error),
+                                Toast.LENGTH_SHORT).show();
+                    if (descriptionReview.getText().toString().equals(""))
+                        descriptionReview.setError(getString(R.string.empty_description_error));
                 }
 
             });
@@ -245,18 +281,29 @@ public class ProfileActivity extends AppCompatActivity {
         dialogSubmit.show();
     }
 
+    /**
+     * A function that checks if every field the review is filled.
+     *
+     * @return True if every field if filled, False otherwise.
+     */
     private boolean allFilled() {
         return !descriptionReview.getText().toString().equals("") && feedbackReview.getRating() > 0;
     }
 
+    /**
+     * A function that takes  the review of an user from the Db and set them to a given
+     * RecyclerView.
+     *
+     * @param recyclerView The RecyclerView to fill.
+     */
     private void requestDataForRecycleView(RecyclerView recyclerView) {
         ReviewManager.getAvgUserFeedback(this, reviewedUser, value -> star.setRating(value));
         ReviewManager.requestUserReviews(this, reviewedUser, null, list -> {
-            if(!list.isEmpty()) {
+            if (!list.isEmpty()) {
                 messageNoReview.setVisibility(View.GONE);
                 RecyclerView.Adapter adapter = new ReviewAdapter(ProfileActivity.this, list);
                 recyclerView.setAdapter(adapter);
-            }else {
+            } else {
                 messageNoReview.setVisibility(View.VISIBLE);
                 recyclerView.setAdapter(null);
             }
