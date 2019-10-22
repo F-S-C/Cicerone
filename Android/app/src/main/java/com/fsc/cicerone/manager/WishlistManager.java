@@ -139,7 +139,7 @@ public class WishlistManager {
             params.put(Wishlist.Columns.ITINERARY_IN_WISHLIST_KEY, itinerary.getCode());
             params.put(User.Columns.USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
 
-            new SendInPostConnector.Builder<>(ConnectorConstants.SEARCH_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class))
+            new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_WISHLIST, BusinessEntityBuilder.getFactory(Wishlist.class))
                     .setContext(context)
                     .setOnEndConnectionListener(list -> {
                         if (callback != null) callback.accept(!list.isEmpty());

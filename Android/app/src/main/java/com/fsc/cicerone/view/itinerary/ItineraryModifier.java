@@ -356,7 +356,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
         return true;
     }
 
-    abstract public void sendData(View view) throws ParseException;
+    public abstract void sendData(View view) throws ParseException;
 
     private interface OnTextChangedListener extends TextWatcher {
         @Override

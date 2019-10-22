@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ecb6a84b-7104-4264-a8eb-c1756e46f4bd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/model/Itinerary.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/model/Itinerary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/insert/InsertItinerary.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/insert/InsertItinerary.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/app_connector/ConnectorConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/app_connector/ConnectorConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/manager/WishlistManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/manager/WishlistManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/model/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/model/Reservation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/view/itinerary/ItineraryModifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/view/itinerary/ItineraryModifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/view/user/RegistrationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/view/user/RegistrationActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/view/user/UserMainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/app/src/main/java/com/fsc/cicerone/view/user/UserMainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/DatabaseConnector.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/DatabaseConnector.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/delete/DeleteRegisteredUser.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/delete/DeleteRegisteredUser.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,6 +53,7 @@
       <option name="presentableId" value="Default" />
       <updated>1571134622737</updated>
       <workItem from="1571134629166" duration="1742000" />
+      <workItem from="1571728191536" duration="146000" />
     </task>
     <servers />
   </component>
@@ -58,7 +65,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

@@ -257,7 +257,7 @@ public class Reservation extends BusinessEntity {
         }
 
         try {
-            this.forwardingDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString("forwading_date"));
+            this.forwardingDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US).parse(jsonObject.getString(Columns.FORWARDING_DATE_KEY));
         } catch (JSONException | ParseException e) {
             Log.e(ERROR_TAG, e.getMessage());
             this.forwardingDate = null;

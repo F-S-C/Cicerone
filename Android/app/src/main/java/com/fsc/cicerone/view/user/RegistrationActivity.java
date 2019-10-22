@@ -91,7 +91,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_registration);
-        LanguageManager languages = new LanguageManager();
+        LanguageManager languageManager = new LanguageManager();
 
         ViewFlipper viewFlipper = findViewById(R.id.registrationView);
         username = findViewById(R.id.registrationUsername);
@@ -171,7 +171,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 next.setText(R.string.next);
                                 next.setEnabled(true);
                             } else {
-                                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, languages.getLanguagesNames());
+                                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, languageManager.getLanguagesNames());
                                 nachoTextView.setAdapter(adapter);
                                 nachoTextView.disableEditChipOnTouch();
                                 viewFlipper.showNext();

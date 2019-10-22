@@ -113,7 +113,6 @@ abstract class DatabaseConnector implements DatabaseInterface
      */
     protected function get_from_connector(DatabaseConnector $connector): array
     {
-        // TODO: Add to class diagram.
         return json_decode($connector->get_content(), true);
     }
 }

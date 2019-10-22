@@ -20,7 +20,6 @@ package com.fsc.cicerone.app_connector;
  * Connector Constants for Cicerone's connector.
  */
 public final class ConnectorConstants {
-    //TODO: Check all constants and remove duplicates.
     private ConnectorConstants() {
         throw new IllegalStateException("Utility class");
     }
@@ -115,11 +114,6 @@ public final class ConnectorConstants {
      * URL of the server-side connector for the wishlist table.
      */
     public static final String REQUEST_WISHLIST = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestWishlist.php";
-
-    /**
-     * URL of the server-side connector for the wishlist table.
-     */
-    public static final String SEARCH_WISHLIST = SERVER_URL + DB_CONNECTOR_FOLDER + REQUEST_SUBFOLDER + "/RequestWishlist.php"; //TODO: remove from class?
 
     /**
      * URL of the server-side connector for the user_review table.

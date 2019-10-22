@@ -20,7 +20,6 @@ class DeleteRegisteredUser extends DeleteConnector
      */
     public function get_content(): string
     {
-        // TODO: Add login check?
         try {
             $this->update_itineraries();
             $this->update_received_reports();

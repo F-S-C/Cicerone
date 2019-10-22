@@ -157,12 +157,12 @@ public class UserMainActivity extends MainActivity {
         users.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                //Do nothing
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                //Do nothing
             }
 
             @Override
@@ -195,7 +195,6 @@ public class UserMainActivity extends MainActivity {
                             .setPositiveButton(R.string.yes, (dialog, witch) -> {
                                 ReportManager.addNewReport(UserMainActivity.this, currentLoggedUser, users.getChipValues().get(0), object.getText().toString(), body.getText().toString(), success ->
                                         Toast.makeText(UserMainActivity.this, UserMainActivity.this.getString(R.string.report_sent), Toast.LENGTH_SHORT).show());
-//                                refresh();
                                 dialogSubmit.dismiss();
                             })
                             .setNegativeButton(R.string.no, null)
