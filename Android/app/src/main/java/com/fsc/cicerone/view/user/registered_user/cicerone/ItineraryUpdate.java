@@ -17,6 +17,7 @@
 package com.fsc.cicerone.view.user.registered_user.cicerone;
 
 import android.app.Activity;
+import android.nfc.FormatException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -60,11 +61,10 @@ public class ItineraryUpdate extends ItineraryModifier {
         title.setText(currentItinerary.getTitle());
         description.setText(currentItinerary.getDescription());
         location.setText(currentItinerary.getLocation());
-        // TODO: Why is it crashing?
-        //SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-        //selectBeginningDate.setText(String.valueOf(currentItinerary.getBeginningDate()));
-        //selectEndingDate.setText(formatter.format(currentItinerary.getEndingDate()));
-        //selectReservationDate.setText(formatter.format(currentItinerary.getReservationDate()));
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+        selectBeginningDate.setText(formatter.format(currentItinerary.getBeginningDate()));
+        selectEndingDate.setText(formatter.format(currentItinerary.getEndingDate()));
+        selectReservationDate.setText(formatter.format(currentItinerary.getReservationDate()));
         minParticipants.setText(String.valueOf(currentItinerary.getMinParticipants()));
         maxParticipants.setText(String.valueOf(currentItinerary.getMaxParticipants()));
         durationHours.setText(currentItinerary.getDuration().substring(0, currentItinerary.getDuration().indexOf(":")));
