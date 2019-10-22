@@ -47,6 +47,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class that shows the information of an Itinerayr on the Cicerone-side, allowing for future updates.
+ */
 public class ItineraryManagement extends ItineraryActivity implements Refreshable {
     public static final int RESULT_ITINERARY_DELETED = 1020;
     private Fragment fragment = new UsersListFragment();
@@ -54,16 +57,26 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
     private TextView messageNoReview;
 
 
+    /**
+     * An empty Constructor.
+     */
     public ItineraryManagement() {
         super();
         this.layout = R.layout.activity_itinerary_management;
     }
 
+    /**
+     * A Constructor that takes a Layout as a parameter.
+     * @param contentLayoutId The Layout to set.
+     */
     public ItineraryManagement(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_itinerary_management;
     }
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,23 +116,38 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
 
     }
 
+    /**
+     * @see com.fsc.cicerone.view.itinerary.ItineraryActivity#goToAuthor(View)
+     */
     @Override
     public void goToAuthor(View view) {
         // Do nothing
     }
 
+    /**
+     * A function that deletes the current Itinerary from the Server.
+     */
     public void deleteItineraryFromServer() {
         ItineraryManager.deleteItinerary(this, itinerary, success -> Toast.makeText(ItineraryManagement.this, ItineraryManagement.this.getString(R.string.itinerary_deleted), Toast.LENGTH_SHORT).show());
         setResult(Activity.RESULT_OK);
         ItineraryManagement.this.finish();
     }
 
+    /**
+     * A function that allows the Cicerone to see the participators of the Itinerary.
+     * @param view The current View.
+     */
     public void participatorsList(View view) {
         FragmentManager fm = getSupportFragmentManager();
         ItineraryParticipantsDialogFragment editNameDialogFragment = ItineraryParticipantsDialogFragment.newInstance(itinerary);
         editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 
+    /**
+     * A function that takes data from the Server and sets them into a given RecyclerView.
+     * @param parameters The parameters of the Query.
+     * @param recyclerView The RecyclerView to set.
+     */
     private void requestDataForRecycleView(Map<String, Object> parameters, RecyclerView recyclerView) {
         new SendInPostConnector.Builder<>(ConnectorConstants.REQUEST_ITINERARY_REVIEW, BusinessEntityBuilder.getFactory(ItineraryReview.class))
                 .setContext(this)
@@ -135,6 +163,9 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
                 .getData();
     }
 
+    /**
+     * @see android.app.Activity#onActivityResult(int, int, Intent)
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

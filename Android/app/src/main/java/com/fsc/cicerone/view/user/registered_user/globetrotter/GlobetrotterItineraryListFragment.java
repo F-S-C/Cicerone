@@ -62,6 +62,9 @@ public class GlobetrotterItineraryListFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_globetrotter_itinerary_list_fragment, container, false);
@@ -85,6 +88,11 @@ public class GlobetrotterItineraryListFragment extends Fragment {
         return view;
     }
 
+    /**
+     * @param view The current View
+     * @param parameters The parameters on the query.
+     * @param recyclerView The RecyclerView that needs to be set.
+     */
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {
         TextView message = view.findViewById(R.id.no_itinerary_history);
 

@@ -39,25 +39,45 @@ import java.util.List;
 import java.util.Set;
 
 
+/**
+ * A class that allows the creation of an Itinerary
+ */
 public class ItineraryCreation extends ItineraryModifier {
 
     private class LanguageCheckBox {
         private CheckBox checkBox;
         private Language language;
 
+        /**
+         * A function that returns the Language CheckBox
+         * @return The language CheckBox to return.
+         */
         public CheckBox getCheckBox() {
             return checkBox;
         }
 
+        /**
+         * A function that returns the Language.
+         * @return The language to return.
+         */
         public Language getLanguage() {
             return language;
         }
 
+        /**
+         *  A Constructor that sets CheckBox and Language.
+         * @param checkBox The CheckBox to set.
+         * @param language The Language to Set.
+         */
         public LanguageCheckBox(CheckBox checkBox, Language language) {
             this.checkBox = checkBox;
             this.language = language;
         }
 
+        /**
+         * A function that controls if the CheckBox is checked or not.
+         * @return True if the Checkbox is checked, False otherwise.
+         */
         public boolean isChecked() {
             return checkBox.isChecked();
         }
@@ -68,15 +88,25 @@ public class ItineraryCreation extends ItineraryModifier {
     List<LanguageCheckBox> checkBoxList;
 
 
+    /**
+     * Empty Constructor.
+     */
     public ItineraryCreation() {
         this.layout = R.layout.activity_itinerary_creation;
     }
 
+    /**
+     * A Constructor that takes a Layout as a parameter.
+     * @param contentLayoutId The Layout to set.
+     */
     public ItineraryCreation(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_itinerary_creation;
     }
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,12 +115,19 @@ public class ItineraryCreation extends ItineraryModifier {
 
     }
 
+    /**
+     * @see android.app.Activity#onActivityResult(int, int, Intent)
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         imageManager.manageResult(requestCode, resultCode, data, image);
     }
 
+    /**
+     * A functtion that checks if at least a Language has been selected.
+     * @return True if a Language is set, False otherwise.
+     */
     public boolean checkIfLanguagesAreSet() {
         for (LanguageCheckBox language : checkBoxList) {
             if (language.isChecked()) return true;
@@ -98,6 +135,9 @@ public class ItineraryCreation extends ItineraryModifier {
         return false;
     }
 
+    /**
+     * @see com.fsc.cicerone.view.itinerary.ItineraryModifier#sendData(View)
+     */
     @Override
     public void sendData(View view) {
         if (allFilled() && checkIfLanguagesAreSet() && noFieldWithError()) {
@@ -179,11 +219,18 @@ public class ItineraryCreation extends ItineraryModifier {
         }
     }
 
+    /**
+     * @see ItineraryModifier#allFilled()
+     */
     @Override
     protected boolean allFilled() {
         return super.allFilled() && imageManager.isSelected();
     }
 
+    /**
+     * A function that manage to set the languages in the CheckBox. The languages are taken from the
+     * User's languages.
+     */
     private void setLanguages() {
         languagesLayout = findViewById(R.id.languageLayout);
         currentLoggedUser = AccountManager.getCurrentLoggedUser();

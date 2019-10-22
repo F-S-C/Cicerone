@@ -40,20 +40,34 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * A function that manage to display all the information of an Itinerary, based on which Activity is started.
+ * It is called by ItineraryDetails and ItineraryManagement.
+ */
 public abstract class ItineraryActivity extends AppCompatActivity implements Refreshable {
     protected Itinerary itinerary;
     protected int layout = R.layout.activity_itinerary_details;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected CollapsingToolbarLayout collapsingToolbarLayout;
 
+    /**
+     * Empty Constructor
+     */
     public ItineraryActivity() {
         super();
     }
 
+    /**
+     * A Constructor that takes a layout as a parameter.
+     * @param contentLayoutId The layout to set.
+     */
     public ItineraryActivity(int contentLayoutId) {
         super(contentLayoutId);
     }
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +93,9 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         refresh();
     }
 
+    /**
+     * A function that sets values of the itinerary in its relative space.
+     */
     public void bindDataToView() {
         SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
@@ -138,25 +155,45 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh()
+     */
     @Override
     public void refresh() {
         swipeRefreshLayout.setRefreshing(true);
         bindDataToView();
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         refresh();
     }
 
+    /**
+     * @see AppCompatActivity#onSupportNavigateUp()
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
+    /**
+     * A function that allows the User to visit the profile of the author of the Itinerary.
+     * @param view The current View.
+     */
     public abstract void goToAuthor(View view);
 
+
+    /**
+     * A function that starts an Activity with data that needs to be passed.
+     *
+     * @param targetActivity The Activity to start .
+     * @param bundle The data to pass.
+     */
     protected void startActivityWithData(Class targetActivity, Bundle bundle) {
         Intent i = new Intent().setClass(this, targetActivity);
         i.putExtras(bundle);

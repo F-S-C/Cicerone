@@ -46,8 +46,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A class that displays the participants list of an Itinerary.
+ */
 public class ItineraryParticipantsDialogFragment extends DialogFragment {
 
+    /**
+     * @see androidx.fragment.app.DialogFragment#onCreateDialog(Bundle)
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -95,10 +101,18 @@ public class ItineraryParticipantsDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * Empty Constructor.
+     */
     public ItineraryParticipantsDialogFragment() {
         // Required empty constructor
     }
 
+    /**
+     * A function that creates a new Instance of the Fragment, setting the Itinerary as a Bundle.
+     * @param itinerary The current Itinerary.
+     * @return The Fragment with the Itinerary set in a Bundle.
+     */
     public static ItineraryParticipantsDialogFragment newInstance(Itinerary itinerary) {
 
         Bundle args = new Bundle();

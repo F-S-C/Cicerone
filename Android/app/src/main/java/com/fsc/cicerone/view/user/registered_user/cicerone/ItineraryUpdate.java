@@ -34,20 +34,33 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * A class that allows an Itinerary to be updated.
+ */
 public class ItineraryUpdate extends ItineraryModifier {
     Itinerary currentItinerary;
 
     public static final int RESULT_ITINERARY_UPDATED = 1050;
 
+    /**
+     * Empty Constructor.
+     */
     public ItineraryUpdate() {
         this.layout = R.layout.activity_itinerary_update;
     }
 
+    /**
+     * A Constructor that takes a Layout as a parameter.
+     * @param contentLayoutId The Layout to set.
+     */
     public ItineraryUpdate(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_itinerary_update;
     }
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +89,10 @@ public class ItineraryUpdate extends ItineraryModifier {
         reducedPrice.setText(String.valueOf(currentItinerary.getReducedPrice()));
     }
 
+
+    /**
+     * @see com.fsc.cicerone.view.itinerary.ItineraryModifier#sendData(View)
+     */
     @Override
     public void sendData(View view) throws ParseException {
         DateFormat outputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);

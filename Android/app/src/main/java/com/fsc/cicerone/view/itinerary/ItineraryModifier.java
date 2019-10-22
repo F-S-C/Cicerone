@@ -68,13 +68,23 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     private static final String ERROR_TAG = "ERROR IN " + ItineraryModifier.class.getSimpleName();
 
+    /**
+     * Empty Constructor.
+     */
     public ItineraryModifier() {
     }
 
+    /**
+     * A Constructor that takes a Layout as a parameter.
+     * @param contentLayoutId The layout to set.
+     */
     public ItineraryModifier(int contentLayoutId) {
         super(contentLayoutId);
     }
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +114,9 @@ public abstract class ItineraryModifier extends AppCompatActivity {
         setUpListeners();
     }
 
+    /**
+     * A function that sets the listener for every field.
+     */
     private void setUpListeners() {
         submit.setOnClickListener(view -> {
             try {
@@ -214,6 +227,9 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     }
 
+    /**
+     * A function that allows to update the beginning date.
+     */
     void updateBeginningDate() {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         selectBeginningDate.setText(sdf.format(myCalendar.getTime()));
@@ -221,16 +237,26 @@ public abstract class ItineraryModifier extends AppCompatActivity {
         selectEndingDate.setActivated(true);
     }
 
+    /**
+     * A function that allows to update the ending date.
+     */
     void updateEndingDate() {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         selectEndingDate.setText(sdf.format(myCalendar.getTime()));
     }
 
+    /**
+     * A function that allows to update the reservation date.
+     */
     protected void updateReservationDate() {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         selectReservationDate.setText(sdf.format(myCalendar.getTime()));
     }
 
+    /**
+     * A function that checks if the values inserted in MinParticipants/MaxParticipants are correct.
+     * @param currentEditText The EditText to check.
+     */
     protected void checkMinMaxParticipants(EditText currentEditText) {
         String maxInserted = maxParticipants.getText().toString();
         String minInserted = minParticipants.getText().toString();
@@ -246,6 +272,10 @@ public abstract class ItineraryModifier extends AppCompatActivity {
         }
     }
 
+    /**
+     * A function that allows to set the Beginning Date.
+     * @param view The current View
+     */
     public void setBeginningDate(View view) {
         DatePickerDialog.OnDateSetListener bDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
@@ -262,6 +292,10 @@ public abstract class ItineraryModifier extends AppCompatActivity {
         selectEndingDate.setText(null);
     }
 
+    /**
+     * A function that allows to set the Ending Date.
+     * @param view The current View
+     */
     public void setEndingDate(View view) {
         DatePickerDialog.OnDateSetListener eDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
@@ -288,6 +322,10 @@ public abstract class ItineraryModifier extends AppCompatActivity {
         selectEndingDate.clearFocus();
     }
 
+    /**
+     * A function that allows to set the Reservation Date.
+     * @param view The current View
+     */
     public void setReservationDate(View view) {
         DatePickerDialog.OnDateSetListener rDate = (view2, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
@@ -321,6 +359,10 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     }
 
+    /**
+     * A function that checks if every field is filled.
+     * @return True if every field is filled, False otherwise.
+     */
     protected boolean allFilled() {
         return !title.getText().toString().equals("")
                 && !description.getText().toString().equals("")
@@ -337,6 +379,10 @@ public abstract class ItineraryModifier extends AppCompatActivity {
                 && !reducedPrice.getText().toString().equals("");
     }
 
+    /**
+     * A function that checks if every field has no error.
+     * @return True if every field has no error, False otherwise.
+     */
     protected boolean noFieldWithError() {
         return minParticipants.getError() == null
                 && maxParticipants.getError() == null
@@ -345,26 +391,44 @@ public abstract class ItineraryModifier extends AppCompatActivity {
                 && reducedPrice.getError() == null;
     }
 
+    /**
+     * @see android.app.Activity#onActivityResult(int, int, Intent)
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         imageManager.manageResult(requestCode, resultCode, data, image);
     }
 
+    /**
+     * @see AppCompatActivity#onSupportNavigateUp()
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
+    /**
+     * A function that manage to send data to the Server.
+     * @param view The current view
+     * @throws ParseException The exception thrown in case of error.
+     */
     public abstract void sendData(View view) throws ParseException;
 
     private interface OnTextChangedListener extends TextWatcher {
+
+        /**
+         * @see android.text.TextWatcher#beforeTextChanged(CharSequence, int, int, int)
+         */
         @Override
         default void beforeTextChanged(CharSequence s, int start, int count, int after) {
             // Do nothing
         }
 
+        /**
+         * @see android.text.TextWatcher#afterTextChanged(Editable)
+         */
         @Override
         default void afterTextChanged(Editable s) {
             // Do nothing
