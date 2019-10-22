@@ -17,7 +17,6 @@
 package com.fsc.cicerone.view.user.registered_user.cicerone;
 
 import android.app.Activity;
-import android.nfc.FormatException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
