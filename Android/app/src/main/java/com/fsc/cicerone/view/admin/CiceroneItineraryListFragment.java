@@ -52,6 +52,9 @@ public class CiceroneItineraryListFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_cicerone_itinerary_list_fragment, container, false);
@@ -67,6 +70,13 @@ public class CiceroneItineraryListFragment extends Fragment {
         return view;
     }
 
+
+    /**
+     * A function that takes all the Itineraries of a given Cicerone from the Server and sets them into a RecyclerView.
+     * @param view The current View.
+     * @param user The Cicerone.
+     * @param recyclerView The RecyclerView to set.
+     */
     private void requireData(View view, User user, RecyclerView recyclerView) {
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put(Itinerary.Columns.CICERONE_KEY, user.getUsername());

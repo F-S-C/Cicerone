@@ -34,6 +34,9 @@ import com.fsc.cicerone.model.ReportStatus;
 
 import java.util.Objects;
 
+/**
+ * A class that manage to show to information of a Report.
+ */
 public class ReportDetailsActivity extends AppCompatActivity {
 
     private TextView reportTitle;
@@ -43,6 +46,9 @@ public class ReportDetailsActivity extends AppCompatActivity {
     private TextView bodyText;
     private Button cancButton;
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +80,10 @@ public class ReportDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * A function that sets the data of the given Report in the correct spaces.
+     * @param report The current Report.
+     */
     private void bindDataToView(Report report) {
         if (report.getStatus().toString().equals("Open")){
             cancButton.setVisibility(View.VISIBLE);
@@ -90,6 +100,9 @@ public class ReportDetailsActivity extends AppCompatActivity {
         bodyText.setText(report.getBody());
     }
 
+    /**
+     * @see AppCompatActivity#onSupportNavigateUp()
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

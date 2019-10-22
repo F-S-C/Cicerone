@@ -22,18 +22,32 @@ import android.view.View;
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.view.itinerary.ItineraryActivity;
 
+/**
+ * A class that displays the information of an Itinerary Admin-side.
+ */
 public class AdminItineraryDetails extends ItineraryActivity {
 
+    /**
+     * Empty Constructor.
+     */
     public AdminItineraryDetails() {
         super();
         this.layout = R.layout.activity_admin_itinerary_details;
     }
 
+    /**
+     * A Constructor that takes a Layout as a parameter.
+     * @param contentLayoutId The layout to set.
+     */
     public AdminItineraryDetails(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_admin_itinerary_details;
     }
 
+    /**
+     * A function that allows the Admin to visit the author the itinerary profile.
+     * @param view The current View.
+     */
     @Override
     public void goToAuthor(View view) {
         Bundle bundle = new Bundle();

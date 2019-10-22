@@ -48,6 +48,9 @@ public class AdminUserProfile extends AppCompatActivity {
 
 
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,12 @@ public class AdminUserProfile extends AppCompatActivity {
         }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            /**
+             * Called when a tab enters the selected state.
+             *
+             * @param tab The tab that was selected
+             */
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
@@ -113,11 +122,22 @@ public class AdminUserProfile extends AppCompatActivity {
                 ft.commit();
             }
 
+            /**
+             * Called when a tab exits the selected state.
+             *
+             * @param tab The tab that was unselected
+             */
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 // Do nothing
             }
 
+            /**
+             * Called when a tab that is already selected is chosen again by the user. Some applications may
+             * use this action to return to the top level of a category.
+             *
+             * @param tab The tab that was reselected.
+             */
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 // Do nothing
@@ -127,6 +147,9 @@ public class AdminUserProfile extends AppCompatActivity {
 
     }
 
+    /**
+     * @see AppCompatActivity#onSupportNavigateUp()
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

@@ -32,6 +32,9 @@ import com.fsc.cicerone.model.ReportStatus;
 
 import java.util.Objects;
 
+/**
+ * A class that manage to show the details of  a Report Admin-side.
+ */
 public class AdminReportDetailsActivity extends AppCompatActivity {
 
     private TextView reportTitle;
@@ -42,6 +45,9 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     private TextView bodyText;
     private Button takeChargeReport;
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +92,10 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * A function that sets the data of the current Report in the correct spaces.
+     * @param report The current Report
+     */
     private void bindDataToView(Report report) {
         if (report.getStatus().toString().equals("Pending"))
             takeChargeReport.setEnabled(false);
@@ -99,6 +109,9 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * @see AppCompatActivity#onSupportNavigateUp()
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

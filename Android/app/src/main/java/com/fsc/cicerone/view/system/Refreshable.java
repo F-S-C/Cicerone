@@ -19,6 +19,9 @@ package com.fsc.cicerone.view.system;
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+/**
+ * An interface that allows the use of the SwipeRefreshLayout in the System.
+ */
 public interface Refreshable {
     default void refresh(){
         refresh(null);

@@ -33,8 +33,14 @@ import com.fsc.cicerone.view.user.UserMainActivity;
 import com.fsc.cicerone.view.admin.AdminMainActivity;
 import com.fsc.cicerone.view.user.registered_user.LoginActivity;
 
+/**
+ * The Activity launched at the opening of the app.
+ */
 public class SplashActivity extends AppCompatActivity {
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

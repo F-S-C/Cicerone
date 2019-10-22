@@ -67,6 +67,9 @@ public class AdminDetailsUserFragment extends Fragment {
     public AdminDetailsUserFragment() {
         // Required empty public constructor
     }
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -97,6 +100,9 @@ public class AdminDetailsUserFragment extends Fragment {
         return view;
     }
 
+    /**
+     * A function that gets the Data of the current User.
+     */
     private void getDataUser() {
         if (user.getUserType() == UserType.CICERONE) {
             avgEarn.setVisibility(View.VISIBLE);
@@ -123,6 +129,9 @@ public class AdminDetailsUserFragment extends Fragment {
         documentExpiryDate.setText(data);
     }
 
+    /**
+     * A function that manages to delete an account Admin-side.
+     */
     private void deleteAccount() {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
             AccountManager.deleteAccount(context, user , success -> Toast.makeText(context,

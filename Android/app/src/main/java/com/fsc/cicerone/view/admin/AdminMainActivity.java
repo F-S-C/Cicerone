@@ -37,13 +37,23 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Objects;
 
+/**
+ * The main activity Admin-side.
+ */
 public class AdminMainActivity extends MainActivity {
 
+    /**
+     * Empty Constructor.
+     */
     public AdminMainActivity() {
         super();
         this.layout = R.layout.activity_admin_main;
     }
 
+    /**
+     * A Constructor that takes a Layout as a parameter.
+     * @param contentLayoutId The Layout to set.
+     */
     public AdminMainActivity(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_admin_main;
@@ -69,11 +79,22 @@ public class AdminMainActivity extends MainActivity {
 
     }
 
+    /**
+     * @see MainActivity#setupFragmentAdapter()
+     */
     @Override
     protected void setupFragmentAdapter() {
         fragmentPagerAdapter = new AdminMainActivityPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
+    /**
+     * Called when an item in the bottom navigation menu is selected.
+     *
+     * @param item The selected item
+     * @return true to display the item as the selected item and false if the item should not be
+     *     selected. Consider setting non-selectable items as disabled preemptively to make them
+     *     appear non-interactive.
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         boolean toReturn = false;
@@ -119,6 +140,9 @@ public class AdminMainActivity extends MainActivity {
             super(fm, behavior);
         }
 
+        /**
+         * @see androidx.fragment.app.FragmentPagerAdapter#getItem(int)
+         */
         @NonNull
         @Override
         public Fragment getItem(int position) {
@@ -131,6 +155,9 @@ public class AdminMainActivity extends MainActivity {
             return fragment;
         }
 
+        /**
+         * @see androidx.fragment.app.FragmentPagerAdapter#getPageTitle(int)
+         */
         @Override
         public CharSequence getPageTitle(int position) {
             CharSequence title = getString(R.string.active_itineraries);
@@ -142,6 +169,9 @@ public class AdminMainActivity extends MainActivity {
             return title;
         }
 
+        /**
+         * @see FragmentPagerAdapter#getCount()
+         */
         @Override
         public int getCount() {
             return 3;
