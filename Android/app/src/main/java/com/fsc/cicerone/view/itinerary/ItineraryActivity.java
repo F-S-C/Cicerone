@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -115,17 +114,20 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         rDate.setText(out.format(itinerary.getReservationDate()));
         imageView.setImageResource(itinerary.getCicerone().getSex().getAvatarResource());
 
-        TextView languagesTextView = new TextView(this);
-        LinearLayout languageLayout = findViewById(R.id.languageL);
-        languageLayout.addView(languagesTextView);
+        TextView languagesTextView = findViewById(R.id.languagesTextView);
 
         StringBuilder sb = new StringBuilder();
         String delimiter = "";
-        for(Language language : itinerary.getLanguages()){
-            sb.append(delimiter).append(language.getName());
-            delimiter = ", ";
+        if(languagesTextView.getText().toString().equals(""))
+        {
+            for(Language language : itinerary.getLanguages()){
+                sb.append(delimiter).append(language.getName());
+                delimiter = ", ";
+            }
+            languagesTextView.setText(sb.toString());
+
         }
-        languagesTextView.setText(sb.toString());
+
 
 
         ReviewManager.getAvgItineraryFeedback(ItineraryActivity.this, itinerary, review::setRating);
