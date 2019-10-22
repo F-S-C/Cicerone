@@ -17,7 +17,6 @@
 package com.fsc.cicerone.manager;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -223,7 +222,6 @@ public class AccountManager {
      * @param users   The user to be reported.
      */
     public static void setUsersInTextView(@NonNull Activity context, @NonNull NachoTextView users) {
-        // TODO: Needs cleanup?
         new GetDataConnector.Builder<>(ConnectorConstants.REGISTERED_USER, BusinessEntityBuilder.getFactory(User.class))
                 .setContext(context)
                 .setOnEndConnectionListener(list -> {

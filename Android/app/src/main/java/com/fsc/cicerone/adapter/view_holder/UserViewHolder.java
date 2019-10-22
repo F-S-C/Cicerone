@@ -23,7 +23,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.UserType;
