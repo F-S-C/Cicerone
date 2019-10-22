@@ -108,6 +108,9 @@ public class ProfileFragment extends Fragment implements Refreshable {
         // Required empty public constructor
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -264,6 +267,9 @@ public class ProfileFragment extends Fragment implements Refreshable {
         spinner.setAdapter(dataAdapter);
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh()
+     */
     @Override
     public void refresh() {
         User currentLoggedUser = AccountManager.getCurrentLoggedUser();
@@ -296,12 +302,18 @@ public class ProfileFragment extends Fragment implements Refreshable {
         documentExpiryDate.setText(outputFormat.format(currentLoggedUser.getDocument().getExpirationDate()));
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         refresh();
         if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
     }
 
+    /**
+     * A function that allows the logged User to become a Cicerone.
+     */
     private void switchToCicerone() {
         final Map<String, Object> parameters = new HashMap<>(2);
         parameters.put(User.Columns.USERNAME_KEY, AccountManager.getCurrentLoggedUser().getUsername());
@@ -326,16 +338,25 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
     }
 
+    /**
+     * A function that manage to update the Birth date.
+     */
     private void updateBirth() {
         SimpleDateFormat sdf = new SimpleDateFormat(IT_DATE_FORMAT, Locale.US);
         birthDate.setText(sdf.format(birthCalendar.getTime()));
     }
 
+    /**
+     * A function that manage to update the expire date of the User's Document.
+     */
     private void updateExpDate() {
         SimpleDateFormat sdf = new SimpleDateFormat(IT_DATE_FORMAT, Locale.US);
         documentExpiryDate.setText(sdf.format(expCalendar.getTime()));
     }
 
+    /**
+     * A function that manage to update the User data.
+     */
     private void updateUserData() {
         Map<String, Object> userData = new HashMap<>();
         Map<String, Object> documentData = new HashMap<>();
@@ -396,6 +417,11 @@ public class ProfileFragment extends Fragment implements Refreshable {
         Toast.makeText(getActivity(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * A function that converts a given String to a Date.
+     * @param text The given String
+     * @return The converted Date
+     */
     private Date strToDate(String text) {
         Date date = null;
         SimpleDateFormat format = new SimpleDateFormat(IT_DATE_FORMAT, Locale.US);
@@ -407,6 +433,11 @@ public class ProfileFragment extends Fragment implements Refreshable {
         return date;
     }
 
+    /**
+     * A function that converts a given date in String type, to a Date in the Server Format.
+     * @param dateToConvert The date to convert
+     * @return The converted Date
+     */
     private String itDateToServerDate(String dateToConvert) {
         try {
             DateFormat serverDate = new SimpleDateFormat(ConnectorConstants.DATE_FORMAT, Locale.US);
@@ -418,6 +449,10 @@ public class ProfileFragment extends Fragment implements Refreshable {
         }
     }
 
+    /**
+     * A function that checks if every field is filled.
+     * @return True if every field is filled, False otherwise.
+     */
     private boolean allFilled() {
         return !name.getText().toString().equals("")
                 && !surname.getText().toString().equals("")
@@ -429,16 +464,27 @@ public class ProfileFragment extends Fragment implements Refreshable {
                 && !documentExpiryDate.getText().toString().equals("");
     }
 
+    /**
+     * A function that converts a Date in an object Calendar and returns it.
+     * @param date The Date to set.
+     * @return The Calendar object.
+     */
     private static Calendar toCalendar(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
     }
 
+    /**
+     * A function that allows the logged User to request the download of his data.
+     */
     private void requestUserData() {
         checkPermission();
     }
 
+    /**
+     * A function that manage to check the necessary permissions before allowing the logged User to download his data.
+     */
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -462,6 +508,9 @@ public class ProfileFragment extends Fragment implements Refreshable {
         }
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onRequestPermissionsResult(int, String[], int[])
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
@@ -473,6 +522,9 @@ public class ProfileFragment extends Fragment implements Refreshable {
         }
     }
 
+    /**
+     * A function that allows the logged User to download his data.
+     */
     private void downloadUserData() {
         final WebView webView = new WebView(context);
         webView.setWebViewClient(new WebViewClient());
@@ -508,6 +560,9 @@ public class ProfileFragment extends Fragment implements Refreshable {
         });
     }
 
+    /**
+     * A function that manages the deletion of the account of the logged User.
+     */
     public void deleteAccount() {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
             AccountManager.deleteCurrentAccount(context);

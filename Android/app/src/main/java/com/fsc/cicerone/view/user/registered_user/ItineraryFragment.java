@@ -72,6 +72,9 @@ public class ItineraryFragment extends Fragment implements Refreshable {
         // Required empty public constructor
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_itinerary_fragment, container, false);
@@ -136,11 +139,17 @@ public class ItineraryFragment extends Fragment implements Refreshable {
     }
 
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh()
+     */
     @Override
     public void refresh() {
         refresh(null);
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
@@ -196,6 +205,9 @@ public class ItineraryFragment extends Fragment implements Refreshable {
         }
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onActivityResult(int, int, Intent)
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

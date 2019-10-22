@@ -47,6 +47,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A class used to manage the User's wishlist.
+ */
 public class WishlistFragment extends Fragment implements Refreshable {
 
     private TextView noItinerariesTextView;
@@ -55,6 +58,9 @@ public class WishlistFragment extends Fragment implements Refreshable {
 
     public static final int REQUEST_UPDATE_WISHLIST = 1031;
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreate(Bundle)
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +68,9 @@ public class WishlistFragment extends Fragment implements Refreshable {
     }
 
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,6 +89,9 @@ public class WishlistFragment extends Fragment implements Refreshable {
         return view;
     }
 
+    /**
+     * A function used to delete all the itineraries in the wishlist of the logged User.
+     */
     private void clearWish() {
         if (Objects.requireNonNull(recyclerView.getAdapter()).getItemCount() == 0) {
             Toast.makeText(getActivity(), WishlistFragment.this.getString(R.string.empty_wishlist), Toast.LENGTH_SHORT).show();
@@ -93,6 +105,9 @@ public class WishlistFragment extends Fragment implements Refreshable {
         }
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onActivityResult(int, int, Intent)
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -101,6 +116,9 @@ public class WishlistFragment extends Fragment implements Refreshable {
         }
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         WishlistManager.getWishlist(getActivity(), () -> {
@@ -124,6 +142,9 @@ public class WishlistFragment extends Fragment implements Refreshable {
         });
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateOptionsMenu(Menu, MenuInflater)
+     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.wishlist_menu, menu);
@@ -131,6 +152,9 @@ public class WishlistFragment extends Fragment implements Refreshable {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onOptionsItemSelected(MenuItem)
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_clearWishlist) {

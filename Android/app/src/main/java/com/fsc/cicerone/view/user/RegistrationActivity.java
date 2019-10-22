@@ -191,7 +191,7 @@ public class RegistrationActivity extends AppCompatActivity {
         username.addTextChangedListener(new TextWatcher() {
 
             /**
-             * @see android.text.TextWatcher#beforeTextChanged(CharSequence, int, int, int)
+             * @see android.text.TextWatcher#afterTextChanged(Editable)
              */
             @Override
             public void afterTextChanged(Editable s) {
@@ -208,7 +208,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
 
             /**
-             * @see android.text.TextWatcher#afterTextChanged(Editable)
+             * @see android.text.TextWatcher#onTextChanged(CharSequence, int, int, int)
              */
             @Override
             public void onTextChanged(CharSequence s, int start,
@@ -224,16 +224,17 @@ public class RegistrationActivity extends AppCompatActivity {
         email.addTextChangedListener(new TextWatcher() {
 
             /**
-             * @see android.text.TextWatcher#beforeTextChanged(CharSequence, int, int, int)
+             * @see android.text.TextWatcher#afterTextChanged(Editable)
              */
             @Override
             public void afterTextChanged(Editable s) {
                 // Do nothing
-                /**
-                 * @see android.text.TextWatcher#onTextChanged(CharSequence, int, int, int)
-                 */}
+                }
 
 
+            /**
+             * @see android.text.TextWatcher#beforeTextChanged(CharSequence, int, int, int)
+             */
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
@@ -241,7 +242,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
 
             /**
-             * @see android.text.TextWatcher#afterTextChanged(Editable)
+             * @see android.text.TextWatcher#onTextChanged(CharSequence, int, int, int)
              */
             @Override
             public void onTextChanged(CharSequence s, int start,

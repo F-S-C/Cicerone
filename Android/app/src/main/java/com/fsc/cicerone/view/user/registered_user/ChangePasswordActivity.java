@@ -34,6 +34,9 @@ import com.fsc.cicerone.model.User;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class that manage the situation of changing the password of an User.
+ */
 public class ChangePasswordActivity extends AppCompatActivity {
 
     private EditText oldPassword;
@@ -41,6 +44,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText verifyNewPassword;
     private Button changeP;
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,16 +61,31 @@ public class ChangePasswordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextWatcher onTextChangedListener = new TextWatcher() {
+            /**
+             * @param s
+             */
             @Override
             public void afterTextChanged(Editable s) {
                 // Do nothing
             }
 
+            /**
+             * @param s
+             * @param start
+             * @param count
+             * @param after
+             */
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
             }
 
+            /**
+             * @param s
+             * @param start
+             * @param before
+             * @param count
+             */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 verifyFields();
@@ -96,6 +117,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * A function that manages the change the password of an User in the Server.
+     */
     private void changePasswordOnServer() {
         User user = AccountManager.getCurrentLoggedUser();
         Map<String, Object> params = new HashMap<>(2);
@@ -117,6 +141,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 .getData();
     }
 
+    /**
+     * A function that manages to verify if the values inserted when trying to change password are correct.
+     * if they aren't, errors are set where necessary.
+     */
     private void verifyFields() {
         if (oldPassword.getText().toString().equals("")) {
             oldPassword.setError(getString(R.string.error_fields_empty));

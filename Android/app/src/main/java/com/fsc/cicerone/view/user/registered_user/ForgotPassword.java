@@ -30,8 +30,14 @@ import com.fsc.cicerone.model.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+/**
+ * The class that manage the situation of a forgotten password by the User.
+ */
 public class ForgotPassword extends AppCompatActivity {
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

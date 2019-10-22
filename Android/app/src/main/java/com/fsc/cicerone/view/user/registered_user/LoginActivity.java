@@ -43,6 +43,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
+/**
+ * A class that manage the login of an User.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputLayout usernameEditTextContainer;
@@ -50,6 +53,9 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout passwordEditTextContainer;
     private TextInputEditText passwordEditText;
 
+    /**
+     * @see android.app.Activity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +77,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * A function that manage to execute the login af un User after he inserted his credentials.
+     * @param view The current View
+     */
     public void login(View view) {
         final String username = usernameEditText.getText() != null ? usernameEditText.getText().toString().trim() : "";
         final String password = passwordEditText.getText() != null ? passwordEditText.getText().toString() : "";
@@ -87,21 +97,41 @@ public class LoginActivity extends AppCompatActivity {
         attemptLogin(username, password);
     }
 
+    /**
+     * A function that manage the situation of an User who forgot his password.
+     * @param view The current View
+     */
     public void forgotPassword(View view) {
         startActivity(new Intent(LoginActivity.this, ForgotPassword.class));
         finish();
     }
 
+    /**
+     * A function that allows the User to access the system without logging in. His functions could
+     * may be restricted.
+     * @param view The current View
+     */
     public void skipLogin(View view) {
         startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
         finish();
     }
 
+    /**
+     * A function that opens the Registration Page.
+     * @param view The current View
+     */
     public void goToSignUpPage(View view) {
         startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
         finish();
     }
 
+    /**
+     * A function that attempts the login with the credentials given as parameters. If the login is
+     * successful, the MainActivity is launched, based on the UserType of the User. If the login fails
+     * an error is set.
+     * @param username The username of the User who's trying to login.
+     * @param password The password of the User who's trying to login.
+     */
     private void attemptLogin(String username, String password) {
         RelativeLayout progressBar = findViewById(R.id.loginProgressBarContainer);
 

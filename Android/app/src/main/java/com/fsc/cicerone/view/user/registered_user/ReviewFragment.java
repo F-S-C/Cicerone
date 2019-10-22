@@ -55,10 +55,18 @@ public class ReviewFragment extends Fragment implements Refreshable {
         // Required empty public constructor
     }
 
+    /**
+     * A Constructor that takes a SwipeRefreshLayout as a parameter.
+     *
+     * @param swipeRefreshLayout the SwipeRefreshLayout to set.
+     */
     public ReviewFragment(SwipeRefreshLayout swipeRefreshLayout){
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,11 +82,18 @@ public class ReviewFragment extends Fragment implements Refreshable {
         return view;
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh()
+     */
     @Override
     public void refresh() {
         refresh(null);
     }
 
+
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         ReviewManager.requestUserReviews((Activity) getContext(), AccountManager.getCurrentLoggedUser(), () -> {

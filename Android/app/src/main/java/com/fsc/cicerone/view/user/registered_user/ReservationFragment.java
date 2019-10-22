@@ -63,10 +63,18 @@ public class ReservationFragment extends Fragment implements Refreshable {
         // Required empty public constructor
     }
 
+    /**
+     * A Constructor that takes a SwipeRefreshLayout as a parameter.
+     *
+     * @param swipeRefreshLayout the SwipeRefreshLayout to set.
+     */
     public ReservationFragment(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_reservation_fragment, container, false);
@@ -83,11 +91,18 @@ public class ReservationFragment extends Fragment implements Refreshable {
         return view;
     }
 
+
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh()
+     */
     @Override
     public void refresh() {
         refresh(null);
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         Map<String, Object> parameters = new HashMap<>(1);

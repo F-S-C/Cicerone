@@ -56,14 +56,24 @@ public class AccountDetailsFragment extends Fragment implements Refreshable {
     private View holderView;
 
 
+    /**
+     * Empty Constructor.
+     */
     public AccountDetailsFragment() {
         // required empty constructor
     }
 
+    /**
+     * A constructor that takes a SwipeRefreshLayout as a parameter.
+     * @param swipeRefreshLayout The SwipeRefreshLayout to set
+     */
     public AccountDetailsFragment(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
+    /**
+     * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,6 +105,12 @@ public class AccountDetailsFragment extends Fragment implements Refreshable {
 
         /* TabLayout */
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            /**
+             * Called when a tab enters the selected state.
+             *
+             * @param tab The tab that was selected
+             */
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
@@ -124,11 +140,22 @@ public class AccountDetailsFragment extends Fragment implements Refreshable {
                 ft.commit();
             }
 
+            /**
+             * Called when a tab exits the selected state.
+             *
+             * @param tab The tab that was unselected
+             */
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 // Do nothing
             }
 
+            /**
+             * Called when a tab that is already selected is chosen again by the user. Some applications may
+             * use this action to return to the top level of a category.
+             *
+             * @param tab The tab that was reselected.
+             */
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 // Do nothing
@@ -139,6 +166,10 @@ public class AccountDetailsFragment extends Fragment implements Refreshable {
         return holderView;
     }
 
+    /**
+     * A function that manage to set Name and Surname of the logged User in the Fragment.
+     * @param currentLoggedUser The logged User.
+     */
     private void setNameSurname(User currentLoggedUser) {
         String nameSurname = currentLoggedUser.getName() + " " + currentLoggedUser.getSurname();
         TextView nameSurnameTextView = holderView.findViewById(R.id.name_surname);
@@ -148,11 +179,17 @@ public class AccountDetailsFragment extends Fragment implements Refreshable {
         }
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh()
+     */
     @Override
     public void refresh() {
         refresh(swipeRefreshLayout);
     }
 
+    /**
+     * @see com.fsc.cicerone.view.system.Refreshable#refresh(SwipeRefreshLayout)
+     */
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
         ImageView imageView = holderView.findViewById(R.id.avatar);
