@@ -65,13 +65,13 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-
     /**
      * Set the action to be performed on the item click.
+     *
      * @param onClickListener The action.
      * @see View#setOnClickListener(View.OnClickListener)
      */
-    public void setOnClickListener(@Nullable View.OnClickListener onClickListener){
+    public void setOnClickListener(@Nullable View.OnClickListener onClickListener) {
         itemView.setOnClickListener(onClickListener);
     }
 }

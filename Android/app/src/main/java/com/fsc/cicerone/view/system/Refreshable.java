@@ -23,8 +23,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
  * An interface that allows the use of the SwipeRefreshLayout in the System.
  */
 public interface Refreshable {
-    default void refresh(){
+    default void refresh() {
         refresh(null);
     }
+
     void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout);
 }

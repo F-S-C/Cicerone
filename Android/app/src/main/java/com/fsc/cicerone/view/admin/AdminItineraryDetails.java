@@ -37,6 +37,7 @@ public class AdminItineraryDetails extends ItineraryActivity {
 
     /**
      * A Constructor that takes a Layout as a parameter.
+     *
      * @param contentLayoutId The layout to set.
      */
     public AdminItineraryDetails(int contentLayoutId) {
@@ -46,6 +47,7 @@ public class AdminItineraryDetails extends ItineraryActivity {
 
     /**
      * A function that allows the Admin to visit the author the itinerary profile.
+     *
      * @param view The current View.
      */
     @Override

@@ -51,6 +51,7 @@ public class ItineraryUpdate extends ItineraryModifier {
 
     /**
      * A Constructor that takes a Layout as a parameter.
+     *
      * @param contentLayoutId The Layout to set.
      */
     public ItineraryUpdate(int contentLayoutId) {
@@ -82,7 +83,7 @@ public class ItineraryUpdate extends ItineraryModifier {
         durationHours.setText(currentItinerary.getDuration().substring(0, currentItinerary.getDuration().indexOf(":")));
         durationMinutes.setText(currentItinerary.getDuration().substring(currentItinerary.getDuration().indexOf(":") + 1));
         repetitions.setText(String.valueOf(currentItinerary.getRepetitions()));
-        if(currentItinerary.getImageUrl() != null && !currentItinerary.getImageUrl().equals("")) {
+        if (currentItinerary.getImageUrl() != null && !currentItinerary.getImageUrl().equals("")) {
             Picasso.get().load(currentItinerary.getImageUrl()).into(image);
         }
         fullPrice.setText(String.valueOf(currentItinerary.getFullPrice()));
@@ -112,7 +113,7 @@ public class ItineraryUpdate extends ItineraryModifier {
             currentItinerary.setDuration(durationHours.getText().toString() + ":" + durationMinutes.getText().toString() + ":00");
             currentItinerary.setFullPrice(Float.parseFloat(fullPrice.getText().toString()));
             currentItinerary.setReducedPrice(Float.parseFloat(reducedPrice.getText().toString()));
-            if(imageManager.isSelected()){
+            if (imageManager.isSelected()) {
                 imageManager.upload(response -> {
                     if (response.getResult()) {
                         currentItinerary.setImageUrl(ConnectorConstants.IMG_FOLDER.concat(response.getMessage()));
@@ -120,11 +121,11 @@ public class ItineraryUpdate extends ItineraryModifier {
                             if (success)
                                 Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();
                         });
-                    }else{
+                    } else {
                         Toast.makeText(ItineraryUpdate.this, getString(R.string.error_during_operation), Toast.LENGTH_LONG).show();
                     }
                 });
-            }else{
+            } else {
                 ItineraryManager.updateItinerary(this, currentItinerary, success -> {
                     if (success)
                         Toast.makeText(ItineraryUpdate.this, getString(R.string.itinerary_updated), Toast.LENGTH_LONG).show();

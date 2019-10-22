@@ -47,8 +47,7 @@ import java.util.Objects;
 
 
 /**
- * Class that contains the elements of the TAB Itinerary on the account details
- * page.
+ * Class that contains the elements of the TAB Itinerary on the account details page.
  */
 public class GlobetrotterItineraryListFragment extends Fragment {
 
@@ -89,8 +88,8 @@ public class GlobetrotterItineraryListFragment extends Fragment {
     }
 
     /**
-     * @param view The current View
-     * @param parameters The parameters on the query.
+     * @param view         The current View
+     * @param parameters   The parameters on the query.
      * @param recyclerView The RecyclerView that needs to be set.
      */
     private void requireData(View view, Map<String, Object> parameters, RecyclerView recyclerView) {

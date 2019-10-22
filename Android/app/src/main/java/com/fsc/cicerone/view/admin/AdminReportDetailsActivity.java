@@ -94,6 +94,7 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
 
     /**
      * A function that sets the data of the current Report in the correct spaces.
+     *
      * @param report The current Report
      */
     private void bindDataToView(Report report) {

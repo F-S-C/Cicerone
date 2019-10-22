@@ -229,7 +229,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Do nothing
-                }
+            }
 
 
             /**

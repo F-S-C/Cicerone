@@ -65,6 +65,7 @@ public class AccountDetailsFragment extends Fragment implements Refreshable {
 
     /**
      * A constructor that takes a SwipeRefreshLayout as a parameter.
+     *
      * @param swipeRefreshLayout The SwipeRefreshLayout to set
      */
     public AccountDetailsFragment(SwipeRefreshLayout swipeRefreshLayout) {
@@ -168,6 +169,7 @@ public class AccountDetailsFragment extends Fragment implements Refreshable {
 
     /**
      * A function that manage to set Name and Surname of the logged User in the Fragment.
+     *
      * @param currentLoggedUser The logged User.
      */
     private void setNameSurname(User currentLoggedUser) {

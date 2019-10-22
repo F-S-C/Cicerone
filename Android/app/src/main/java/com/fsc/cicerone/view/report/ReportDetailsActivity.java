@@ -82,13 +82,14 @@ public class ReportDetailsActivity extends AppCompatActivity {
 
     /**
      * A function that sets the data of the given Report in the correct spaces.
+     *
      * @param report The current Report.
      */
     private void bindDataToView(Report report) {
-        if (report.getStatus().toString().equals("Open")){
+        if (report.getStatus().toString().equals("Open")) {
             cancButton.setVisibility(View.VISIBLE);
             cancButton.setEnabled(true);
-        }else{
+        } else {
             cancButton.setEnabled(false);
             cancButton.setTextColor(Color.GRAY);
         }

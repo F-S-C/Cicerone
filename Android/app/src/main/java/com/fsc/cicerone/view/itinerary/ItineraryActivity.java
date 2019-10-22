@@ -41,8 +41,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * A function that manage to display all the information of an Itinerary, based on which Activity is started.
- * It is called by ItineraryDetails and ItineraryManagement.
+ * A function that manage to display all the information of an Itinerary, based on which Activity is
+ * started. It is called by ItineraryDetails and ItineraryManagement.
  */
 public abstract class ItineraryActivity extends AppCompatActivity implements Refreshable {
     protected Itinerary itinerary;
@@ -59,6 +59,7 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
 
     /**
      * A Constructor that takes a layout as a parameter.
+     *
      * @param contentLayoutId The layout to set.
      */
     public ItineraryActivity(int contentLayoutId) {
@@ -135,16 +136,14 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
 
         StringBuilder sb = new StringBuilder();
         String delimiter = "";
-        if(languagesTextView.getText().toString().equals(""))
-        {
-            for(Language language : itinerary.getLanguages()){
+        if (languagesTextView.getText().toString().equals("")) {
+            for (Language language : itinerary.getLanguages()) {
                 sb.append(delimiter).append(language.getName());
                 delimiter = ", ";
             }
             languagesTextView.setText(sb.toString());
 
         }
-
 
 
         ReviewManager.getAvgItineraryFeedback(ItineraryActivity.this, itinerary, review::setRating);
@@ -183,6 +182,7 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
 
     /**
      * A function that allows the User to visit the profile of the author of the Itinerary.
+     *
      * @param view The current View.
      */
     public abstract void goToAuthor(View view);
@@ -192,7 +192,7 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
      * A function that starts an Activity with data that needs to be passed.
      *
      * @param targetActivity The Activity to start .
-     * @param bundle The data to pass.
+     * @param bundle         The data to pass.
      */
     protected void startActivityWithData(Class targetActivity, Bundle bundle) {
         Intent i = new Intent().setClass(this, targetActivity);

@@ -419,6 +419,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
     /**
      * A function that converts a given String to a Date.
+     *
      * @param text The given String
      * @return The converted Date
      */
@@ -435,6 +436,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
     /**
      * A function that converts a given date in String type, to a Date in the Server Format.
+     *
      * @param dateToConvert The date to convert
      * @return The converted Date
      */
@@ -451,6 +453,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
     /**
      * A function that checks if every field is filled.
+     *
      * @return True if every field is filled, False otherwise.
      */
     private boolean allFilled() {
@@ -466,6 +469,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
 
     /**
      * A function that converts a Date in an object Calendar and returns it.
+     *
      * @param date The Date to set.
      * @return The Calendar object.
      */
@@ -483,7 +487,8 @@ public class ProfileFragment extends Fragment implements Refreshable {
     }
 
     /**
-     * A function that manage to check the necessary permissions before allowing the logged User to download his data.
+     * A function that manage to check the necessary permissions before allowing the logged User to
+     * download his data.
      */
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

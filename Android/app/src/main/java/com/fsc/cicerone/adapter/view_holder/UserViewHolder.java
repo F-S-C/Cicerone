@@ -53,17 +53,19 @@ public class UserViewHolder extends AbstractViewHolder {
 
     /**
      * Show the user's username.
+     *
      * @param username The user's username.
      */
-    public void setUsername(String username){
+    public void setUsername(String username) {
         usr.setText(username);
     }
 
     /**
      * Show the user's type,
+     *
      * @param userType The user's type.
      */
-    public void setUserType(@NonNull UserType userType){
+    public void setUserType(@NonNull UserType userType) {
         String typeName;
         switch (userType) {
             case GLOBETROTTER:

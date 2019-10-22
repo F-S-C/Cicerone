@@ -60,7 +60,7 @@ public class ReviewFragment extends Fragment implements Refreshable {
      *
      * @param swipeRefreshLayout the SwipeRefreshLayout to set.
      */
-    public ReviewFragment(SwipeRefreshLayout swipeRefreshLayout){
+    public ReviewFragment(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 

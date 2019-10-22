@@ -110,6 +110,7 @@ public class ItineraryParticipantsDialogFragment extends DialogFragment {
 
     /**
      * A function that creates a new Instance of the Fragment, setting the Itinerary as a Bundle.
+     *
      * @param itinerary The current Itinerary.
      * @return The Fragment with the Itinerary set in a Bundle.
      */

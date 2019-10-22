@@ -45,8 +45,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Class that contains the elements of the TAB Reservation on the account
- * details page.
+ * Class that contains the elements of the TAB Reservation on the account details page.
  */
 public class ReservationFragment extends Fragment implements Refreshable {
 

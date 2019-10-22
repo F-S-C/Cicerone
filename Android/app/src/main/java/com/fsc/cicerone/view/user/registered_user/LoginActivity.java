@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * A function that manage to execute the login af un User after he inserted his credentials.
+     *
      * @param view The current View
      */
     public void login(View view) {
@@ -99,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * A function that manage the situation of an User who forgot his password.
+     *
      * @param view The current View
      */
     public void forgotPassword(View view) {
@@ -109,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * A function that allows the User to access the system without logging in. His functions could
      * may be restricted.
+     *
      * @param view The current View
      */
     public void skipLogin(View view) {
@@ -118,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * A function that opens the Registration Page.
+     *
      * @param view The current View
      */
     public void goToSignUpPage(View view) {
@@ -127,8 +131,9 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * A function that attempts the login with the credentials given as parameters. If the login is
-     * successful, the MainActivity is launched, based on the UserType of the User. If the login fails
-     * an error is set.
+     * successful, the MainActivity is launched, based on the UserType of the User. If the login
+     * fails an error is set.
+     *
      * @param username The username of the User who's trying to login.
      * @param password The password of the User who's trying to login.
      */

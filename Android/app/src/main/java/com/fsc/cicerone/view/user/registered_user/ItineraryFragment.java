@@ -54,8 +54,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Class that contains the elements of the TAB Itinerary on the account details
- * page.
+ * Class that contains the elements of the TAB Itinerary on the account details page.
  */
 public class ItineraryFragment extends Fragment implements Refreshable {
 
@@ -87,7 +86,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
         itineraryList = view.findViewById(R.id.itinerary_list);
         message = view.findViewById(R.id.noItineraries);
 
-         parameters = SendInPostConnector
+        parameters = SendInPostConnector
                 .paramsFromObject(currentLoggedUser.getCredentials());
         parameters.remove("password");
 
@@ -122,7 +121,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
 
         participationsButton.setOnClickListener(v -> {
             // disable button (Material Style)
-            if(lastClicked)
+            if (lastClicked)
                 lastClicked = false;
 
             myItinerariesButton.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
@@ -153,7 +152,7 @@ public class ItineraryFragment extends Fragment implements Refreshable {
 
     @Override
     public void refresh(@Nullable SwipeRefreshLayout swipeRefreshLayout) {
-        if(lastClicked) {
+        if (lastClicked) {
             ItineraryManager.requestItinerary(getActivity(), parameters, () -> {
                 if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
             }, list -> {
@@ -174,10 +173,8 @@ public class ItineraryFragment extends Fragment implements Refreshable {
                     itineraryList.setAdapter(adapter);
                 }
             });
-        }
-        else
-        {
-            ReservationManager.getListInvestments(context, parameters,() -> {
+        } else {
+            ReservationManager.getListInvestments(context, parameters, () -> {
                 if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
             }, list -> {
                 if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);

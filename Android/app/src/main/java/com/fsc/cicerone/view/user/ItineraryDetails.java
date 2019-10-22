@@ -384,7 +384,7 @@ public class ItineraryDetails extends ItineraryActivity {
             Button button = dialogSubmit.getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(view1 -> {
                 if (allFilledReservation()) {
-                    if(checkParticipantsLimit()) {
+                    if (checkParticipantsLimit()) {
                         try {
                             ReservationManager.addReservation(this,
                                     itinerary,
@@ -398,7 +398,7 @@ public class ItineraryDetails extends ItineraryActivity {
                         isReserved();
                         Toast.makeText(ItineraryDetails.this, R.string.reservation_added, Toast.LENGTH_SHORT).show();
                         dialogSubmit.dismiss();
-                    }else
+                    } else
                         Toast.makeText(this, getString(R.string.participants_limit_reached), Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(this, ItineraryDetails.this.getString(R.string.error_fields_empty),

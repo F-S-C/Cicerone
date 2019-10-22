@@ -47,7 +47,6 @@ public class AdminUserProfile extends AppCompatActivity {
     FragmentTransaction fragmentTransaction;
 
 
-
     /**
      * @see android.app.Activity#onCreate(Bundle)
      */
@@ -64,7 +63,7 @@ public class AdminUserProfile extends AppCompatActivity {
         supportActionBar.setTitle(getString(R.string.profile));
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_admin,fragment);
+        fragmentTransaction.replace(R.id.frame_admin, fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
         tabLayout = findViewById(R.id.admin_tabs);
@@ -83,7 +82,7 @@ public class AdminUserProfile extends AppCompatActivity {
         String nameSurname = user.getName() + " " + user.getSurname();
         TextView nameSurnameTextView = findViewById(R.id.admin_name_surname_profile);
         nameSurnameTextView.setText(nameSurname);
-        if (user.getUserType().equals(UserType.GLOBETROTTER) ) {
+        if (user.getUserType().equals(UserType.GLOBETROTTER)) {
             tabLayout.removeTabAt(2);
         }
 

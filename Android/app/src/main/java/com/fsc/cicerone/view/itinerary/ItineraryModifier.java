@@ -76,6 +76,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     /**
      * A Constructor that takes a Layout as a parameter.
+     *
      * @param contentLayoutId The layout to set.
      */
     public ItineraryModifier(int contentLayoutId) {
@@ -254,7 +255,9 @@ public abstract class ItineraryModifier extends AppCompatActivity {
     }
 
     /**
-     * A function that checks if the values inserted in MinParticipants/MaxParticipants are correct.
+     * A function that checks if the values inserted in MinParticipants/MaxParticipants are
+     * correct.
+     *
      * @param currentEditText The EditText to check.
      */
     protected void checkMinMaxParticipants(EditText currentEditText) {
@@ -265,8 +268,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
             int min = Integer.parseInt(minInserted);
             if (min > max) {
                 currentEditText.setError(getString(R.string.wrong_number));
-            }
-            else
+            } else
                 currentEditText.setError(null);
 
         }
@@ -274,6 +276,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     /**
      * A function that allows to set the Beginning Date.
+     *
      * @param view The current View
      */
     public void setBeginningDate(View view) {
@@ -294,6 +297,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     /**
      * A function that allows to set the Ending Date.
+     *
      * @param view The current View
      */
     public void setEndingDate(View view) {
@@ -324,6 +328,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     /**
      * A function that allows to set the Reservation Date.
+     *
      * @param view The current View
      */
     public void setReservationDate(View view) {
@@ -361,6 +366,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     /**
      * A function that checks if every field is filled.
+     *
      * @return True if every field is filled, False otherwise.
      */
     protected boolean allFilled() {
@@ -381,6 +387,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     /**
      * A function that checks if every field has no error.
+     *
      * @return True if every field has no error, False otherwise.
      */
     protected boolean noFieldWithError() {
@@ -411,6 +418,7 @@ public abstract class ItineraryModifier extends AppCompatActivity {
 
     /**
      * A function that manage to send data to the Server.
+     *
      * @param view The current view
      * @throws ParseException The exception thrown in case of error.
      */

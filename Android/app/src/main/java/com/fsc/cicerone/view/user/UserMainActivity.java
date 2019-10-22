@@ -61,11 +61,19 @@ public class UserMainActivity extends MainActivity {
     private LinearLayout layoutFabItinerary;
     private FrameLayout subFabContainer;
 
+    /**
+     * UserMainActivity's constructor.
+     */
     public UserMainActivity() {
         super();
         this.layout = R.layout.activity_main;
     }
 
+    /**
+     * UserMainActivity's constructor.
+     *
+     * @see MainActivity#MainActivity(int)
+     */
     public UserMainActivity(int contentLayoutId) {
         super(contentLayoutId);
         this.layout = R.layout.activity_main;
@@ -285,15 +293,15 @@ public class UserMainActivity extends MainActivity {
     }
 
     /**
-     *
+     * Adapter for the ViewPager.
      */
     private class MainActivityPagerAdapter extends FragmentPagerAdapter {
         private final HomeFragment homeFragment = new HomeFragment();
         private final DiscoverFragment discoverFragment = new DiscoverFragment();
 
         /**
-         * @param fm
-         * @param behavior
+         * @see androidx.fragment.app.FragmentPagerAdapter#FragmentPagerAdapter(FragmentManager,
+         * int)
          */
         MainActivityPagerAdapter(@NonNull FragmentManager fm, int behavior) {
             super(fm, behavior);
@@ -334,18 +342,15 @@ public class UserMainActivity extends MainActivity {
     }
 
     /**
-     *
+     * Adapter for the ViewPager.
      */
     private class MainActivityAfterLoginPagerAdapter extends MainActivityPagerAdapter {
         private final WishlistFragment wishlistFragment = new WishlistFragment();
         private final AccountDetailsFragment profileFragment;
 
         /**
-         * The Constructor of the class.
-         *
-         * @param fm
-         * @param behavior
-         * @param swipeRefreshLayout
+         * @see UserMainActivity.MainActivityPagerAdapter#MainActivityPagerAdapter(FragmentManager,
+         * int)
          */
         MainActivityAfterLoginPagerAdapter(@NonNull FragmentManager fm, int behavior, SwipeRefreshLayout swipeRefreshLayout) {
             super(fm, behavior);
@@ -353,8 +358,7 @@ public class UserMainActivity extends MainActivity {
         }
 
         /**
-         * @param position
-         * @return
+         * @see androidx.fragment.app.FragmentPagerAdapter#getItem(int)
          */
         @NonNull
         @Override

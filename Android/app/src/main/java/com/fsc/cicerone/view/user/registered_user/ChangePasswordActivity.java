@@ -62,7 +62,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         TextWatcher onTextChangedListener = new TextWatcher() {
             /**
-             * @param s
+             * @see android.text.TextWatcher#afterTextChanged(Editable)
              */
             @Override
             public void afterTextChanged(Editable s) {
@@ -70,10 +70,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
 
             /**
-             * @param s
-             * @param start
-             * @param count
-             * @param after
+             * @see android.text.TextWatcher#beforeTextChanged(CharSequence, int, int, int)
              */
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -81,10 +78,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
 
             /**
-             * @param s
-             * @param start
-             * @param before
-             * @param count
+             * @see android.text.TextWatcher#onTextChanged(CharSequence, int, int, int)
              */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -142,8 +136,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     /**
-     * A function that manages to verify if the values inserted when trying to change password are correct.
-     * if they aren't, errors are set where necessary.
+     * A function that manages to verify if the values inserted when trying to change password are
+     * correct. if they aren't, errors are set where necessary.
      */
     private void verifyFields() {
         if (oldPassword.getText().toString().equals("")) {

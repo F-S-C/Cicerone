@@ -67,6 +67,7 @@ public abstract class MainActivity extends AppCompatActivity implements BottomNa
 
     /**
      * A Constructor that set a Layout taken as a Parameter.
+     *
      * @param contentLayoutId The Layout to set.
      */
     public MainActivity(int contentLayoutId) {

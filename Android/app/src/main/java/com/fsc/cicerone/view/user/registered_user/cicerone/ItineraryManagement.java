@@ -48,7 +48,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A class that shows the information of an Itinerayr on the Cicerone-side, allowing for future updates.
+ * A class that shows the information of an Itinerayr on the Cicerone-side, allowing for future
+ * updates.
  */
 public class ItineraryManagement extends ItineraryActivity implements Refreshable {
     public static final int RESULT_ITINERARY_DELETED = 1020;
@@ -67,6 +68,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
 
     /**
      * A Constructor that takes a Layout as a parameter.
+     *
      * @param contentLayoutId The Layout to set.
      */
     public ItineraryManagement(int contentLayoutId) {
@@ -89,7 +91,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-         code = new HashMap<>();
+        code = new HashMap<>();
         //Get the bundle
         Bundle bundle = getIntent().getExtras();
         fragment.setArguments(bundle);
@@ -110,7 +112,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
         updateItinerary.setOnClickListener(v -> {
             Intent i = new Intent().setClass(v.getContext(), ItineraryUpdate.class);
             i.putExtras(bundle);
-            startActivityForResult(i,ItineraryUpdate.RESULT_ITINERARY_UPDATED);
+            startActivityForResult(i, ItineraryUpdate.RESULT_ITINERARY_UPDATED);
         });
 
 
@@ -135,6 +137,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
 
     /**
      * A function that allows the Cicerone to see the participators of the Itinerary.
+     *
      * @param view The current View.
      */
     public void participatorsList(View view) {
@@ -145,7 +148,8 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
 
     /**
      * A function that takes data from the Server and sets them into a given RecyclerView.
-     * @param parameters The parameters of the Query.
+     *
+     * @param parameters   The parameters of the Query.
      * @param recyclerView The RecyclerView to set.
      */
     private void requestDataForRecycleView(Map<String, Object> parameters, RecyclerView recyclerView) {
@@ -155,7 +159,7 @@ public class ItineraryManagement extends ItineraryActivity implements Refreshabl
                     if (!list.isEmpty()) {
                         RecyclerView.Adapter adapter = new ReviewAdapter(this, list);
                         recyclerView.setAdapter(adapter);
-                    }else
+                    } else
                         messageNoReview.setVisibility(View.VISIBLE);
                 })
                 .setObjectToSend(parameters)

@@ -50,6 +50,7 @@ public class ItineraryCreation extends ItineraryModifier {
 
         /**
          * A function that returns the Language CheckBox
+         *
          * @return The language CheckBox to return.
          */
         public CheckBox getCheckBox() {
@@ -58,6 +59,7 @@ public class ItineraryCreation extends ItineraryModifier {
 
         /**
          * A function that returns the Language.
+         *
          * @return The language to return.
          */
         public Language getLanguage() {
@@ -65,7 +67,8 @@ public class ItineraryCreation extends ItineraryModifier {
         }
 
         /**
-         *  A Constructor that sets CheckBox and Language.
+         * A Constructor that sets CheckBox and Language.
+         *
          * @param checkBox The CheckBox to set.
          * @param language The Language to Set.
          */
@@ -76,6 +79,7 @@ public class ItineraryCreation extends ItineraryModifier {
 
         /**
          * A function that controls if the CheckBox is checked or not.
+         *
          * @return True if the Checkbox is checked, False otherwise.
          */
         public boolean isChecked() {
@@ -97,6 +101,7 @@ public class ItineraryCreation extends ItineraryModifier {
 
     /**
      * A Constructor that takes a Layout as a parameter.
+     *
      * @param contentLayoutId The Layout to set.
      */
     public ItineraryCreation(int contentLayoutId) {
@@ -126,6 +131,7 @@ public class ItineraryCreation extends ItineraryModifier {
 
     /**
      * A functtion that checks if at least a Language has been selected.
+     *
      * @return True if a Language is set, False otherwise.
      */
     public boolean checkIfLanguagesAreSet() {

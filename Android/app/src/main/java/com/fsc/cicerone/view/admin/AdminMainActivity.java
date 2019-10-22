@@ -52,6 +52,7 @@ public class AdminMainActivity extends MainActivity {
 
     /**
      * A Constructor that takes a Layout as a parameter.
+     *
      * @param contentLayoutId The Layout to set.
      */
     public AdminMainActivity(int contentLayoutId) {
@@ -92,8 +93,8 @@ public class AdminMainActivity extends MainActivity {
      *
      * @param item The selected item
      * @return true to display the item as the selected item and false if the item should not be
-     *     selected. Consider setting non-selectable items as disabled preemptively to make them
-     *     appear non-interactive.
+     * selected. Consider setting non-selectable items as disabled preemptively to make them appear
+     * non-interactive.
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -131,11 +132,17 @@ public class AdminMainActivity extends MainActivity {
         return toReturn;
     }
 
+    /**
+     * Adapter for ViewPager.
+     */
     private class AdminMainActivityPagerAdapter extends FragmentPagerAdapter {
         private final HomeFragment homeFragment = new HomeFragment();
         private final ReportFragment reportFragment = new ReportFragment();
         private final UsersListFragment usersFragment = new UsersListFragment();
 
+        /**
+         * @see FragmentPagerAdapter#FragmentPagerAdapter(FragmentManager, int)
+         */
         AdminMainActivityPagerAdapter(@NonNull FragmentManager fm, int behavior) {
             super(fm, behavior);
         }

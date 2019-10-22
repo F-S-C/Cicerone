@@ -40,8 +40,7 @@ import java.util.Objects;
 
 
 /**
- * Class that contains the elements of the TAB Itinerary on the account details
- * page.
+ * Class that contains the elements of the TAB Itinerary on the account details page.
  */
 public class CiceroneItineraryListFragment extends Fragment {
 
@@ -72,9 +71,11 @@ public class CiceroneItineraryListFragment extends Fragment {
 
 
     /**
-     * A function that takes all the Itineraries of a given Cicerone from the Server and sets them into a RecyclerView.
-     * @param view The current View.
-     * @param user The Cicerone.
+     * A function that takes all the Itineraries of a given Cicerone from the Server and sets them
+     * into a RecyclerView.
+     *
+     * @param view         The current View.
+     * @param user         The Cicerone.
      * @param recyclerView The RecyclerView to set.
      */
     private void requireData(View view, User user, RecyclerView recyclerView) {

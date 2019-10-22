@@ -67,10 +67,10 @@ public class AdminDetailsUserFragment extends Fragment {
     public AdminDetailsUserFragment() {
         // Required empty public constructor
     }
+
     /**
      * @see androidx.fragment.app.Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
      */
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class AdminDetailsUserFragment extends Fragment {
      */
     private void deleteAccount() {
         DialogInterface.OnClickListener positiveClickListener = (dialog, which) -> {
-            AccountManager.deleteAccount(context, user , success -> Toast.makeText(context,
+            AccountManager.deleteAccount(context, user, success -> Toast.makeText(context,
                     context.getString(R.string.removed_user), Toast.LENGTH_SHORT)
                     .show());
             removeUser.setEnabled(false);
