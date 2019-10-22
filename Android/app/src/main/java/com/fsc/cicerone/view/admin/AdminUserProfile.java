@@ -40,12 +40,7 @@ import java.util.Objects;
  */
 public class AdminUserProfile extends AppCompatActivity {
 
-    TabLayout tabLayout;
-    FrameLayout frameLayout;
-    Fragment fragment = null;
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
-
+    private Fragment fragment = null;
 
     /**
      * @see android.app.Activity#onCreate(Bundle)
@@ -58,15 +53,14 @@ public class AdminUserProfile extends AppCompatActivity {
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         supportActionBar.setDisplayShowHomeEnabled(true);
 
-        frameLayout = findViewById(R.id.frame_admin);
         fragment = new AdminDetailsUserFragment();
         supportActionBar.setTitle(getString(R.string.profile));
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_admin, fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
-        tabLayout = findViewById(R.id.admin_tabs);
+        TabLayout tabLayout = findViewById(R.id.admin_tabs);
 
         Bundle bundle = getIntent().getExtras();
         fragment.setArguments(bundle);

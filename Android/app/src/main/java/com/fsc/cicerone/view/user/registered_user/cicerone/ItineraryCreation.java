@@ -87,9 +87,7 @@ public class ItineraryCreation extends ItineraryModifier {
         }
     }
 
-    LinearLayout languagesLayout;
-    User currentLoggedUser;
-    List<LanguageCheckBox> checkBoxList;
+    private List<LanguageCheckBox> checkBoxList;
 
 
     /**
@@ -238,8 +236,8 @@ public class ItineraryCreation extends ItineraryModifier {
      * User's languages.
      */
     private void setLanguages() {
-        languagesLayout = findViewById(R.id.languageLayout);
-        currentLoggedUser = AccountManager.getCurrentLoggedUser();
+        LinearLayout languagesLayout = findViewById(R.id.languageLayout);
+        User currentLoggedUser = AccountManager.getCurrentLoggedUser();
         checkBoxList = new LinkedList<>();
 
         for (Language language : currentLoggedUser.getLanguages()) {

@@ -79,7 +79,6 @@ public abstract class ItineraryActivity extends AppCompatActivity implements Ref
         itinerary = new Itinerary(s);
 
         collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-        collapsingToolbarLayout.setTitle(itinerary.getTitle());
 
         setSupportActionBar(findViewById(R.id.toolbar));
 
