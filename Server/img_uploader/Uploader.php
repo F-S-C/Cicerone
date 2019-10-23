@@ -11,7 +11,7 @@ class Uploader
     protected const UPLOAD_PATH = "/home/fsc/www/images/";
 
     /**
-     * @var mixed The image string.
+     * @var string The image string.
      */
     private $image;
 
@@ -38,10 +38,11 @@ class Uploader
 
     /**
      * Check that a file with the same name is not present.
+     *
      * @param string $filename Filename to search in the image folder.
      * @return bool True if the file is present, otherwise false.
      */
-    public function verifyIfExists($filename)
+    public function verifyIfExists(string $filename): bool
     {
         $pkt = self::UPLOAD_PATH . $filename;
         return file_exists($pkt . ".png")
@@ -51,9 +52,10 @@ class Uploader
 
     /**
      * Generate a random name.
+     *
      * @return string The name generated.
      */
-    public function generateName()
+    public function generateName(): string
     {
         do {
             $id = uniqid(time() . '-');
@@ -64,7 +66,7 @@ class Uploader
     /**
      * Convert a base64 string into an image and move it to the images folder.
      */
-    private function upload()
+    private function upload(): void
     {
         $name = $this->generateName();
         $complete_path = self::UPLOAD_PATH . $name . ".jpg";
@@ -77,4 +79,4 @@ class Uploader
     }
 }
 
-$uploader = new Uploader();
+new Uploader();

@@ -14,6 +14,9 @@ class InsertItinerary extends InsertConnector
     protected const COLUMNS_TYPE = "sssssiisissdds";
     protected const TABLE_NAME = "itinerary";
 
+    /**
+     * @see InsertConnector::get_content()
+     */
     public function get_content(): string
     {
         $languages = array();

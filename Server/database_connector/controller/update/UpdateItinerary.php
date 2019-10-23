@@ -20,6 +20,9 @@ class UpdateItinerary extends UpdateConnector
     protected const ID_COLUMN = "itinerary_code";
     protected const ID_COLUMN_TYPE = "i";
 
+    /**
+     * @see UpdateConnector::get_content()
+     */
     public function get_content(): string
     {
         $to_return = parent::get_content();

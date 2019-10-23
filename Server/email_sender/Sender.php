@@ -11,11 +11,13 @@ require '/home/fsc/www/email_sender/DBManager.php';
 /**
  * PHPMailer library.
  */
+
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Class Sender: Send e-mail to a given user
+ *
  * @package email_sender
  */
 class Sender
@@ -51,12 +53,12 @@ class Sender
     public $email_subject = null;
 
     /**
-    * Sender constructor.
-    */
+     * Sender constructor.
+     */
     public function __construct()
     {
         $this->db_manager = new DBManager();
-        if(basename($_SERVER['REQUEST_URI'],".php") == "Sender") {
+        if (basename($_SERVER['REQUEST_URI'], ".php") == "Sender") {
             $this->setEmail();
             $this->sendEmail();
         }
@@ -64,10 +66,12 @@ class Sender
 
     /**
      * Function that requires a page and converts it into a string passing a list of variables.
+     *
      * @param $variablesToMakeLocal array Array of variables to be make local on the email page.
      * @return bool|string The e-mail page if successful. False otherwise.
      */
-    private function getMailPage($variablesToMakeLocal) {
+    private function getMailPage(array $variablesToMakeLocal)
+    {
         extract($variablesToMakeLocal);
         if (is_file($this->email_filename)) {
             ob_start();
@@ -77,10 +81,11 @@ class Sender
         return false;
     }
 
-    /*
+    /**
      * Create the PHPMailer instance and send the e-mail.
      */
-    public function sendEmail(){
+    public function sendEmail(): void
+    {
         $mail = new PHPMailer;
 
         $mail->isSMTP();                                     // Set mailer to use SMTP
@@ -98,11 +103,11 @@ class Sender
         $mail->IsHTML(true);                                 // Set email format to HTML
 
         $mail->Subject = $this->email_subject;
-        $mail->Body    = $this->getMailPage($this->email_data);
+        $mail->Body = $this->getMailPage($this->email_data);
         $mail->AltBody = 'Please use your browser to see the e-mail.';
         try {
             $mail->Send();
-            if($mail->isError()) {
+            if ($mail->isError()) {
                 die('{"result":false, "error":"Sender: Mailer Error: ' . $mail->ErrorInfo . '"}');
             } else {
                 print '{"result":true}';
@@ -115,11 +120,12 @@ class Sender
     /**
      * Based on the type value passed in post, the context of the email and its data changes.
      */
-    public function setEmail(){
+    public function setEmail(): void
+    {
         $this->recipient_email = htmlspecialchars($_POST['recipient_email'] ?? null);
         $this->db_manager->username = htmlspecialchars($_POST['username'] ?? null);
         $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code'] ?? null);
-        if($this->recipient_email != null && $this->db_manager->username != null) {
+        if ($this->recipient_email != null && $this->db_manager->username != null) {
             switch (htmlspecialchars($_POST['type'] ?? null)) {
                 case "registrationConfirmed":
                     $this->email_filename = "./mail/registrationConfirmed.php";
@@ -148,7 +154,7 @@ class Sender
                     $this->email_subject = "Un'utente ha rimosso la sua prenotazione!";
                     $this->db_manager->itinerary_code = htmlspecialchars($_POST['itinerary_code']);
                     $this->email_data = array_merge($this->db_manager->getUserFromDB(), $this->db_manager->getItineraryFromDB(),
-                            array("globetrotter_email" => htmlspecialchars($_POST['globetrotter_email'] ?? ""), "globetrotter_name" => htmlspecialchars($_POST['globetrotter_name'] ?? ""), "globetrotter_surname" => htmlspecialchars($_POST['globetrotter_surname'] ?? "")));
+                        array("globetrotter_email" => htmlspecialchars($_POST['globetrotter_email'] ?? ""), "globetrotter_name" => htmlspecialchars($_POST['globetrotter_name'] ?? ""), "globetrotter_surname" => htmlspecialchars($_POST['globetrotter_surname'] ?? "")));
                     break;
                 case "accountDeleted":
                     $this->email_filename = "./mail/accountDeleted.php";
@@ -159,10 +165,10 @@ class Sender
                     die('{"result":false, "error":"Sender: Unknown or missing type!"}');
                     break;
             }
-        }else{
+        } else {
             die('{"result":false, "error":"Sender: Missing recipient e-mail or username field!"}');
         }
     }
 }
 
-$sender = new Sender();
+new Sender();

@@ -55,7 +55,6 @@ import java.util.Locale;
  */
 public class ItineraryDetails extends ItineraryActivity {
 
-    RecyclerView.Adapter adapter;
     private Button requestReservation;
     private FloatingActionButton modifyWishlistButton;
     private Button addReview;
@@ -459,7 +458,7 @@ public class ItineraryDetails extends ItineraryActivity {
         ReviewManager.requestItineraryReviews(this, itinerary, list -> {
             if (!list.isEmpty()) {
                 messageNoReview.setVisibility(View.GONE);
-                adapter = new ReviewAdapter(this, list);
+                RecyclerView.Adapter adapter = new ReviewAdapter(this, list);
                 recyclerView.setAdapter(adapter);
             } else {
                 messageNoReview.setVisibility(View.VISIBLE);

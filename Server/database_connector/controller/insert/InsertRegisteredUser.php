@@ -18,6 +18,9 @@ class InsertRegisteredUser extends InsertConnector
     protected const COLUMNS_TYPE = "ssssssisss";
     protected const TABLE_NAME = "registered_user";
 
+    /**
+     * @see InsertConnector::get_content()
+     */
     public function get_content(): string
     {
         $doc = array();

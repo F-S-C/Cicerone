@@ -20,6 +20,9 @@ class InsertReservation extends InsertConnector
     protected const COLUMNS_TYPE = "siiidsss";
     protected const TABLE_NAME = "reservation";
 
+    /**
+     * @see InsertConnector::get_content()
+     */
     public function get_content(): string
     {
         $to_return = parent::get_content();

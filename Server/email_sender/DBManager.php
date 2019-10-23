@@ -7,6 +7,7 @@ namespace email_sender;
  * mysqli library.
  */
 use mysqli;
+use mysqli_result;
 
 /**
  * Class DBManager: Requires and writing data to the database.
@@ -64,7 +65,7 @@ class DBManager
      * Requires the user from the database.
      * @return array Array of string with user data.
      */
-    public function getUserFromDB() {
+    public function getUserFromDB() :array {
         if($this->username != null) {
             $sql = "SELECT * FROM registered_user WHERE username = ?";
             $stmt = $this->mysqli->prepare($sql);
@@ -96,7 +97,7 @@ class DBManager
      * Requires the itinerary from the database.
      * @return array Array of string with itinerary data.
      */
-    public function getItineraryFromDB(){
+    public function getItineraryFromDB():array{
         if($this->itinerary_code != null) {
             $sql = "SELECT * FROM itinerary WHERE itinerary_code = ?";
             $stmt = $this->mysqli->prepare($sql);
@@ -125,7 +126,7 @@ class DBManager
      * The password, being encrypted, is called "token".
      * @return bool True if the data is correct. False otherwise.
      */
-    public function checkUserToken() {
+        public function checkUserToken():bool {
         if($this->token != null && $this->usr_email != null) {
             $sql = "SELECT * FROM registered_user WHERE email = ? AND password = ?";
             $stmt = $this->mysqli->prepare($sql);
@@ -145,10 +146,11 @@ class DBManager
 
     /**
      * Set a user's password.
+     *
      * @param $p string The password to set.
-     * @return false|\mysqli_result False if the query failed. mysqli_result otherwise.
+     * @return false|mysqli_result False if the query failed. mysqli_result otherwise.
      */
-    public function setUserP($p){
+    public function setUserP(string $p){
         $sql = "UPDATE registered_user SET password = ? WHERE email = ?";
         $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("ss",$p,$this->usr_email);

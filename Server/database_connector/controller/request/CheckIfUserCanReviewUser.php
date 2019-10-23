@@ -17,6 +17,12 @@ class CheckIfUserCanReviewUser extends BooleanConnector
     private $reviewed_user;
 
 
+    /**
+     * CheckIfUserCanReviewUser constructor.
+     *
+     * @param string|null $username The review's writer username.
+     * @param string|null $reviewed_user The review's target username.
+     */
     public function __construct(string $username = null, string $reviewed_user = null)
     {
         $this->username = isset($username) && $username != "" ? strtolower($username) : null;

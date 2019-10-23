@@ -23,6 +23,9 @@ class DeleteItinerary extends DeleteConnector
     protected const ID_COLUMN = "itinerary_code";
     protected const ID_COLUMN_TYPE = "i";
 
+    /**
+     * @see DeleteConnector::get_content()
+     */
     public function get_content(): string
     {
         // First, delete all the reservations for the itinerary

@@ -14,6 +14,9 @@ class InsertReport extends InsertConnector
     protected const COLUMNS_TYPE = "ss";
     protected const TABLE_NAME = "report";
 
+    /**
+     * @see InsertConnector::get_content()
+     */
     public function get_content(): string
     {
         $for_details = array();
