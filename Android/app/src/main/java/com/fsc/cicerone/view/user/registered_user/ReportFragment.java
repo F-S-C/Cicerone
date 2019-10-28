@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that contains the elements of the TAB Report on the account details page.
+ * Class that contains the elements of the tab "reports" on the account details page.
  */
 public class ReportFragment extends Fragment implements Refreshable {
 

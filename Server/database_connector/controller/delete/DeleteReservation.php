@@ -12,7 +12,7 @@ require_once '/home/fsc/www/notifications/Firebase.php';
 require_once '/home/fsc/www/notifications/Push.php';
 
 /**
- * A connector that deletes an reservation from the reservation table.
+ * A connector that deletes a reservation from the reservation table.
  */
 class DeleteReservation extends DeleteConnector
 {

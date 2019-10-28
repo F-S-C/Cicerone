@@ -33,7 +33,7 @@ import com.fsc.cicerone.model.Reservation;
 import java.util.List;
 
 /**
- * The adapter useful to show data in the admin part of the application.
+ * An adapter that holds a list of itineraries to be used in the admin section of the app.
  */
 public class AdminItineraryAdapter extends RecyclerView.Adapter<AdminItineraryViewHolder> {
     private final Activity context;

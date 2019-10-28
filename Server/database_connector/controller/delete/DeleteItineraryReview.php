@@ -6,7 +6,7 @@ namespace database_connector\controller\delete;
 require_once "/home/fsc/www/database_connector/controller/delete/DeleteConnector.php";
 
 /**
- * A connector that deletes an review from the user_review table.
+ * A connector that deletes a review from the itinerary_review table.
  */
 class DeleteItineraryReview extends DeleteConnector
 {

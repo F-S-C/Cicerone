@@ -9,7 +9,7 @@ require_once "/home/fsc/www/database_connector/controller/request/RequestRegiste
 require_once "/home/fsc/www/database_connector/controller/request/RequestItineraryLanguage.php";
 
 /**
- * Request all the itineraries that match a set of criteria.
+ * Request all the active itineraries that match a set of criteria.
  */
 class RequestActiveItinerary extends JsonConnector
 {

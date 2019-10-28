@@ -27,7 +27,7 @@ import androidx.annotation.NonNull;
 import com.fsc.cicerone.R;
 
 /**
- * ViewHolder stores and recycles reports as they are scrolled off screen.
+ * A view holder that shows a review.
  */
 public class ReviewViewHolder extends AbstractViewHolder {
     private TextView reviewerUsername;

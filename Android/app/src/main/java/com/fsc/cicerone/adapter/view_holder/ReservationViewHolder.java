@@ -28,7 +28,7 @@ import com.fsc.cicerone.R;
 import java.util.Date;
 
 /**
- * ViewHolder stores and recycles reports as they are scrolled off screen.
+ * A view holder that shows a reservation.
  */
 public class ReservationViewHolder extends AbstractViewHolder {
     private TextView itineraryTitle;

@@ -35,7 +35,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * A class that allows an Itinerary to be updated.
+ * A class that represents the user interface for the update of an itinerary's details.
  */
 public class ItineraryUpdate extends ItineraryModifier {
     Itinerary currentItinerary;

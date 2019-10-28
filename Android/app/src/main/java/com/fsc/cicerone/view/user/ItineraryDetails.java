@@ -51,7 +51,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 /**
- * A class used to show all the information about an Itinerary.
+ * A class that represents the user interface to show all the details of an itinerary.
  */
 public class ItineraryDetails extends ItineraryActivity {
 

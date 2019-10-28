@@ -39,7 +39,7 @@ import com.fsc.cicerone.view.admin.AdminReportDetailsActivity;
 import java.util.List;
 
 /**
- * The ReviewAdapter of the Recycler View for the styles present in the app.
+ * An adapter that holds a list of reports.
  */
 public class ReportAdapter extends RecyclerView.Adapter<ReportViewHolder> {
     private final Activity context;

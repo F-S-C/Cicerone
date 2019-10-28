@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A class used to see wich users has participated to an itinerary.
+ * A class used to see which users has participated to an itinerary.
  */
 public class UsersListFragment extends Fragment implements Refreshable {
 

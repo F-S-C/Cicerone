@@ -17,7 +17,7 @@
 package com.fsc.cicerone.app_connector;
 
 /**
- * Connector Constants for Cicerone's connector.
+ * Utility class that contains useful constants for Cicerone's connector.
  */
 public final class ConnectorConstants {
     private ConnectorConstants() {

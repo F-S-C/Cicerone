@@ -38,7 +38,7 @@ import com.fsc.cicerone.view.admin.AdminUserProfile;
 import java.util.List;
 
 /**
- * The ReviewAdapter of the Recycler View for the styles present in the app.
+ * An adapter that holds a list of users.
  */
 public class UserListAdapter extends RecyclerView.Adapter<UserViewHolder> {
 

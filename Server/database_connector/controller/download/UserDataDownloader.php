@@ -19,7 +19,8 @@ use database_connector\controller\download\utilities\TableCreator;
 use database_connector\controller\request\UserLogin;
 
 /**
- * Download all the stored data regarding a user.
+ * Download all the stored data regarding a user in a human-readable format (in
+ * HTML format).
  */
 class UserDataDownloader extends DatabaseConnector
 {

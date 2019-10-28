@@ -58,7 +58,7 @@ import java.util.Objects;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A class that represents the tab "discover" in the main page for a user.
  */
 public class DiscoverFragment extends Fragment implements Refreshable {
     /**

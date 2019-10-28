@@ -27,7 +27,7 @@ import com.fsc.cicerone.R;
 import java.util.Date;
 
 /**
- * ViewHolder stores and recycles reports as they are scrolled off screen.
+ * A view holder that shows a reservation to be used in the admin section of the app.
  */
 public class AdminItineraryGlobetrotterViewHolder extends AbstractViewHolder {
     private TextView itineraryTitle;

@@ -54,7 +54,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Class that contains the elements of the TAB Itinerary on the account details page.
+ * Class that contains the elements of the tab "itinerary" on the account details page.
  */
 public class ItineraryFragment extends Fragment implements Refreshable {
 

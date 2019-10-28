@@ -76,7 +76,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 /**
- * Class that contains the elements of the TAB Itinerary on the account details page.
+ * Class that contains the elements of the tab "profile" on the account details page.
  */
 public class ProfileFragment extends Fragment implements Refreshable {
 

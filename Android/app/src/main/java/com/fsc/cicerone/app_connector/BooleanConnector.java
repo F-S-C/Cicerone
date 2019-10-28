@@ -26,10 +26,17 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+/**
+ * A connector that sends data in POST and handles boolean results.
+ */
 public class BooleanConnector extends SendInPostConnector<BooleanConnector.BooleanResult> {
 
     private static final String ERROR_TAG = "BOOL_CONNECTOR_ERROR";
 
+    /**
+     * An interfaced to be used to create callback functions to be used to define the connector
+     * behaviour on the connection's end and handles a BooleanResult.
+     */
     public interface OnEndConnectionListener {
         /**
          * Function that will be called when the connection has ended.

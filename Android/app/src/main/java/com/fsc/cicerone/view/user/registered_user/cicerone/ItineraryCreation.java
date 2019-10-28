@@ -40,7 +40,7 @@ import java.util.Set;
 
 
 /**
- * A class that allows the creation of an Itinerary
+ * A class that represents the user interface to create an itinerary.
  */
 public class ItineraryCreation extends ItineraryModifier {
 

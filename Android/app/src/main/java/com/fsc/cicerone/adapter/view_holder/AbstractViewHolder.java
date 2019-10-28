@@ -27,7 +27,8 @@ import java.text.DateFormat;
 import java.util.Date;
 
 /**
- * An abstract view holder. It is the base class for all the view holders used in Cicerone.
+ * An abstract view holder. It is the base class for all the view holders used in Cicerone. A view
+ * holder stores and recycles reports as they are scrolled off screen.
  */
 public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
     private final Context context;

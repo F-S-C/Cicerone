@@ -31,7 +31,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 /**
- * The class that manage the situation of a forgotten password by the User.
+ * A class that represents the user interface that manages the creation of a new password for the
+ * user (if the original password was forgotten).
  */
 public class ForgotPassword extends AppCompatActivity {
 

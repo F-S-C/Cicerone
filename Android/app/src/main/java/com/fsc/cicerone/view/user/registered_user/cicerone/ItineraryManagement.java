@@ -48,7 +48,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A class that shows the information of an Itinerayr on the Cicerone-side, allowing for future
+ * A class that shows the information of an itinerary on the Cicerone-side, allowing for future
  * updates.
  */
 public class ItineraryManagement extends ItineraryActivity implements Refreshable {

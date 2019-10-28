@@ -44,7 +44,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
 
 /**
- * A class that manage the login of an User.
+ * The user interface for the login.
  */
 public class LoginActivity extends AppCompatActivity {
 

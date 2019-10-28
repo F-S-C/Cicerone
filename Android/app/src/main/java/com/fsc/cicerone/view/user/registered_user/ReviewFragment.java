@@ -38,7 +38,7 @@ import com.fsc.cicerone.view.system.Refreshable;
 
 
 /**
- * Class that contains the elements of the TAB Review on the account details page.
+ * Class that contains the elements of the tab "reviews" on the account details page.
  */
 public class ReviewFragment extends Fragment implements Refreshable {
 

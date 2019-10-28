@@ -28,7 +28,7 @@ import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.UserType;
 
 /**
- * ViewHolder stores and recycles reports as they are scrolled off screen.
+ * A view holder that shows a user.
  */
 public class UserViewHolder extends AbstractViewHolder {
     private TextView usr;
