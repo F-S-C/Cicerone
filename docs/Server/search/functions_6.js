@@ -11,5 +11,5 @@ var searchData=
   ['set_5fsuper_5fheader',['set_super_header',['../classdatabase__connector_1_1controller_1_1download_1_1utilities_1_1_table_creator.html#ad06f6ddabf24b962794380219e64fe09',1,'database_connector::controller::download::utilities::TableCreator']]],
   ['set_5ftitle',['set_title',['../classnotifications_1_1_push.html#a249cbd1c6049b3c3565a228ee59cec38',1,'notifications::Push']]],
   ['setemail',['setEmail',['../classemail__sender_1_1_sender.html#a9953049c098fb5ce2082aa774ee90ed7',1,'email_sender::Sender']]],
-  ['setuserp',['setUserP',['../classemail__sender_1_1_d_b_manager.html#a6d3331f6af576c39fc21b4c366b1e1d5',1,'email_sender::DBManager']]]
+  ['setuserp',['setUserP',['../classemail__sender_1_1_d_b_manager.html#a634796f6169ce01af94cdabf998eeccb',1,'email_sender::DBManager']]]
 ];

@@ -5,7 +5,7 @@ var classemail__sender_1_1_d_b_manager =
     [ "checkUserToken", "classemail__sender_1_1_d_b_manager.html#a5699d778fd6ae16908ad17dfc1f4f5be", null ],
     [ "getItineraryFromDB", "classemail__sender_1_1_d_b_manager.html#acf6818ede9f887b5482df38ed60fef32", null ],
     [ "getUserFromDB", "classemail__sender_1_1_d_b_manager.html#a7b99ee5b13df87d1af4bd5cff670e7b6", null ],
-    [ "setUserP", "classemail__sender_1_1_d_b_manager.html#a6d3331f6af576c39fc21b4c366b1e1d5", null ],
+    [ "setUserP", "classemail__sender_1_1_d_b_manager.html#a634796f6169ce01af94cdabf998eeccb", null ],
     [ "$itinerary_code", "classemail__sender_1_1_d_b_manager.html#a042ca31db7a7f14e020b1905b9fe5a1f", null ],
     [ "$token", "classemail__sender_1_1_d_b_manager.html#a00ae4fcafb1145f5e968bdf920f83e2e", null ],
     [ "$username", "classemail__sender_1_1_d_b_manager.html#a0eb82aa5f81cf845de4b36cd653c42cf", null ],

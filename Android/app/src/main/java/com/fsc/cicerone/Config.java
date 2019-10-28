@@ -16,10 +16,16 @@
 
 package com.fsc.cicerone;
 
+/**
+ * A utility class used to avoid repetitions in code.
+ */
 public final class Config {
     private Config() {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * The key to access the Shared Preferences for the app.
+     */
     public static final String SHARED_PREF_KEY = "com.fsc.cicerone";
 }

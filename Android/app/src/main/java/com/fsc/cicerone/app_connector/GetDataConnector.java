@@ -84,7 +84,7 @@ public class GetDataConnector<T extends BusinessEntity> extends AsyncDatabaseCon
         }
 
         /**
-         * @see AsyncDatabaseConnector.Builder#setOnStartConnectionListener(OnStartConnectionListener)
+         * @see AsyncDatabaseConnector.Builder#setOnStartConnectionListener(AsyncDatabaseConnector.OnStartConnectionListener)
          */
         @Override
         public Builder<B> setOnStartConnectionListener(OnStartConnectionListener listener) {
@@ -92,7 +92,7 @@ public class GetDataConnector<T extends BusinessEntity> extends AsyncDatabaseCon
         }
 
         /**
-         * @see AsyncDatabaseConnector.Builder#setOnEndConnectionListener(OnEndConnectionListener)
+         * @see AsyncDatabaseConnector.Builder#setOnEndConnectionListener(AsyncDatabaseConnector.OnEndConnectionListener)
          */
         @Override
         public Builder<B> setOnEndConnectionListener(OnEndConnectionListener<B> onEndConnectionListener) {

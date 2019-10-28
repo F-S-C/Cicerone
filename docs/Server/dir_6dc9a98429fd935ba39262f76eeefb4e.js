@@ -9,7 +9,7 @@ var dir_6dc9a98429fd935ba39262f76eeefb4e =
     [ "InsertItinerary.php", "controller_2insert_2_insert_itinerary_8php.html", [
       [ "InsertItinerary", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_itinerary.html", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_itinerary" ]
     ] ],
-    [ "InsertItineraryLanguage.php", "controller_2insert_2_insert_itinerary_language_8php.html", [
+    [ "InsertItineraryLanguage.php", "_insert_itinerary_language_8php.html", [
       [ "InsertItineraryLanguage", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_itinerary_language.html", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_itinerary_language" ]
     ] ],
     [ "InsertItineraryReview.php", "controller_2insert_2_insert_itinerary_review_8php.html", [
@@ -30,7 +30,7 @@ var dir_6dc9a98429fd935ba39262f76eeefb4e =
     [ "InsertReservation.php", "controller_2insert_2_insert_reservation_8php.html", [
       [ "InsertReservation", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_reservation.html", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_reservation" ]
     ] ],
-    [ "InsertUserLanguage.php", "controller_2insert_2_insert_user_language_8php.html", [
+    [ "InsertUserLanguage.php", "_insert_user_language_8php.html", [
       [ "InsertUserLanguage", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_user_language.html", "classdatabase__connector_1_1controller_1_1insert_1_1_insert_user_language" ]
     ] ],
     [ "InsertUserReview.php", "controller_2insert_2_insert_user_review_8php.html", [

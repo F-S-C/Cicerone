@@ -220,7 +220,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabase
         }
 
         /**
-         * @see AsyncDatabaseConnector.Builder#setOnStartConnectionListener(OnStartConnectionListener)
+         * @see AsyncDatabaseConnector.Builder#setOnStartConnectionListener(AsyncDatabaseConnector.OnStartConnectionListener)
          */
         @Override
         public Builder<B> setOnStartConnectionListener(OnStartConnectionListener listener) {
@@ -228,7 +228,7 @@ public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabase
         }
 
         /**
-         * @see AsyncDatabaseConnector.Builder#setOnEndConnectionListener(OnEndConnectionListener)
+         * @see AsyncDatabaseConnector.Builder#setOnEndConnectionListener(AsyncDatabaseConnector.OnEndConnectionListener)
          */
         @Override
         public Builder<B> setOnEndConnectionListener(OnEndConnectionListener<B> listener) {

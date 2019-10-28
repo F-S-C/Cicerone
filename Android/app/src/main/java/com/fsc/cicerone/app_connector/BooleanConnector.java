@@ -162,7 +162,7 @@ public class BooleanConnector extends SendInPostConnector<BooleanConnector.Boole
         }
 
         /**
-         * @see AsyncDatabaseConnector.Builder#setOnStartConnectionListener(OnStartConnectionListener)
+         * @see AsyncDatabaseConnector.Builder#setOnStartConnectionListener(AsyncDatabaseConnector.OnStartConnectionListener)
          */
         @Override
         public Builder setOnStartConnectionListener(OnStartConnectionListener listener) {
