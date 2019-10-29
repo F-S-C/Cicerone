@@ -43,7 +43,7 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * Class that handles notifications.
+ * Class that handles the notifications.
  */
 public class NotificationUtils {
 

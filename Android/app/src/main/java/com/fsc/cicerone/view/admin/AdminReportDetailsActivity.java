@@ -33,7 +33,7 @@ import com.fsc.cicerone.model.ReportStatus;
 import java.util.Objects;
 
 /**
- * A class that manage to show the details of  a Report Admin-side.
+ * The user interface that shows all the data of a report (admin-side).
  */
 public class AdminReportDetailsActivity extends AppCompatActivity {
 

@@ -18,7 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * FirebaseMessagingService override class.
+ * Class that represents the interface to the Google Firebase API (client-side).
  *
  * @see com.google.firebase.messaging.FirebaseMessagingService
  */

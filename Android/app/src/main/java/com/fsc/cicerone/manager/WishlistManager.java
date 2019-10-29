@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A <i>control</i> class that manages the wishlists.
+ * A class that provides useful functions for the management of the wishlists.
  */
 public class WishlistManager {
 

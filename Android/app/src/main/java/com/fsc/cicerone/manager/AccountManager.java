@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A <i>control</i> class that manages the users' accounts.
+ * A class that provides useful functions for the management of the users.
  */
 public class AccountManager {
 

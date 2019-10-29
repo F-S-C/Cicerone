@@ -43,6 +43,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * A class that represents the basic user interface to modify the information of an itinerary.
+ */
 public abstract class ItineraryModifier extends AppCompatActivity {
     protected EditText title;
     protected EditText description;
