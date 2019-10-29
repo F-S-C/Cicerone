@@ -79,4 +79,4 @@ class Uploader
     }
 }
 
-new Uploader();
+$connector = new Uploader();

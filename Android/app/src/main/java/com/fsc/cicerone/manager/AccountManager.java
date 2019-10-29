@@ -76,7 +76,7 @@ public class AccountManager {
     public static void attemptLogin(@NonNull Activity context, @NonNull User.Credentials credentials, @Nullable AsyncDatabaseConnector.OnStartConnectionListener onStart, @Nullable Consumer<Boolean> onEnd) {
         Map<String, Object> params = new HashMap<>(2);
         params.put(User.Columns.USERNAME_KEY, credentials.getUsername());
-        params.put(User.Columns.PASSWORD_KEY, credentials.getPassword());
+        params.put(User.Columns.P_KEY, credentials.getPassword());
         new BooleanConnector.Builder(ConnectorConstants.LOGIN_CONNECTOR)
                 .setContext(context)
                 .setOnStartConnectionListener(onStart)
