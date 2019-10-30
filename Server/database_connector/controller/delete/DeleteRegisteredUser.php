@@ -9,6 +9,10 @@ use mysqli_sql_exception;
 require_once "/home/fsc/www/database_connector/controller/delete/DeleteConnector.php";
 
 
+/**
+ * A connector that deletes a registered user. All the data created by the user
+ * won't be deleted, but will be associated with a fake user 'deleted_user'.
+ */
 class DeleteRegisteredUser extends DeleteConnector
 {
     protected const TABLE_NAME = "registered_user";

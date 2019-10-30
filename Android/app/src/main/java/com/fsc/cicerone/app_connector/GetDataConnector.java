@@ -32,7 +32,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Special connector to the database. This connector fetches all entries available from a
- * server-side script.
+ * server-side script without sending any data.
  */
 public class GetDataConnector<T extends BusinessEntity> extends AsyncDatabaseConnector<T> {
 
@@ -69,7 +69,7 @@ public class GetDataConnector<T extends BusinessEntity> extends AsyncDatabaseCon
     }
 
     /**
-     * Builder class for BusinessEntity.
+     * Builder class for GetDataConnector.
      */
     public static class Builder<B extends BusinessEntity> extends AsyncDatabaseConnector.Builder<B> {
 

@@ -33,6 +33,9 @@ import com.fsc.cicerone.model.User;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class that provides useful functions for the management of the reports.
+ */
 public class ReportManager {
     private ReportManager() {
         throw new IllegalStateException("Utility class");

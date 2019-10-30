@@ -47,7 +47,7 @@ import java.util.Objects;
 
 
 /**
- * Class that contains the elements of the TAB Itinerary on the account details page.
+ * Class that contains the elements of the tab "Itinerary" on the account details page.
  */
 public class GlobetrotterItineraryListFragment extends Fragment {
 

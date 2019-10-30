@@ -76,7 +76,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 /**
- * Class that contains the elements of the TAB Itinerary on the account details page.
+ * Class that contains the elements of the tab "profile" on the account details page.
  */
 public class ProfileFragment extends Fragment implements Refreshable {
 
@@ -362,7 +362,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
         Map<String, Object> documentData = new HashMap<>();
         User user = AccountManager.getCurrentLoggedUser();
         userData.put(User.Columns.USERNAME_KEY, user.getUsername());
-        userData.put(User.Columns.PASSWORD_KEY, user.getPassword());
+        userData.put(User.Columns.P_KEY, user.getPassword());
         userData.put(User.Columns.NAME_KEY, name.getText());
         userData.put(User.Columns.SURNAME_KEY, surname.getText());
         userData.put(User.Columns.EMAIL_KEY, email.getText());
@@ -539,7 +539,7 @@ public class ProfileFragment extends Fragment implements Refreshable {
         Uri uri = Uri.parse(ConnectorConstants.DOWNLOAD_USER_DATA)
                 .buildUpon()
                 .appendQueryParameter(User.Columns.USERNAME_KEY, currentLoggedUser.getUsername())
-                .appendQueryParameter(User.Columns.PASSWORD_KEY, currentLoggedUser.getPassword())
+                .appendQueryParameter(User.Columns.P_KEY, currentLoggedUser.getPassword())
                 .build();
 
         webView.loadUrl(uri.toString());

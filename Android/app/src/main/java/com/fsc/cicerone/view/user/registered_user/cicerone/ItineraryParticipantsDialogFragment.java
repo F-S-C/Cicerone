@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A class that displays the participants list of an Itinerary.
+ * A class that displays the participants list of an Itinerary as a dialog.
  */
 public class ItineraryParticipantsDialogFragment extends DialogFragment {
 

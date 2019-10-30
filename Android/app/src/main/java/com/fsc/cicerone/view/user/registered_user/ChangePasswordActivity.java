@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A class that manage the situation of changing the password of an User.
+ * A class that represents the user interface that manage the user's request of password change.
  */
 public class ChangePasswordActivity extends AppCompatActivity {
 

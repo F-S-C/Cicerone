@@ -26,8 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * LanguageManager is used to manage multiple instances of the Language class and to interact with
- * the server.
+ * A class that provides useful functions for the management of the languages.
  */
 public class LanguageManager {
 

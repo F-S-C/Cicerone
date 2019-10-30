@@ -40,7 +40,7 @@ import java.util.Map;
 
 
 /**
- * The manager class for the Reservation data-type.
+ * A class that provides useful functions for the management of the reservations.
  */
 public class ReservationManager {
 

@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The ReviewAdapter of the Recycler View for the styles present in the app.
+ * An adapter that holds a list of reservations.
  */
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationViewHolder> {
 

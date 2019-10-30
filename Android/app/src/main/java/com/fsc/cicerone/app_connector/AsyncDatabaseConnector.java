@@ -38,11 +38,15 @@ import java.util.List;
 
 
 /**
- * Generic connector to a database. This class gives an interface to communicate with a database. It
- * needs the URL of the server-side script that generates and handles the data.
+ * Generic asynchronous connector to a database. This class gives an interface to communicate with a
+ * database. It needs the URL of the server-side script that generates and handles the data.
  */
 public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends AsyncTask<Void, Void, String> implements DatabaseConnector {
 
+    /**
+     * An interfaced to be used to create callback functions to be used to define the connector
+     * behaviour on the connection's start.
+     */
     public interface OnStartConnectionListener {
         /**
          * Function that will be called before the start of the connection.
@@ -50,6 +54,12 @@ public abstract class AsyncDatabaseConnector<T extends BusinessEntity> extends A
         void onStartConnection();
     }
 
+    /**
+     * An interfaced to be used to create callback functions to be used to define the connector
+     * behaviour on the connection's end.
+     *
+     * @param <T> The type of data to be handled.
+     */
     public interface OnEndConnectionListener<T> {
         /**
          * Function that will be called when the connection has ended.

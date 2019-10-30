@@ -40,7 +40,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.Objects;
 
 /**
- * Class that specifying the account detail page
+ * Class that represents the account details page.
  */
 public class AccountDetailsFragment extends Fragment implements Refreshable {
 

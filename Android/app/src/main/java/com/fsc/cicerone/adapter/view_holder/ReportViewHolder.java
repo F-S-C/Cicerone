@@ -29,7 +29,7 @@ import com.fsc.cicerone.R;
 import com.fsc.cicerone.model.ReportStatus;
 
 /**
- * ViewHolder stores and recycles reports as they are scrolled off screen.
+ * A view holder that shows a report.
  */
 public class ReportViewHolder extends AbstractViewHolder {
     private TextView object;

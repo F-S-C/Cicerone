@@ -41,8 +41,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * A function that manage to display all the information of an Itinerary, based on which Activity is
- * started. It is called by ItineraryDetails and ItineraryManagement.
+ * A class that represents the basic user interface to display the information of an itinerary.
  */
 public abstract class ItineraryActivity extends AppCompatActivity implements Refreshable {
     protected Itinerary itinerary;

@@ -35,7 +35,7 @@ import com.fsc.cicerone.model.ReportStatus;
 import java.util.Objects;
 
 /**
- * A class that manage to show to information of a Report.
+ * A class that represents the user interface that shows the details of a report.
  */
 public class ReportDetailsActivity extends AppCompatActivity {
 

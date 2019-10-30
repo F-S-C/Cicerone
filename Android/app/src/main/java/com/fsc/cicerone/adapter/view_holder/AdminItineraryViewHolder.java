@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import com.fsc.cicerone.R;
 
 /**
- * ViewHolder stores and recycles reports as they are scrolled off screen.
+ * A view holder that shows an itinerary to be used in the admin section of the app.
  */
 public class AdminItineraryViewHolder extends AbstractItineraryViewHolder {
     private TextView itineraryNumber;

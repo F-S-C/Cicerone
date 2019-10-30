@@ -62,7 +62,7 @@ import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 /**
- * The class responsible for the registration of an user.
+ * A class that represents the user interface for a user's registration.
  */
 public class RegistrationActivity extends AppCompatActivity {
 

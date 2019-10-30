@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A <i>control</i> class that manages the itineraries.
+ * A class that provides useful functions for the management of the itineraries.
  */
 public class ItineraryManager {
 

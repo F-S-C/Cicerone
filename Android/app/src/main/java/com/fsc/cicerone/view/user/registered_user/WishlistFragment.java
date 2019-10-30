@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A class used to manage the User's wishlist.
+ * A class that represents the user interface for the management of the user's wishlist.
  */
 public class WishlistFragment extends Fragment implements Refreshable {
 

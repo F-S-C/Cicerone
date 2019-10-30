@@ -42,7 +42,7 @@ import java.util.Objects;
 
 
 /**
- * Class that contains the details of the user to whom the administrator is interested.
+ * The user interface that contains the details of the user to whom the admin is interested.
  */
 public class AdminDetailsUserFragment extends Fragment {
 

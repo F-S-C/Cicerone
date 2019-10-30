@@ -21,7 +21,7 @@ import com.fsc.cicerone.model.BusinessEntity;
 /**
  * An interface that emulates Java's
  * <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html">java.util.function.BiConsumer&lt;BusinessEntity,
- * boolean&gt;</a>.
+ * Boolean&gt;</a>.
  * It can be implemented by a lambda function. It was created due to the original class not being
  * available in the chosen Android API.
  */

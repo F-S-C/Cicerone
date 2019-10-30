@@ -52,7 +52,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Generic connector to the database. This connector sends data using POST to a server-side script
- * that will be used in order to connect to a database.
+ * that will be used in order to connect to a database and reads its results.
  */
 public class SendInPostConnector<T extends BusinessEntity> extends AsyncDatabaseConnector<T> {
 

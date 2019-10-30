@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A <i>control</i> class that manages the images.
+ * A class that provides useful functions for the management of images.
  */
 public class ImageManager {
 

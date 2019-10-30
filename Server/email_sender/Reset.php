@@ -99,4 +99,4 @@ class Reset
     }
 }
 
-new Reset();
+$connector = new Reset();

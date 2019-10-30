@@ -171,4 +171,4 @@ class Sender
     }
 }
 
-new Sender();
+$connector = new Sender();

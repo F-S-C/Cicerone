@@ -64,7 +64,7 @@ public class User extends BusinessEntity {
         }
 
         public static final String USERNAME_KEY = "username";
-        public static final String PASSWORD_KEY = "password";
+        public static final String P_KEY = "password";
         public static final String TAX_CODE_KEY = "tax_code";
         public static final String NAME_KEY = "name";
         public static final String SURNAME_KEY = "surname";
@@ -148,7 +148,7 @@ public class User extends BusinessEntity {
             JSONObject jsonObject = new JSONObject();
             try {
                 if (username != null) jsonObject.put(Columns.USERNAME_KEY, username);
-                if (password != null) jsonObject.put(Columns.PASSWORD_KEY, password);
+                if (password != null) jsonObject.put(Columns.P_KEY, password);
             } catch (JSONException e) {
                 Log.e("CREDENTIALS_ERROR", e.getMessage());
             }
@@ -166,7 +166,7 @@ public class User extends BusinessEntity {
                 username = null;
             }
             try {
-                password = jsonObject.getString(Columns.PASSWORD_KEY);
+                password = jsonObject.getString(Columns.P_KEY);
             } catch (JSONException e) {
                 password = null;
             }
@@ -259,7 +259,7 @@ public class User extends BusinessEntity {
         }
 
         try {
-            password = user.getString(Columns.PASSWORD_KEY);
+            password = user.getString(Columns.P_KEY);
         } catch (JSONException e) {
             password = null;
         }
@@ -540,7 +540,7 @@ public class User extends BusinessEntity {
             if (this.name != null) result.put(Columns.NAME_KEY, this.name);
             if (this.surname != null) result.put(Columns.SURNAME_KEY, this.surname);
             if (this.email != null) result.put(Columns.EMAIL_KEY, this.email);
-            if (this.password != null) result.put(Columns.PASSWORD_KEY, this.password);
+            if (this.password != null) result.put(Columns.P_KEY, this.password);
             if (this.sex != null) result.put(Columns.SEX_KEY, this.sex.toString());
             if (this.taxCode != null) result.put(Columns.TAX_CODE_KEY, this.taxCode);
             if (this.username != null) result.put(Columns.USERNAME_KEY, this.username);

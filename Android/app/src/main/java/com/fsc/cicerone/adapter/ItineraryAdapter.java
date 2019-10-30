@@ -40,7 +40,7 @@ import com.fsc.cicerone.view.admin.AdminItineraryDetails;
 import java.util.List;
 
 /**
- * The ReviewAdapter of the Recycler View for the styles present in the app.
+ * An adapter that holds a list of itineraries.
  */
 public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryViewHolder> {
     private final Activity context;

@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class that provides useful functions for the management of the reviews.
+ */
 public class ReviewManager {
 
     private ReviewManager() {

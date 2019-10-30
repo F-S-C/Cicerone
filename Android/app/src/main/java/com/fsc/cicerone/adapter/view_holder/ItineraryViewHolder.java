@@ -32,7 +32,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Set;
 
 /**
- * ViewHolder stores and recycles reports as they are scrolled off screen.
+ * A view holder that shows an itinerary.
  */
 public class ItineraryViewHolder extends AbstractItineraryViewHolder {
     private ImageView imageView;

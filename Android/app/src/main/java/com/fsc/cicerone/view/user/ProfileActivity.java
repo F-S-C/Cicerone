@@ -42,7 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.Objects;
 
 /**
- * ProfileActivity is the class that allows you to build a user's profile activity.
+ * A class that represents the user interface to show all the information about a user.
  */
 public class ProfileActivity extends AppCompatActivity {
 
