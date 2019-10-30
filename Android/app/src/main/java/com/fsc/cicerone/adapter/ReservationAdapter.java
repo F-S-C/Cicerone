@@ -157,7 +157,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationViewHold
                 }
             } else if (layout == R.layout.participation_list) {
                 Date today = new Date();
-                if (mData.get(position).getConfirmationDate().before(today) && mData.get(position).getItinerary().getReservationDate().before(today)) {
+                if (mData.get(position).getConfirmationDate().before(today) && mData.get(position).getItinerary().getReservationDate().after(today)) {
                     if (previouslyClickedHolder != null)
                         previouslyClickedHolder.getRemoveParticipationButton().setVisibility(View.GONE);
                     if (previouslyClickedHolder != holder)
