@@ -52,7 +52,7 @@ _Cicerone_ was created as an exam's project by the group [**_F.S.C. &mdash; Five
 
 - [Alessandro **Annese**](https://github.com/Ax3lFernus)
 - [Andrea **Esposito**](https://github.com/espositoandrea)
-- [Graziano **Montanaro**](https://github.com/prewarning)
+- [Graziano **Montanaro**](https://github.com/montanarograziano)
 - [Regina **Zaccaria**](https://github.com/ReginaZaccaria)
 
 ### The Exam
